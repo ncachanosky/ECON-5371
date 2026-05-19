@@ -101,9 +101,7 @@ mpl.rcParams.update({
     "font.size":             10,
     "text.color":            EO_CHARCOAL,
 
-    # Calibri for display-level text (titles, axis labels)
-    "axes.titlefamily":      "Calibri",
-    "axes.labelfamily":      "Calibri",
+    "font.sans-serif":       ["Calibri", "Arial", "DejaVu Sans"],
 
     # ── Saving ────────────────────────────────────────────────────────────────
     "savefig.dpi":           300,
@@ -152,10 +150,26 @@ def eo_suptitle(fig, title, **kwargs):
     fig.suptitle(title, **defaults)
 
 
+def eo_style_ax(ax):
+    """
+    Apply Calibri font to axis titles and labels on a given axes object.
+    Call after setting titles/labels, or use instead of set_title/set_xlabel.
+    Compatible with all matplotlib versions.
+
+    Example
+    -------
+    ax.set_title("My Title")
+    ax.set_xlabel("Time")
+    eo_style_ax(ax)
+    """
+    for text_obj in [ax.title, ax.xaxis.label, ax.yaxis.label]:
+        text_obj.set_fontfamily("Calibri")
+
+
 def label_axes(ax, title=None, xlabel=None, ylabel=None):
     """
-    Apply title, x-label, and y-label to an axes object in one call.
-    All text respects the rcParams font settings.
+    Apply title, x-label, and y-label to an axes object in one call,
+    with Calibri applied automatically to all three.
     """
     if title:
         ax.set_title(title)
@@ -163,6 +177,7 @@ def label_axes(ax, title=None, xlabel=None, ylabel=None):
         ax.set_xlabel(xlabel)
     if ylabel:
         ax.set_ylabel(ylabel)
+    eo_style_ax(ax)
 
 
 def despine(ax):

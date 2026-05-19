@@ -1,0 +1,83 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Time Series Analysis for Economists"
+  author: "Nicolas Cachanosky"
+  date: last-modified
+  date-format: "MMMM YYYY"
+  description: |
+    Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.
+  repo-url: https://github.com/ncachanosky/ECON-5371
+  repo-actions: [issue]
+  repo-branch: main
+
+  site-url: https://ncachanosky.github.io/XQMB-5311
+
+  open-graph:
+    title: "Book title"
+    description: "Course readings for ECON 3320 – Money and Banking – The University of Texas at El Paso. An institutions-first treatment of monetary and financial economics."
+    image: assets/logo.png
+
+  twitter-card:
+    title: "Book title"
+    description: "Course readings for ECON 3320 – Money and Banking – The University of Texas at El Paso. An institutions-first treatment of monetary and financial economics."
+    image: assets/logo.png
+    card-style: summary
+    creator: "@n_cachanosky"
+
+  sidebar:
+    style: docked
+    search: true
+    logo: assets/logo.png
+
+  # ── Favicon ───────────────────────────────────────────────────────────────
+  # Run favicon_generator.py once to produce favicon.ico, then uncomment:
+  favicon: favicon.png
+
+  chapters:
+    - index.qmd
+    - chapters/01/chapter_01.qmd
+
+  page-footer:
+    left: "© Nicolas Cachanosky, The University of Texas at El Paso, Center for Free Enterprise"
+    right:
+      - icon: github
+        href: https://github.com/ncachanosky/ECON-5371
+      - icon: linkedin
+        href: https://www.linkedin.com/in/ncachanosky
+      - icon: twitter-x
+        href: https://twitter.com/n_cachanosky
+
+bibliography: references.bib
+
+jupyter: python3
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark:  darkly
+    css: styles.css
+    # css: https://raw.github.com/ncachanosky/EO-styles/main/styles.css
+    fontsize: 1.2em
+    mainfont: "Georgia, serif"
+    highlight-style: github
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    number-depth: 2
+    smooth-scroll: true
+    fig-align: center
+    fig-responsive: true
+    include-in-header:
+      text: |
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false

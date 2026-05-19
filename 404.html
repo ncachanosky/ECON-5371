@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found | Money, Institutions, and Markets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --copper:    #B87333;
+      --copper-dk: #8a5626;
+      --charcoal:  #36454F;
+      --muted:     #8a9ba8;
+      --warm-bg:   #FAFAF8;
+      --border:    #d0d8dc;
+    }
+
+    body {
+      font-family: Lato, sans-serif;
+      background-color: var(--warm-bg);
+      color: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Scale */
+    .scale-wrap {
+      margin: 0 auto 2.4rem;
+      width: 98px;
+      height: 98px;
+      opacity: 0;
+      animation: fadeDown 0.7s ease forwards;
+    }
+
+
+    /* 404 number */
+    .code {
+      font-size: 6.5rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--copper);
+      letter-spacing: -0.04em;
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.12s forwards;
+    }
+
+    /* Divider */
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: var(--copper);
+      margin: 1.4rem auto;
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.22s forwards;
+    }
+
+    /* Heading */
+    h1 {
+      font-family: Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: normal;
+      color: var(--charcoal);
+      line-height: 1.4;
+      margin-bottom: 0.9rem;
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.32s forwards;
+    }
+
+    /* Body text */
+    p {
+      font-size: 0.97rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.42s forwards;
+    }
+
+    /* Buttons */
+    .actions {
+      display: flex;
+      gap: 0.9rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.52s forwards;
+    }
+
+    .btn {
+      font-family: Lato, sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      padding: 0.6em 1.5em;
+      border-radius: 4px;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--copper);
+      color: #fff;
+      border: 1px solid var(--copper);
+    }
+
+    .btn-primary:hover {
+      background: var(--copper-dk);
+      border-color: var(--copper-dk);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--copper);
+      border: 1px solid var(--copper);
+    }
+
+    .btn-secondary:hover {
+      background: var(--copper);
+      color: #fff;
+    }
+
+    /* Footer note */
+    .footer-note {
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      color: var(--border);
+      opacity: 0;
+      animation: fadeDown 0.7s ease 0.65s forwards;
+    }
+
+    .footer-note a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-note a:hover {
+      color: var(--copper);
+    }
+
+    /* Animation */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --copper:    #d4975a;
+        --copper-dk: #e8b47a;
+        --charcoal:  #d6dde2;
+        --muted:     #7a9099;
+        --warm-bg:   #1a2028;
+        --border:    #2e3d48;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Logo -->
+    <div class="scale-wrap">
+      <img src="/ECON-5371/assets/logo.png" width=100%, height=auto, alt="Book title">
+    </div>
+
+    <div class="code">404</div>
+    <div class="divider"></div>
+
+    <h1>This page isn't in the ledger</h1>
+
+    <p>
+      The URL you followed doesn't exist — it may have moved, been renamed,
+      or never existed. The reading materials are all accounted for below.
+    </p>
+
+    <div class="actions">
+      <a href="/ECON-5371/" class="btn btn-primary">Back to the book</a>
+      <a href="/ECON-5371/index.html" class="btn btn-secondary">Preface</a>
+    </div>
+
+    <div class="footer-note">
+      ECON 5371 – Forecasting &nbsp;·&nbsp;
+      <a href="https://github.com/ncachanosky/ECON-3320-online/issues">Report an issue</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
