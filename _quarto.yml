@@ -41,6 +41,8 @@ book:
     - chapters/01/chapter_01.qmd
     - chapters/02/chapter_02.qmd
     - chapters/03/chapter_03.qmd
+    - chapters/04/chapter_04.qmd
+    - chapters/05/chapter_05.qmd
 
   page-footer:
     left: "© Nicolas Cachanosky, The University of Texas at El Paso, Center for Free Enterprise"
