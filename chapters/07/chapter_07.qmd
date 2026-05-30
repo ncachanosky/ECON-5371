@@ -2521,34 +2521,35 @@ This chapter built the complete reduced-form and structural VAR toolkit:
 from the endogeneity motivation through lag selection, Granger causality,
 Cholesky identification, impulse responses, and variance decomposition. The
 tools are powerful, but they rest on a maintained assumption that every
-variable in the system is stationary. Section 7.8 showed what happens when
+variable in the system is stationary. Section 7.9 showed what happens when
 that assumption fails and pointed toward two responses: difference the
-variables, or model the long-run relationship explicitly via a VECM.
+variables, or model the long-run relationship explicitly. The first option
+discards information about long-run relationships between variables; the
+second requires a framework that does not yet exist in our toolkit.
 
-**Chapter 8 — State Space Models and the Kalman Filter** takes up both
-threads simultaneously. Its first half addresses the cointegration question
-directly: the **Johansen trace test** provides a formal procedure for
-determining how many cointegrating relationships exist among a set of $I(1)$
-variables — the cointegrating rank. A rank of zero means no cointegration
-and a VAR in differences is appropriate; a positive rank means the variables
-share common stochastic trends and the **vector error correction model
-(VECM)** is required. The VECM rewrites the VAR so that short-run dynamics
-and the long-run equilibrium relationship appear as separate, estimable
-components.
+**Chapter 8 — Cointegration and the Vector Error Correction Model** develops
+that framework. When two or more $I(1)$ variables share a common stochastic
+trend — when they are **cointegrated** — the **vector error correction model
+(VECM)** provides a complete description of their joint dynamics. The VECM
+reparameterises the VAR in levels so that short-run dynamics and the long-run
+equilibrium relationship appear as distinct, estimable components. Determining
+how many long-run relationships exist requires the **Johansen trace test**, a
+procedure that examines the rank of the long-run coefficient matrix
+$\boldsymbol{\Pi}$ through its eigenvalues: a rank of zero means no
+cointegration and a VAR in first differences is appropriate; a positive rank
+means the variables share common stochastic trends and the VECM is required.
 
-What connects the VECM to the chapter's second half is not merely
-sequencing — they are unified by a common framework. The VECM is a special
-case of a **state space model**, in which an unobserved state vector evolves
-according to a linear transition equation while observations are generated
-by a measurement equation. The cointegrating residual — the deviation from
-the long-run equilibrium — is precisely such an unobserved state, and the
-Kalman filter is the algorithm that estimates it optimally, period by period,
-given the observed data. State space methods therefore subsume VARs, VECMs,
-unobserved-components models, and time-varying parameter models under one
-roof. The **Kalman filter** is what makes all of them computationally
-tractable. Seeing the VECM as a state space model is not just a technical
-convenience — it is the conceptual unification that makes Chapter 8 a single
-chapter rather than two.
+The running example will be the US yield curve — the 10-year Treasury yield
+and the 3-month T-bill rate. The **expectations hypothesis of the term
+structure** predicts that these two rates are cointegrated with a cointegrating
+vector of $(1, -1)'$: both rates are driven by the same monetary policy and
+inflation expectations, so their spread should be stationary around a constant
+term premium rather than drifting. That spread is also one of the most reliable
+recession indicators in macroeconomics — yield curve inversions have preceded
+every US recession since 1954 — and the VECM gives us a precise language for
+understanding why: an inversion is an extreme deviation from the long-run
+equilibrium, and the error correction mechanism predicts the forces that
+eventually restore a positive spread.
 
 
 ## Key Terms {#sec-keyterms7}
