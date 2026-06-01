@@ -34,7 +34,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "b564ad76"
+      "id": "4f15baeb"
     },
     {
       "cell_type": "code",
@@ -413,7 +413,7 @@
         "\n",
         "What does white noise look like as a time series? The figure below simulates a simple Gaussian white noise sequence — $\\varepsilon_t \\overset{\\text{iid}}{\\sim} N(0,1)$ — and plots it alongside its sample ACF. Two features are immediately visible. First, the time series fluctuates erratically around zero with no discernible trend, cycle, or pattern. Second, the ACF shows no significant spikes at any lag — every bar lies within the 95% confidence bands, confirming that no linear relationship exists between any two observations. This is the time-series counterpart of the spatial image above: pure noise, no memory."
       ],
-      "id": "353f586a"
+      "id": "a001c9d7"
     },
     {
       "cell_type": "code",
@@ -576,7 +576,7 @@
         "\n",
         "The figure below illustrates the different dynamic regimes for a range of characteristic roots. All stable paths share the long-run equilibrium $\\bar{y} = 1.67$, and all paths begin at $y_0 = 3$ — a positive deviation from $\\bar{y}$."
       ],
-      "id": "77b25f4b"
+      "id": "1368d85c"
     },
     {
       "cell_type": "code",
@@ -661,7 +661,7 @@
         "\n",
         "The pure [random walk](https://en.wikipedia.org/wiki/Random_walk) ($\\phi = 1$, $c = 0$) deserves its own figure. Unlike any stable process, different realizations of a random walk fan out in completely different directions from the same starting point, and none of them returns to the initial level. The figure below simulates twenty independent random walk paths from the same starting value — the fan-shaped spreading is the visual signature of a unit root."
       ],
-      "id": "d73ffcd1"
+      "id": "27626818"
     },
     {
       "cell_type": "code",
@@ -814,7 +814,7 @@
         "\n",
         "**This is the key distinction from negative real eigenvalues.** A negative real eigenvalue $\\lambda < 0$ produces oscillation that alternates every single period: $\\lambda^t$ changes sign at each step because $(-|\\lambda|)^t$ alternates. This is period-2 oscillation — the fastest possible, completing a full cycle in just two periods. Complex eigenvalues, by contrast, allow any period $P = 2\\pi/\\omega \\geq 2$. Real economies exhibit business cycles with periods of 6–32 quarters — far too slow to be explained by negative real eigenvalues, but naturally produced by complex conjugate pairs with appropriate arguments. The oscillatory behavior of complex roots is therefore not just a mathematical curiosity; it is one of the mechanisms through which business-cycle-like dynamics arise in AR($p$) models."
       ],
-      "id": "224ba408"
+      "id": "d41dfc8e"
     },
     {
       "cell_type": "code",
@@ -871,7 +871,7 @@
         "\n",
         "A convenient visual summary of the stability condition plots the eigenvalues in the complex plane with the unit circle as a reference. All eigenvalues inside the circle — stable. Any eigenvalue on the circle — unit root. Any eigenvalue outside — explosive."
       ],
-      "id": "4e7b4308"
+      "id": "ff9195f0"
     },
     {
       "cell_type": "code",
@@ -971,7 +971,7 @@
         "\n",
         "### Python Example: ACF and PACF for US GDP and CPI"
       ],
-      "id": "5a8e82b6"
+      "id": "a4e3295a"
     },
     {
       "cell_type": "code",
@@ -1285,7 +1285,7 @@
         "\n",
         "### Formal Tests: US GDP and CPI"
       ],
-      "id": "2e06c302"
+      "id": "6daded16"
     },
     {
       "cell_type": "code",
@@ -1485,7 +1485,7 @@
         "**Cointegration** — Two $I(1)$ series are cointegrated if a linear combination of them is $I(0)$; they share a common stochastic trend. Covered in Chapter 6.\n",
         ":::"
       ],
-      "id": "faea1ac5"
+      "id": "6ee13333"
     }
   ],
   "metadata": {

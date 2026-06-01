@@ -45,7 +45,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "16f1aeb3"
+      "id": "b773e9ce"
     },
     {
       "cell_type": "code",
@@ -298,7 +298,7 @@
         "series wanders without a fixed attractor, and its sample autocorrelation remains\n",
         "close to 1 for dozens of lags."
       ],
-      "id": "e0be002b"
+      "id": "61930933"
     },
     {
       "cell_type": "code",
@@ -482,7 +482,7 @@
         "spurious as the Cage/drownings example. The difference is that the plausible\n",
         "case looks like real economics, which is exactly why unit root testing matters."
       ],
-      "id": "e4ad390b"
+      "id": "006df121"
     },
     {
       "cell_type": "code",
@@ -796,7 +796,7 @@
         "selection, assess bandwidth sensitivity for KPSS, and arrive at a model\n",
         "specification decision."
       ],
-      "id": "5a655204"
+      "id": "206612e4"
     },
     {
       "cell_type": "code",
@@ -861,7 +861,7 @@
         "specification choice: constant and trend for the level (the stationary\n",
         "alternative is trend-stationarity); constant only for the growth rate."
       ],
-      "id": "e8e26313"
+      "id": "113959fa"
     },
     {
       "cell_type": "code",
@@ -1059,7 +1059,7 @@
         "line and return to it after shocks; difference-stationary paths diverge\n",
         "permanently and spread ever wider."
       ],
-      "id": "45fe5580"
+      "id": "374ee681"
     },
     {
       "cell_type": "code",
@@ -1254,7 +1254,7 @@
         "(GDP growth) to determine $p$ and $q$, then estimate, use `auto_arima` as a\n",
         "cross-check, and diagnose."
       ],
-      "id": "7b7954b5"
+      "id": "e0097a8a"
     },
     {
       "cell_type": "code",
@@ -1319,7 +1319,7 @@
         "fit a grid of ARIMA models on log SA GDP and compare by information criteria,\n",
         "then use `auto_arima` as a cross-check."
       ],
-      "id": "3047f5c7"
+      "id": "3e3c8feb"
     },
     {
       "cell_type": "code",
@@ -1437,7 +1437,7 @@
         "AIC may select a richer model. We fit the BIC-preferred specification and\n",
         "run diagnostics."
       ],
-      "id": "fc062d67"
+      "id": "d7df6c7a"
     },
     {
       "cell_type": "code",
@@ -1594,7 +1594,7 @@
         "width is one of the key visual features that distinguishes ARIMA from ARMA\n",
         "forecasts."
       ],
-      "id": "7693140d"
+      "id": "f7f2cca2"
     },
     {
       "cell_type": "code",
@@ -1891,7 +1891,7 @@
         "through Q2 and Q3, and peaks in Q4. This pattern is stochastic — its amplitude\n",
         "varies with the business cycle — making SARIMA the appropriate framework."
       ],
-      "id": "c220f14c"
+      "id": "dfd25806"
     },
     {
       "cell_type": "code",
@@ -2022,7 +2022,7 @@
         "is indicated; if it appears in the ACF but not the PACF, an SMA(1) term. Both\n",
         "appearing suggests SARMA(1,1) at the seasonal level."
       ],
-      "id": "56458f4f"
+      "id": "d66ae649"
     },
     {
       "cell_type": "code",
@@ -2265,7 +2265,7 @@
         "ARIMA(0,1,1) with $\\theta_1$ close to $-1$. The optimal $\\alpha$ estimated\n",
         "from data tells you something about the signal-to-noise ratio in the series."
       ],
-      "id": "7135bd33"
+      "id": "6319750c"
     },
     {
       "cell_type": "code",
@@ -2457,7 +2457,7 @@
         "ahead to close the gap. This is the BN model's way of saying: the 2009 recession\n",
         "was (partly) transitory, and recovery was the expected outcome."
       ],
-      "id": "31d8af65"
+      "id": "6263f74c"
     },
     {
       "cell_type": "code",
@@ -2854,7 +2854,7 @@
         "preferred over ARIMAX.\n",
         ":::\n"
       ],
-      "id": "fa135510"
+      "id": "a29d767d"
     }
   ],
   "metadata": {

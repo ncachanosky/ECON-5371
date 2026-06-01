@@ -45,7 +45,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "51419a6b"
+      "id": "cda65ab5"
     },
     {
       "cell_type": "code",
@@ -539,7 +539,7 @@
         "Before modelling, we plot the full series alongside its ACF and PACF. This is always\n",
         "the first step — looking at the data, not fitting a model."
       ],
-      "id": "4434139a"
+      "id": "375626b8"
     },
     {
       "cell_type": "code",
@@ -1078,7 +1078,7 @@
         "how sharp the cutoff looks in finite samples and how confidently we can read it off\n",
         "an ACF plot."
       ],
-      "id": "caf8d9b6"
+      "id": "94d9a776"
     },
     {
       "cell_type": "code",
@@ -1329,7 +1329,7 @@
         "families plotted together. The figure below simulates an AR(1), an MA(1), and an\n",
         "ARMA(1,1) with comparable persistence, and plots their ACFs and PACFs side by side."
       ],
-      "id": "ce2660c7"
+      "id": "af7a0732"
     },
     {
       "cell_type": "code",
@@ -1602,7 +1602,7 @@
         "the sample to the pre-pandemic period, 1967–2019. This is a pragmatic choice, not\n",
         "a permanent one — Chapter 4 provides formal tools for testing and handling breaks."
       ],
-      "id": "72cf27d1"
+      "id": "91075782"
     },
     {
       "cell_type": "code",
@@ -1806,7 +1806,7 @@
         "The ACF/PACF suggested an AR(1) as the natural starting point. We fit it and\n",
         "examine the output."
       ],
-      "id": "5bc00ea2"
+      "id": "5a402653"
     },
     {
       "cell_type": "code",
@@ -1842,7 +1842,7 @@
         "carefully in Section 3.8; for the moment we note their presence and move straight\n",
         "to the residual plots, which tell the same story visually."
       ],
-      "id": "fb1c5ee2"
+      "id": "6611ccda"
     },
     {
       "cell_type": "code",
@@ -1915,7 +1915,7 @@
         "\n",
         "#### Step 2 — Refinement: ARMA(1,2)"
       ],
-      "id": "7f296e2c"
+      "id": "faef21b0"
     },
     {
       "cell_type": "code",
@@ -1989,7 +1989,7 @@
         "\n",
         "Now we check the residuals to see whether the ARMA(1,2) has done its job."
       ],
-      "id": "9547cffb"
+      "id": "5f9c8099"
     },
     {
       "cell_type": "code",
@@ -2077,7 +2077,7 @@
         "what \"overfitting\" looks like: higher-order terms that are weakly identified, noisy\n",
         "standard errors, and a log-likelihood gain that does not justify the cost."
       ],
-      "id": "97f38e98"
+      "id": "b715743d"
     },
     {
       "cell_type": "code",
@@ -2363,7 +2363,7 @@
         "short-lag ACF and PACF spikes have disappeared. The tests quantify how confident\n",
         "we can be in that visual assessment."
       ],
-      "id": "50ef6d70"
+      "id": "7404afba"
     },
     {
       "cell_type": "code",
@@ -2419,7 +2419,7 @@
         "just their statistical significance. The code below extracts the actual\n",
         "$\\hat\\rho(j)$ values."
       ],
-      "id": "12068304"
+      "id": "71b8e256"
     },
     {
       "cell_type": "code",
@@ -2479,7 +2479,7 @@
         "will understate true tail risk. For point forecasting the model remains valid;\n",
         "for interval forecasting in adverse scenarios, the non-normality matters."
       ],
-      "id": "a165c048"
+      "id": "1b2c3694"
     },
     {
       "cell_type": "code",
@@ -2672,7 +2672,7 @@
         "We produce 52-week-ahead forecasts (one year) from the ARMA(1,2) model, plotting\n",
         "both a single 95% band and a fan chart."
       ],
-      "id": "eba1c9cf"
+      "id": "a177cbb0"
     },
     {
       "cell_type": "code",
@@ -2888,7 +2888,7 @@
         "series, 1967–2019, so that information criteria are comparable across\n",
         "specifications."
       ],
-      "id": "5cecf152"
+      "id": "234c602c"
     },
     {
       "cell_type": "code",
@@ -2981,7 +2981,7 @@
         "pattern would be direct evidence of what the AR dynamics were absorbing, and\n",
         "what the exogenous regressor adds."
       ],
-      "id": "56d85183"
+      "id": "6715d7c0"
     },
     {
       "cell_type": "code",
@@ -3306,7 +3306,7 @@
         "by the AR roots — roots close to the unit circle imply slow reversion.\n",
         ":::\n"
       ],
-      "id": "5a8c4741"
+      "id": "81d9cf7c"
     }
   ],
   "metadata": {

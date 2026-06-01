@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "c8d0dac4"
+      "id": "82e5195c"
     },
     {
       "cell_type": "code",
@@ -624,7 +624,7 @@
         "useful to look at the series we will be forecasting and develop some intuition\n",
         "about what \"good\" accuracy means in this context."
       ],
-      "id": "e6c24023"
+      "id": "d57993cb"
     },
     {
       "cell_type": "code",
@@ -683,7 +683,7 @@
         "quarter's growth plus a constant. As we will see, that is a harder target than\n",
         "it sounds."
       ],
-      "id": "7a19f82e"
+      "id": "adb1c62d"
     },
     {
       "cell_type": "code",
@@ -862,7 +862,7 @@
         "errors. Both models and both horizons are handled in a single pass; the error\n",
         "sequences produced here are used directly in Section 5.4 and Section 5.5."
       ],
-      "id": "3e0d0495"
+      "id": "f5ac3ec8"
     },
     {
       "cell_type": "code",
@@ -1032,7 +1032,7 @@
         "wins. The table tells us the direction and magnitude of the difference;\n",
         "Section 5.4 asks whether it is statistically distinguishable from zero.*"
       ],
-      "id": "02f68ff6"
+      "id": "94392346"
     },
     {
       "cell_type": "code",
@@ -1208,7 +1208,7 @@
         "it from scratch rather than calling a black-box function keeps the code in\n",
         "direct correspondence with the theory above."
       ],
-      "id": "7562c24a"
+      "id": "d8140d7b"
     },
     {
       "cell_type": "code",
@@ -1475,7 +1475,7 @@
         "weights estimated from the evaluation sample, and OLS combination — and\n",
         "compare their RMSE against the two individual models at $h = 1$ and $h = 4$."
       ],
-      "id": "60f6af6b"
+      "id": "c9b4ab88"
     },
     {
       "cell_type": "code",
@@ -1621,7 +1621,7 @@
         "The interval bounds were stored in the main evaluation loop in Section 5.3,\n",
         "so checking coverage requires no additional model fitting."
       ],
-      "id": "1eea5ee0"
+      "id": "afafe468"
     },
     {
       "cell_type": "code",
@@ -1732,7 +1732,7 @@
         "quantities were stored in the main evaluation loop and are read directly\n",
         "here."
       ],
-      "id": "f4211d1e"
+      "id": "5a3ad89b"
     },
     {
       "cell_type": "code",
@@ -1996,7 +1996,7 @@
         "forecast distributions.\n",
         ":::"
       ],
-      "id": "29b0d0ef"
+      "id": "f77499cb"
     }
   ],
   "metadata": {

@@ -34,7 +34,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "37e8322d"
+      "id": "01291dda"
     },
     {
       "cell_type": "code",
@@ -267,7 +267,7 @@
         "\n",
         "A note on units before we proceed. `GDPC1` — the official SA series — is published as a **Seasonally Adjusted Annual Rate** (SAAR): each quarterly observation is multiplied by four to express the economy's pace as if that quarter's output were sustained for a full year. `ND000334Q` is a quarterly *total*, not annualised. Plotting them in raw form would show the SA series running about four times higher than the NSA series — not because the economy is larger, but because the units differ. We convert the NSA quarterly totals to SAAR (multiply by 4) before plotting so that the two series are directly comparable."
       ],
-      "id": "aa73b923"
+      "id": "4bdc0f5e"
     },
     {
       "cell_type": "code",
@@ -363,7 +363,7 @@
         "\n",
         "Let us apply classical decomposition to the log NSA GDP series using `statsmodels`. We use the multiplicative model (equivalently, additive on logs) with period $m = 4$."
       ],
-      "id": "2129f422"
+      "id": "b1f6c29a"
     },
     {
       "cell_type": "code",
@@ -455,7 +455,7 @@
         "\n",
         "Both approaches embed a strong assumption: that the trend is purely deterministic. Shocks to output are transitory — the economy always reverts to the same fixed path. We found evidence in Chapter 1 that log real GDP is $I(1)$: its unit root means shocks are at least partly permanent. Imposing a deterministic trend on a unit-root process is a form of misspecification. The trend will chase the data, and the extracted cycle will be contaminated by whatever the trend misses. Still, as a simple first pass — and as a baseline against which richer methods can be compared — linear and quadratic detrending are worth knowing."
       ],
-      "id": "08206fcb"
+      "id": "a3782105"
     },
     {
       "cell_type": "code",
@@ -567,7 +567,7 @@
         "\n",
         "The main disadvantage is interpretive: the Hamilton filter extracts a cycle at the frequency $1/h$, which for $h = 8$ quarters corresponds to a two-year horizon. This is somewhat shorter than the conventional NBER business cycle, and it misses lower-frequency variation that the HP filter would retain. As with every decomposition choice, this is a feature — Hamilton's filter is asking a specific question — but one that users should be aware of."
       ],
-      "id": "7fc0616b"
+      "id": "01bc72ec"
     },
     {
       "cell_type": "code",
@@ -671,7 +671,7 @@
         "\n",
         "Now run the same HP filter on data through 2024 Q4. With the Great Recession and its aftermath now in the sample, the filter's trend for 2007 is pulled downward — the full-sample trend is lower than the real-time trend, because the filter now \"knows\" what came after. The 2007 cycle in the full-sample HP estimate looks substantially more positive than it did in real time: perhaps $+3$ to $+4\\%$. The economy was running considerably hotter than the real-time filter suggested."
       ],
-      "id": "8ed2c204"
+      "id": "f10d8405"
     },
     {
       "cell_type": "code",
@@ -769,7 +769,7 @@
         "\n",
         "The main differences from X-13 are worth stating clearly. STL treats the seasonal component as slowly varying but does not model calendar effects (trading day counts, Easter, holidays). X-13 explicitly adjusts for these. STL is additive by default (or multiplicative on logs). X-13 integrates ARIMA-based forecasting to avoid end-point loss. STL is fully transparent and reproduced in Python; X-13 is an institutional production standard with decades of accumulated refinements. For research and teaching, STL is the right tool. For producing the official figures that appear in a statistical release, X-13 is the standard."
       ],
-      "id": "0c3ba4e5"
+      "id": "62045867"
     },
     {
       "cell_type": "code",
@@ -934,7 +934,7 @@
         "\n",
         "For $h = 1$ this is the same as the undamped Holt forecast. For large $h$, the cumulative factor $\\sum_{i=1}^h \\phi^i \\to \\phi/(1-\\phi)$ as $h \\to \\infty$, so the long-run forecast approaches a finite level rather than growing without bound. Empirical evidence consistently shows that damped trend forecasts outperform undamped ones at medium and long horizons: in practice, trends rarely persist at their recent estimated slope for many periods ahead, and damping provides insurance against overextrapolation."
       ],
-      "id": "51a55a98"
+      "id": "613a44d3"
     },
     {
       "cell_type": "code",
@@ -1140,7 +1140,7 @@
         "\n",
         "We now fit the full Holt-Winters additive model to the log NSA GDP series and generate forecasts eight quarters ahead — two years beyond the end of the sample."
       ],
-      "id": "218261d5"
+      "id": "9e091c88"
     },
     {
       "cell_type": "code",
@@ -1239,7 +1239,7 @@
         "\n",
         "A Holt-Winters forecast that perfectly fits in-sample tells us very little about how useful the model is. To evaluate performance honestly, we should hold out some data, fit the model on the training set, and examine how well the forecasts track the held-out test set. We do this here as a first illustration; the full framework for forecast evaluation — including proper scoring rules, the Diebold-Mariano test, and forecast combination — is developed in Chapter 5."
       ],
-      "id": "465170f2"
+      "id": "c4474207"
     },
     {
       "cell_type": "code",
@@ -1373,7 +1373,7 @@
         "**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 3.\n",
         ":::"
       ],
-      "id": "c05febd4"
+      "id": "c70d3995"
     }
   ],
   "metadata": {

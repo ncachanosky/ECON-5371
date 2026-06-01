@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "139af2ee"
+      "id": "fc7f8069"
     },
     {
       "cell_type": "code",
@@ -376,7 +376,7 @@
         "before, the reduced form that emerges from solving the system has no\n",
         "contemporaneous terms: only lags and composite errors."
       ],
-      "id": "dddbf7ee"
+      "id": "cce89cb0"
     },
     {
       "cell_type": "code",
@@ -602,7 +602,7 @@
         "For now: if your series are not stationary, do not estimate a VAR in levels.\n",
         ":::\n"
       ],
-      "id": "ec83b2ab"
+      "id": "7a3c0fc7"
     },
     {
       "cell_type": "code",
@@ -741,7 +741,7 @@
         "\n",
         "### Lag Selection Results"
       ],
-      "id": "5c3e1fc7"
+      "id": "2f8fac6b"
     },
     {
       "cell_type": "code",
@@ -844,7 +844,7 @@
         "analogue of the ARMA summary students saw in Chapter 3: a separate regression\n",
         "table for each endogenous variable, sharing the same right-hand side structure."
       ],
-      "id": "dd1bf9c8"
+      "id": "6afc6c9a"
     },
     {
       "cell_type": "code",
@@ -907,7 +907,7 @@
         "signal near-instability; a modulus below 1.0 would signal an actual unit root.\n",
         ":::"
       ],
-      "id": "6fd23f43"
+      "id": "8c8fc983"
     },
     {
       "cell_type": "code",
@@ -950,7 +950,7 @@
         "three roots exceed one and all companion eigenvalues fall strictly inside the\n",
         "unit circle — the VAR(1) is stable despite the FFR's ambiguous ADF result.*"
       ],
-      "id": "b25d4ab3"
+      "id": "920a4347"
     },
     {
       "cell_type": "code",
@@ -1021,7 +1021,7 @@
         "means residual autocorrelation is present and the lag order should be\n",
         "increased."
       ],
-      "id": "f9c7ac48"
+      "id": "5a222c31"
     },
     {
       "cell_type": "code",
@@ -1090,7 +1090,7 @@
         "of residual autocorrelation. All three equations also fail Jarque-Bera,\n",
         "indicating heavy-tailed residuals. The VAR(1) is stable but misspecified.*"
       ],
-      "id": "479b983c"
+      "id": "60c049ff"
     },
     {
       "cell_type": "code",
@@ -1159,7 +1159,7 @@
         "\n",
         "### From VAR(1) to VAR(6): How a Researcher Proceeds"
       ],
-      "id": "d36305a0"
+      "id": "26d014aa"
     },
     {
       "cell_type": "code",
@@ -1272,7 +1272,7 @@
         "\n",
         "### The Working Model: VAR(6)"
       ],
-      "id": "d9eb8a17"
+      "id": "1ecde9cd"
     },
     {
       "cell_type": "code",
@@ -1300,7 +1300,7 @@
         "eigenvalues to check. All are real and all fall inside the unit circle —\n",
         "the VAR(6) is stable."
       ],
-      "id": "8801f731"
+      "id": "3a0c13b2"
     },
     {
       "cell_type": "code",
@@ -1350,7 +1350,7 @@
         "All 18 roots are real and all companion eigenvalues lie strictly inside\n",
         "the unit circle — the VAR(6) is stable.*"
       ],
-      "id": "0ec09da9"
+      "id": "52da37e9"
     },
     {
       "cell_type": "code",
@@ -1410,7 +1410,7 @@
         "to $p = 6$ passed the portmanteau test. The table below shows the full\n",
         "search record, followed by the equation-level diagnostics at VAR(6)."
       ],
-      "id": "47335fac"
+      "id": "f3174e37"
     },
     {
       "cell_type": "code",
@@ -1457,7 +1457,7 @@
         "Durbin-Watson statistics (all near 2) confirm. All three equations fail\n",
         "Jarque-Bera, consistent with the heavy-tailed macro data in this sample.*"
       ],
-      "id": "129cbad0"
+      "id": "77c567a6"
     },
     {
       "cell_type": "code",
@@ -1611,7 +1611,7 @@
         "\n",
         "### Empirical Results"
       ],
-      "id": "e07c9785"
+      "id": "699192aa"
     },
     {
       "cell_type": "code",
@@ -2066,7 +2066,7 @@
         "reduced-form residual) or the axes have been re-ordered. The unit diagonal\n",
         "at $h = 0$ is the quickest way to verify that the plot is reading as intended."
       ],
-      "id": "2157be3e"
+      "id": "94eb8174"
     },
     {
       "cell_type": "code",
@@ -2316,7 +2316,7 @@
         "\n",
         "### Empirical FEVD"
       ],
-      "id": "be7eb5c3"
+      "id": "eac5c9fa"
     },
     {
       "cell_type": "code",
@@ -2376,7 +2376,7 @@
         "growth, CPI inflation, FFR), 1954Q3–2019Q4. Shares in percent; rows sum\n",
         "to 100. Cholesky ordering: output → inflation → policy rate.*"
       ],
-      "id": "eaf7a55f"
+      "id": "c5649160"
     },
     {
       "cell_type": "code",
@@ -2637,7 +2637,7 @@
         "a first pass, consistent with the interpretation that oil prices affect the\n",
         "domestic economy within the quarter."
       ],
-      "id": "580e6114"
+      "id": "2fcbeb23"
     },
     {
       "cell_type": "code",
@@ -2691,7 +2691,7 @@
         "decisively — oil price growth is stationary and suitable for direct inclusion\n",
         "as a contemporaneous exogenous regressor without further transformation.*"
       ],
-      "id": "09ecbc23"
+      "id": "a229a647"
     },
     {
       "cell_type": "code",
@@ -2973,7 +2973,7 @@
         "estimated optimally by the Kalman filter. Full treatment in Chapter 8.\n",
         ":::\n"
       ],
-      "id": "7c91e34e"
+      "id": "19107212"
     }
   ],
   "metadata": {

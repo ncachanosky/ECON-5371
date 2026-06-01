@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "d94a65b8"
+      "id": "3a1a4aa5"
     },
     {
       "cell_type": "code",
@@ -313,7 +313,7 @@
         "1984. The observation itself is not contested: anyone who plots GDP growth can\n",
         "see it. The series is visibly more turbulent before 1984 than after."
       ],
-      "id": "1cab9812"
+      "id": "1b5412b8"
     },
     {
       "cell_type": "code",
@@ -567,7 +567,7 @@
         "length $k = 3$ (intercept plus two lags) — enough to make the test substantive\n",
         "without overcomplicating the illustration."
       ],
-      "id": "29abc3a6"
+      "id": "5492ed05"
     },
     {
       "cell_type": "code",
@@ -696,7 +696,7 @@
         "Chow $F$-test does not reject. The QLR and Bai-Perron results below will\n",
         "make this diagnosis explicit.*"
       ],
-      "id": "9a218ab6"
+      "id": "52867a0c"
     },
     {
       "cell_type": "code",
@@ -792,7 +792,7 @@
         "absolute residuals.\n",
         ":::"
       ],
-      "id": "aefa778a"
+      "id": "5473d1d9"
     },
     {
       "cell_type": "code",
@@ -927,7 +927,7 @@
         "\n",
         "### Python: QLR Test on GDP Growth"
       ],
-      "id": "f17be788"
+      "id": "9da61e0a"
     },
     {
       "cell_type": "code",
@@ -1155,7 +1155,7 @@
         "The penalty parameter controls the number of detected breaks; we use a\n",
         "data-driven penalty based on the Bayesian information criterion."
       ],
-      "id": "07881871"
+      "id": "092b5eea"
     },
     {
       "cell_type": "code",
@@ -1333,7 +1333,7 @@
         "process may well be stationary in both sub-regimes, with the apparent unit root\n",
         "being an artefact of pooling across the break."
       ],
-      "id": "5e1dcd4c"
+      "id": "74c12260"
     },
     {
       "cell_type": "code",
@@ -1452,7 +1452,7 @@
         "is open. We use the quarterly-averaged inflation series and GDP growth, both in\n",
         "percent, with Model C (break in intercept and trend)."
       ],
-      "id": "641964b0"
+      "id": "57049ca8"
     },
     {
       "cell_type": "code",
@@ -1549,7 +1549,7 @@
         "break. The substantive finding is simply the rejection: GDP growth does not\n",
         "have a unit root, with or without allowance for a structural break.*"
       ],
-      "id": "32e1876b"
+      "id": "33bd0fb2"
     },
     {
       "cell_type": "code",
@@ -1790,7 +1790,7 @@
         "full-sample ARIMA from Chapter 5, using the same 40-quarter rolling window\n",
         "and the same $h = 1$ horizon."
       ],
-      "id": "1aab9ac1"
+      "id": "f0b76d02"
     },
     {
       "cell_type": "code",
@@ -1962,7 +1962,7 @@
         "or approach it. For GDP growth, RMSE and MAE are the appropriate summary\n",
         "statistics.*"
       ],
-      "id": "10236827"
+      "id": "b6ab5110"
     },
     {
       "cell_type": "code",
@@ -2214,7 +2214,7 @@
         "post-break subsample is long, and forecasts are needed for the current regime.\n",
         ":::"
       ],
-      "id": "a50cf1fe"
+      "id": "f83a149f"
     }
   ],
   "metadata": {

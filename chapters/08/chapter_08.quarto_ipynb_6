@@ -55,7 +55,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "8177af4d"
+      "id": "86915848"
     },
     {
       "cell_type": "code",
@@ -391,7 +391,7 @@
         "decades as inflation and its expectations fell. Whatever drives one rate at low\n",
         "frequencies drives both. This is the hallmark of a shared stochastic trend."
       ],
-      "id": "4c0e5308"
+      "id": "a421b5f3"
     },
     {
       "cell_type": "code",
@@ -439,7 +439,7 @@
         "\n",
         "Formal unit root tests confirm the visual impression."
       ],
-      "id": "abf36ef1"
+      "id": "ca3e85bd"
     },
     {
       "cell_type": "code",
@@ -497,7 +497,7 @@
         "a constant term premium rather than drifting. Figure 8.2 shows the spread\n",
         "alongside the two individual rates, and the contrast is immediate."
       ],
-      "id": "4bd8248c"
+      "id": "10e7502d"
     },
     {
       "cell_type": "code",
@@ -1054,7 +1054,7 @@
         "T-bill rate over the 1954Q1–2019Q4 sample. The first step is lag length\n",
         "selection for the underlying VAR in levels."
       ],
-      "id": "c3d21143"
+      "id": "52d98e07"
     },
     {
       "cell_type": "code",
@@ -1109,7 +1109,7 @@
         "because the VECM representation in equation (8.4) has $p - 1$ differenced lags.\n",
         "The rank conclusion does not change across lag orders.*"
       ],
-      "id": "981f389b"
+      "id": "78ec9466"
     },
     {
       "cell_type": "code",
@@ -1171,7 +1171,7 @@
         "relationship and one common stochastic trend, consistent with the expectations\n",
         "hypothesis of the term structure.*"
       ],
-      "id": "1d9b50c9"
+      "id": "7112bf06"
     },
     {
       "cell_type": "code",
@@ -1227,7 +1227,7 @@
         "\n",
         "With $\\hat{r} = 1$ established, we extract the estimated cointegrating vector."
       ],
-      "id": "83b56df2"
+      "id": "316a5fd7"
     },
     {
       "cell_type": "code",
@@ -1277,7 +1277,7 @@
         "correction term that enters the VECM. Figure 8.4 plots this residual over the\n",
         "sample, with yield curve inversions highlighted."
       ],
-      "id": "287f4500"
+      "id": "53773802"
     },
     {
       "cell_type": "code",
@@ -1490,7 +1490,7 @@
         "\n",
         "### Empirical Application: Estimating the VECM for the Yield Curve"
       ],
-      "id": "cc131d09"
+      "id": "ab0c6d96"
     },
     {
       "cell_type": "code",
@@ -1602,7 +1602,7 @@
         "quarterly change in the short rate $\\Delta r^{3m}_t$, where the ECT's\n",
         "predictive content is strongest given $|\\hat{\\alpha}_2| = 0.084$."
       ],
-      "id": "d35005f1"
+      "id": "ece2d8b6"
     },
     {
       "cell_type": "code",
@@ -1740,7 +1740,7 @@
         "$\\hat{\\boldsymbol{\\Gamma}}_i$. With $p - 1 = 1$ lag of differences, there is\n",
         "a single $2 \\times 2$ matrix $\\hat{\\boldsymbol{\\Gamma}}_1$."
       ],
-      "id": "c37875e9"
+      "id": "e2d0dd75"
     },
     {
       "cell_type": "code",
@@ -1838,7 +1838,7 @@
         "lag order of $p = 8$, the VECM includes seven lags of differenced yields in\n",
         "each equation alongside the error correction term."
       ],
-      "id": "ad48faf0"
+      "id": "73575093"
     },
     {
       "cell_type": "code",
@@ -1929,7 +1929,7 @@
         "the cointegration framework, which relies on asymptotic theory rather than\n",
         "normality.*"
       ],
-      "id": "c62a00ad"
+      "id": "822e02df"
     },
     {
       "cell_type": "code",
@@ -2004,7 +2004,7 @@
         "We estimate a VAR in first differences at the same lag order and compare the\n",
         "residuals from both models directly."
       ],
-      "id": "c878313c"
+      "id": "b23dd184"
     },
     {
       "cell_type": "code",
@@ -2087,7 +2087,7 @@
         "short-run dynamics. Section 8.6 shows where the difference is most visible:\n",
         "in long-horizon forecasts.*"
       ],
-      "id": "aec15cd0"
+      "id": "359cdf8f"
     },
     {
       "cell_type": "code",
@@ -2232,7 +2232,7 @@
         "instead, they converge to a non-zero permanent level, reflecting the lasting\n",
         "shift in the level of both rates that a permanent shock induces."
       ],
-      "id": "ffc0b1f6"
+      "id": "9233dc4b"
     },
     {
       "cell_type": "code",
@@ -2387,7 +2387,7 @@
         "We produce 40-quarter-ahead forecasts from both models, starting from the end\n",
         "of the sample, and plot them alongside a brief window of actual data."
       ],
-      "id": "0d5b80a8"
+      "id": "e34e53ba"
     },
     {
       "cell_type": "code",
@@ -2607,7 +2607,7 @@
         "1954–2019 sample.\n",
         ":::"
       ],
-      "id": "579d427c"
+      "id": "7c6b62a5"
     }
   ],
   "metadata": {
