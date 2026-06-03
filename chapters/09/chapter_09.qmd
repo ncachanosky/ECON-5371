@@ -2061,31 +2061,30 @@ from the data and then applied uniformly across the entire sample. This is
 a strong assumption. It requires that the volatility clustering mechanism
 operates identically during the calm 1990s expansion, the dot-com crash, and
 the Global Financial Crisis. What if the parameters themselves change over
-time?
+time — not gradually, but abruptly?
 
-Chapter 10 introduces the state space framework and the Kalman filter, which
-provide a general answer to this question. In the state space representation,
-the parameters of a model — or more generally, the underlying "state" of the
-system — are treated as unobserved variables that evolve according to their
-own dynamics. The Kalman filter provides the optimal recursive algorithm for
-estimating these hidden states in real time, updating the estimate at each
-new observation. A GARCH model with time-varying parameters is one special
-case; the local level model, the stochastic volatility model, and the
-time-varying parameter VAR are others. The unifying insight is that estimation
-and filtering are the same problem: extracting signal from noise when the
-signal itself is not directly observable.
+Chapter 10 takes this question seriously. The Markov-switching models
+introduced there allow the entire parameter vector of a time series model —
+the conditional mean, the conditional variance, and the AR dynamics — to
+shift between a small number of discrete regimes according to a hidden
+Markov chain. The state is genuinely unobserved: at any point in time, the
+economy may be in a high-volatility, low-growth recession regime or a
+low-volatility, high-growth expansion regime, and we must infer which one
+probabilistically from the data. Hamilton's (1989) model of US business
+cycles is the canonical application, and the connection to GARCH is direct:
+where GARCH specifies $\sigma_t^2$ as a deterministic function of past
+data, a Markov-switching variance model treats $\sigma_t^2$ as a discrete
+random variable that we filter out of the observed series.
 
-The connection to this chapter runs deeper than generality. The GARCH(1,1)
-conditional variance recursion is already a state equation in disguise: the
-conditional variance $\sigma_t^2$ is an unobserved state variable, and the
-squared return $r_t^2 = \sigma_t^2 z_t^2$ is a noisy observation of it.
-Casting GARCH in state space form reveals that the GARCH filter and the Kalman
-filter share the same prediction-correction structure — at each period, both
-form a prediction of the hidden state, observe a noisy signal, and update.
-Chapter 10 makes this connection precise and shows how it opens the door to a
-far richer class of time-varying models than the parametric GARCH family alone
-can provide. The tools we have built in this chapter are not a detour; they
-are a special case of something more general.
+The algorithm that accomplishes this filtering — the Hamilton filter — shares
+the same prediction-correction logic as the Kalman filter introduced in
+Chapter 11. Both process observations sequentially, form a prediction of the
+current hidden state, update that prediction upon observing the data, and
+produce a smoothed retrospective estimate of the state path. The difference
+is that the Hamilton filter operates on a discrete state space (two or three
+regimes) while the Kalman filter operates on a continuous one. Understanding
+the Hamilton filter first makes the Kalman filter's structure immediately
+recognisable.
 
 
 ::: {.callout-note icon=false}

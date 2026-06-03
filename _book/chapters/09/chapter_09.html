@@ -70,6 +70,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../chapters/10/chapter_10.html" rel="next">
 <link href="../../chapters/08/chapter_08.html" rel="prev">
 <link href="../../favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -254,6 +255,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../chapters/09/chapter_09.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Chapter 9: Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10/chapter_10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Chapter 10: State Space Models and the Kalman Filter</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11/chapter_11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chapter 10: State Space Models and the Kalman Filter</span></span></a>
   </div>
 </li>
     </ul>
@@ -1684,9 +1697,9 @@ Figure&nbsp;9.8: <strong>GARCH(1,1) one-day 1% Value at Risk, S&amp;P 500 1980�
 </section>
 <section id="sec-looking-ahead" class="level2" data-number="9.8">
 <h2 data-number="9.8" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">9.8</span> Looking Ahead</h2>
-<p>The ARCH and GARCH models of this chapter model time-varying conditional variance with a fixed functional form: the conditional variance is an explicit parametric function of past squared residuals and past variances. The parameters <span class="math inline">\(\omega\)</span>, <span class="math inline">\(\alpha\)</span>, and <span class="math inline">\(\beta\)</span> are constants estimated once from the data and then applied uniformly across the entire sample. This is a strong assumption. It requires that the volatility clustering mechanism operates identically during the calm 1990s expansion, the dot-com crash, and the Global Financial Crisis. What if the parameters themselves change over time?</p>
-<p>Chapter 10 introduces the state space framework and the Kalman filter, which provide a general answer to this question. In the state space representation, the parameters of a model — or more generally, the underlying “state” of the system — are treated as unobserved variables that evolve according to their own dynamics. The Kalman filter provides the optimal recursive algorithm for estimating these hidden states in real time, updating the estimate at each new observation. A GARCH model with time-varying parameters is one special case; the local level model, the stochastic volatility model, and the time-varying parameter VAR are others. The unifying insight is that estimation and filtering are the same problem: extracting signal from noise when the signal itself is not directly observable.</p>
-<p>The connection to this chapter runs deeper than generality. The GARCH(1,1) conditional variance recursion is already a state equation in disguise: the conditional variance <span class="math inline">\(\sigma_t^2\)</span> is an unobserved state variable, and the squared return <span class="math inline">\(r_t^2 = \sigma_t^2 z_t^2\)</span> is a noisy observation of it. Casting GARCH in state space form reveals that the GARCH filter and the Kalman filter share the same prediction-correction structure — at each period, both form a prediction of the hidden state, observe a noisy signal, and update. Chapter 10 makes this connection precise and shows how it opens the door to a far richer class of time-varying models than the parametric GARCH family alone can provide. The tools we have built in this chapter are not a detour; they are a special case of something more general.</p>
+<p>The ARCH and GARCH models of this chapter model time-varying conditional variance with a fixed functional form: the conditional variance is an explicit parametric function of past squared residuals and past variances. The parameters <span class="math inline">\(\omega\)</span>, <span class="math inline">\(\alpha\)</span>, and <span class="math inline">\(\beta\)</span> are constants estimated once from the data and then applied uniformly across the entire sample. This is a strong assumption. It requires that the volatility clustering mechanism operates identically during the calm 1990s expansion, the dot-com crash, and the Global Financial Crisis. What if the parameters themselves change over time — not gradually, but abruptly?</p>
+<p>Chapter 10 takes this question seriously. The Markov-switching models introduced there allow the entire parameter vector of a time series model — the conditional mean, the conditional variance, and the AR dynamics — to shift between a small number of discrete regimes according to a hidden Markov chain. The state is genuinely unobserved: at any point in time, the economy may be in a high-volatility, low-growth recession regime or a low-volatility, high-growth expansion regime, and we must infer which one probabilistically from the data. Hamilton’s (1989) model of US business cycles is the canonical application, and the connection to GARCH is direct: where GARCH specifies <span class="math inline">\(\sigma_t^2\)</span> as a deterministic function of past data, a Markov-switching variance model treats <span class="math inline">\(\sigma_t^2\)</span> as a discrete random variable that we filter out of the observed series.</p>
+<p>The algorithm that accomplishes this filtering — the Hamilton filter — shares the same prediction-correction logic as the Kalman filter introduced in Chapter 11. Both process observations sequentially, form a prediction of the current hidden state, update that prediction upon observing the data, and produce a smoothed retrospective estimate of the state path. The difference is that the Hamilton filter operates on a discrete state space (two or three regimes) while the Kalman filter operates on a continuous one. Understanding the Hamilton filter first makes the Kalman filter’s structure immediately recognisable.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2184,6 +2197,9 @@ z_{t-1}\)</span>.</p>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../../chapters/10/chapter_10.html" class="pagination-link" aria-label="Chapter 10: State Space Models and the Kalman Filter">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Chapter 10: State Space Models and the Kalman Filter</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -4249,100 +4265,99 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-2095"><a href="#cb22-2095" aria-hidden="true" tabindex="-1"></a>a strong assumption. It requires that the volatility clustering mechanism</span>
 <span id="cb22-2096"><a href="#cb22-2096" aria-hidden="true" tabindex="-1"></a>operates identically during the calm 1990s expansion, the dot-com crash, and</span>
 <span id="cb22-2097"><a href="#cb22-2097" aria-hidden="true" tabindex="-1"></a>the Global Financial Crisis. What if the parameters themselves change over</span>
-<span id="cb22-2098"><a href="#cb22-2098" aria-hidden="true" tabindex="-1"></a>time?</span>
+<span id="cb22-2098"><a href="#cb22-2098" aria-hidden="true" tabindex="-1"></a>time — not gradually, but abruptly?</span>
 <span id="cb22-2099"><a href="#cb22-2099" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2100"><a href="#cb22-2100" aria-hidden="true" tabindex="-1"></a>Chapter 10 introduces the state space framework and the Kalman filter, which</span>
-<span id="cb22-2101"><a href="#cb22-2101" aria-hidden="true" tabindex="-1"></a>provide a general answer to this question. In the state space representation,</span>
-<span id="cb22-2102"><a href="#cb22-2102" aria-hidden="true" tabindex="-1"></a>the parameters of a model — or more generally, the underlying "state" of the</span>
-<span id="cb22-2103"><a href="#cb22-2103" aria-hidden="true" tabindex="-1"></a>system — are treated as unobserved variables that evolve according to their</span>
-<span id="cb22-2104"><a href="#cb22-2104" aria-hidden="true" tabindex="-1"></a>own dynamics. The Kalman filter provides the optimal recursive algorithm for</span>
-<span id="cb22-2105"><a href="#cb22-2105" aria-hidden="true" tabindex="-1"></a>estimating these hidden states in real time, updating the estimate at each</span>
-<span id="cb22-2106"><a href="#cb22-2106" aria-hidden="true" tabindex="-1"></a>new observation. A GARCH model with time-varying parameters is one special</span>
-<span id="cb22-2107"><a href="#cb22-2107" aria-hidden="true" tabindex="-1"></a>case; the local level model, the stochastic volatility model, and the</span>
-<span id="cb22-2108"><a href="#cb22-2108" aria-hidden="true" tabindex="-1"></a>time-varying parameter VAR are others. The unifying insight is that estimation</span>
-<span id="cb22-2109"><a href="#cb22-2109" aria-hidden="true" tabindex="-1"></a>and filtering are the same problem: extracting signal from noise when the</span>
-<span id="cb22-2110"><a href="#cb22-2110" aria-hidden="true" tabindex="-1"></a>signal itself is not directly observable.</span>
-<span id="cb22-2111"><a href="#cb22-2111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2112"><a href="#cb22-2112" aria-hidden="true" tabindex="-1"></a>The connection to this chapter runs deeper than generality. The GARCH(1,1)</span>
-<span id="cb22-2113"><a href="#cb22-2113" aria-hidden="true" tabindex="-1"></a>conditional variance recursion is already a state equation in disguise: the</span>
-<span id="cb22-2114"><a href="#cb22-2114" aria-hidden="true" tabindex="-1"></a>conditional variance $\sigma_t^2$ is an unobserved state variable, and the</span>
-<span id="cb22-2115"><a href="#cb22-2115" aria-hidden="true" tabindex="-1"></a>squared return $r_t^2 = \sigma_t^2 z_t^2$ is a noisy observation of it.</span>
-<span id="cb22-2116"><a href="#cb22-2116" aria-hidden="true" tabindex="-1"></a>Casting GARCH in state space form reveals that the GARCH filter and the Kalman</span>
-<span id="cb22-2117"><a href="#cb22-2117" aria-hidden="true" tabindex="-1"></a>filter share the same prediction-correction structure — at each period, both</span>
-<span id="cb22-2118"><a href="#cb22-2118" aria-hidden="true" tabindex="-1"></a>form a prediction of the hidden state, observe a noisy signal, and update.</span>
-<span id="cb22-2119"><a href="#cb22-2119" aria-hidden="true" tabindex="-1"></a>Chapter 10 makes this connection precise and shows how it opens the door to a</span>
-<span id="cb22-2120"><a href="#cb22-2120" aria-hidden="true" tabindex="-1"></a>far richer class of time-varying models than the parametric GARCH family alone</span>
-<span id="cb22-2121"><a href="#cb22-2121" aria-hidden="true" tabindex="-1"></a>can provide. The tools we have built in this chapter are not a detour; they</span>
-<span id="cb22-2122"><a href="#cb22-2122" aria-hidden="true" tabindex="-1"></a>are a special case of something more general.</span>
+<span id="cb22-2100"><a href="#cb22-2100" aria-hidden="true" tabindex="-1"></a>Chapter 10 takes this question seriously. The Markov-switching models</span>
+<span id="cb22-2101"><a href="#cb22-2101" aria-hidden="true" tabindex="-1"></a>introduced there allow the entire parameter vector of a time series model —</span>
+<span id="cb22-2102"><a href="#cb22-2102" aria-hidden="true" tabindex="-1"></a>the conditional mean, the conditional variance, and the AR dynamics — to</span>
+<span id="cb22-2103"><a href="#cb22-2103" aria-hidden="true" tabindex="-1"></a>shift between a small number of discrete regimes according to a hidden</span>
+<span id="cb22-2104"><a href="#cb22-2104" aria-hidden="true" tabindex="-1"></a>Markov chain. The state is genuinely unobserved: at any point in time, the</span>
+<span id="cb22-2105"><a href="#cb22-2105" aria-hidden="true" tabindex="-1"></a>economy may be in a high-volatility, low-growth recession regime or a</span>
+<span id="cb22-2106"><a href="#cb22-2106" aria-hidden="true" tabindex="-1"></a>low-volatility, high-growth expansion regime, and we must infer which one</span>
+<span id="cb22-2107"><a href="#cb22-2107" aria-hidden="true" tabindex="-1"></a>probabilistically from the data. Hamilton's (1989) model of US business</span>
+<span id="cb22-2108"><a href="#cb22-2108" aria-hidden="true" tabindex="-1"></a>cycles is the canonical application, and the connection to GARCH is direct:</span>
+<span id="cb22-2109"><a href="#cb22-2109" aria-hidden="true" tabindex="-1"></a>where GARCH specifies $\sigma_t^2$ as a deterministic function of past</span>
+<span id="cb22-2110"><a href="#cb22-2110" aria-hidden="true" tabindex="-1"></a>data, a Markov-switching variance model treats $\sigma_t^2$ as a discrete</span>
+<span id="cb22-2111"><a href="#cb22-2111" aria-hidden="true" tabindex="-1"></a>random variable that we filter out of the observed series.</span>
+<span id="cb22-2112"><a href="#cb22-2112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2113"><a href="#cb22-2113" aria-hidden="true" tabindex="-1"></a>The algorithm that accomplishes this filtering — the Hamilton filter — shares</span>
+<span id="cb22-2114"><a href="#cb22-2114" aria-hidden="true" tabindex="-1"></a>the same prediction-correction logic as the Kalman filter introduced in</span>
+<span id="cb22-2115"><a href="#cb22-2115" aria-hidden="true" tabindex="-1"></a>Chapter 11. Both process observations sequentially, form a prediction of the</span>
+<span id="cb22-2116"><a href="#cb22-2116" aria-hidden="true" tabindex="-1"></a>current hidden state, update that prediction upon observing the data, and</span>
+<span id="cb22-2117"><a href="#cb22-2117" aria-hidden="true" tabindex="-1"></a>produce a smoothed retrospective estimate of the state path. The difference</span>
+<span id="cb22-2118"><a href="#cb22-2118" aria-hidden="true" tabindex="-1"></a>is that the Hamilton filter operates on a discrete state space (two or three</span>
+<span id="cb22-2119"><a href="#cb22-2119" aria-hidden="true" tabindex="-1"></a>regimes) while the Kalman filter operates on a continuous one. Understanding</span>
+<span id="cb22-2120"><a href="#cb22-2120" aria-hidden="true" tabindex="-1"></a>the Hamilton filter first makes the Kalman filter's structure immediately</span>
+<span id="cb22-2121"><a href="#cb22-2121" aria-hidden="true" tabindex="-1"></a>recognisable.</span>
+<span id="cb22-2122"><a href="#cb22-2122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-2123"><a href="#cb22-2123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2124"><a href="#cb22-2124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2125"><a href="#cb22-2125" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon=false}</span>
-<span id="cb22-2126"><a href="#cb22-2126" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key Terms</span></span>
-<span id="cb22-2127"><a href="#cb22-2127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2128"><a href="#cb22-2128" aria-hidden="true" tabindex="-1"></a>**ARCH($q$)** — Autoregressive Conditional Heteroskedasticity model of order</span>
-<span id="cb22-2129"><a href="#cb22-2129" aria-hidden="true" tabindex="-1"></a>$q$; specifies the conditional variance as a weighted sum of $q$ past squared</span>
-<span id="cb22-2130"><a href="#cb22-2130" aria-hidden="true" tabindex="-1"></a>innovations.</span>
-<span id="cb22-2131"><a href="#cb22-2131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2132"><a href="#cb22-2132" aria-hidden="true" tabindex="-1"></a>**ARCH-LM test** — Lagrange multiplier test for ARCH effects; regresses</span>
-<span id="cb22-2133"><a href="#cb22-2133" aria-hidden="true" tabindex="-1"></a>squared residuals on their own lags and tests joint significance.</span>
-<span id="cb22-2134"><a href="#cb22-2134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2135"><a href="#cb22-2135" aria-hidden="true" tabindex="-1"></a>**Conditional heteroskedasticity** — Time-varying conditional variance:</span>
-<span id="cb22-2136"><a href="#cb22-2136" aria-hidden="true" tabindex="-1"></a>$\text{Var}(r_t \mid \mathcal{F}_{t-1}) = \sigma_t^2 \neq \text{const}$.</span>
-<span id="cb22-2137"><a href="#cb22-2137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2138"><a href="#cb22-2138" aria-hidden="true" tabindex="-1"></a>**Conditional coverage** — VaR backtesting criterion requiring that</span>
-<span id="cb22-2139"><a href="#cb22-2139" aria-hidden="true" tabindex="-1"></a>exceedances are not only correctly proportioned but also independent over</span>
-<span id="cb22-2140"><a href="#cb22-2140" aria-hidden="true" tabindex="-1"></a>time.</span>
-<span id="cb22-2141"><a href="#cb22-2141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2142"><a href="#cb22-2142" aria-hidden="true" tabindex="-1"></a>**DCC (Dynamic Conditional Correlation)** — Engle (2002) two-step GARCH</span>
-<span id="cb22-2143"><a href="#cb22-2143" aria-hidden="true" tabindex="-1"></a>extension that models time-varying pairwise correlations through a scalar</span>
-<span id="cb22-2144"><a href="#cb22-2144" aria-hidden="true" tabindex="-1"></a>recursion on the auxiliary matrix $Q_t$.</span>
-<span id="cb22-2145"><a href="#cb22-2145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2146"><a href="#cb22-2146" aria-hidden="true" tabindex="-1"></a>**EGARCH** — Exponential GARCH; models $\log\sigma_t^2$ to avoid positivity</span>
-<span id="cb22-2147"><a href="#cb22-2147" aria-hidden="true" tabindex="-1"></a>constraints and to capture asymmetric volatility through a sign term $\gamma</span>
-<span id="cb22-2148"><a href="#cb22-2148" aria-hidden="true" tabindex="-1"></a>z_{t-1}$.</span>
-<span id="cb22-2149"><a href="#cb22-2149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2150"><a href="#cb22-2150" aria-hidden="true" tabindex="-1"></a>**GJR-GARCH** — Asymmetric GARCH model (Glosten, Jagannathan, Runkle, 1993)</span>
-<span id="cb22-2151"><a href="#cb22-2151" aria-hidden="true" tabindex="-1"></a>that adds an indicator variable for negative shocks to capture the leverage</span>
-<span id="cb22-2152"><a href="#cb22-2152" aria-hidden="true" tabindex="-1"></a>effect.</span>
-<span id="cb22-2153"><a href="#cb22-2153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2154"><a href="#cb22-2154" aria-hidden="true" tabindex="-1"></a>**GARCH(1,1)** — Generalised ARCH model; extends ARCH by including the lagged</span>
-<span id="cb22-2155"><a href="#cb22-2155" aria-hidden="true" tabindex="-1"></a>conditional variance $\beta\sigma_{t-1}^2$, equivalent to an ARCH($\infty$)</span>
-<span id="cb22-2156"><a href="#cb22-2156" aria-hidden="true" tabindex="-1"></a>with geometrically declining weights.</span>
-<span id="cb22-2157"><a href="#cb22-2157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2158"><a href="#cb22-2158" aria-hidden="true" tabindex="-1"></a>**Half-life** — Number of periods for half a variance shock to dissipate;</span>
-<span id="cb22-2159"><a href="#cb22-2159" aria-hidden="true" tabindex="-1"></a>$h_{1/2} = \log(0.5)/\log(\alpha+\beta)$.</span>
-<span id="cb22-2160"><a href="#cb22-2160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2161"><a href="#cb22-2161" aria-hidden="true" tabindex="-1"></a>**Kupiec POF test** — Likelihood ratio test for unconditional VaR coverage;</span>
-<span id="cb22-2162"><a href="#cb22-2162" aria-hidden="true" tabindex="-1"></a>$H_0$: true exceedance probability equals stated $\alpha$.</span>
-<span id="cb22-2163"><a href="#cb22-2163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2164"><a href="#cb22-2164" aria-hidden="true" tabindex="-1"></a>**Leverage effect** — Empirical regularity that negative equity returns raise</span>
-<span id="cb22-2165"><a href="#cb22-2165" aria-hidden="true" tabindex="-1"></a>future volatility by more than equally sized positive returns.</span>
-<span id="cb22-2166"><a href="#cb22-2166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2167"><a href="#cb22-2167" aria-hidden="true" tabindex="-1"></a>**Persistence** — For GARCH(1,1), the sum $\alpha + \beta$; the characteristic</span>
-<span id="cb22-2168"><a href="#cb22-2168" aria-hidden="true" tabindex="-1"></a>root of the conditional variance equation, measuring the speed of variance</span>
-<span id="cb22-2169"><a href="#cb22-2169" aria-hidden="true" tabindex="-1"></a>mean-reversion.</span>
-<span id="cb22-2170"><a href="#cb22-2170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2171"><a href="#cb22-2171" aria-hidden="true" tabindex="-1"></a>**QML (Quasi-Maximum Likelihood)** — Estimation approach that maximises a</span>
-<span id="cb22-2172"><a href="#cb22-2172" aria-hidden="true" tabindex="-1"></a>Gaussian log-likelihood regardless of the true innovation distribution;</span>
-<span id="cb22-2173"><a href="#cb22-2173" aria-hidden="true" tabindex="-1"></a>consistent and asymptotically normal under correct mean-variance specification.</span>
-<span id="cb22-2174"><a href="#cb22-2174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2175"><a href="#cb22-2175" aria-hidden="true" tabindex="-1"></a>**Realised volatility** — Model-free volatility estimate constructed as the</span>
-<span id="cb22-2176"><a href="#cb22-2176" aria-hidden="true" tabindex="-1"></a>sum of squared intraday returns; low-noise proxy for integrated variance.</span>
-<span id="cb22-2177"><a href="#cb22-2177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2178"><a href="#cb22-2178" aria-hidden="true" tabindex="-1"></a>**Standardised residuals** — $\hat z_t = \hat\varepsilon_t / \hat\sigma_t$;</span>
-<span id="cb22-2179"><a href="#cb22-2179" aria-hidden="true" tabindex="-1"></a>should be approximately i.i.d. if the volatility model is well specified.</span>
-<span id="cb22-2180"><a href="#cb22-2180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2181"><a href="#cb22-2181" aria-hidden="true" tabindex="-1"></a>**Unconditional coverage** — VaR backtesting criterion requiring that the</span>
-<span id="cb22-2182"><a href="#cb22-2182" aria-hidden="true" tabindex="-1"></a>observed exceedance rate equals the nominal $\alpha$ on average.</span>
-<span id="cb22-2183"><a href="#cb22-2183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2184"><a href="#cb22-2184" aria-hidden="true" tabindex="-1"></a>**Value at Risk (VaR)** — The loss threshold not exceeded with probability</span>
-<span id="cb22-2185"><a href="#cb22-2185" aria-hidden="true" tabindex="-1"></a>$1-\alpha$ over horizon $h$; under Gaussian GARCH, equals $\hat\mu -</span>
-<span id="cb22-2186"><a href="#cb22-2186" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>z_\alpha<span class="pp">|</span>\hat\sigma_{t+1}$.</span>
-<span id="cb22-2187"><a href="#cb22-2187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2188"><a href="#cb22-2188" aria-hidden="true" tabindex="-1"></a>**Volatility clustering** — Empirical regularity in financial returns that</span>
-<span id="cb22-2189"><a href="#cb22-2189" aria-hidden="true" tabindex="-1"></a>large shocks cluster in time; formalised by the slow decay of the ACF of</span>
-<span id="cb22-2190"><a href="#cb22-2190" aria-hidden="true" tabindex="-1"></a>squared returns.</span>
-<span id="cb22-2191"><a href="#cb22-2191" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb22-2124"><a href="#cb22-2124" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon=false}</span>
+<span id="cb22-2125"><a href="#cb22-2125" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key Terms</span></span>
+<span id="cb22-2126"><a href="#cb22-2126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2127"><a href="#cb22-2127" aria-hidden="true" tabindex="-1"></a>**ARCH($q$)** — Autoregressive Conditional Heteroskedasticity model of order</span>
+<span id="cb22-2128"><a href="#cb22-2128" aria-hidden="true" tabindex="-1"></a>$q$; specifies the conditional variance as a weighted sum of $q$ past squared</span>
+<span id="cb22-2129"><a href="#cb22-2129" aria-hidden="true" tabindex="-1"></a>innovations.</span>
+<span id="cb22-2130"><a href="#cb22-2130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2131"><a href="#cb22-2131" aria-hidden="true" tabindex="-1"></a>**ARCH-LM test** — Lagrange multiplier test for ARCH effects; regresses</span>
+<span id="cb22-2132"><a href="#cb22-2132" aria-hidden="true" tabindex="-1"></a>squared residuals on their own lags and tests joint significance.</span>
+<span id="cb22-2133"><a href="#cb22-2133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2134"><a href="#cb22-2134" aria-hidden="true" tabindex="-1"></a>**Conditional heteroskedasticity** — Time-varying conditional variance:</span>
+<span id="cb22-2135"><a href="#cb22-2135" aria-hidden="true" tabindex="-1"></a>$\text{Var}(r_t \mid \mathcal{F}_{t-1}) = \sigma_t^2 \neq \text{const}$.</span>
+<span id="cb22-2136"><a href="#cb22-2136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2137"><a href="#cb22-2137" aria-hidden="true" tabindex="-1"></a>**Conditional coverage** — VaR backtesting criterion requiring that</span>
+<span id="cb22-2138"><a href="#cb22-2138" aria-hidden="true" tabindex="-1"></a>exceedances are not only correctly proportioned but also independent over</span>
+<span id="cb22-2139"><a href="#cb22-2139" aria-hidden="true" tabindex="-1"></a>time.</span>
+<span id="cb22-2140"><a href="#cb22-2140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2141"><a href="#cb22-2141" aria-hidden="true" tabindex="-1"></a>**DCC (Dynamic Conditional Correlation)** — Engle (2002) two-step GARCH</span>
+<span id="cb22-2142"><a href="#cb22-2142" aria-hidden="true" tabindex="-1"></a>extension that models time-varying pairwise correlations through a scalar</span>
+<span id="cb22-2143"><a href="#cb22-2143" aria-hidden="true" tabindex="-1"></a>recursion on the auxiliary matrix $Q_t$.</span>
+<span id="cb22-2144"><a href="#cb22-2144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2145"><a href="#cb22-2145" aria-hidden="true" tabindex="-1"></a>**EGARCH** — Exponential GARCH; models $\log\sigma_t^2$ to avoid positivity</span>
+<span id="cb22-2146"><a href="#cb22-2146" aria-hidden="true" tabindex="-1"></a>constraints and to capture asymmetric volatility through a sign term $\gamma</span>
+<span id="cb22-2147"><a href="#cb22-2147" aria-hidden="true" tabindex="-1"></a>z_{t-1}$.</span>
+<span id="cb22-2148"><a href="#cb22-2148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2149"><a href="#cb22-2149" aria-hidden="true" tabindex="-1"></a>**GJR-GARCH** — Asymmetric GARCH model (Glosten, Jagannathan, Runkle, 1993)</span>
+<span id="cb22-2150"><a href="#cb22-2150" aria-hidden="true" tabindex="-1"></a>that adds an indicator variable for negative shocks to capture the leverage</span>
+<span id="cb22-2151"><a href="#cb22-2151" aria-hidden="true" tabindex="-1"></a>effect.</span>
+<span id="cb22-2152"><a href="#cb22-2152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2153"><a href="#cb22-2153" aria-hidden="true" tabindex="-1"></a>**GARCH(1,1)** — Generalised ARCH model; extends ARCH by including the lagged</span>
+<span id="cb22-2154"><a href="#cb22-2154" aria-hidden="true" tabindex="-1"></a>conditional variance $\beta\sigma_{t-1}^2$, equivalent to an ARCH($\infty$)</span>
+<span id="cb22-2155"><a href="#cb22-2155" aria-hidden="true" tabindex="-1"></a>with geometrically declining weights.</span>
+<span id="cb22-2156"><a href="#cb22-2156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2157"><a href="#cb22-2157" aria-hidden="true" tabindex="-1"></a>**Half-life** — Number of periods for half a variance shock to dissipate;</span>
+<span id="cb22-2158"><a href="#cb22-2158" aria-hidden="true" tabindex="-1"></a>$h_{1/2} = \log(0.5)/\log(\alpha+\beta)$.</span>
+<span id="cb22-2159"><a href="#cb22-2159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2160"><a href="#cb22-2160" aria-hidden="true" tabindex="-1"></a>**Kupiec POF test** — Likelihood ratio test for unconditional VaR coverage;</span>
+<span id="cb22-2161"><a href="#cb22-2161" aria-hidden="true" tabindex="-1"></a>$H_0$: true exceedance probability equals stated $\alpha$.</span>
+<span id="cb22-2162"><a href="#cb22-2162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2163"><a href="#cb22-2163" aria-hidden="true" tabindex="-1"></a>**Leverage effect** — Empirical regularity that negative equity returns raise</span>
+<span id="cb22-2164"><a href="#cb22-2164" aria-hidden="true" tabindex="-1"></a>future volatility by more than equally sized positive returns.</span>
+<span id="cb22-2165"><a href="#cb22-2165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2166"><a href="#cb22-2166" aria-hidden="true" tabindex="-1"></a>**Persistence** — For GARCH(1,1), the sum $\alpha + \beta$; the characteristic</span>
+<span id="cb22-2167"><a href="#cb22-2167" aria-hidden="true" tabindex="-1"></a>root of the conditional variance equation, measuring the speed of variance</span>
+<span id="cb22-2168"><a href="#cb22-2168" aria-hidden="true" tabindex="-1"></a>mean-reversion.</span>
+<span id="cb22-2169"><a href="#cb22-2169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2170"><a href="#cb22-2170" aria-hidden="true" tabindex="-1"></a>**QML (Quasi-Maximum Likelihood)** — Estimation approach that maximises a</span>
+<span id="cb22-2171"><a href="#cb22-2171" aria-hidden="true" tabindex="-1"></a>Gaussian log-likelihood regardless of the true innovation distribution;</span>
+<span id="cb22-2172"><a href="#cb22-2172" aria-hidden="true" tabindex="-1"></a>consistent and asymptotically normal under correct mean-variance specification.</span>
+<span id="cb22-2173"><a href="#cb22-2173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2174"><a href="#cb22-2174" aria-hidden="true" tabindex="-1"></a>**Realised volatility** — Model-free volatility estimate constructed as the</span>
+<span id="cb22-2175"><a href="#cb22-2175" aria-hidden="true" tabindex="-1"></a>sum of squared intraday returns; low-noise proxy for integrated variance.</span>
+<span id="cb22-2176"><a href="#cb22-2176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2177"><a href="#cb22-2177" aria-hidden="true" tabindex="-1"></a>**Standardised residuals** — $\hat z_t = \hat\varepsilon_t / \hat\sigma_t$;</span>
+<span id="cb22-2178"><a href="#cb22-2178" aria-hidden="true" tabindex="-1"></a>should be approximately i.i.d. if the volatility model is well specified.</span>
+<span id="cb22-2179"><a href="#cb22-2179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2180"><a href="#cb22-2180" aria-hidden="true" tabindex="-1"></a>**Unconditional coverage** — VaR backtesting criterion requiring that the</span>
+<span id="cb22-2181"><a href="#cb22-2181" aria-hidden="true" tabindex="-1"></a>observed exceedance rate equals the nominal $\alpha$ on average.</span>
+<span id="cb22-2182"><a href="#cb22-2182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2183"><a href="#cb22-2183" aria-hidden="true" tabindex="-1"></a>**Value at Risk (VaR)** — The loss threshold not exceeded with probability</span>
+<span id="cb22-2184"><a href="#cb22-2184" aria-hidden="true" tabindex="-1"></a>$1-\alpha$ over horizon $h$; under Gaussian GARCH, equals $\hat\mu -</span>
+<span id="cb22-2185"><a href="#cb22-2185" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>z_\alpha<span class="pp">|</span>\hat\sigma_{t+1}$.</span>
+<span id="cb22-2186"><a href="#cb22-2186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2187"><a href="#cb22-2187" aria-hidden="true" tabindex="-1"></a>**Volatility clustering** — Empirical regularity in financial returns that</span>
+<span id="cb22-2188"><a href="#cb22-2188" aria-hidden="true" tabindex="-1"></a>large shocks cluster in time; formalised by the slow decay of the ACF of</span>
+<span id="cb22-2189"><a href="#cb22-2189" aria-hidden="true" tabindex="-1"></a>squared returns.</span>
+<span id="cb22-2190"><a href="#cb22-2190" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
