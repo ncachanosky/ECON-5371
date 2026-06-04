@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 8: Cointegration and the Vector Error Correction Model\"\n",
+        "title: \"Cointegration and the Vector Error Correction Model\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  When the variables in a multivariate system are integrated of order one, the\n",
@@ -55,7 +55,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "59ee8a3a"
+      "id": "746a8006"
     },
     {
       "cell_type": "code",
@@ -204,15 +204,18 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "start = datetime(1954, 1, 1)\n",
         "end   = datetime(2019, 12, 31)   # pre-COVID sample throughout\n",
         "\n",
         "# ── 10-year Treasury constant maturity yield (GS10, monthly) ──────────────────\n",
-        "gs10_raw = web.DataReader(\"GS10\", \"fred\", start, end)\n",
+        "gs10_raw = pd.read_csv(DATA_PATH / \"GS10.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "gs10_raw.columns = [\"GS10\"]\n",
         "\n",
         "# ── 3-month Treasury bill rate (TB3MS, monthly) ───────────────────────────────\n",
-        "tb3_raw = web.DataReader(\"TB3MS\", \"fred\", start, end)\n",
+        "tb3_raw = pd.read_csv(DATA_PATH / \"TB3MS.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "tb3_raw.columns = [\"TB3MS\"]\n",
         "\n",
         "# ── Resample to quarterly averages and merge ───────────────────────────────────\n",
@@ -391,7 +394,7 @@
         "decades as inflation and its expectations fell. Whatever drives one rate at low\n",
         "frequencies drives both. This is the hallmark of a shared stochastic trend."
       ],
-      "id": "5e39f122"
+      "id": "de8c6436"
     },
     {
       "cell_type": "code",
@@ -439,7 +442,7 @@
         "\n",
         "Formal unit root tests confirm the visual impression."
       ],
-      "id": "ec6f17cf"
+      "id": "820703ba"
     },
     {
       "cell_type": "code",
@@ -497,7 +500,7 @@
         "a constant term premium rather than drifting. Figure 8.2 shows the spread\n",
         "alongside the two individual rates, and the contrast is immediate."
       ],
-      "id": "80818a44"
+      "id": "884e22aa"
     },
     {
       "cell_type": "code",
@@ -1054,7 +1057,7 @@
         "T-bill rate over the 1954Q1–2019Q4 sample. The first step is lag length\n",
         "selection for the underlying VAR in levels."
       ],
-      "id": "43e0d7ac"
+      "id": "ca60d911"
     },
     {
       "cell_type": "code",
@@ -1109,7 +1112,7 @@
         "because the VECM representation in equation (8.4) has $p - 1$ differenced lags.\n",
         "The rank conclusion does not change across lag orders.*"
       ],
-      "id": "19ce427d"
+      "id": "0135ac53"
     },
     {
       "cell_type": "code",
@@ -1171,7 +1174,7 @@
         "relationship and one common stochastic trend, consistent with the expectations\n",
         "hypothesis of the term structure.*"
       ],
-      "id": "1da6e66e"
+      "id": "c0ed2287"
     },
     {
       "cell_type": "code",
@@ -1227,7 +1230,7 @@
         "\n",
         "With $\\hat{r} = 1$ established, we extract the estimated cointegrating vector."
       ],
-      "id": "3ed2beca"
+      "id": "d1fae25b"
     },
     {
       "cell_type": "code",
@@ -1277,7 +1280,7 @@
         "correction term that enters the VECM. Figure 8.4 plots this residual over the\n",
         "sample, with yield curve inversions highlighted."
       ],
-      "id": "d48c3a47"
+      "id": "c9373438"
     },
     {
       "cell_type": "code",
@@ -1490,7 +1493,7 @@
         "\n",
         "### Empirical Application: Estimating the VECM for the Yield Curve"
       ],
-      "id": "03785434"
+      "id": "ce30c344"
     },
     {
       "cell_type": "code",
@@ -1602,7 +1605,7 @@
         "quarterly change in the short rate $\\Delta r^{3m}_t$, where the ECT's\n",
         "predictive content is strongest given $|\\hat{\\alpha}_2| = 0.084$."
       ],
-      "id": "10fe4129"
+      "id": "17b03b2b"
     },
     {
       "cell_type": "code",
@@ -1740,7 +1743,7 @@
         "$\\hat{\\boldsymbol{\\Gamma}}_i$. With $p - 1 = 1$ lag of differences, there is\n",
         "a single $2 \\times 2$ matrix $\\hat{\\boldsymbol{\\Gamma}}_1$."
       ],
-      "id": "765a5343"
+      "id": "6c2c8b67"
     },
     {
       "cell_type": "code",
@@ -1838,7 +1841,7 @@
         "lag order of $p = 8$, the VECM includes seven lags of differenced yields in\n",
         "each equation alongside the error correction term."
       ],
-      "id": "b73656f7"
+      "id": "b8d30ffc"
     },
     {
       "cell_type": "code",
@@ -1929,7 +1932,7 @@
         "the cointegration framework, which relies on asymptotic theory rather than\n",
         "normality.*"
       ],
-      "id": "0a9b5c42"
+      "id": "a6923f73"
     },
     {
       "cell_type": "code",
@@ -2004,7 +2007,7 @@
         "We estimate a VAR in first differences at the same lag order and compare the\n",
         "residuals from both models directly."
       ],
-      "id": "dad01458"
+      "id": "6af98f4d"
     },
     {
       "cell_type": "code",
@@ -2087,7 +2090,7 @@
         "short-run dynamics. Section 8.6 shows where the difference is most visible:\n",
         "in long-horizon forecasts.*"
       ],
-      "id": "335e6e1b"
+      "id": "2bbaf865"
     },
     {
       "cell_type": "code",
@@ -2232,7 +2235,7 @@
         "instead, they converge to a non-zero permanent level, reflecting the lasting\n",
         "shift in the level of both rates that a permanent shock induces."
       ],
-      "id": "3565d060"
+      "id": "a2f900b9"
     },
     {
       "cell_type": "code",
@@ -2387,7 +2390,7 @@
         "We produce 40-quarter-ahead forecasts from both models, starting from the end\n",
         "of the sample, and plot them alongside a brief window of actual data."
       ],
-      "id": "f3b73087"
+      "id": "7bc38e58"
     },
     {
       "cell_type": "code",
@@ -2607,7 +2610,7 @@
         "1954–2019 sample.\n",
         ":::"
       ],
-      "id": "b9cf8357"
+      "id": "f9290f14"
     }
   ],
   "metadata": {

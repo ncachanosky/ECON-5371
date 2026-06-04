@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10: Regime-Switching Models"
+title: "Regime-Switching Models"
 author: ""
 abstract: |
   Every model in Chapters 3 through 9 assumes that the parameters governing
@@ -184,11 +184,14 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1947, 1, 1)
 end   = datetime(2019, 12, 31)   # pre-COVID sample throughout
 
 # ── Seasonally adjusted real GDP (GDPC1 from FRED) ────────────────────────────
-gdp_raw = web.DataReader("GDPC1", "fred", start, end)
+gdp_raw = pd.read_csv(DATA_PATH / "GDPC1.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gdp_raw.columns = ["Real GDP"]
 
 # Log level and annualised QoQ growth rate
@@ -208,7 +211,7 @@ growth_index = gdp.index
 
 # ── Unemployment rate (UNRATE) for threshold illustration ──────────────────────
 # Monthly series; resample to quarterly averages; first-difference; pre-COVID
-unrate_raw = web.DataReader("UNRATE", "fred", start, end)
+unrate_raw = pd.read_csv(DATA_PATH / "UNRATE.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 unrate_raw.columns = ["UNRATE"]
 unrate_q   = unrate_raw.resample("QS").mean()
 unrate_q["dU"] = unrate_q["UNRATE"].diff()

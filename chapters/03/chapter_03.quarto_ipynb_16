@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 3: Stationary Time Series Models\"\n",
+        "title: \"Stationary Time Series Models\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  The models in this chapter are the workhorses of time series econometrics. Starting\n",
@@ -45,7 +45,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "9c20083c"
+      "id": "f255302f"
     },
     {
       "cell_type": "code",
@@ -177,24 +177,23 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "# ── GDP growth (SA real GDP, log-differenced) ──────────────────────────────────\n",
-        "# Carries over the running GDP example from Chapters 1 and 2.\n",
         "gdp_start = datetime(1947, 1, 1)\n",
         "gdp_end   = datetime(2024, 9, 30)\n",
         "\n",
-        "gdp_sa = web.DataReader(\"GDPC1\", \"fred\", gdp_start, gdp_end)\n",
+        "gdp_sa = pd.read_csv(DATA_PATH / \"GDPC1.csv\", index_col=\"date\", parse_dates=True).loc[str(gdp_start):str(gdp_end)]\n",
         "gdp_sa.columns = [\"Real GDP (SA)\"]\n",
         "gdp_sa[\"Log SA\"]     = np.log(gdp_sa[\"Real GDP (SA)\"])\n",
         "gdp_sa[\"GDP Growth\"] = gdp_sa[\"Log SA\"].diff() * 100   # quarter-on-quarter, percent\n",
         "\n",
         "# ── Initial Jobless Claims (ICSA, weekly, NSA) ─────────────────────────────────\n",
-        "# New series introduced in this chapter. Full history from FRED.\n",
-        "# We take the log to stabilise variance; the level is right-skewed and\n",
-        "# the log version has cleaner ACF/PACF structure for model identification.\n",
         "icsa_start = datetime(1967, 1, 1)\n",
         "icsa_end   = datetime(2024, 9, 30)\n",
         "\n",
-        "icsa = web.DataReader(\"ICSA\", \"fred\", icsa_start, icsa_end)\n",
+        "icsa = pd.read_csv(DATA_PATH / \"ICSA.csv\", index_col=\"date\", parse_dates=True).loc[str(icsa_start):str(icsa_end)]\n",
         "icsa.columns = [\"Claims\"]\n",
         "icsa[\"Log Claims\"] = np.log(icsa[\"Claims\"])\n",
         "\n",
@@ -539,7 +538,7 @@
         "Before modelling, we plot the full series alongside its ACF and PACF. This is always\n",
         "the first step — looking at the data, not fitting a model."
       ],
-      "id": "1c0e9634"
+      "id": "476df850"
     },
     {
       "cell_type": "code",
@@ -1078,7 +1077,7 @@
         "how sharp the cutoff looks in finite samples and how confidently we can read it off\n",
         "an ACF plot."
       ],
-      "id": "64d89996"
+      "id": "94b88eed"
     },
     {
       "cell_type": "code",
@@ -1329,7 +1328,7 @@
         "families plotted together. The figure below simulates an AR(1), an MA(1), and an\n",
         "ARMA(1,1) with comparable persistence, and plots their ACFs and PACFs side by side."
       ],
-      "id": "dca1ddef"
+      "id": "11de6c4a"
     },
     {
       "cell_type": "code",
@@ -1602,7 +1601,7 @@
         "the sample to the pre-pandemic period, 1967–2019. This is a pragmatic choice, not\n",
         "a permanent one — Chapter 4 provides formal tools for testing and handling breaks."
       ],
-      "id": "c327df19"
+      "id": "f9b5fcfa"
     },
     {
       "cell_type": "code",
@@ -1806,7 +1805,7 @@
         "The ACF/PACF suggested an AR(1) as the natural starting point. We fit it and\n",
         "examine the output."
       ],
-      "id": "69868ccb"
+      "id": "b1841112"
     },
     {
       "cell_type": "code",
@@ -1842,7 +1841,7 @@
         "carefully in Section 3.8; for the moment we note their presence and move straight\n",
         "to the residual plots, which tell the same story visually."
       ],
-      "id": "8db5290e"
+      "id": "993284aa"
     },
     {
       "cell_type": "code",
@@ -1915,7 +1914,7 @@
         "\n",
         "#### Step 2 — Refinement: ARMA(1,2)"
       ],
-      "id": "b1c24b19"
+      "id": "bc5b0ba2"
     },
     {
       "cell_type": "code",
@@ -1989,7 +1988,7 @@
         "\n",
         "Now we check the residuals to see whether the ARMA(1,2) has done its job."
       ],
-      "id": "5167f6d1"
+      "id": "45fb674b"
     },
     {
       "cell_type": "code",
@@ -2077,7 +2076,7 @@
         "what \"overfitting\" looks like: higher-order terms that are weakly identified, noisy\n",
         "standard errors, and a log-likelihood gain that does not justify the cost."
       ],
-      "id": "db75c9a7"
+      "id": "89157ed3"
     },
     {
       "cell_type": "code",
@@ -2363,7 +2362,7 @@
         "short-lag ACF and PACF spikes have disappeared. The tests quantify how confident\n",
         "we can be in that visual assessment."
       ],
-      "id": "58cbd459"
+      "id": "99b6b8a4"
     },
     {
       "cell_type": "code",
@@ -2419,7 +2418,7 @@
         "just their statistical significance. The code below extracts the actual\n",
         "$\\hat\\rho(j)$ values."
       ],
-      "id": "f7789d00"
+      "id": "51bb53b9"
     },
     {
       "cell_type": "code",
@@ -2479,7 +2478,7 @@
         "will understate true tail risk. For point forecasting the model remains valid;\n",
         "for interval forecasting in adverse scenarios, the non-normality matters."
       ],
-      "id": "e69eb136"
+      "id": "05c55b31"
     },
     {
       "cell_type": "code",
@@ -2672,7 +2671,7 @@
         "We produce 52-week-ahead forecasts (one year) from the ARMA(1,2) model, plotting\n",
         "both a single 95% band and a fan chart."
       ],
-      "id": "5ed0ed84"
+      "id": "da85bef8"
     },
     {
       "cell_type": "code",
@@ -2888,7 +2887,7 @@
         "series, 1967–2019, so that information criteria are comparable across\n",
         "specifications."
       ],
-      "id": "bb460781"
+      "id": "693ac953"
     },
     {
       "cell_type": "code",
@@ -2914,6 +2913,8 @@
         "                .dropna())\n",
         "\n",
         "# ── Federal funds rate ────────────────────────────────────────────────────────\n",
+        "import pandas_datareader as pdr\n",
+        "pdr.fred.FredReader.timeout = 120\n",
         "ffr = web.DataReader(\"FEDFUNDS\", \"fred\",\n",
         "                     datetime(1967, 1, 1),\n",
         "                     datetime(2019, 12, 31))\n",
@@ -2981,7 +2982,7 @@
         "pattern would be direct evidence of what the AR dynamics were absorbing, and\n",
         "what the exogenous regressor adds."
       ],
-      "id": "f5fc1467"
+      "id": "00107d13"
     },
     {
       "cell_type": "code",
@@ -3306,7 +3307,7 @@
         "by the AR roots — roots close to the unit circle imply slow reversion.\n",
         ":::\n"
       ],
-      "id": "53adb3d3"
+      "id": "489ac7d7"
     }
   ],
   "metadata": {

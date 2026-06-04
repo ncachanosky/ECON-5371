@@ -167,11 +167,14 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1947, 1, 1)
 end   = datetime(2019, 12, 31)   # pre-COVID sample throughout
 
 # ── Seasonally adjusted real GDP ───────────────────────────────────────────────
-gdp_raw = web.DataReader("GDPC1", "fred", start, end)
+gdp_raw = pd.read_csv(DATA_PATH / "GDPC1.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gdp_raw.columns = ["Real GDP"]
 
 # Log level and annualised QoQ growth rate (the forecast target in this chapter)

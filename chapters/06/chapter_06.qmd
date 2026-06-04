@@ -1,5 +1,5 @@
 ---
-title: "Chapter 6: Structural Breaks"
+title: "Structural Breaks"
 author: ""
 abstract: |
   Every model in Chapters 3 through 5 rested on an assumption we never stated
@@ -169,11 +169,14 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1947, 1, 1)
 end   = datetime(2019, 12, 31)   # pre-COVID sample throughout
 
 # ── Seasonally adjusted real GDP ───────────────────────────────────────────────
-gdp_raw = web.DataReader("GDPC1", "fred", start, end)
+gdp_raw = pd.read_csv(DATA_PATH / "GDPC1.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gdp_raw.columns = ["Real GDP"]
 
 gdp_raw["Log GDP"]    = np.log(gdp_raw["Real GDP"])
@@ -184,13 +187,10 @@ SAMPLE_START = gdp.index[0].strftime("%Y-%m-%d")
 SAMPLE_END   = gdp.index[-1].strftime("%Y-%m-%d")
 
 # ── CPI (all items, not seasonally adjusted, CPIAUCNS) ─────────────────────────
-# Used in Section 6.4 (Zivot-Andrews). Extend to 2023 to capture
-# post-Volcker persistence clearly; the unit root question for CPI is
-# most informative on the full post-war sample.
 cpi_start = datetime(1947, 1, 1)
 cpi_end   = datetime(2019, 12, 31)
 
-cpi_raw = web.DataReader("CPIAUCNS", "fred", cpi_start, cpi_end)
+cpi_raw = pd.read_csv(DATA_PATH / "CPIAUCNS.csv", index_col="date", parse_dates=True).loc[str(cpi_start):str(cpi_end)]
 cpi_raw.columns = ["CPI"]
 cpi_raw["Log CPI"]    = np.log(cpi_raw["CPI"])
 cpi_raw["Inflation"]  = cpi_raw["Log CPI"].diff(12) * 100  # year-on-year, percent
@@ -199,6 +199,7 @@ cpi_m = cpi_raw.dropna().copy()
 # Quarterly average for comparability with GDP (used in ZA comparisons)
 cpi_q = cpi_raw["Log CPI"].resample("QS").mean().dropna()
 ```
+
 
 ::: {.callout-note}
 ## Learning Objectives

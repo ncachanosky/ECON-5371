@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 9: Volatility Models — ARCH, GARCH, and Extensions\"\n",
+        "title: \"Volatility Models — ARCH, GARCH, and Extensions\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  Every model in Chapters 3 through 8 targeted the conditional mean of a time\n",
@@ -57,7 +57,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "756d9dd6"
+      "id": "8a413586"
     },
     {
       "cell_type": "code",
@@ -202,13 +202,11 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
-        "# ── S&P 500 daily prices via Yahoo Finance ─────────────────────────────────────\n",
-        "# Pre-COVID sample: 1980-01-02 through 2019-12-31\n",
-        "sp500_raw = yf.download(\"^GSPC\", start=\"1980-01-02\", end=\"2019-12-31\",\n",
-        "                         auto_adjust=True, progress=False)\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
         "\n",
-        "# Log returns (percent): 100 * Δ log(Price)\n",
-        "sp500_raw = sp500_raw[[\"Close\"]].copy()\n",
+        "# ── S&P 500 daily prices from local CSV ───────────────────────────────────────\n",
+        "sp500_raw = pd.read_csv(DATA_PATH / \"SP500.csv\", index_col=\"date\", parse_dates=True).loc[\"1980-01-02\":\"2019-12-31\"]\n",
         "sp500_raw.columns = [\"Price\"]\n",
         "sp500_raw[\"Log Return\"] = np.log(sp500_raw[\"Price\"]).diff() * 100\n",
         "\n",
@@ -322,7 +320,7 @@
         "\n",
         "Let us check this on our data before committing to the conclusion."
       ],
-      "id": "f2e3a3f4"
+      "id": "1fbf324b"
     },
     {
       "cell_type": "code",
@@ -422,7 +420,7 @@
         "own past, the ACF of $r_t$ should show significant spikes. If they are not,\n",
         "the ACF should be indistinguishable from that of white noise."
       ],
-      "id": "1228a8ec"
+      "id": "4b5f1c59"
     },
     {
       "cell_type": "code",
@@ -672,7 +670,7 @@
         "to the squared residuals. On the S&P 500 data, we fit a constant-mean model\n",
         "and apply the ARCH-LM test at lag $q = 10$:"
       ],
-      "id": "683cdf1d"
+      "id": "75c923cf"
     },
     {
       "cell_type": "code",
@@ -723,7 +721,7 @@
         "that the homoskedastic error assumption was misspecified. The ARCH model is the\n",
         "tool that addresses that signal directly."
       ],
-      "id": "bb2771a1"
+      "id": "495bf451"
     },
     {
       "cell_type": "code",
@@ -1020,7 +1018,7 @@
         "\n",
         "### Fitting GARCH(1,1) to S&P 500 Returns"
       ],
-      "id": "a2f4ade3"
+      "id": "a0fb97ff"
     },
     {
       "cell_type": "code",
@@ -1106,7 +1104,7 @@
         "sequence $\\{\\hat\\sigma_t^2\\}$ — the model's real-time estimate of daily\n",
         "uncertainty — and compare it against the rolling-window proxy from Figure 9.3."
       ],
-      "id": "5bff6ed2"
+      "id": "7dbb1b2f"
     },
     {
       "cell_type": "code",
@@ -1169,7 +1167,7 @@
         "fully captured the volatility dynamics — either the lag order is too short or\n",
         "the symmetric specification is inadequate."
       ],
-      "id": "72396732"
+      "id": "c60ae8a2"
     },
     {
       "cell_type": "code",
@@ -1329,7 +1327,7 @@
         "and time periods. We can see it directly by asking: is there a relationship\n",
         "between the sign of today's return and the magnitude of tomorrow's?"
       ],
-      "id": "6608ef3e"
+      "id": "bf0d42b3"
     },
     {
       "cell_type": "code",
@@ -1492,7 +1490,7 @@
         "We now fit both models to the S&P 500 data and compare their estimates side\n",
         "by side."
       ],
-      "id": "e41d6676"
+      "id": "19fbaefd"
     },
     {
       "cell_type": "code",
@@ -1596,7 +1594,7 @@
         "models agree: $\\hat\\alpha + \\hat\\beta$ (or its GJR equivalent) is in the\n",
         "range 0.978–0.980, implying a half-life of roughly 30 trading days.*"
       ],
-      "id": "65e7c854"
+      "id": "dedff090"
     },
     {
       "cell_type": "code",
@@ -1923,7 +1921,7 @@
         "\n",
         "### Computing GARCH-VaR on S&P 500 Returns"
       ],
-      "id": "ede903d8"
+      "id": "81cb8b33"
     },
     {
       "cell_type": "code",
@@ -2021,7 +2019,7 @@
         "\n",
         "A large statistic — too many or too few exceedances — rejects the null."
       ],
-      "id": "5cff82b7"
+      "id": "0b819d48"
     },
     {
       "cell_type": "code",
@@ -2130,7 +2128,7 @@
         "   normally distributed. Rejection is expected for financial data and motivates\n",
         "   the Student-$t$ extension rather than a different volatility model."
       ],
-      "id": "6b758050"
+      "id": "76645888"
     },
     {
       "cell_type": "code",
@@ -2356,7 +2354,7 @@
         "squared returns.\n",
         ":::"
       ],
-      "id": "1c9c0362"
+      "id": "3298b573"
     }
   ],
   "metadata": {

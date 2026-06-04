@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3: Stationary Time Series Models"
+title: "Stationary Time Series Models"
 author: ""
 abstract: |
   The models in this chapter are the workhorses of time series econometrics. Starting
@@ -159,24 +159,23 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 # ── GDP growth (SA real GDP, log-differenced) ──────────────────────────────────
-# Carries over the running GDP example from Chapters 1 and 2.
 gdp_start = datetime(1947, 1, 1)
 gdp_end   = datetime(2024, 9, 30)
 
-gdp_sa = web.DataReader("GDPC1", "fred", gdp_start, gdp_end)
+gdp_sa = pd.read_csv(DATA_PATH / "GDPC1.csv", index_col="date", parse_dates=True).loc[str(gdp_start):str(gdp_end)]
 gdp_sa.columns = ["Real GDP (SA)"]
 gdp_sa["Log SA"]     = np.log(gdp_sa["Real GDP (SA)"])
 gdp_sa["GDP Growth"] = gdp_sa["Log SA"].diff() * 100   # quarter-on-quarter, percent
 
 # ── Initial Jobless Claims (ICSA, weekly, NSA) ─────────────────────────────────
-# New series introduced in this chapter. Full history from FRED.
-# We take the log to stabilise variance; the level is right-skewed and
-# the log version has cleaner ACF/PACF structure for model identification.
 icsa_start = datetime(1967, 1, 1)
 icsa_end   = datetime(2024, 9, 30)
 
-icsa = web.DataReader("ICSA", "fred", icsa_start, icsa_end)
+icsa = pd.read_csv(DATA_PATH / "ICSA.csv", index_col="date", parse_dates=True).loc[str(icsa_start):str(icsa_end)]
 icsa.columns = ["Claims"]
 icsa["Log Claims"] = np.log(icsa["Claims"])
 
@@ -184,6 +183,7 @@ icsa["Log Claims"] = np.log(icsa["Claims"])
 GDP_PLOT_START  = gdp_sa.dropna().index[0].strftime("%Y-%m-%d")
 ICSA_PLOT_START = icsa.index[0].strftime("%Y-%m-%d")
 ```
+
 
 ::: {.callout-note}
 ## Learning Objectives
@@ -2712,6 +2712,8 @@ icsa_monthly = (icsa.loc[:"2019-12-31", "Log Claims"]
                 .dropna())
 
 # ── Federal funds rate ────────────────────────────────────────────────────────
+import pandas_datareader as pdr
+pdr.fred.FredReader.timeout = 120
 ffr = web.DataReader("FEDFUNDS", "fred",
                      datetime(1967, 1, 1),
                      datetime(2019, 12, 31))

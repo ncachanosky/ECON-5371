@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2: Decomposition, Smoothing, and Business Cycle Analysis"
+title: "Decomposition, Smoothing, and Business Cycle Analysis"
 author: ""
 abstract: |
   Every economic time series tells at least two stories simultaneously: one about where the economy is headed over the long run, and another about where it stands right now relative to that path. This chapter develops the tools to separate those stories. We work through classical decomposition, trend extraction and the business cycle, seasonal adjustment, and the family of exponential smoothing and Holt-Winters models. The organizing example is US GDP — both the seasonally adjusted and raw series — which lets us see what each method finds and, more importantly, what assumptions each method embeds. The central lesson is that the business cycle is not a natural object waiting to be discovered; it is a construct whose shape depends on the decomposition we choose.
@@ -148,18 +148,21 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1947, 1, 1)
 end   = datetime(2024, 9, 30)
 
 # NSA real GDP — BEA Table 8.1.6, chained 2017 USD, quarterly totals (billions)
-gdp_nsa = web.DataReader("ND000334Q", "fred", start, end)
+gdp_nsa = pd.read_csv(DATA_PATH / "ND000334Q.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gdp_nsa.columns = ["Real GDP (NSA)"]
 
 # SA real GDP — GDPC1 is reported as a Seasonally Adjusted Annual Rate (SAAR),
 # i.e. each quarterly value is multiplied by 4 to express the annualised pace.
 # ND000334Q is a quarterly *total*, not annualised.  To put both series on the
 # same footing we convert NSA to SAAR by multiplying by 4.
-gdp_sa  = web.DataReader("GDPC1", "fred", start, end)
+gdp_sa = pd.read_csv(DATA_PATH / "GDPC1.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gdp_sa.columns  = ["Real GDP (SA)"]
 
 # Merge on the intersection of available dates

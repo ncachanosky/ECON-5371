@@ -1,5 +1,5 @@
 ---
-title: "Chapter 9: Volatility Models — ARCH, GARCH, and Extensions"
+title: "Volatility Models — ARCH, GARCH, and Extensions"
 author: ""
 abstract: |
   Every model in Chapters 3 through 8 targeted the conditional mean of a time
@@ -178,13 +178,11 @@ def shade_recessions(ax, start=None, end=None):
 #| include: false
 #| cache: true
 
-# ── S&P 500 daily prices via Yahoo Finance ─────────────────────────────────────
-# Pre-COVID sample: 1980-01-02 through 2019-12-31
-sp500_raw = yf.download("^GSPC", start="1980-01-02", end="2019-12-31",
-                         auto_adjust=True, progress=False)
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
 
-# Log returns (percent): 100 * Δ log(Price)
-sp500_raw = sp500_raw[["Close"]].copy()
+# ── S&P 500 daily prices from local CSV ───────────────────────────────────────
+sp500_raw = pd.read_csv(DATA_PATH / "SP500.csv", index_col="date", parse_dates=True).loc["1980-01-02":"2019-12-31"]
 sp500_raw.columns = ["Price"]
 sp500_raw["Log Return"] = np.log(sp500_raw["Price"]).diff() * 100
 
@@ -203,6 +201,7 @@ N_OBS        = len(sp500)
 returns = sp500["Log Return"].values
 dates   = sp500.index
 ```
+
 
 ::: {.callout-note}
 ## Learning Objectives

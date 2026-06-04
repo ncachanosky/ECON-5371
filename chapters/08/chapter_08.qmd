@@ -1,5 +1,5 @@
 ---
-title: "Chapter 8: Cointegration and the Vector Error Correction Model"
+title: "Cointegration and the Vector Error Correction Model"
 author: ""
 abstract: |
   When the variables in a multivariate system are integrated of order one, the
@@ -186,15 +186,18 @@ def shade_inversions(ax, spread, index, start=None, end=None):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1954, 1, 1)
 end   = datetime(2019, 12, 31)   # pre-COVID sample throughout
 
 # ── 10-year Treasury constant maturity yield (GS10, monthly) ──────────────────
-gs10_raw = web.DataReader("GS10", "fred", start, end)
+gs10_raw = pd.read_csv(DATA_PATH / "GS10.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 gs10_raw.columns = ["GS10"]
 
 # ── 3-month Treasury bill rate (TB3MS, monthly) ───────────────────────────────
-tb3_raw = web.DataReader("TB3MS", "fred", start, end)
+tb3_raw = pd.read_csv(DATA_PATH / "TB3MS.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 tb3_raw.columns = ["TB3MS"]
 
 # ── Resample to quarterly averages and merge ───────────────────────────────────
@@ -213,6 +216,7 @@ SAMPLE_END   = yields.index[-1].strftime("%Y-%m-%d")
 # Data matrix for VAR / VECM estimation
 yield_data = yields[["LongRate", "ShortRate"]]
 ```
+
 
 ::: {.callout-note}
 ## Learning Objectives

@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 1: Foundations of Time Series Analysis\"\n",
+        "title: \"Foundations of Time Series Analysis\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  Time series analysis is the discipline of extracting information from the past to say something credible about the future. This chapter establishes the conceptual and mathematical foundations on which the entire course rests: what time series data are and how they differ from other data structures, what forecasting is and is not, and how the mathematical machinery of difference equations governs the behavior of time series processes. A central result — connecting difference equations to linear algebra — is that the stability of any linear time series model is determined by the eigenvalues of its companion matrix, a fact that links directly to the economic concepts of stationarity and unit roots that underpin modern macroeconometrics.\n",
@@ -34,7 +34,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "74918024"
+      "id": "8844f7f0"
     },
     {
       "cell_type": "code",
@@ -144,11 +144,14 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "start = datetime(1960, 1, 1)\n",
         "end   = datetime(2024, 6, 30)\n",
         "\n",
-        "gdp = web.DataReader(\"GDPC1\",    \"fred\", start, end)\n",
-        "cpi = web.DataReader(\"CPIAUCSL\", \"fred\", start, end)\n",
+        "gdp = pd.read_csv(DATA_PATH / \"GDPC1.csv\",    index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
+        "cpi = pd.read_csv(DATA_PATH / \"CPIAUCSL.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "\n",
         "gdp.columns = [\"Real GDP\"]\n",
         "cpi.columns = [\"CPI\"]\n",
@@ -413,7 +416,7 @@
         "\n",
         "What does white noise look like as a time series? The figure below simulates a simple Gaussian white noise sequence — $\\varepsilon_t \\overset{\\text{iid}}{\\sim} N(0,1)$ — and plots it alongside its sample ACF. Two features are immediately visible. First, the time series fluctuates erratically around zero with no discernible trend, cycle, or pattern. Second, the ACF shows no significant spikes at any lag — every bar lies within the 95% confidence bands, confirming that no linear relationship exists between any two observations. This is the time-series counterpart of the spatial image above: pure noise, no memory."
       ],
-      "id": "41525472"
+      "id": "d1db1f51"
     },
     {
       "cell_type": "code",
@@ -576,7 +579,7 @@
         "\n",
         "The figure below illustrates the different dynamic regimes for a range of characteristic roots. All stable paths share the long-run equilibrium $\\bar{y} = 1.67$, and all paths begin at $y_0 = 3$ — a positive deviation from $\\bar{y}$."
       ],
-      "id": "b5008cb0"
+      "id": "e2b03779"
     },
     {
       "cell_type": "code",
@@ -661,7 +664,7 @@
         "\n",
         "The pure [random walk](https://en.wikipedia.org/wiki/Random_walk) ($\\phi = 1$, $c = 0$) deserves its own figure. Unlike any stable process, different realizations of a random walk fan out in completely different directions from the same starting point, and none of them returns to the initial level. The figure below simulates twenty independent random walk paths from the same starting value — the fan-shaped spreading is the visual signature of a unit root."
       ],
-      "id": "420d5f4a"
+      "id": "372874e0"
     },
     {
       "cell_type": "code",
@@ -814,7 +817,7 @@
         "\n",
         "**This is the key distinction from negative real eigenvalues.** A negative real eigenvalue $\\lambda < 0$ produces oscillation that alternates every single period: $\\lambda^t$ changes sign at each step because $(-|\\lambda|)^t$ alternates. This is period-2 oscillation — the fastest possible, completing a full cycle in just two periods. Complex eigenvalues, by contrast, allow any period $P = 2\\pi/\\omega \\geq 2$. Real economies exhibit business cycles with periods of 6–32 quarters — far too slow to be explained by negative real eigenvalues, but naturally produced by complex conjugate pairs with appropriate arguments. The oscillatory behavior of complex roots is therefore not just a mathematical curiosity; it is one of the mechanisms through which business-cycle-like dynamics arise in AR($p$) models."
       ],
-      "id": "04a94e7a"
+      "id": "d0f44365"
     },
     {
       "cell_type": "code",
@@ -871,7 +874,7 @@
         "\n",
         "A convenient visual summary of the stability condition plots the eigenvalues in the complex plane with the unit circle as a reference. All eigenvalues inside the circle — stable. Any eigenvalue on the circle — unit root. Any eigenvalue outside — explosive."
       ],
-      "id": "c5b710b6"
+      "id": "567b6109"
     },
     {
       "cell_type": "code",
@@ -971,7 +974,7 @@
         "\n",
         "### Python Example: ACF and PACF for US GDP and CPI"
       ],
-      "id": "1d2a6cce"
+      "id": "c0ed54fb"
     },
     {
       "cell_type": "code",
@@ -1285,7 +1288,7 @@
         "\n",
         "### Formal Tests: US GDP and CPI"
       ],
-      "id": "f1243b21"
+      "id": "9a5a57c1"
     },
     {
       "cell_type": "code",
@@ -1485,7 +1488,7 @@
         "**Cointegration** — Two $I(1)$ series are cointegrated if a linear combination of them is $I(0)$; they share a common stochastic trend. Covered in Chapter 6.\n",
         ":::"
       ],
-      "id": "44ba076e"
+      "id": "49ab7a4a"
     }
   ],
   "metadata": {

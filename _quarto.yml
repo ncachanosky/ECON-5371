@@ -17,12 +17,12 @@ book:
 
   open-graph:
     title: "Book title"
-    description: "Course readings for ECON 3320 – Money and Banking – The University of Texas at El Paso. An institutions-first treatment of monetary and financial economics."
+    description: "Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso."
     image: assets/logo.png
 
   twitter-card:
     title: "Book title"
-    description: "Course readings for ECON 3320 – Money and Banking – The University of Texas at El Paso. An institutions-first treatment of monetary and financial economics."
+    description: "Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso."
     image: assets/logo.png
     card-style: summary
     creator: "@n_cachanosky"
@@ -60,7 +60,7 @@ book:
       - icon: twitter-x
         href: https://twitter.com/n_cachanosky
 
-bibliography: references.bib
+# bibliography: references.bib
 
 jupyter: python3
 
@@ -90,4 +90,4 @@ execute:
   echo: true
   warning: false
   message: false
-  cache: false
+  cache: true

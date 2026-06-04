@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 6: Structural Breaks\"\n",
+        "title: \"Structural Breaks\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  Every model in Chapters 3 through 5 rested on an assumption we never stated\n",
@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "8d08ce61"
+      "id": "fb87926f"
     },
     {
       "cell_type": "code",
@@ -187,11 +187,14 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "start = datetime(1947, 1, 1)\n",
         "end   = datetime(2019, 12, 31)   # pre-COVID sample throughout\n",
         "\n",
         "# ── Seasonally adjusted real GDP ───────────────────────────────────────────────\n",
-        "gdp_raw = web.DataReader(\"GDPC1\", \"fred\", start, end)\n",
+        "gdp_raw = pd.read_csv(DATA_PATH / \"GDPC1.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "gdp_raw.columns = [\"Real GDP\"]\n",
         "\n",
         "gdp_raw[\"Log GDP\"]    = np.log(gdp_raw[\"Real GDP\"])\n",
@@ -202,13 +205,10 @@
         "SAMPLE_END   = gdp.index[-1].strftime(\"%Y-%m-%d\")\n",
         "\n",
         "# ── CPI (all items, not seasonally adjusted, CPIAUCNS) ─────────────────────────\n",
-        "# Used in Section 6.4 (Zivot-Andrews). Extend to 2023 to capture\n",
-        "# post-Volcker persistence clearly; the unit root question for CPI is\n",
-        "# most informative on the full post-war sample.\n",
         "cpi_start = datetime(1947, 1, 1)\n",
         "cpi_end   = datetime(2019, 12, 31)\n",
         "\n",
-        "cpi_raw = web.DataReader(\"CPIAUCNS\", \"fred\", cpi_start, cpi_end)\n",
+        "cpi_raw = pd.read_csv(DATA_PATH / \"CPIAUCNS.csv\", index_col=\"date\", parse_dates=True).loc[str(cpi_start):str(cpi_end)]\n",
         "cpi_raw.columns = [\"CPI\"]\n",
         "cpi_raw[\"Log CPI\"]    = np.log(cpi_raw[\"CPI\"])\n",
         "cpi_raw[\"Inflation\"]  = cpi_raw[\"Log CPI\"].diff(12) * 100  # year-on-year, percent\n",
@@ -313,7 +313,7 @@
         "1984. The observation itself is not contested: anyone who plots GDP growth can\n",
         "see it. The series is visibly more turbulent before 1984 than after."
       ],
-      "id": "15812bc3"
+      "id": "9d4a1212"
     },
     {
       "cell_type": "code",
@@ -567,7 +567,7 @@
         "length $k = 3$ (intercept plus two lags) — enough to make the test substantive\n",
         "without overcomplicating the illustration."
       ],
-      "id": "15ef0980"
+      "id": "00d95534"
     },
     {
       "cell_type": "code",
@@ -696,7 +696,7 @@
         "Chow $F$-test does not reject. The QLR and Bai-Perron results below will\n",
         "make this diagnosis explicit.*"
       ],
-      "id": "8dfebc30"
+      "id": "ef2efe86"
     },
     {
       "cell_type": "code",
@@ -792,7 +792,7 @@
         "absolute residuals.\n",
         ":::"
       ],
-      "id": "619f070f"
+      "id": "b6ee5ef6"
     },
     {
       "cell_type": "code",
@@ -927,7 +927,7 @@
         "\n",
         "### Python: QLR Test on GDP Growth"
       ],
-      "id": "5ce627e7"
+      "id": "154ba917"
     },
     {
       "cell_type": "code",
@@ -1155,7 +1155,7 @@
         "The penalty parameter controls the number of detected breaks; we use a\n",
         "data-driven penalty based on the Bayesian information criterion."
       ],
-      "id": "a44c58fc"
+      "id": "7e68d6a7"
     },
     {
       "cell_type": "code",
@@ -1333,7 +1333,7 @@
         "process may well be stationary in both sub-regimes, with the apparent unit root\n",
         "being an artefact of pooling across the break."
       ],
-      "id": "72e98f5c"
+      "id": "270740b8"
     },
     {
       "cell_type": "code",
@@ -1452,7 +1452,7 @@
         "is open. We use the quarterly-averaged inflation series and GDP growth, both in\n",
         "percent, with Model C (break in intercept and trend)."
       ],
-      "id": "02d9ee10"
+      "id": "9c7a8263"
     },
     {
       "cell_type": "code",
@@ -1549,7 +1549,7 @@
         "break. The substantive finding is simply the rejection: GDP growth does not\n",
         "have a unit root, with or without allowance for a structural break.*"
       ],
-      "id": "482c4b03"
+      "id": "83eb7733"
     },
     {
       "cell_type": "code",
@@ -1790,7 +1790,7 @@
         "full-sample ARIMA from Chapter 5, using the same 40-quarter rolling window\n",
         "and the same $h = 1$ horizon."
       ],
-      "id": "6353bbd6"
+      "id": "5a9323a9"
     },
     {
       "cell_type": "code",
@@ -1962,7 +1962,7 @@
         "or approach it. For GDP growth, RMSE and MAE are the appropriate summary\n",
         "statistics.*"
       ],
-      "id": "909effc8"
+      "id": "d5ba7d15"
     },
     {
       "cell_type": "code",
@@ -2214,7 +2214,7 @@
         "post-break subsample is long, and forecasts are needed for the current regime.\n",
         ":::"
       ],
-      "id": "21077608"
+      "id": "f951ed4c"
     }
   ],
   "metadata": {

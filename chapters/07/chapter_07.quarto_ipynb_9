@@ -5,7 +5,7 @@
       "metadata": {},
       "source": [
         "---\n",
-        "title: \"Chapter 7: Vector Autoregressions\"\n",
+        "title: \"Vector Autoregressions\"\n",
         "author: \"\"\n",
         "abstract: |\n",
         "  Univariate models are powerful, but they answer only one kind of question:\n",
@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "c49a6dcf"
+      "id": "bdc2c5f3"
     },
     {
       "cell_type": "code",
@@ -182,23 +182,26 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "start = datetime(1954, 1, 1)\n",
         "end   = datetime(2019, 12, 31)   # pre-COVID sample throughout\n",
         "\n",
         "# ── GDP growth (annualised QoQ, percent) ──────────────────────────────────────\n",
-        "gdp_raw = web.DataReader(\"GDPC1\", \"fred\", start, end)\n",
+        "gdp_raw = pd.read_csv(DATA_PATH / \"GDPC1.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "gdp_raw.columns = [\"Real GDP\"]\n",
         "gdp_raw[\"Log GDP\"]    = np.log(gdp_raw[\"Real GDP\"])\n",
         "gdp_raw[\"GDP Growth\"] = gdp_raw[\"Log GDP\"].diff() * 400\n",
         "\n",
         "# ── CPI inflation (annualised QoQ, percent) ───────────────────────────────────\n",
-        "cpi_raw = web.DataReader(\"CPIAUCSL\", \"fred\", start, end)\n",
+        "cpi_raw = pd.read_csv(DATA_PATH / \"CPIAUCSL.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "cpi_raw.columns = [\"CPI\"]\n",
         "cpi_raw[\"Log CPI\"]       = np.log(cpi_raw[\"CPI\"])\n",
         "cpi_raw[\"CPI Inflation\"] = cpi_raw[\"Log CPI\"].diff() * 400\n",
         "\n",
         "# ── Federal funds rate (percent, quarterly average) ───────────────────────────\n",
-        "ffr_raw = web.DataReader(\"FEDFUNDS\", \"fred\", start, end)\n",
+        "ffr_raw = pd.read_csv(DATA_PATH / \"FEDFUNDS.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "ffr_raw.columns = [\"FFR\"]\n",
         "ffr_q   = ffr_raw.resample(\"QS\").mean()   # average within quarter\n",
         "\n",
@@ -376,7 +379,7 @@
         "before, the reduced form that emerges from solving the system has no\n",
         "contemporaneous terms: only lags and composite errors."
       ],
-      "id": "00945832"
+      "id": "04ef4693"
     },
     {
       "cell_type": "code",
@@ -602,7 +605,7 @@
         "For now: if your series are not stationary, do not estimate a VAR in levels.\n",
         ":::\n"
       ],
-      "id": "cd117033"
+      "id": "0458c2a0"
     },
     {
       "cell_type": "code",
@@ -741,7 +744,7 @@
         "\n",
         "### Lag Selection Results"
       ],
-      "id": "91c269f1"
+      "id": "3554a4bf"
     },
     {
       "cell_type": "code",
@@ -844,7 +847,7 @@
         "analogue of the ARMA summary students saw in Chapter 3: a separate regression\n",
         "table for each endogenous variable, sharing the same right-hand side structure."
       ],
-      "id": "fcf7eea6"
+      "id": "6c23fe4b"
     },
     {
       "cell_type": "code",
@@ -907,7 +910,7 @@
         "signal near-instability; a modulus below 1.0 would signal an actual unit root.\n",
         ":::"
       ],
-      "id": "adb92469"
+      "id": "6aed4805"
     },
     {
       "cell_type": "code",
@@ -950,7 +953,7 @@
         "three roots exceed one and all companion eigenvalues fall strictly inside the\n",
         "unit circle — the VAR(1) is stable despite the FFR's ambiguous ADF result.*"
       ],
-      "id": "b1c35b51"
+      "id": "ffd82fb6"
     },
     {
       "cell_type": "code",
@@ -1021,7 +1024,7 @@
         "means residual autocorrelation is present and the lag order should be\n",
         "increased."
       ],
-      "id": "90b4e129"
+      "id": "615ae13f"
     },
     {
       "cell_type": "code",
@@ -1090,7 +1093,7 @@
         "of residual autocorrelation. All three equations also fail Jarque-Bera,\n",
         "indicating heavy-tailed residuals. The VAR(1) is stable but misspecified.*"
       ],
-      "id": "e6e2930a"
+      "id": "bf6b1414"
     },
     {
       "cell_type": "code",
@@ -1159,7 +1162,7 @@
         "\n",
         "### From VAR(1) to VAR(6): How a Researcher Proceeds"
       ],
-      "id": "a1c411af"
+      "id": "b8d1a14a"
     },
     {
       "cell_type": "code",
@@ -1272,7 +1275,7 @@
         "\n",
         "### The Working Model: VAR(6)"
       ],
-      "id": "12606251"
+      "id": "f8ecc1cb"
     },
     {
       "cell_type": "code",
@@ -1300,7 +1303,7 @@
         "eigenvalues to check. All are real and all fall inside the unit circle —\n",
         "the VAR(6) is stable."
       ],
-      "id": "2e80ba85"
+      "id": "e7868af8"
     },
     {
       "cell_type": "code",
@@ -1350,7 +1353,7 @@
         "All 18 roots are real and all companion eigenvalues lie strictly inside\n",
         "the unit circle — the VAR(6) is stable.*"
       ],
-      "id": "47c1297c"
+      "id": "d566e3ee"
     },
     {
       "cell_type": "code",
@@ -1410,7 +1413,7 @@
         "to $p = 6$ passed the portmanteau test. The table below shows the full\n",
         "search record, followed by the equation-level diagnostics at VAR(6)."
       ],
-      "id": "3af3f81e"
+      "id": "cf77d36b"
     },
     {
       "cell_type": "code",
@@ -1457,7 +1460,7 @@
         "Durbin-Watson statistics (all near 2) confirm. All three equations fail\n",
         "Jarque-Bera, consistent with the heavy-tailed macro data in this sample.*"
       ],
-      "id": "024ef24e"
+      "id": "edeadf9c"
     },
     {
       "cell_type": "code",
@@ -1611,7 +1614,7 @@
         "\n",
         "### Empirical Results"
       ],
-      "id": "023b83da"
+      "id": "fbd76dff"
     },
     {
       "cell_type": "code",
@@ -2066,7 +2069,7 @@
         "reduced-form residual) or the axes have been re-ordered. The unit diagonal\n",
         "at $h = 0$ is the quickest way to verify that the plot is reading as intended."
       ],
-      "id": "88104dff"
+      "id": "cc03eef1"
     },
     {
       "cell_type": "code",
@@ -2316,7 +2319,7 @@
         "\n",
         "### Empirical FEVD"
       ],
-      "id": "469c5816"
+      "id": "590a6074"
     },
     {
       "cell_type": "code",
@@ -2376,7 +2379,7 @@
         "growth, CPI inflation, FFR), 1954Q3–2019Q4. Shares in percent; rows sum\n",
         "to 100. Cholesky ordering: output → inflation → policy rate.*"
       ],
-      "id": "6521360c"
+      "id": "5787d615"
     },
     {
       "cell_type": "code",
@@ -2637,7 +2640,7 @@
         "a first pass, consistent with the interpretation that oil prices affect the\n",
         "domestic economy within the quarter."
       ],
-      "id": "b3891abf"
+      "id": "c6ac59c1"
     },
     {
       "cell_type": "code",
@@ -2647,8 +2650,9 @@
         "#| include: false\n",
         "\n",
         "# ── Download WTI crude oil price (quarterly average) ─────────────────────────\n",
-        "oil_raw = web.DataReader(\"WTISPLC\", \"fred\",\n",
-        "                         datetime(1954, 1, 1), datetime(2019, 12, 31))\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "oil_raw = pd.read_csv(DATA_PATH / \"WTISPLC.csv\", index_col=\"date\", parse_dates=True).loc[\"1954-01-01\":\"2019-12-31\"]\n",
         "oil_raw.columns = [\"Oil\"]\n",
         "oil_q   = oil_raw.resample(\"QS\").mean()\n",
         "oil_q[\"Oil Growth\"] = np.log(oil_q[\"Oil\"]).diff() * 400   # ann. log growth\n",
@@ -2691,7 +2695,7 @@
         "decisively — oil price growth is stationary and suitable for direct inclusion\n",
         "as a contemporaneous exogenous regressor without further transformation.*"
       ],
-      "id": "46455cea"
+      "id": "52393072"
     },
     {
       "cell_type": "code",
@@ -2973,7 +2977,7 @@
         "estimated optimally by the Kalman filter. Full treatment in Chapter 8.\n",
         ":::\n"
       ],
-      "id": "6de7676f"
+      "id": "60ed0a25"
     }
   ],
   "metadata": {

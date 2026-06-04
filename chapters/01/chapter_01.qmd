@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1: Foundations of Time Series Analysis"
+title: "Foundations of Time Series Analysis"
 author: ""
 abstract: |
   Time series analysis is the discipline of extracting information from the past to say something credible about the future. This chapter establishes the conceptual and mathematical foundations on which the entire course rests: what time series data are and how they differ from other data structures, what forecasting is and is not, and how the mathematical machinery of difference equations governs the behavior of time series processes. A central result — connecting difference equations to linear algebra — is that the stability of any linear time series model is determined by the eigenvalues of its companion matrix, a fact that links directly to the economic concepts of stationarity and unit roots that underpin modern macroeconometrics.
@@ -126,11 +126,14 @@ def eo_style_ax(ax):
 #| include: false
 #| cache: true
 
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
 start = datetime(1960, 1, 1)
 end   = datetime(2024, 6, 30)
 
-gdp = web.DataReader("GDPC1",    "fred", start, end)
-cpi = web.DataReader("CPIAUCSL", "fred", start, end)
+gdp = pd.read_csv(DATA_PATH / "GDPC1.csv",    index_col="date", parse_dates=True).loc[str(start):str(end)]
+cpi = pd.read_csv(DATA_PATH / "CPIAUCSL.csv", index_col="date", parse_dates=True).loc[str(start):str(end)]
 
 gdp.columns = ["Real GDP"]
 cpi.columns = ["CPI"]

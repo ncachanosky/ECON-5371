@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10: State Space Models and the Kalman Filter"
+title: "State Space Models and the Kalman Filter"
 author: ""
 abstract: |
   Every model in Chapters 1 through 9 assumed that the structure of the data
@@ -185,7 +185,10 @@ def shade_recessions(ax, start=None, end=None):
 # introduces a 12-month moving average effect that would bias the local level
 # model's signal extraction.
 
-pce_raw = web.DataReader("PCEPILFE", "fred", start="1959-12-01", end="2019-12-01")
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
+pce_raw = pd.read_csv(DATA_PATH / "PCEPILFE.csv", index_col="date", parse_dates=True).loc["1959-12-01":"2019-12-01"]
 pce_raw.columns = ["PCE_Level"]
 
 # Annualised month-on-month percent change: 12 * 100 * Δlog(P)
@@ -1838,9 +1841,12 @@ quarter.
 #| cache: true
 
 # ── Download mixed-frequency data ──────────────────────────────────────────────
-gdp_raw  = web.DataReader("GDPC1",  "fred", "1959-10-01", "2019-12-01")
-ip_raw   = web.DataReader("INDPRO", "fred", "1959-12-01", "2019-12-01")
-ur_raw   = web.DataReader("UNRATE", "fred", "1959-12-01", "2019-12-01")
+from pathlib import Path
+DATA_PATH = Path("../../data/raw")
+
+gdp_raw  = pd.read_csv(DATA_PATH / "GDPC1.csv",  index_col="date", parse_dates=True).loc["1959-10-01":"2019-12-01"]
+ip_raw   = pd.read_csv(DATA_PATH / "INDPRO.csv", index_col="date", parse_dates=True).loc["1959-12-01":"2019-12-01"]
+ur_raw   = pd.read_csv(DATA_PATH / "UNRATE.csv", index_col="date", parse_dates=True).loc["1959-12-01":"2019-12-01"]
 
 # Annualised log growth: GDP quarterly (×400), IP monthly (×1200)
 gdp_raw["gdp_g"]  = np.log(gdp_raw["GDPC1"]).diff()  * 400

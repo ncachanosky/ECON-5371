@@ -53,7 +53,7 @@
         "  cache: false\n",
         "---"
       ],
-      "id": "a7b6b49e"
+      "id": "88c09a12"
     },
     {
       "cell_type": "code",
@@ -185,11 +185,14 @@
         "#| label: data-download\n",
         "#| include: false\n",
         "\n",
+        "from pathlib import Path\n",
+        "DATA_PATH = Path(\"../../data/raw\")\n",
+        "\n",
         "start = datetime(1947, 1, 1)\n",
         "end   = datetime(2019, 12, 31)   # pre-COVID sample throughout\n",
         "\n",
         "# ── Seasonally adjusted real GDP ───────────────────────────────────────────────\n",
-        "gdp_raw = web.DataReader(\"GDPC1\", \"fred\", start, end)\n",
+        "gdp_raw = pd.read_csv(DATA_PATH / \"GDPC1.csv\", index_col=\"date\", parse_dates=True).loc[str(start):str(end)]\n",
         "gdp_raw.columns = [\"Real GDP\"]\n",
         "\n",
         "# Log level and annualised QoQ growth rate (the forecast target in this chapter)\n",
@@ -624,7 +627,7 @@
         "useful to look at the series we will be forecasting and develop some intuition\n",
         "about what \"good\" accuracy means in this context."
       ],
-      "id": "0a559219"
+      "id": "e8e6c727"
     },
     {
       "cell_type": "code",
@@ -683,7 +686,7 @@
         "quarter's growth plus a constant. As we will see, that is a harder target than\n",
         "it sounds."
       ],
-      "id": "43dcbfce"
+      "id": "e1f1b6ee"
     },
     {
       "cell_type": "code",
@@ -862,7 +865,7 @@
         "errors. Both models and both horizons are handled in a single pass; the error\n",
         "sequences produced here are used directly in Section 5.4 and Section 5.5."
       ],
-      "id": "244ad7ea"
+      "id": "679fc3a0"
     },
     {
       "cell_type": "code",
@@ -1032,7 +1035,7 @@
         "wins. The table tells us the direction and magnitude of the difference;\n",
         "Section 5.4 asks whether it is statistically distinguishable from zero.*"
       ],
-      "id": "ab882633"
+      "id": "545e6347"
     },
     {
       "cell_type": "code",
@@ -1208,7 +1211,7 @@
         "it from scratch rather than calling a black-box function keeps the code in\n",
         "direct correspondence with the theory above."
       ],
-      "id": "f7f37b2a"
+      "id": "2e229334"
     },
     {
       "cell_type": "code",
@@ -1475,7 +1478,7 @@
         "weights estimated from the evaluation sample, and OLS combination — and\n",
         "compare their RMSE against the two individual models at $h = 1$ and $h = 4$."
       ],
-      "id": "e9d2e413"
+      "id": "252c56c6"
     },
     {
       "cell_type": "code",
@@ -1621,7 +1624,7 @@
         "The interval bounds were stored in the main evaluation loop in Section 5.3,\n",
         "so checking coverage requires no additional model fitting."
       ],
-      "id": "68f841ab"
+      "id": "4bb41681"
     },
     {
       "cell_type": "code",
@@ -1732,7 +1735,7 @@
         "quantities were stored in the main evaluation loop and are read directly\n",
         "here."
       ],
-      "id": "3ec26083"
+      "id": "929c908b"
     },
     {
       "cell_type": "code",
@@ -1996,7 +1999,7 @@
         "forecast distributions.\n",
         ":::"
       ],
-      "id": "dce54149"
+      "id": "2f8550bf"
     }
   ],
   "metadata": {
