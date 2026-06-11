@@ -284,7 +284,7 @@ With this language in hand, we build the first model class.
 ### From Distributed Lags to Autoregressions
 
 Suppose we want to forecast this quarter's GDP growth using its historical
-determinants. A natural starting point is a **distributed lag (DL) model**: regress
+determinants. A natural starting point is a **[distributed lag (DL) model](https://en.wikipedia.org/wiki/Distributed_lag)**: regress
 the outcome on current and past values of some control variable $x_t$,
 
 $$y_t = \alpha + w_0 x_t + w_1 x_{t-1} + w_2 x_{t-2} + \cdots + w_K x_{t-K}
@@ -294,8 +294,8 @@ Each coefficient $w_j$ captures how much a unit change in $x$ at lag $j$ affects
 $y_t$ today. The model is transparent and interpretable — but it has a practical
 problem. To capture the full influence of $x$ on $y$, we may need many lags: $K$
 could be 12, 20, or more. That means estimating $K+1$ parameters, many of them
-imprecisely, from a dataset that may have only a few hundred observations. Degrees
-of freedom disappear quickly, and the estimates become noisy.
+imprecisely, from a dataset that may have only a few hundred observations. [Degrees
+of freedom](https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)) disappear quickly, and the estimates become noisy.
 
 Now consider a different question: what if $y_t$ itself is the most informative
 predictor of its own future? For most macroeconomic series, this is not far from
@@ -323,7 +323,7 @@ Section 3.6.
 
 ### The AR(1) Model
 
-The first-order autoregressive model, AR(1), is:
+The first-order [autoregressive model](https://en.wikipedia.org/wiki/Autoregressive_model), AR(1), is:
 
 $$y_t = c + \phi_1 y_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim WN(0, \sigma^2)
 \tag{3.2}$$
@@ -504,10 +504,10 @@ models their theoretical standing, and why the MA family deserves its own sectio
 
 ### Python: Initial Jobless Claims and the AR Signature
 
-Initial jobless claims (`ICSA`) — the number of first-time unemployment insurance
+[Initial jobless claims](https://fred.stlouisfed.org/series/ICSA) (`ICSA`) — the number of first-time unemployment insurance
 filers in a given week — is one of the most closely watched high-frequency labour
 market indicators in the United States. Released every Thursday morning by the
-Department of Labour, it gives financial markets a near-real-time read on the pace
+[Department of Labour](https://www.dol.gov/), it gives financial markets a near-real-time read on the pace
 of job losses. The series runs from 1967 to the present, giving us nearly six
 decades of weekly observations.
 
@@ -605,7 +605,7 @@ $$\tilde{y}_t = \phi_1\tilde{y}_{t-1} + \cdots + \phi_p\tilde{y}_{t-p}
 Multiply both sides by $\tilde{y}_{t-h}$ and take expectations. The innovation
 $\varepsilon_t$ is uncorrelated with any past value of the process, so
 $\mathbb{E}[\varepsilon_t\tilde{y}_{t-h}] = 0$ for all $h \geq 1$. Dividing
-through by $\gamma(0)$ gives the **Yule-Walker equations**:
+through by $\gamma(0)$ gives the **[Yule-Walker equations](https://en.wikipedia.org/wiki/Autoregressive_model#Yule%E2%80%93Walker_equations)**:
 
 $$\rho(h) = \phi_1\rho(h-1) + \phi_2\rho(h-2) + \cdots + \phi_p\rho(h-p),
 \qquad h = 1, 2, \ldots, p \tag{3.7}$$
@@ -689,18 +689,11 @@ where:
   using a linear rule, and uncorrelated with $\varepsilon_s$ for all $s$ and $t$
 :::
 
-The decomposition separates $y_t$ into two orthogonal pieces. The first is the
-part that is genuinely surprising — driven by innovations that could not have been
-foreseen from past data. The second is the part that is completely foreseeable from
-the past, like a deterministic trend or a perfectly regular periodic component. For
-most economic time series, the deterministic part is either absent or trivially
-handled by demeaning, so we focus on the stochastic part. The key object is the
-MA($\infty$) representation: the sequence $\{\psi_j\}$ and the innovation process
-$\{\varepsilon_t\}$.
+The decomposition separates $y_t$ into two orthogonal pieces: a stochastic part and a deterministic part. The deterministic part $\eta_t$ is perfectly predictable from the past, so it does not contribute to the process's unpredictability. The stochastic part, given by the infinite sum of innovations, captures all the unpredictable variation in $y_t$. The Wold innovations $\varepsilon_t$ are uncorrelated by construction, making them the fundamental building blocks of the process's randomness. For most economic time series, the deterministic part is either absent or trivially handled by demeaning, so we focus on the stochastic part. The key object is the MA($\infty$) representation: the sequence $\{\psi_j\}$ and the innovation process $\{\varepsilon_t\}$.
 
 ### Why This Matters
 
-The Wold theorem is not just a mathematical curiosity — it is the foundation on
+The [Wold theorem](https://en.wikipedia.org/wiki/Wold%27s_theorem) is not just a mathematical curiosity — it is the foundation on
 which the entire ARMA family rests.
 
 **It justifies MA models.** We have not yet introduced moving average models
@@ -1147,7 +1140,7 @@ nineteen or more parameters to represent what is fundamentally a one-parameter
 structure. Conversely, a pure MA($q$) can become unwieldy for processes with rich
 autoregressive structure.
 
-The **ARMA($p$,$q$)** model combines both components:
+The **[ARMA($p$,$q$)](https://en.wikipedia.org/wiki/Autoregressive_moving-average_model)** model combines both components:
 
 $$\phi(L)\,y_t = \mu^* + \theta(L)\varepsilon_t \tag{3.14}$$
 
@@ -1162,7 +1155,7 @@ the right-hand side of the ARMA equation is not $\mu$ itself but
 
 $$\mu^* = \phi(1)\,\mu = (1 - \phi_1 - \cdots - \phi_p)\,\mu$$
 
-This matters in practice: when you fit an ARMA model in Python, the reported
+This matters in practice: when you fit an ARMA model, the reported
 intercept is $\hat\mu^*$, not $\hat\mu$. To recover the estimated unconditional
 mean, divide by $\hat\phi(1) = 1 - \hat\phi_1 - \cdots - \hat\phi_p$. For a
 pure MA model, $\phi(L) = 1$ so $\phi(1) = 1$ and $\mu^* = \mu$ — the intercept
@@ -1371,8 +1364,8 @@ This is not a mechanical exercise. Real data are finite, noisy, and generated by
 processes far more complex than any parametric model. The ACF and PACF provide
 evidence, not verdicts. The skill we develop in this section is reading that
 evidence systematically — combining the pattern-recognition rules from Sections
-3.2–3.5 with formal model selection criteria and the discipline of the Box-Jenkins
-workflow.
+3.2–3.5 with formal model selection criteria and the discipline of the [Box-Jenkins
+workflow](https://en.wikipedia.org/wiki/Box%E2%80%93Jenkins_method).
 
 ### Step 1: Stationarity
 
@@ -1459,7 +1452,7 @@ a model with more lags will always explain more of the variation in the estimati
 sample. What we want is a model that generalises well to new data, and that requires
 penalising complexity.
 
-Information criteria formalise this tradeoff. They all take the same conceptual
+[Information criteria](https://en.wikipedia.org/wiki/Model_selection#Criteria) (IC) formalise this tradeoff. They all take the same conceptual
 form:
 
 $$\text{IC} = -2\,\hat\ell + \text{penalty}(k, T)$$

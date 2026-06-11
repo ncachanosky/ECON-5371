@@ -258,14 +258,14 @@ mixture, not a causal parameter.
 That warning carries a natural follow-up question: if we cannot safely add
 one variable as an exogenous regressor in the other's equation, what should
 we do instead? The answer is to give up the idea of a single equation altogether
-and model both variables jointly. This is the logic of the VAR.
+and model both variables jointly. This is the logic of the [VAR](https://en.wikipedia.org/wiki/Vector_autoregression).
 
 ### A Structural System and Its Reduced Form
 
 To see where the VAR comes from, start with a simple example involving two
 variables: output growth $g_t$ and inflation $\pi_t$. Suppose the true
 data-generating process involves genuine two-way dependence between them.
-The Phillips curve — one of the most studied relationships in macroeconomics
+The [Phillips curve](https://en.wikipedia.org/wiki/Phillips_curve) — one of the most studied relationships in macroeconomics
 — captures exactly this: inflation rises when output is above potential, and
 central banks use something close to this trade-off in their own forecasting
 models. A minimal structural representation is:
@@ -312,7 +312,7 @@ $$\begin{bmatrix} g_t \\ \pi_t \end{bmatrix}
 \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \end{bmatrix}
 + \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$$
 
-This is the **reduced form**. Each variable is expressed as a function of
+This is the **[reduced form](https://en.wikipedia.org/wiki/Reduced_form)**. Each variable is expressed as a function of
 its own lags, the lags of all other variables, and a composite error term
 $\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$. There are no
 contemporaneous terms on the right-hand side — the system is self-contained.
@@ -668,7 +668,7 @@ a starting point but not a final answer.
 
 ### The Likelihood Ratio Test
 
-As a complement to information criteria, the **likelihood ratio (LR) test**
+As a complement to information criteria, the **[likelihood ratio (LR) test](https://en.wikipedia.org/wiki/Likelihood-ratio_test)**
 compares two nested lag orders directly. The null hypothesis is $p = p_0$
 (the restricted model); the alternative is $p = p_1 > p_0$ (the unrestricted
 model). The test statistic is:
@@ -1306,7 +1306,7 @@ collectively redundant — then the funds rate does not Granger-cause GDP
 growth, in the specific sense that its past carries no marginal predictive
 content for the growth equation.
 
-Granger causality is a statement about **predictive precedence**, not about
+[Granger causality](https://en.wikipedia.org/wiki/Granger_causality) is a statement about **predictive precedence**, not about
 structural or economic causality. Two examples make this clear.
 
 People carry umbrellas before it rains. If we ran a Granger causality test,
@@ -1694,7 +1694,7 @@ of its own past and the past of all other variables. But the object of
 greatest interest in structural macroeconomics is not the past — it is the
 future. Specifically: if the economy is hit by an unexpected shock today,
 how does each variable respond over the next several quarters? This is the
-question that **impulse response functions (IRFs)** answer.
+question that **[impulse response functions (IRFs)](https://en.wikipedia.org/wiki/Impulse_response)** answer.
 
 ### A Numerical Example
 
@@ -1989,8 +1989,8 @@ immediate within-quarter adjustment.
 ### How Much of the Variance Comes From Each Shock?
 
 The impulse response function answers a *path* question: given a shock today,
-how does each variable move over the next $h$ periods? The **forecast error
-variance decomposition (FEVD)** answers an *attribution* question: of all the
+how does each variable move over the next $h$ periods? The **[forecast error
+variance decomposition (FEVD)](https://en.wikipedia.org/wiki/Variance_decomposition_of_forecast_errors)** answers an *attribution* question: of all the
 uncertainty in our $h$-step-ahead forecast of variable $i$, what fraction is
 due to each structural shock?
 

@@ -230,7 +230,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 5: Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -319,9 +319,9 @@ window.Quarto = {
   <li><a href="#numerical-example-one-dcc-correlation-update" id="toc-numerical-example-one-dcc-correlation-update" class="nav-link" data-scroll-target="#numerical-example-one-dcc-correlation-update">Numerical Example: One DCC Correlation Update</a></li>
   <li><a href="#the-gfc-as-a-dcc-case-study" id="toc-the-gfc-as-a-dcc-case-study" class="nav-link" data-scroll-target="#the-gfc-as-a-dcc-case-study">The GFC as a DCC Case Study</a></li>
   </ul></li>
-  <li><a href="#sec-var" id="toc-sec-var" class="nav-link" data-scroll-target="#sec-var"><span class="header-section-number">9.6</span> Value at Risk with GARCH</a>
+  <li><a href="#sec-var" id="toc-sec-var" class="nav-link" data-scroll-target="#sec-var"><span class="header-section-number">9.6</span> Value-at-Risk with GARCH</a>
   <ul class="collapse">
-  <li><a href="#what-is-value-at-risk" id="toc-what-is-value-at-risk" class="nav-link" data-scroll-target="#what-is-value-at-risk">What Is Value at Risk?</a></li>
+  <li><a href="#what-is-value-at-risk" id="toc-what-is-value-at-risk" class="nav-link" data-scroll-target="#what-is-value-at-risk">What Is Value-at-Risk?</a></li>
   <li><a href="#parametric-garch-var" id="toc-parametric-garch-var" class="nav-link" data-scroll-target="#parametric-garch-var">Parametric GARCH-VaR</a></li>
   <li><a href="#computing-garch-var-on-sp-500-returns" id="toc-computing-garch-var-on-sp-500-returns" class="nav-link" data-scroll-target="#computing-garch-var-on-sp-500-returns">Computing GARCH-VaR on S&amp;P 500 Returns</a></li>
   <li><a href="#kupiec-backtesting" id="toc-kupiec-backtesting" class="nav-link" data-scroll-target="#kupiec-backtesting">Kupiec Backtesting</a></li>
@@ -393,13 +393,13 @@ window.Quarto = {
 <section id="the-random-walk-and-the-efficient-market" class="level3">
 <h3 class="anchored" data-anchor-id="the-random-walk-and-the-efficient-market">The Random Walk and the Efficient Market</h3>
 <p>Chapter 4 spent considerable effort establishing that many macroeconomic series — real GDP, the price level, interest rates — behave like integrated processes: shocks accumulate, and the best forecast of tomorrow’s value is roughly today’s value plus a drift. The same observation applies to stock <em>prices</em>, and in the case of financial markets it has a deeper theoretical interpretation.</p>
-<p>The <strong>Efficient Market Hypothesis (EMH)</strong>, formalised by Fama (1970), asserts that the price of a financial asset at any moment already reflects all available information. If there were a predictable pattern in prices — if the price reliably rose on Tuesdays, or fell after three consecutive gains — investors would exploit it. Buying before the predicted rise and selling before the predicted fall would arbitrage away the pattern almost immediately. The implication is that in a competitive, well-informed market, prices should already have incorporated whatever information the pattern contained, leaving no systematic profit opportunity unexploited.</p>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Efficient-market_hypothesis">Efficient Market Hypothesis (EMH)</a></strong>, formalised by <a href="https://doi.org/10.2307/2325486">Fama (1970)</a>, asserts that the price of a financial asset at any moment already reflects all available information. If there were a predictable pattern in prices — if the price reliably rose on Tuesdays, or fell after three consecutive gains — investors would exploit it. Buying before the predicted rise and selling before the predicted fall would arbitrage away the pattern almost immediately. The implication is that in a competitive, well-informed market, prices should already have incorporated whatever information the pattern contained, leaving no systematic profit opportunity unexploited.</p>
 <p>The formal statement follows directly. Let <span class="math inline">\(P_t\)</span> denote the S&amp;P 500 index level and <span class="math inline">\(r_t = \log(P_t / P_{t-1})\)</span> the log return. Under the weak form of the EMH, the conditional expected return given all past information <span class="math inline">\(\mathcal{F}_{t-1}\)</span> is constant:</p>
 <p><span class="math display">\[\mathbb{E}[r_t \mid \mathcal{F}_{t-1}] = \mu \tag{9.1}\]</span></p>
 <p>where <span class="math inline">\(\mu\)</span> is a constant risk premium — the compensation investors require for holding a risky asset. The deviations from this constant mean,</p>
 <p><span class="math display">\[\varepsilon_t = r_t - \mu \tag{9.2}\]</span></p>
 <p>should be unforecastable from past information: <span class="math inline">\(\mathbb{E}[\varepsilon_t \mid
-\mathcal{F}_{t-1}] = 0\)</span>. This is a stronger statement than just saying <span class="math inline">\(r_t\)</span> is a random walk. It says that the <em>innovation</em> to the return process is white noise — no linear or nonlinear function of past returns can predict it.</p>
+\mathcal{F}_{t-1}] = 0\)</span>. This is a stronger statement than just saying <span class="math inline">\(r_t\)</span> is a <a href="https://en.wikipedia.org/wiki/Random_walk">random walk</a>. It says that the <em>innovation</em> to the return process is <a href="https://en.wikipedia.org/wiki/White_noise">white noise</a> — no linear or nonlinear function of past returns can predict it.</p>
 <p>This is a deflating result for anyone who has just spent eight chapters building forecasting models. If markets are efficient, the tools we have developed — ARIMA, VAR, structural models — are useless for predicting stock returns. The best forecast of tomorrow’s S&amp;P 500 return is today’s constant risk premium <span class="math inline">\(\mu\)</span>. Any model that claims to forecast daily returns better than that is either exploiting a temporary anomaly, overfitting to historical data, or wrong.</p>
 <p>Let us check this on our data before committing to the conclusion.</p>
 <div id="cell-fig-returns-overview" class="cell" data-execution_count="4">
@@ -434,7 +434,7 @@ Figure&nbsp;9.1: <strong>S&amp;P 500 daily log returns, 1980–2019.</strong> Th
 </div>
 </div>
 </div>
-<p>The picture is visually striking. The mean return is essentially flat — consistent with the EMH. But the <em>width</em> of the fluctuations around that mean is anything but constant. The crash of October 1987 (Black Monday) generates a single-day return of around −20 percent. The Russian debt crisis and LTCM collapse of 1998, the dot-com unwinding of 2000–2002, and the Global Financial Crisis of 2008–2009 all produce extended episodes where large swings are followed by more large swings. Between those episodes, the market is comparatively quiet.</p>
+<p>The mean return is essentially flat — consistent with the EMH. But the <em>width</em> of the fluctuations around that mean is anything but constant. The crash of <a href="https://en.wikipedia.org/wiki/Black_Monday_(1987)">October 1987 (Black Monday)</a> generates a single-day return of around −20 percent. The <a href="https://en.wikipedia.org/wiki/1998_Russian_financial_crisis">Russian debt crisis</a> and <a href="https://en.wikipedia.org/wiki/Long-Term_Capital_Management">LTCM collapse of 1998</a>, the <a href="https://en.wikipedia.org/wiki/Dot-com_bubble">dot-com unwinding of 2000–2002</a>, and the <a href="https://en.wikipedia.org/wiki/2008_financial_crisis">Global Financial Crisis of 2008–2009</a> all produce extended episodes where large swings are followed by more large swings. Between those episodes, the market is comparatively quiet.</p>
 <p>This pattern is the defining feature of financial returns: the mean is hard to forecast, but the <em>variance</em> is not. Turbulent periods cluster together, as do calm ones. A large return today — regardless of sign — predicts a large return tomorrow, even though the direction of tomorrow’s return is unpredictable.</p>
 </section>
 <section id="what-the-emh-does-not-rule-out" class="level3">
@@ -442,7 +442,7 @@ Figure&nbsp;9.1: <strong>S&amp;P 500 daily log returns, 1980–2019.</strong> Th
 <p>It is worth being precise about what the efficient market argument does and does not say, because the distinction motivates everything that follows.</p>
 <p>The EMH rules out predictability in the <strong>conditional mean</strong>: <span class="math inline">\(\mathbb{E}[r_t
 \mid \mathcal{F}_{t-1}] = \mu\)</span>. It says nothing about the <strong>conditional variance</strong>: <span class="math inline">\(\text{Var}(r_t \mid \mathcal{F}_{t-1}) = \sigma_t^2\)</span>. Nothing in the efficient market argument requires <span class="math inline">\(\sigma_t^2\)</span> to be constant. Investors knowing that volatility will be high tomorrow does not create an arbitrage opportunity — higher volatility raises risk and return symmetrically, leaving no guaranteed profit.</p>
-<p>This is the pivot that makes the rest of this chapter possible. The question shifts from “what will tomorrow’s return be?” — which markets answer before we can — to “how uncertain is tomorrow’s return?” That second question is both forecastable and economically important. Volatility drives option prices, risk management decisions, portfolio allocation, and the calibration of Value at Risk models. A model for the conditional variance is not just a descriptive exercise; it is a fundamental input into financial decision-making.</p>
+<p>This is the pivot that makes the rest of this chapter possible. The question shifts from “what will tomorrow’s return be?” — which markets answer before we can — to “how uncertain is tomorrow’s return?” That second question is both forecastable and economically important. Volatility drives option prices, risk management decisions, portfolio allocation, and the calibration of Value-at-Risk (VaR) models. A model for the conditional variance is not just a descriptive exercise; it is a fundamental input into financial decision-making.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -523,7 +523,7 @@ Figure&nbsp;9.2: <strong>ACF of returns and squared returns, lags 1–30.</stron
 <section id="from-observation-to-model" class="level3">
 <h3 class="anchored" data-anchor-id="from-observation-to-model">From Observation to Model</h3>
 <p>The ACF of squared returns establishes that volatility is autocorrelated. But autocorrelation in <span class="math inline">\(r_t^2\)</span> is a symptom, not a model. To produce forecasts of tomorrow’s variance — or to quantify how uncertain a future return is — we need a parametric specification that captures the clustering mechanism.</p>
-<p>The key observation, due to Engle (1982), is deceptively simple: the reason today’s squared return predicts tomorrow’s is that <strong>large shocks cluster together</strong>. After a large shock, the conditional variance remains elevated, making further large shocks more likely. After a period of small shocks, the variance is low, and the market is likely to remain calm. Volatility is persistent not because of some external forcing variable, but because it is self-reinforcing.</p>
+<p>The key observation, due to <a href="https://doi.org/10.2307/1912773">Engle (1982)</a>, is deceptively simple: the reason today’s squared return predicts tomorrow’s is that <strong>large shocks cluster together</strong>. After a large shock, the conditional variance remains elevated, making further large shocks more likely. After a period of small shocks, the variance is low, and the market is likely to remain calm. Volatility is persistent not because of some external forcing variable, but because it is self-reinforcing.</p>
 <p>Engle’s insight was to model this directly: make the conditional variance at time <span class="math inline">\(t\)</span> an explicit function of past squared residuals.</p>
 </section>
 <section id="the-archq-model" class="level3">
@@ -531,7 +531,7 @@ Figure&nbsp;9.2: <strong>ACF of returns and squared returns, lags 1–30.</stron
 <p>Write the return at time <span class="math inline">\(t\)</span> as its conditional mean plus an innovation,</p>
 <p><span class="math display">\[r_t = \mu + \varepsilon_t \tag{9.3}\]</span></p>
 <p>where <span class="math inline">\(\mu\)</span> is the constant mean return and <span class="math inline">\(\varepsilon_t\)</span> is the innovation. In the standard ARMA framework, we would assume <span class="math inline">\(\varepsilon_t \sim
-\text{i.i.d.}(0, \sigma^2)\)</span> — the variance is fixed. ARCH relaxes this. We decompose the innovation into a time-varying scale and a standardised shock:</p>
+\text{i.i.d.}(0, \sigma^2)\)</span> — the variance is fixed. <a href="https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity">ARCH</a> relaxes this. We decompose the innovation into a time-varying scale and a standardised shock:</p>
 <p><span class="math display">\[\varepsilon_t = \sigma_t \, z_t, \qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.4}\]</span></p>
 <p>where <span class="math inline">\(z_t\)</span> is a standardised white noise process (in practice, often assumed Gaussian or Student-<span class="math inline">\(t\)</span>) and <span class="math inline">\(\sigma_t^2 = \text{Var}(\varepsilon_t \mid
 \mathcal{F}_{t-1})\)</span> is the conditional variance we want to model.</p>
@@ -594,7 +594,7 @@ Figure&nbsp;9.2: <strong>ACF of returns and squared returns, lags 1–30.</stron
 </section>
 <section id="the-arch-lm-test" class="level3">
 <h3 class="anchored" data-anchor-id="the-arch-lm-test">The ARCH-LM Test</h3>
-<p>Before committing to any model, we should confirm that ARCH effects are statistically present in the data. The <strong>ARCH-LM test</strong> (Engle, 1982) is the standard diagnostic.</p>
+<p>Before committing to any model, we should confirm that ARCH effects are statistically present in the data. The <strong>ARCH-LM test</strong> is the standard diagnostic.</p>
 <p>The null hypothesis is that the first <span class="math inline">\(q\)</span> autocorrelations of <span class="math inline">\(\varepsilon_t^2\)</span> are all zero — equivalently, that the conditional variance is constant. The procedure is a simple auxiliary regression: regress the squared residuals <span class="math inline">\(\hat{\varepsilon}_t^2\)</span> on a constant and <span class="math inline">\(q\)</span> of their own lags,</p>
 <p><span class="math display">\[\hat{\varepsilon}_t^2 = a_0 + a_1 \hat{\varepsilon}_{t-1}^2 + \cdots
 + a_q \hat{\varepsilon}_{t-q}^2 + \nu_t \tag{9.7}\]</span></p>
@@ -702,9 +702,9 @@ Figure&nbsp;9.3: <strong>Rolling 21-day variance of S&amp;P 500 log returns, 198
 <h2 data-number="9.3" class="anchored" data-anchor-id="sec-garch"><span class="header-section-number">9.3</span> The GARCH(1,1) Model</h2>
 <section id="from-arch-to-garch-the-parsimonious-fix" class="level3">
 <h3 class="anchored" data-anchor-id="from-arch-to-garch-the-parsimonious-fix">From ARCH to GARCH: The Parsimonious Fix</h3>
-<p>Section 9.2 ended with a problem: fitting the slowly decaying autocorrelation of squared returns requires an ARCH model with a very long lag polynomial — potentially <span class="math inline">\(q = 20\)</span> or more parameters, all subject to non-negativity constraints. Bollerslev (1986) solved this by analogy with the ARMA solution to the analogous problem for the conditional mean.</p>
+<p>Section 9.2 ended with a problem: fitting the slowly decaying autocorrelation of squared returns requires an ARCH model with a very long lag polynomial — potentially <span class="math inline">\(q = 20\)</span> or more parameters, all subject to non-negativity constraints. <a href="https://www.sciencedirect.com/science/article/abs/pii/0304407686900631">Bollerslev (1986)</a> solved this by analogy with the ARMA solution to the analogous problem for the conditional mean.</p>
 <p>Recall from Chapter 3 that an MA(<span class="math inline">\(\infty\)</span>) process with geometrically declining weights can be approximated arbitrarily well by an ARMA(1,1) with just two parameters. The key was to include a lagged dependent variable on the right-hand side, which acts as a compressed summary of the infinite past. The same trick works for conditional variance: if we add the lagged conditional variance <span class="math inline">\(\sigma_{t-1}^2\)</span> to the ARCH equation, we allow the current variance to depend on all past squared shocks with geometrically declining weights — an ARCH(<span class="math inline">\(\infty\)</span>) — at the cost of one extra parameter.</p>
-<p>This is the <strong>GARCH(1,1)</strong> model. Writing it out alongside the mean equation:</p>
+<p>This is the <strong><a href="https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity#GARCH">GARCH(1,1)</a></strong> model. Writing it out alongside the mean equation:</p>
 <p><span class="math display">\[r_t = \mu + \varepsilon_t, \qquad \varepsilon_t = \sigma_t z_t,
 \qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.9}\]</span></p>
 <p><span class="math display">\[\sigma_t^2 = \omega + \alpha \varepsilon_{t-1}^2 + \beta \sigma_{t-1}^2
@@ -1084,7 +1084,7 @@ Figure&nbsp;9.5: <strong>GARCH(1,1) standardised residual diagnostics.</strong> 
 <section id="the-leverage-effect" class="level3">
 <h3 class="anchored" data-anchor-id="the-leverage-effect">The Leverage Effect</h3>
 <p>The GARCH(1,1) model treats positive and negative shocks symmetrically. In equation (9.10), the term <span class="math inline">\(\alpha \varepsilon_{t-1}^2\)</span> depends only on the <em>square</em> of the shock — a return of <span class="math inline">\(+3\)</span> percent raises tomorrow’s variance by exactly as much as a return of <span class="math inline">\(-3\)</span> percent. Is this symmetry empirically justified?</p>
-<p>For equity markets, the answer is no — and the asymmetry has a name. The <strong>leverage effect</strong>, first documented by Black (1976), refers to the empirical regularity that negative returns raise future volatility by more than equally sized positive returns. The intuition Black proposed was mechanical: a stock price decline increases the debt-to-equity ratio of the firm (leverage rises), which makes the equity riskier and amplifies future volatility. A more modern interpretation emphasises the role of <strong>risk premiums</strong>: when prices fall, investors demand higher compensation for bearing risk, and this demand itself contributes to volatility.</p>
+<p>For equity markets, the answer is no — and the asymmetry has a name. The <strong>leverage effect</strong>, first documented by <a href="https://www.sciencedirect.com/science/article/abs/pii/0304405X76900246">Black (1976)</a>, refers to the empirical regularity that negative returns raise future volatility by more than equally sized positive returns. The intuition Black proposed was mechanical: a stock price decline increases the debt-to-equity ratio of the firm (leverage rises), which makes the equity riskier and amplifies future volatility. A more modern interpretation emphasises the role of <strong>risk premiums</strong>: when prices fall, investors demand higher compensation for bearing risk, and this demand itself contributes to volatility.</p>
 <p>Whatever the mechanism, the empirical pattern is robust across equity markets and time periods. We can see it directly by asking: is there a relationship between the sign of today’s return and the magnitude of tomorrow’s?</p>
 <div id="cell-fig-leverage-scatter" class="cell" data-execution_count="12">
 <details class="code-fold">
@@ -1131,7 +1131,7 @@ Figure&nbsp;9.6: <strong>The leverage effect in S&amp;P 500 returns.</strong> Ea
 </section>
 <section id="gjr-garch-an-indicator-for-bad-news" class="level3">
 <h3 class="anchored" data-anchor-id="gjr-garch-an-indicator-for-bad-news">GJR-GARCH: An Indicator for Bad News</h3>
-<p>Glosten, Jagannathan, and Runkle (1993) proposed the simplest possible fix: add an indicator variable that switches on when the shock is negative, giving bad news an extra contribution to the conditional variance. The <strong>GJR-GARCH(1,1)</strong> variance equation is:</p>
+<p><a href="https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1993.tb05128.x?msockid=16cd1bb13ae96053213f0dc03b106163">Glosten, Jagannathan, and Runkle (1993)</a> proposed the simplest possible fix: add an indicator variable that switches on when the shock is negative, giving bad news an extra contribution to the conditional variance. The <strong>GJR-GARCH(1,1)</strong> variance equation is:</p>
 <p><span class="math display">\[\sigma_t^2 = \omega + (\alpha + \gamma \, \mathbf{1}_{\varepsilon_{t-1} &lt; 0})
 \, \varepsilon_{t-1}^2 + \beta \sigma_{t-1}^2 \tag{9.16}\]</span></p>
 <p>where <span class="math inline">\(\mathbf{1}_{\varepsilon_{t-1} &lt; 0}\)</span> is an indicator that equals 1 when the previous period’s shock was negative and 0 otherwise. The interpretation is clean: when the shock is positive, the ARCH effect is <span class="math inline">\(\alpha\)</span>; when the shock is negative, the ARCH effect is <span class="math inline">\(\alpha + \gamma\)</span>. If <span class="math inline">\(\gamma &gt; 0\)</span>, bad news has a larger impact on volatility than good news — the leverage effect is present. If <span class="math inline">\(\gamma = 0\)</span>, the model reduces to symmetric GARCH(1,1).</p>
@@ -1159,7 +1159,7 @@ Figure&nbsp;9.6: <strong>The leverage effect in S&amp;P 500 returns.</strong> Ea
 </section>
 <section id="egarch-asymmetry-without-constraints" class="level3">
 <h3 class="anchored" data-anchor-id="egarch-asymmetry-without-constraints">EGARCH: Asymmetry Without Constraints</h3>
-<p>Nelson (1991) proposed an alternative that addresses both the asymmetry problem and a technical limitation of GJR-GARCH: the need to impose non-negativity constraints on <span class="math inline">\(\omega\)</span>, <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, and <span class="math inline">\(\beta\)</span> to ensure <span class="math inline">\(\sigma_t^2 &gt; 0\)</span>. The <strong>EGARCH(1,1)</strong> model avoids this by modelling the <em>logarithm</em> of the conditional variance:</p>
+<p><a href="https://doi.org/10.2307/2938260">Nelson (1991)</a> proposed an alternative that addresses both the asymmetry problem and a technical limitation of GJR-GARCH: the need to impose non-negativity constraints on <span class="math inline">\(\omega\)</span>, <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, and <span class="math inline">\(\beta\)</span> to ensure <span class="math inline">\(\sigma_t^2 &gt; 0\)</span>. The <strong>EGARCH(1,1)</strong> model avoids this by modelling the <em>logarithm</em> of the conditional variance:</p>
 <p><span class="math display">\[\log \sigma_t^2 = \omega + \beta \log \sigma_{t-1}^2
 + \alpha |z_{t-1}| + \gamma z_{t-1}, \qquad z_{t-1} =
 \frac{\varepsilon_{t-1}}{\sigma_{t-1}} \tag{9.17}\]</span></p>
@@ -1358,7 +1358,7 @@ Figure&nbsp;9.7: <strong>Conditional volatility from GARCH(1,1), GJR-GARCH, and 
 <section id="beyond-univariate-volatility" class="level3">
 <h3 class="anchored" data-anchor-id="beyond-univariate-volatility">Beyond Univariate Volatility</h3>
 <p>If two assets both become more volatile during a crisis, does that make them more dangerous together — or could the increased volatility offset itself through diversification? The answer depends entirely on whether their <em>correlation</em> rises or falls. It turns out that during financial crises, correlations between risky assets tend to spike precisely when investors need diversification most: equities fall together, credit spreads widen together, and the safe-haven properties of bonds and other hedges weaken. A model that assumes constant correlation misses this dynamic entirely, and a portfolio optimised under normal-market correlations will be systematically under-hedged during the episodes that matter most.</p>
-<p>Every model in Sections 9.2 through 9.4 treats one return series at a time. But risk management — portfolio construction, hedging, regulatory capital calculation — is fundamentally about how assets move <em>together</em>. The <strong>Dynamic Conditional Correlation (DCC)</strong> model, proposed by Engle (2002), extends the GARCH framework to joint modelling of multiple return series. It provides a time-varying correlation matrix <span class="math inline">\(R_t\)</span> that responds to market conditions, capturing the well-documented phenomenon that correlations between risky assets rise during periods of stress.</p>
+<p>Every model in Sections 9.2 through 9.4 treats one return series at a time. But risk management — portfolio construction, hedging, regulatory capital calculation — is fundamentally about how assets move <em>together</em>. The <strong>Dynamic Conditional Correlation (DCC)</strong> model, proposed by <a href="https://www.tandfonline.com/doi/abs/10.1198/073500102288618487">Engle (2002)</a>, extends the GARCH framework to joint modelling of multiple return series. It provides a time-varying correlation matrix <span class="math inline">\(R_t\)</span> that responds to market conditions, capturing the well-documented phenomenon that correlations between risky assets rise during periods of stress.</p>
 </section>
 <section id="the-two-step-dcc-procedure" class="level3">
 <h3 class="anchored" data-anchor-id="the-two-step-dcc-procedure">The Two-Step DCC Procedure</h3>
@@ -1442,11 +1442,11 @@ Figure&nbsp;9.7: <strong>Conditional volatility from GARCH(1,1), GJR-GARCH, and 
 </section>
 </section>
 <section id="sec-var" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="sec-var"><span class="header-section-number">9.6</span> Value at Risk with GARCH</h2>
+<h2 data-number="9.6" class="anchored" data-anchor-id="sec-var"><span class="header-section-number">9.6</span> Value-at-Risk with GARCH</h2>
 <section id="what-is-value-at-risk" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-value-at-risk">What Is Value at Risk?</h3>
+<h3 class="anchored" data-anchor-id="what-is-value-at-risk">What Is Value-at-Risk?</h3>
 <p>In most of this course, risk has been measured through the standard deviation: how far a series typically deviates from its mean. The standard deviation is a symmetric, average measure — it weighs large positive and large negative deviations equally, and it tells us about a <em>typical</em> fluctuation. VaR asks a different question: not what the average deviation is, but what the <em>worst outcome</em> is at a given confidence level. A portfolio manager who wants to know “how bad can things get on a really bad day?” is asking a VaR question, not a standard deviation question. The two numbers are related — under normality, VaR is simply a multiple of the standard deviation — but they capture fundamentally different aspects of risk: one is about typical spread, the other about tail severity.</p>
-<p>Risk managers and regulators need a single number that summarises the downside exposure of a portfolio on a given horizon. <strong>Value at Risk (VaR)</strong> is that number: the loss that will not be exceeded with probability <span class="math inline">\(1 - \alpha\)</span> over horizon <span class="math inline">\(h\)</span>. At the most common specification — one-day horizon, 1% tail probability — the daily VaR is the loss level that will be exceeded on only 1% of trading days. If today’s VaR(1%) is $10 million, the portfolio should lose more than $10 million on roughly 2–3 trading days per year. Formally, if <span class="math inline">\(L_t\)</span> denotes the loss (negative return) on day <span class="math inline">\(t\)</span>:</p>
+<p>Risk managers and regulators need a single number that summarises the downside exposure of a portfolio on a given horizon. <strong>Value-at-Risk (VaR)</strong> is that number: the loss that will not be exceeded with probability <span class="math inline">\(1 - \alpha\)</span> over horizon <span class="math inline">\(h\)</span>. At the most common specification — one-day horizon, 1% tail probability — the daily VaR is the loss level that will be exceeded on only 1% of trading days. If today’s VaR(1%) is $10 million, the portfolio should lose more than $10 million on roughly 2–3 trading days per year. Formally, if <span class="math inline">\(L_t\)</span> denotes the loss (negative return) on day <span class="math inline">\(t\)</span>:</p>
 <p><span class="math display">\[\text{VaR}_{t}(\alpha, h) = \inf\{v : P(L_{t+h} &gt; v \mid \mathcal{F}_t)
 \leq \alpha\} \tag{9.22}\]</span></p>
 <p>The simplest VaR estimate is <strong>historical simulation</strong>: sort the past 250 daily returns and read off the 2.5th-lowest value. This requires no model and is transparent, but it treats all 250 days as equally likely — a February return from five years ago receives the same weight as last week’s return, regardless of how much volatility has changed. During a calm period, historical simulation overstates risk; during a crisis, it understates it, because the window of past losses hasn’t yet caught up with the elevated current volatility.</p>
@@ -1536,7 +1536,7 @@ Figure&nbsp;9.8: <strong>GARCH(1,1) one-day 1% Value at Risk, S&amp;P 500 1980�
 </section>
 <section id="kupiec-backtesting" class="level3">
 <h3 class="anchored" data-anchor-id="kupiec-backtesting">Kupiec Backtesting</h3>
-<p>Reporting an exceedance rate is informative but informal. The <strong>Kupiec (1995) proportion-of-failures (POF) test</strong> provides a formal statistical assessment. The null hypothesis is that the true probability of exceeding the VaR on any given day equals the stated coverage probability <span class="math inline">\(\alpha\)</span>:</p>
+<p>Reporting an exceedance rate is informative but informal. The <strong><a href="https://www.pm-research.com/content/iijderiv/3/2/73">Kupiec (1995)</a> proportion-of-failures (POF) test</strong> provides a formal statistical assessment. The null hypothesis is that the true probability of exceeding the VaR on any given day equals the stated coverage probability <span class="math inline">\(\alpha\)</span>:</p>
 <p><span class="math display">\[H_0: p = \alpha \qquad \text{(correct unconditional coverage)} \tag{9.26}\]</span></p>
 <p>The test statistic is a likelihood ratio. Let <span class="math inline">\(T\)</span> be the total number of observations, <span class="math inline">\(n\)</span> the number of exceedances, and <span class="math inline">\(\hat p = n/T\)</span> the observed exceedance rate. Under <span class="math inline">\(H_0\)</span>, the exceedances are i.i.d. Bernoulli(<span class="math inline">\(\alpha\)</span>). The likelihood ratio statistic is:</p>
 <p><span class="math display">\[\text{LR}_\text{POF} = -2\log\!\left[\frac{\alpha^n(1-\alpha)^{T-n}}
@@ -1597,7 +1597,7 @@ Figure&nbsp;9.8: <strong>GARCH(1,1) one-day 1% Value at Risk, S&amp;P 500 1980�
 </section>
 <section id="limitations-and-extensions" class="level3">
 <h3 class="anchored" data-anchor-id="limitations-and-extensions">Limitations and Extensions</h3>
-<p>The Kupiec test only checks <strong>unconditional coverage</strong> — whether the right fraction of days are exceedances, averaged over the whole sample. It does not check whether exceedances cluster in time. If the model produces 1% exceedances on average but they all occur during the GFC, it is failing on a different dimension: <strong>conditional coverage</strong>. The Christoffersen (1998) test addresses this by testing independence of exceedances as well as correct unconditional coverage; it is the natural next step beyond Kupiec for serious backtesting.</p>
+<p>The Kupiec test only checks <strong>unconditional coverage</strong> — whether the right fraction of days are exceedances, averaged over the whole sample. It does not check whether exceedances cluster in time. If the model produces 1% exceedances on average but they all occur during the GFC, it is failing on a different dimension: <strong>conditional coverage</strong>. The <a href="https://doi.org/10.2307/2527341">Christoffersen (1998)</a> test addresses this by testing independence of exceedances as well as correct unconditional coverage; it is the natural next step beyond Kupiec for serious backtesting.</p>
 <p>Two model extensions would sharpen the VaR estimates significantly. First, replacing the Gaussian innovation distribution with a Student-<span class="math inline">\(t\)</span> — estimated jointly with the GARCH parameters — directly addresses the fat-tail problem and typically reduces Kupiec test statistics for equity index data. Second, using a GJR-GARCH rather than symmetric GARCH(1,1) better captures the elevated downside volatility following negative shocks, which is precisely the scenario that drives VaR exceedances.</p>
 </section>
 </section>
@@ -2458,7 +2458,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a>value plus a drift. The same observation applies to stock *prices*, and in the</span>
 <span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a>case of financial markets it has a deeper theoretical interpretation.</span>
 <span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a>The **Efficient Market Hypothesis (EMH)**, formalised by Fama (1970), asserts</span>
+<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a>The **[Efficient Market Hypothesis (EMH)](https://en.wikipedia.org/wiki/Efficient-market_hypothesis)**, formalised by <span class="co">[</span><span class="ot">Fama (1970)</span><span class="co">](https://doi.org/10.2307/2325486)</span>, asserts</span>
 <span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a>that the price of a financial asset at any moment already reflects all available</span>
 <span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a>information. If there were a predictable pattern in prices — if the price</span>
 <span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a>reliably rose on Tuesdays, or fell after three consecutive gains — investors</span>
@@ -2481,8 +2481,8 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-283"><a href="#cb22-283" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-284"><a href="#cb22-284" aria-hidden="true" tabindex="-1"></a>should be unforecastable from past information: $\mathbb{E}[\varepsilon_t \mid</span>
 <span id="cb22-285"><a href="#cb22-285" aria-hidden="true" tabindex="-1"></a>\mathcal{F}_{t-1}] = 0$. This is a stronger statement than just saying $r_t$</span>
-<span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a>is a random walk. It says that the *innovation* to the return process is white</span>
-<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a>noise — no linear or nonlinear function of past returns can predict it.</span>
+<span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a>is a <span class="co">[</span><span class="ot">random walk</span><span class="co">](https://en.wikipedia.org/wiki/Random_walk)</span>. It says that the *innovation* to the return process is [white</span>
+<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a>noise](https://en.wikipedia.org/wiki/White_noise) — no linear or nonlinear function of past returns can predict it.</span>
 <span id="cb22-288"><a href="#cb22-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-289"><a href="#cb22-289" aria-hidden="true" tabindex="-1"></a>This is a deflating result for anyone who has just spent eight chapters building</span>
 <span id="cb22-290"><a href="#cb22-290" aria-hidden="true" tabindex="-1"></a>forecasting models. If markets are efficient, the tools we have</span>
@@ -2518,12 +2518,12 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-322"><a href="#cb22-322" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
 <span id="cb22-323"><a href="#cb22-323" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-324"><a href="#cb22-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-325"><a href="#cb22-325" aria-hidden="true" tabindex="-1"></a>The picture is visually striking. The mean return is essentially flat —</span>
+<span id="cb22-325"><a href="#cb22-325" aria-hidden="true" tabindex="-1"></a>The mean return is essentially flat —</span>
 <span id="cb22-326"><a href="#cb22-326" aria-hidden="true" tabindex="-1"></a>consistent with the EMH. But the *width* of the fluctuations around that mean</span>
-<span id="cb22-327"><a href="#cb22-327" aria-hidden="true" tabindex="-1"></a>is anything but constant. The crash of October 1987 (Black Monday) generates</span>
-<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a>a single-day return of around −20 percent. The Russian debt crisis and LTCM</span>
-<span id="cb22-329"><a href="#cb22-329" aria-hidden="true" tabindex="-1"></a>collapse of 1998, the dot-com unwinding of 2000–2002, and the Global Financial</span>
-<span id="cb22-330"><a href="#cb22-330" aria-hidden="true" tabindex="-1"></a>Crisis of 2008–2009 all produce extended episodes where large swings are</span>
+<span id="cb22-327"><a href="#cb22-327" aria-hidden="true" tabindex="-1"></a>is anything but constant. The crash of <span class="co">[</span><span class="ot">October 1987 (Black Monday)</span><span class="co">]</span>(https://en.wikipedia.org/wiki/Black_Monday_(1987)) generates</span>
+<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a>a single-day return of around −20 percent. The <span class="co">[</span><span class="ot">Russian debt crisis</span><span class="co">](https://en.wikipedia.org/wiki/1998_Russian_financial_crisis)</span> and [LTCM</span>
+<span id="cb22-329"><a href="#cb22-329" aria-hidden="true" tabindex="-1"></a>collapse of 1998](https://en.wikipedia.org/wiki/Long-Term_Capital_Management), the <span class="co">[</span><span class="ot">dot-com unwinding of 2000–2002</span><span class="co">](https://en.wikipedia.org/wiki/Dot-com_bubble)</span>, and the [Global Financial</span>
+<span id="cb22-330"><a href="#cb22-330" aria-hidden="true" tabindex="-1"></a>Crisis of 2008–2009](https://en.wikipedia.org/wiki/2008_financial_crisis) all produce extended episodes where large swings are</span>
 <span id="cb22-331"><a href="#cb22-331" aria-hidden="true" tabindex="-1"></a>followed by more large swings. Between those episodes, the market is</span>
 <span id="cb22-332"><a href="#cb22-332" aria-hidden="true" tabindex="-1"></a>comparatively quiet.</span>
 <span id="cb22-333"><a href="#cb22-333" aria-hidden="true" tabindex="-1"></a></span>
@@ -2550,7 +2550,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-354"><a href="#cb22-354" aria-hidden="true" tabindex="-1"></a>before we can — to "how uncertain is tomorrow's return?" That second question</span>
 <span id="cb22-355"><a href="#cb22-355" aria-hidden="true" tabindex="-1"></a>is both forecastable and economically important. Volatility drives option</span>
 <span id="cb22-356"><a href="#cb22-356" aria-hidden="true" tabindex="-1"></a>prices, risk management decisions, portfolio allocation, and the calibration of</span>
-<span id="cb22-357"><a href="#cb22-357" aria-hidden="true" tabindex="-1"></a>Value at Risk models. A model for the conditional variance is not just a</span>
+<span id="cb22-357"><a href="#cb22-357" aria-hidden="true" tabindex="-1"></a>Value-at-Risk (VaR) models. A model for the conditional variance is not just a</span>
 <span id="cb22-358"><a href="#cb22-358" aria-hidden="true" tabindex="-1"></a>descriptive exercise; it is a fundamental input into financial decision-making.</span>
 <span id="cb22-359"><a href="#cb22-359" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-360"><a href="#cb22-360" aria-hidden="true" tabindex="-1"></a>::: {.callout-note icon=false}</span>
@@ -2652,7 +2652,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-458"><a href="#cb22-458" aria-hidden="true" tabindex="-1"></a>tomorrow's variance — or to quantify how uncertain a future return is — we</span>
 <span id="cb22-459"><a href="#cb22-459" aria-hidden="true" tabindex="-1"></a>need a parametric specification that captures the clustering mechanism.</span>
 <span id="cb22-460"><a href="#cb22-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-461"><a href="#cb22-461" aria-hidden="true" tabindex="-1"></a>The key observation, due to Engle (1982), is deceptively simple: the reason</span>
+<span id="cb22-461"><a href="#cb22-461" aria-hidden="true" tabindex="-1"></a>The key observation, due to <span class="co">[</span><span class="ot">Engle (1982)</span><span class="co">](https://doi.org/10.2307/1912773)</span>, is deceptively simple: the reason</span>
 <span id="cb22-462"><a href="#cb22-462" aria-hidden="true" tabindex="-1"></a>today's squared return predicts tomorrow's is that **large shocks cluster</span>
 <span id="cb22-463"><a href="#cb22-463" aria-hidden="true" tabindex="-1"></a>together**. After a large shock, the conditional variance remains elevated,</span>
 <span id="cb22-464"><a href="#cb22-464" aria-hidden="true" tabindex="-1"></a>making further large shocks more likely. After a period of small shocks, the</span>
@@ -2671,7 +2671,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-477"><a href="#cb22-477" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-478"><a href="#cb22-478" aria-hidden="true" tabindex="-1"></a>where $\mu$ is the constant mean return and $\varepsilon_t$ is the innovation.</span>
 <span id="cb22-479"><a href="#cb22-479" aria-hidden="true" tabindex="-1"></a>In the standard ARMA framework, we would assume $\varepsilon_t \sim</span>
-<span id="cb22-480"><a href="#cb22-480" aria-hidden="true" tabindex="-1"></a>\text{i.i.d.}(0, \sigma^2)$ — the variance is fixed. ARCH relaxes this. We</span>
+<span id="cb22-480"><a href="#cb22-480" aria-hidden="true" tabindex="-1"></a>\text{i.i.d.}(0, \sigma^2)$ — the variance is fixed. <span class="co">[</span><span class="ot">ARCH</span><span class="co">](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity)</span> relaxes this. We</span>
 <span id="cb22-481"><a href="#cb22-481" aria-hidden="true" tabindex="-1"></a>decompose the innovation into a time-varying scale and a standardised shock:</span>
 <span id="cb22-482"><a href="#cb22-482" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-483"><a href="#cb22-483" aria-hidden="true" tabindex="-1"></a>$$\varepsilon_t = \sigma_t \, z_t, \qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.4}$$</span>
@@ -2793,7 +2793,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-599"><a href="#cb22-599" aria-hidden="true" tabindex="-1"></a><span class="fu">### The ARCH-LM Test</span></span>
 <span id="cb22-600"><a href="#cb22-600" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-601"><a href="#cb22-601" aria-hidden="true" tabindex="-1"></a>Before committing to any model, we should confirm that ARCH effects are</span>
-<span id="cb22-602"><a href="#cb22-602" aria-hidden="true" tabindex="-1"></a>statistically present in the data. The **ARCH-LM test** (Engle, 1982) is the</span>
+<span id="cb22-602"><a href="#cb22-602" aria-hidden="true" tabindex="-1"></a>statistically present in the data. The **ARCH-LM test** is the</span>
 <span id="cb22-603"><a href="#cb22-603" aria-hidden="true" tabindex="-1"></a>standard diagnostic.</span>
 <span id="cb22-604"><a href="#cb22-604" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-605"><a href="#cb22-605" aria-hidden="true" tabindex="-1"></a>The null hypothesis is that the first $q$ autocorrelations of $\varepsilon_t^2$</span>
@@ -2926,7 +2926,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-736"><a href="#cb22-736" aria-hidden="true" tabindex="-1"></a>Section 9.2 ended with a problem: fitting the slowly decaying autocorrelation</span>
 <span id="cb22-737"><a href="#cb22-737" aria-hidden="true" tabindex="-1"></a>of squared returns requires an ARCH model with a very long lag polynomial —</span>
 <span id="cb22-738"><a href="#cb22-738" aria-hidden="true" tabindex="-1"></a>potentially $q = 20$ or more parameters, all subject to non-negativity</span>
-<span id="cb22-739"><a href="#cb22-739" aria-hidden="true" tabindex="-1"></a>constraints. Bollerslev (1986) solved this by analogy with the ARMA solution</span>
+<span id="cb22-739"><a href="#cb22-739" aria-hidden="true" tabindex="-1"></a>constraints. <span class="co">[</span><span class="ot">Bollerslev (1986)</span><span class="co">](https://www.sciencedirect.com/science/article/abs/pii/0304407686900631)</span> solved this by analogy with the ARMA solution</span>
 <span id="cb22-740"><a href="#cb22-740" aria-hidden="true" tabindex="-1"></a>to the analogous problem for the conditional mean.</span>
 <span id="cb22-741"><a href="#cb22-741" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-742"><a href="#cb22-742" aria-hidden="true" tabindex="-1"></a>Recall from Chapter 3 that an MA($\infty$) process with geometrically declining</span>
@@ -2938,7 +2938,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-748"><a href="#cb22-748" aria-hidden="true" tabindex="-1"></a>depend on all past squared shocks with geometrically declining weights — an</span>
 <span id="cb22-749"><a href="#cb22-749" aria-hidden="true" tabindex="-1"></a>ARCH($\infty$) — at the cost of one extra parameter.</span>
 <span id="cb22-750"><a href="#cb22-750" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-751"><a href="#cb22-751" aria-hidden="true" tabindex="-1"></a>This is the **GARCH(1,1)** model. Writing it out alongside the mean equation:</span>
+<span id="cb22-751"><a href="#cb22-751" aria-hidden="true" tabindex="-1"></a>This is the **[GARCH(1,1)](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity#GARCH)** model. Writing it out alongside the mean equation:</span>
 <span id="cb22-752"><a href="#cb22-752" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-753"><a href="#cb22-753" aria-hidden="true" tabindex="-1"></a>$$r_t = \mu + \varepsilon_t, \qquad \varepsilon_t = \sigma_t z_t,</span>
 <span id="cb22-754"><a href="#cb22-754" aria-hidden="true" tabindex="-1"></a>\qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.9}$$</span>
@@ -3393,7 +3393,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1211"><a href="#cb22-1211" aria-hidden="true" tabindex="-1"></a>justified?</span>
 <span id="cb22-1212"><a href="#cb22-1212" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1213"><a href="#cb22-1213" aria-hidden="true" tabindex="-1"></a>For equity markets, the answer is no — and the asymmetry has a name. The</span>
-<span id="cb22-1214"><a href="#cb22-1214" aria-hidden="true" tabindex="-1"></a>**leverage effect**, first documented by Black (1976), refers to the empirical</span>
+<span id="cb22-1214"><a href="#cb22-1214" aria-hidden="true" tabindex="-1"></a>**leverage effect**, first documented by <span class="co">[</span><span class="ot">Black (1976)</span><span class="co">](https://www.sciencedirect.com/science/article/abs/pii/0304405X76900246)</span>, refers to the empirical</span>
 <span id="cb22-1215"><a href="#cb22-1215" aria-hidden="true" tabindex="-1"></a>regularity that negative returns raise future volatility by more than equally</span>
 <span id="cb22-1216"><a href="#cb22-1216" aria-hidden="true" tabindex="-1"></a>sized positive returns. The intuition Black proposed was mechanical: a stock</span>
 <span id="cb22-1217"><a href="#cb22-1217" aria-hidden="true" tabindex="-1"></a>price decline increases the debt-to-equity ratio of the firm (leverage rises),</span>
@@ -3450,7 +3450,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1270"><a href="#cb22-1270" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1271"><a href="#cb22-1271" aria-hidden="true" tabindex="-1"></a><span class="fu">### GJR-GARCH: An Indicator for Bad News</span></span>
 <span id="cb22-1272"><a href="#cb22-1272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-1273"><a href="#cb22-1273" aria-hidden="true" tabindex="-1"></a>Glosten, Jagannathan, and Runkle (1993) proposed the simplest possible fix:</span>
+<span id="cb22-1273"><a href="#cb22-1273" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Glosten, Jagannathan, and Runkle (1993)</span><span class="co">](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1993.tb05128.x?msockid=16cd1bb13ae96053213f0dc03b106163)</span> proposed the simplest possible fix:</span>
 <span id="cb22-1274"><a href="#cb22-1274" aria-hidden="true" tabindex="-1"></a>add an indicator variable that switches on when the shock is negative, giving</span>
 <span id="cb22-1275"><a href="#cb22-1275" aria-hidden="true" tabindex="-1"></a>bad news an extra contribution to the conditional variance. The</span>
 <span id="cb22-1276"><a href="#cb22-1276" aria-hidden="true" tabindex="-1"></a>**GJR-GARCH(1,1)** variance equation is:</span>
@@ -3497,7 +3497,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1317"><a href="#cb22-1317" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1318"><a href="#cb22-1318" aria-hidden="true" tabindex="-1"></a><span class="fu">### EGARCH: Asymmetry Without Constraints</span></span>
 <span id="cb22-1319"><a href="#cb22-1319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-1320"><a href="#cb22-1320" aria-hidden="true" tabindex="-1"></a>Nelson (1991) proposed an alternative that addresses both the asymmetry</span>
+<span id="cb22-1320"><a href="#cb22-1320" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Nelson (1991)</span><span class="co">](https://doi.org/10.2307/2938260)</span> proposed an alternative that addresses both the asymmetry</span>
 <span id="cb22-1321"><a href="#cb22-1321" aria-hidden="true" tabindex="-1"></a>problem and a technical limitation of GJR-GARCH: the need to impose</span>
 <span id="cb22-1322"><a href="#cb22-1322" aria-hidden="true" tabindex="-1"></a>non-negativity constraints on $\omega$, $\alpha$, $\gamma$, and $\beta$ to</span>
 <span id="cb22-1323"><a href="#cb22-1323" aria-hidden="true" tabindex="-1"></a>ensure $\sigma_t^2 &gt; 0$. The **EGARCH(1,1)** model avoids this by modelling</span>
@@ -3735,7 +3735,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1559"><a href="#cb22-1559" aria-hidden="true" tabindex="-1"></a>Every model in Sections 9.2 through 9.4 treats one return series at a time.</span>
 <span id="cb22-1560"><a href="#cb22-1560" aria-hidden="true" tabindex="-1"></a>But risk management — portfolio construction, hedging, regulatory capital</span>
 <span id="cb22-1561"><a href="#cb22-1561" aria-hidden="true" tabindex="-1"></a>calculation — is fundamentally about how assets move *together*. The</span>
-<span id="cb22-1562"><a href="#cb22-1562" aria-hidden="true" tabindex="-1"></a>**Dynamic Conditional Correlation (DCC)** model, proposed by Engle (2002),</span>
+<span id="cb22-1562"><a href="#cb22-1562" aria-hidden="true" tabindex="-1"></a>**Dynamic Conditional Correlation (DCC)** model, proposed by <span class="co">[</span><span class="ot">Engle (2002)</span><span class="co">](https://www.tandfonline.com/doi/abs/10.1198/073500102288618487)</span>,</span>
 <span id="cb22-1563"><a href="#cb22-1563" aria-hidden="true" tabindex="-1"></a>extends the GARCH framework to joint modelling of multiple return series. It</span>
 <span id="cb22-1564"><a href="#cb22-1564" aria-hidden="true" tabindex="-1"></a>provides a time-varying correlation matrix $R_t$ that responds to market</span>
 <span id="cb22-1565"><a href="#cb22-1565" aria-hidden="true" tabindex="-1"></a>conditions, capturing the well-documented phenomenon that correlations between</span>
@@ -3900,9 +3900,9 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1724"><a href="#cb22-1724" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb22-1725"><a href="#cb22-1725" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1726"><a href="#cb22-1726" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-1727"><a href="#cb22-1727" aria-hidden="true" tabindex="-1"></a><span class="fu">## Value at Risk with GARCH {#sec-var}</span></span>
+<span id="cb22-1727"><a href="#cb22-1727" aria-hidden="true" tabindex="-1"></a><span class="fu">## Value-at-Risk with GARCH {#sec-var}</span></span>
 <span id="cb22-1728"><a href="#cb22-1728" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-1729"><a href="#cb22-1729" aria-hidden="true" tabindex="-1"></a><span class="fu">### What Is Value at Risk?</span></span>
+<span id="cb22-1729"><a href="#cb22-1729" aria-hidden="true" tabindex="-1"></a><span class="fu">### What Is Value-at-Risk?</span></span>
 <span id="cb22-1730"><a href="#cb22-1730" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1731"><a href="#cb22-1731" aria-hidden="true" tabindex="-1"></a>In most of this course, risk has been measured through the standard deviation:</span>
 <span id="cb22-1732"><a href="#cb22-1732" aria-hidden="true" tabindex="-1"></a>how far a series typically deviates from its mean. The standard deviation is a</span>
@@ -3917,7 +3917,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1741"><a href="#cb22-1741" aria-hidden="true" tabindex="-1"></a>about tail severity.</span>
 <span id="cb22-1742"><a href="#cb22-1742" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1743"><a href="#cb22-1743" aria-hidden="true" tabindex="-1"></a>Risk managers and regulators need a single number that summarises the downside</span>
-<span id="cb22-1744"><a href="#cb22-1744" aria-hidden="true" tabindex="-1"></a>exposure of a portfolio on a given horizon. **Value at Risk (VaR)** is that</span>
+<span id="cb22-1744"><a href="#cb22-1744" aria-hidden="true" tabindex="-1"></a>exposure of a portfolio on a given horizon. **Value-at-Risk (VaR)** is that</span>
 <span id="cb22-1745"><a href="#cb22-1745" aria-hidden="true" tabindex="-1"></a>number: the loss that will not be exceeded with probability $1 - \alpha$ over</span>
 <span id="cb22-1746"><a href="#cb22-1746" aria-hidden="true" tabindex="-1"></a>horizon $h$. At the most common specification — one-day horizon, 1% tail</span>
 <span id="cb22-1747"><a href="#cb22-1747" aria-hidden="true" tabindex="-1"></a>probability — the daily VaR is the loss level that will be exceeded on only 1%</span>
@@ -4030,7 +4030,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1856"><a href="#cb22-1856" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-1857"><a href="#cb22-1857" aria-hidden="true" tabindex="-1"></a><span class="fu">### Kupiec Backtesting</span></span>
 <span id="cb22-1858"><a href="#cb22-1858" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-1859"><a href="#cb22-1859" aria-hidden="true" tabindex="-1"></a>Reporting an exceedance rate is informative but informal. The **Kupiec (1995)</span>
+<span id="cb22-1859"><a href="#cb22-1859" aria-hidden="true" tabindex="-1"></a>Reporting an exceedance rate is informative but informal. The **<span class="co">[</span><span class="ot">Kupiec (1995)</span><span class="co">](https://www.pm-research.com/content/iijderiv/3/2/73)</span></span>
 <span id="cb22-1860"><a href="#cb22-1860" aria-hidden="true" tabindex="-1"></a>proportion-of-failures (POF) test** provides a formal statistical assessment.</span>
 <span id="cb22-1861"><a href="#cb22-1861" aria-hidden="true" tabindex="-1"></a>The null hypothesis is that the true probability of exceeding the VaR on any</span>
 <span id="cb22-1862"><a href="#cb22-1862" aria-hidden="true" tabindex="-1"></a>given day equals the stated coverage probability $\alpha$:</span>
@@ -4099,7 +4099,7 @@ z_{t-1}\)</span>.</p>
 <span id="cb22-1927"><a href="#cb22-1927" aria-hidden="true" tabindex="-1"></a>fraction of days are exceedances, averaged over the whole sample. It does not</span>
 <span id="cb22-1928"><a href="#cb22-1928" aria-hidden="true" tabindex="-1"></a>check whether exceedances cluster in time. If the model produces 1% exceedances</span>
 <span id="cb22-1929"><a href="#cb22-1929" aria-hidden="true" tabindex="-1"></a>on average but they all occur during the GFC, it is failing on a different</span>
-<span id="cb22-1930"><a href="#cb22-1930" aria-hidden="true" tabindex="-1"></a>dimension: **conditional coverage**. The Christoffersen (1998) test addresses</span>
+<span id="cb22-1930"><a href="#cb22-1930" aria-hidden="true" tabindex="-1"></a>dimension: **conditional coverage**. The <span class="co">[</span><span class="ot">Christoffersen (1998)</span><span class="co">](https://doi.org/10.2307/2527341)</span> test addresses</span>
 <span id="cb22-1931"><a href="#cb22-1931" aria-hidden="true" tabindex="-1"></a>this by testing independence of exceedances as well as correct unconditional</span>
 <span id="cb22-1932"><a href="#cb22-1932" aria-hidden="true" tabindex="-1"></a>coverage; it is the natural next step beyond Kupiec for serious backtesting.</span>
 <span id="cb22-1933"><a href="#cb22-1933" aria-hidden="true" tabindex="-1"></a></span>

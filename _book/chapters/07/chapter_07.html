@@ -230,7 +230,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 5: Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -405,11 +405,11 @@ window.Quarto = {
 <section id="the-endogeneity-problem-revisited" class="level3">
 <h3 class="anchored" data-anchor-id="the-endogeneity-problem-revisited">The Endogeneity Problem, Revisited</h3>
 <p>Chapter 3 introduced the ARMAX model and attached a warning: if the exogenous regressor <span class="math inline">\(x_t\)</span> is itself influenced by <span class="math inline">\(y_t\)</span> — if causality runs in both directions — then the ARMAX coefficient on <span class="math inline">\(x_t\)</span> is biased and inconsistent. We flagged this when adding the federal funds rate to the jobless claims model, noted that the funds rate almost certainly responds to labor market conditions, and concluded that the negative coefficient we estimated should not be read as a structural effect of monetary policy. The coefficient was a reduced-form mixture, not a causal parameter.</p>
-<p>That warning carries a natural follow-up question: if we cannot safely add one variable as an exogenous regressor in the other’s equation, what should we do instead? The answer is to give up the idea of a single equation altogether and model both variables jointly. This is the logic of the VAR.</p>
+<p>That warning carries a natural follow-up question: if we cannot safely add one variable as an exogenous regressor in the other’s equation, what should we do instead? The answer is to give up the idea of a single equation altogether and model both variables jointly. This is the logic of the <a href="https://en.wikipedia.org/wiki/Vector_autoregression">VAR</a>.</p>
 </section>
 <section id="a-structural-system-and-its-reduced-form" class="level3">
 <h3 class="anchored" data-anchor-id="a-structural-system-and-its-reduced-form">A Structural System and Its Reduced Form</h3>
-<p>To see where the VAR comes from, start with a simple example involving two variables: output growth <span class="math inline">\(g_t\)</span> and inflation <span class="math inline">\(\pi_t\)</span>. Suppose the true data-generating process involves genuine two-way dependence between them. The Phillips curve — one of the most studied relationships in macroeconomics — captures exactly this: inflation rises when output is above potential, and central banks use something close to this trade-off in their own forecasting models. A minimal structural representation is:</p>
+<p>To see where the VAR comes from, start with a simple example involving two variables: output growth <span class="math inline">\(g_t\)</span> and inflation <span class="math inline">\(\pi_t\)</span>. Suppose the true data-generating process involves genuine two-way dependence between them. The <a href="https://en.wikipedia.org/wiki/Phillips_curve">Phillips curve</a> — one of the most studied relationships in macroeconomics — captures exactly this: inflation rises when output is above potential, and central banks use something close to this trade-off in their own forecasting models. A minimal structural representation is:</p>
 <p><span class="math display">\[\begin{aligned}
 g_t   &amp;= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
           \gamma_{12}\,\pi_{t-1} + \varepsilon^g_t \\
@@ -434,7 +434,7 @@ g_t   &amp;= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
 + \mathbf{A}_0^{-1}\mathbf{A}_1
 \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \end{bmatrix}
 + \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t\]</span></p>
-<p>This is the <strong>reduced form</strong>. Each variable is expressed as a function of its own lags, the lags of all other variables, and a composite error term <span class="math inline">\(\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t\)</span>. There are no contemporaneous terms on the right-hand side — the system is self-contained. The reduced form can be estimated consistently by OLS, equation by equation.</p>
+<p>This is the <strong><a href="https://en.wikipedia.org/wiki/Reduced_form">reduced form</a></strong>. Each variable is expressed as a function of its own lags, the lags of all other variables, and a composite error term <span class="math inline">\(\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t\)</span>. There are no contemporaneous terms on the right-hand side — the system is self-contained. The reduced form can be estimated consistently by OLS, equation by equation.</p>
 <p>The price we pay is that the composite errors <span class="math inline">\(\mathbf{u}_t\)</span> are no longer structurally interpretable. They are linear combinations of the original structural shocks <span class="math inline">\(\varepsilon^g_t\)</span> and <span class="math inline">\(\varepsilon^\pi_t\)</span>, mixed together by the elements of <span class="math inline">\(\mathbf{A}_0^{-1}\)</span>. A shock to the first reduced-form equation is not a pure output shock — it contains contamination from the inflation shock, in proportions determined by the unknown entries of <span class="math inline">\(\mathbf{A}_0\)</span>. Recovering the structural shocks from the reduced-form residuals is the <strong>identification problem</strong>, which Section 7.5 addresses directly.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -649,7 +649,7 @@ Note: ADF with intercept, lag length by AIC. H₀: unit root.</code></pre>
 </section>
 <section id="the-likelihood-ratio-test" class="level3">
 <h3 class="anchored" data-anchor-id="the-likelihood-ratio-test">The Likelihood Ratio Test</h3>
-<p>As a complement to information criteria, the <strong>likelihood ratio (LR) test</strong> compares two nested lag orders directly. The null hypothesis is <span class="math inline">\(p = p_0\)</span> (the restricted model); the alternative is <span class="math inline">\(p = p_1 &gt; p_0\)</span> (the unrestricted model). The test statistic is:</p>
+<p>As a complement to information criteria, the <strong><a href="https://en.wikipedia.org/wiki/Likelihood-ratio_test">likelihood ratio (LR) test</a></strong> compares two nested lag orders directly. The null hypothesis is <span class="math inline">\(p = p_0\)</span> (the restricted model); the alternative is <span class="math inline">\(p = p_1 &gt; p_0\)</span> (the unrestricted model). The test statistic is:</p>
 <p><span class="math display">\[\text{LR} = (T - p_1 n)\left[\ln|\hat{\boldsymbol{\Sigma}}_u(p_0)| -
   \ln|\hat{\boldsymbol{\Sigma}}_u(p_1)|\right] \tag{7.3}\]</span></p>
 <p>Under the null, <span class="math inline">\(\text{LR} \sim \chi^2(n^2(p_1 - p_0))\)</span>. The degrees of freedom equal the number of restrictions imposed: each lag that is dropped removes <span class="math inline">\(n^2\)</span> coefficients from the system. The finite-sample correction <span class="math inline">\((T - p_1 n)\)</span> in place of <span class="math inline">\(T\)</span> improves size in small samples.</p>
@@ -766,8 +766,8 @@ Table&nbsp;7.2
 ==================================
 Model:                         VAR
 Method:                        OLS
-Date:           Wed, 03, Jun, 2026
-Time:                     20:30:10
+Date:           Mon, 08, Jun, 2026
+Time:                     14:39:28
 --------------------------------------------------------------------
 No. of Equations:         3.00000    BIC:                    1.98538
 Nobs:                     261.000    HQIC:                   1.88737
@@ -1073,8 +1073,8 @@ Table&nbsp;7.5
 ==================================
 Model:                         VAR
 Method:                        OLS
-Date:           Wed, 03, Jun, 2026
-Time:                     20:30:11
+Date:           Mon, 08, Jun, 2026
+Time:                     14:39:29
 --------------------------------------------------------------------
 No. of Equations:         3.00000    BIC:                    2.40602
 Nobs:                     256.000    HQIC:                   1.93414
@@ -1378,7 +1378,7 @@ Figure&nbsp;7.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent conf
 <section id="does-the-past-of-one-variable-help-predict-another" class="level3">
 <h3 class="anchored" data-anchor-id="does-the-past-of-one-variable-help-predict-another">Does the Past of One Variable Help Predict Another?</h3>
 <p>Here is a deceptively simple question: does knowing the history of the federal funds rate help us forecast GDP growth, beyond what GDP growth’s own history already tells us? If the answer is yes — if adding lagged funds rate values to the GDP growth equation reduces forecast errors — then the funds rate <strong>Granger-causes</strong> GDP growth. If the answer is no — if those lags are collectively redundant — then the funds rate does not Granger-cause GDP growth, in the specific sense that its past carries no marginal predictive content for the growth equation.</p>
-<p>Granger causality is a statement about <strong>predictive precedence</strong>, not about structural or economic causality. Two examples make this clear.</p>
+<p><a href="https://en.wikipedia.org/wiki/Granger_causality">Granger causality</a> is a statement about <strong>predictive precedence</strong>, not about structural or economic causality. Two examples make this clear.</p>
 <p>People carry umbrellas before it rains. If we ran a Granger causality test, umbrella-carrying would predict rain: lagged umbrella counts would enter the rain equation with significant coefficients. But umbrellas do not cause rain. Both are driven by a common third factor — forecasted weather — and the umbrella simply comes first in the observable sequence. The Granger test picks up the predictive precedence; it says nothing about the mechanism.</p>
 <p>The same logic applies to gift shopping before Christmas. Retail sales surge in November and December, reliably preceding the 25th of December every year. A time series test would find that gift purchases Granger-cause Christmas — but of course the date of Christmas is fixed by the calendar, not by consumer behaviour. The shopping is a leading indicator of a fixed event, not its cause.</p>
 <p>Both examples share the same structure: a third variable (weather forecast, the calendar) drives both the leading indicator and the outcome, creating predictive precedence without causal content. In macroeconomics the same problem is pervasive. If financial markets anticipate a recession, asset prices will fall before output does — asset prices will Granger-cause GDP growth, but the true cause may be an underlying shock that markets priced in first. Finding that the funds rate Granger-causes GDP growth does not mean that monetary policy mechanically drives output; it means that past values of the funds rate contain information about future GDP growth that is not already in past values of GDP growth itself. Whether that predictive content reflects a genuine policy transmission or merely the Fed’s response to information that markets had already priced in is a structural question. The direction of a genuine causal mechanism may or may not be recoverable from this reduced-form test — that question belongs to the structural identification of Section 7.5. But as a first-pass description of the predictive relationships in the system, Granger causality is both tractable and informative.</p>
@@ -1573,7 +1573,7 @@ H₀: row cause does not Granger-cause column effect.
 <h2 data-number="7.6" class="anchored" data-anchor-id="sec-irf"><span class="header-section-number">7.6</span> Impulse Response Functions</h2>
 <section id="how-does-the-system-respond-to-a-shock" class="level3">
 <h3 class="anchored" data-anchor-id="how-does-the-system-respond-to-a-shock">How Does the System Respond to a Shock?</h3>
-<p>The reduced-form VAR describes how each variable evolves as a linear function of its own past and the past of all other variables. But the object of greatest interest in structural macroeconomics is not the past — it is the future. Specifically: if the economy is hit by an unexpected shock today, how does each variable respond over the next several quarters? This is the question that <strong>impulse response functions (IRFs)</strong> answer.</p>
+<p>The reduced-form VAR describes how each variable evolves as a linear function of its own past and the past of all other variables. But the object of greatest interest in structural macroeconomics is not the past — it is the future. Specifically: if the economy is hit by an unexpected shock today, how does each variable respond over the next several quarters? This is the question that <strong><a href="https://en.wikipedia.org/wiki/Impulse_response">impulse response functions (IRFs)</a></strong> answer.</p>
 </section>
 <section id="a-numerical-example-1" class="level3">
 <h3 class="anchored" data-anchor-id="a-numerical-example-1">A Numerical Example</h3>
@@ -1690,7 +1690,7 @@ Figure&nbsp;7.6: Orthogonalised impulse responses for the three-variable VAR, 19
 <h2 data-number="7.7" class="anchored" data-anchor-id="sec-fevd"><span class="header-section-number">7.7</span> Forecast Error Variance Decomposition</h2>
 <section id="how-much-of-the-variance-comes-from-each-shock" class="level3">
 <h3 class="anchored" data-anchor-id="how-much-of-the-variance-comes-from-each-shock">How Much of the Variance Comes From Each Shock?</h3>
-<p>The impulse response function answers a <em>path</em> question: given a shock today, how does each variable move over the next <span class="math inline">\(h\)</span> periods? The <strong>forecast error variance decomposition (FEVD)</strong> answers an <em>attribution</em> question: of all the uncertainty in our <span class="math inline">\(h\)</span>-step-ahead forecast of variable <span class="math inline">\(i\)</span>, what fraction is due to each structural shock?</p>
+<p>The impulse response function answers a <em>path</em> question: given a shock today, how does each variable move over the next <span class="math inline">\(h\)</span> periods? The <strong><a href="https://en.wikipedia.org/wiki/Variance_decomposition_of_forecast_errors">forecast error variance decomposition (FEVD)</a></strong> answers an <em>attribution</em> question: of all the uncertainty in our <span class="math inline">\(h\)</span>-step-ahead forecast of variable <span class="math inline">\(i\)</span>, what fraction is due to each structural shock?</p>
 <p>To see why this question is non-trivial, consider what happens after a single policy shock — a surprise increase in the federal funds rate. At <span class="math inline">\(h = 0\)</span> the shock hits the funds rate equation directly. But through the VAR’s coefficient matrices it then propagates forward: higher rates dampen GDP growth over the next several quarters; weaker growth in turn reduces inflationary pressure; lower inflation feeds back into the funds rate as the Fed responds. By <span class="math inline">\(h = 8\)</span>, a shock that originated entirely in the policy equation has generated forecast errors in <em>all three</em> variables — not because multiple shocks occurred, but because a single shock rippled through the system.</p>
 <p>If we imagine hitting the economy with all three structural shocks simultaneously — output, inflation, and policy shocks all firing at once — the total forecast uncertainty in GDP growth at horizon <span class="math inline">\(h\)</span> is the sum of their individual contributions. The FEVD asks: what share of that total comes from each source? A policy shock that ripples strongly into GDP growth will claim a large share of GDP growth’s forecast variance at horizons where its IRF is large. An inflation shock whose effect on GDP growth is small and short-lived will claim a small share. The FEVD translates the IRF paths into a single percentage at each horizon: the fraction of forecast uncertainty attributable to each structural disturbance.</p>
 </section>
@@ -2789,14 +2789,14 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-262"><a href="#cb32-262" aria-hidden="true" tabindex="-1"></a>That warning carries a natural follow-up question: if we cannot safely add</span>
 <span id="cb32-263"><a href="#cb32-263" aria-hidden="true" tabindex="-1"></a>one variable as an exogenous regressor in the other's equation, what should</span>
 <span id="cb32-264"><a href="#cb32-264" aria-hidden="true" tabindex="-1"></a>we do instead? The answer is to give up the idea of a single equation altogether</span>
-<span id="cb32-265"><a href="#cb32-265" aria-hidden="true" tabindex="-1"></a>and model both variables jointly. This is the logic of the VAR.</span>
+<span id="cb32-265"><a href="#cb32-265" aria-hidden="true" tabindex="-1"></a>and model both variables jointly. This is the logic of the <span class="co">[</span><span class="ot">VAR</span><span class="co">](https://en.wikipedia.org/wiki/Vector_autoregression)</span>.</span>
 <span id="cb32-266"><a href="#cb32-266" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-267"><a href="#cb32-267" aria-hidden="true" tabindex="-1"></a><span class="fu">### A Structural System and Its Reduced Form</span></span>
 <span id="cb32-268"><a href="#cb32-268" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-269"><a href="#cb32-269" aria-hidden="true" tabindex="-1"></a>To see where the VAR comes from, start with a simple example involving two</span>
 <span id="cb32-270"><a href="#cb32-270" aria-hidden="true" tabindex="-1"></a>variables: output growth $g_t$ and inflation $\pi_t$. Suppose the true</span>
 <span id="cb32-271"><a href="#cb32-271" aria-hidden="true" tabindex="-1"></a>data-generating process involves genuine two-way dependence between them.</span>
-<span id="cb32-272"><a href="#cb32-272" aria-hidden="true" tabindex="-1"></a>The Phillips curve — one of the most studied relationships in macroeconomics</span>
+<span id="cb32-272"><a href="#cb32-272" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">Phillips curve</span><span class="co">](https://en.wikipedia.org/wiki/Phillips_curve)</span> — one of the most studied relationships in macroeconomics</span>
 <span id="cb32-273"><a href="#cb32-273" aria-hidden="true" tabindex="-1"></a>— captures exactly this: inflation rises when output is above potential, and</span>
 <span id="cb32-274"><a href="#cb32-274" aria-hidden="true" tabindex="-1"></a>central banks use something close to this trade-off in their own forecasting</span>
 <span id="cb32-275"><a href="#cb32-275" aria-hidden="true" tabindex="-1"></a>models. A minimal structural representation is:</span>
@@ -2843,7 +2843,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-316"><a href="#cb32-316" aria-hidden="true" tabindex="-1"></a>\begin{bmatrix} g_{t-1} \\ \pi_{t-1} \end{bmatrix}</span>
 <span id="cb32-317"><a href="#cb32-317" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$$</span>
 <span id="cb32-318"><a href="#cb32-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-319"><a href="#cb32-319" aria-hidden="true" tabindex="-1"></a>This is the **reduced form**. Each variable is expressed as a function of</span>
+<span id="cb32-319"><a href="#cb32-319" aria-hidden="true" tabindex="-1"></a>This is the **[reduced form](https://en.wikipedia.org/wiki/Reduced_form)**. Each variable is expressed as a function of</span>
 <span id="cb32-320"><a href="#cb32-320" aria-hidden="true" tabindex="-1"></a>its own lags, the lags of all other variables, and a composite error term</span>
 <span id="cb32-321"><a href="#cb32-321" aria-hidden="true" tabindex="-1"></a>$\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$. There are no</span>
 <span id="cb32-322"><a href="#cb32-322" aria-hidden="true" tabindex="-1"></a>contemporaneous terms on the right-hand side — the system is self-contained.</span>
@@ -3199,7 +3199,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-678"><a href="#cb32-678" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-679"><a href="#cb32-679" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Likelihood Ratio Test</span></span>
 <span id="cb32-680"><a href="#cb32-680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-681"><a href="#cb32-681" aria-hidden="true" tabindex="-1"></a>As a complement to information criteria, the **likelihood ratio (LR) test**</span>
+<span id="cb32-681"><a href="#cb32-681" aria-hidden="true" tabindex="-1"></a>As a complement to information criteria, the **[likelihood ratio (LR) test](https://en.wikipedia.org/wiki/Likelihood-ratio_test)**</span>
 <span id="cb32-682"><a href="#cb32-682" aria-hidden="true" tabindex="-1"></a>compares two nested lag orders directly. The null hypothesis is $p = p_0$</span>
 <span id="cb32-683"><a href="#cb32-683" aria-hidden="true" tabindex="-1"></a>(the restricted model); the alternative is $p = p_1 &gt; p_0$ (the unrestricted</span>
 <span id="cb32-684"><a href="#cb32-684" aria-hidden="true" tabindex="-1"></a>model). The test statistic is:</span>
@@ -3837,7 +3837,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-1346"><a href="#cb32-1346" aria-hidden="true" tabindex="-1"></a>growth, in the specific sense that its past carries no marginal predictive</span>
 <span id="cb32-1347"><a href="#cb32-1347" aria-hidden="true" tabindex="-1"></a>content for the growth equation.</span>
 <span id="cb32-1348"><a href="#cb32-1348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-1349"><a href="#cb32-1349" aria-hidden="true" tabindex="-1"></a>Granger causality is a statement about **predictive precedence**, not about</span>
+<span id="cb32-1349"><a href="#cb32-1349" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Granger causality</span><span class="co">](https://en.wikipedia.org/wiki/Granger_causality)</span> is a statement about **predictive precedence**, not about</span>
 <span id="cb32-1350"><a href="#cb32-1350" aria-hidden="true" tabindex="-1"></a>structural or economic causality. Two examples make this clear.</span>
 <span id="cb32-1351"><a href="#cb32-1351" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-1352"><a href="#cb32-1352" aria-hidden="true" tabindex="-1"></a>People carry umbrellas before it rains. If we ran a Granger causality test,</span>
@@ -4225,7 +4225,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-1738"><a href="#cb32-1738" aria-hidden="true" tabindex="-1"></a>greatest interest in structural macroeconomics is not the past — it is the</span>
 <span id="cb32-1739"><a href="#cb32-1739" aria-hidden="true" tabindex="-1"></a>future. Specifically: if the economy is hit by an unexpected shock today,</span>
 <span id="cb32-1740"><a href="#cb32-1740" aria-hidden="true" tabindex="-1"></a>how does each variable respond over the next several quarters? This is the</span>
-<span id="cb32-1741"><a href="#cb32-1741" aria-hidden="true" tabindex="-1"></a>question that **impulse response functions (IRFs)** answer.</span>
+<span id="cb32-1741"><a href="#cb32-1741" aria-hidden="true" tabindex="-1"></a>question that **[impulse response functions (IRFs)](https://en.wikipedia.org/wiki/Impulse_response)** answer.</span>
 <span id="cb32-1742"><a href="#cb32-1742" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-1743"><a href="#cb32-1743" aria-hidden="true" tabindex="-1"></a><span class="fu">### A Numerical Example</span></span>
 <span id="cb32-1744"><a href="#cb32-1744" aria-hidden="true" tabindex="-1"></a></span>
@@ -4520,8 +4520,8 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-2037"><a href="#cb32-2037" aria-hidden="true" tabindex="-1"></a><span class="fu">### How Much of the Variance Comes From Each Shock?</span></span>
 <span id="cb32-2038"><a href="#cb32-2038" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-2039"><a href="#cb32-2039" aria-hidden="true" tabindex="-1"></a>The impulse response function answers a *path* question: given a shock today,</span>
-<span id="cb32-2040"><a href="#cb32-2040" aria-hidden="true" tabindex="-1"></a>how does each variable move over the next $h$ periods? The **forecast error</span>
-<span id="cb32-2041"><a href="#cb32-2041" aria-hidden="true" tabindex="-1"></a>variance decomposition (FEVD)** answers an *attribution* question: of all the</span>
+<span id="cb32-2040"><a href="#cb32-2040" aria-hidden="true" tabindex="-1"></a>how does each variable move over the next $h$ periods? The **[forecast error</span>
+<span id="cb32-2041"><a href="#cb32-2041" aria-hidden="true" tabindex="-1"></a>variance decomposition (FEVD)](https://en.wikipedia.org/wiki/Variance_decomposition_of_forecast_errors)** answers an *attribution* question: of all the</span>
 <span id="cb32-2042"><a href="#cb32-2042" aria-hidden="true" tabindex="-1"></a>uncertainty in our $h$-step-ahead forecast of variable $i$, what fraction is</span>
 <span id="cb32-2043"><a href="#cb32-2043" aria-hidden="true" tabindex="-1"></a>due to each structural shock?</span>
 <span id="cb32-2044"><a href="#cb32-2044" aria-hidden="true" tabindex="-1"></a></span>

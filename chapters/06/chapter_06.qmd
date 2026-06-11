@@ -284,7 +284,7 @@ by any benchmark that does not pretend the instability away.
 
 ### The Great Moderation as a Running Example
 
-The canonical empirical application in this chapter is the **Great Moderation**
+The canonical empirical application in this chapter is the **[Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation)**
 — the dramatic decline in the volatility of US real GDP growth that began around
 1984. The observation itself is not contested: anyone who plots GDP growth can
 see it. The series is visibly more turbulent before 1984 than after.
@@ -350,12 +350,12 @@ plt.show()
 ```
 
 The fact of the volatility reduction is clear. Its interpretation is genuinely
-contested. Kim and Nelson (1999) and McConnell and Pérez-Quirós (2000) dated
+contested. [Kim and Nelson (1999)](https://direct.mit.edu/books/monograph/3265/State-Space-Models-with-Regime-SwitchingClassical) and [McConnell and Pérez-Quirós (2000)](https://www.aeaweb.org/articles?id=10.1257/aer.90.5.1464) dated
 the break to around 1984 and attributed it primarily to improved inventory
 management — just-in-time production techniques that dampened the amplification
-of demand shocks through the supply chain. Stock and Watson (2002) emphasised
+of demand shocks through the supply chain. [Stock and Watson (2002)](https://www.princeton.edu/~mwatson/papers/Stock_Watson_JBES_2002.pdf) emphasised
 good luck: the shocks hitting the economy in the post-1984 period were simply
-smaller, not better absorbed. Bernanke (2004) made the case for good policy —
+smaller, not better absorbed. [Bernanke (2004)](https://www.federalreserve.gov/boarddocs/speeches/2004/20040220/) made the case for good policy —
 that the Federal Reserve's adoption of a more systematic, expectations-anchoring
 approach to monetary policy after the Volcker disinflation reduced the policy
 uncertainty that had amplified fluctuations in the 1970s.
@@ -409,7 +409,7 @@ stabilisation beginning to propagate through the real economy. Given that
 prior, the simplest possible question is: do the coefficients of our regression
 model differ across the two subsamples that the break defines?
 
-The **Chow test**, proposed by Gregory Chow in 1960, is the $F$-test version
+The **[Chow test](https://en.wikipedia.org/wiki/Chow_test)**, proposed by Gregory Chow in 1960, is the $F$-test version
 of that question. It is one of the oldest procedures in applied econometrics
 and remains the natural starting point for structural break analysis precisely
 because it is transparent: it makes no attempt to be clever about what it does
@@ -785,8 +785,8 @@ price — there may be no credible prior break date. Choosing $\tau$ by inspecti
 the data and then applying the Chow test at that date is circular: we have used
 the data twice, and the resulting $p$-value is not trustworthy.
 
-The **Quandt likelihood ratio (QLR) test**, developed by Richard Quandt (1960)
-and formalised for practical use by Donald Andrews (1993), resolves this by
+The **Quandt likelihood ratio (QLR) test**, developed by [Richard Quandt (1960)](https://www.jstor.org/stable/2281745?seq=1)
+and formalised for practical use by [Donald Andrews (1993)](https://www.jstor.org/stable/2951764), resolves this by
 turning the unknown break date from a problem into a parameter. Instead of
 conditioning on a single $\tau$, we compute the Chow $F$-statistic at every
 candidate date within a trimmed interior of the sample, and we take the maximum.
@@ -987,7 +987,7 @@ A series with one large break and one smaller break would show a QLR statistic
 driven by the larger one, but the smaller break would remain undetected and
 the estimated model would still pool two different regimes.
 
-The **Bai-Perron procedure** (Bai and Perron, 1998, 2003) addresses both
+The **Bai-Perron procedure** (Bai and Perron, [1998](https://www.jstor.org/stable/2998540?seq=1), [2003](https://onlinelibrary.wiley.com/doi/10.1002/jae.659)) addresses both
 the detection and the dating of multiple breaks simultaneously. It treats the
 number of breaks $m$ and their dates $\tau_1 < \tau_2 < \cdots < \tau_m$ as
 jointly unknown parameters to be estimated from the data.
@@ -1274,7 +1274,7 @@ plt.show()
 
 ### The Zivot-Andrews Model
 
-Eric Zivot and Jing Andrew (1992) proposed a unit root test that allows for a
+[Eric Zivot and Jing Andrew (1992)](https://www.jstor.org/stable/1391541?seq=1) proposed a unit root test that allows for a
 single endogenous break in the deterministic trend. They consider three model
 variants: a break in the intercept only (Model A), a break in the slope of a
 time trend only (Model B), and a break in both (Model C). In practice, Model C

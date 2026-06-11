@@ -254,7 +254,7 @@ shocks accumulate, and the best forecast of tomorrow's value is roughly today's
 value plus a drift. The same observation applies to stock *prices*, and in the
 case of financial markets it has a deeper theoretical interpretation.
 
-The **Efficient Market Hypothesis (EMH)**, formalised by Fama (1970), asserts
+The **[Efficient Market Hypothesis (EMH)](https://en.wikipedia.org/wiki/Efficient-market_hypothesis)**, formalised by [Fama (1970)](https://doi.org/10.2307/2325486), asserts
 that the price of a financial asset at any moment already reflects all available
 information. If there were a predictable pattern in prices — if the price
 reliably rose on Tuesdays, or fell after three consecutive gains — investors
@@ -277,8 +277,8 @@ $$\varepsilon_t = r_t - \mu \tag{9.2}$$
 
 should be unforecastable from past information: $\mathbb{E}[\varepsilon_t \mid
 \mathcal{F}_{t-1}] = 0$. This is a stronger statement than just saying $r_t$
-is a random walk. It says that the *innovation* to the return process is white
-noise — no linear or nonlinear function of past returns can predict it.
+is a [random walk](https://en.wikipedia.org/wiki/Random_walk). It says that the *innovation* to the return process is [white
+noise](https://en.wikipedia.org/wiki/White_noise) — no linear or nonlinear function of past returns can predict it.
 
 This is a deflating result for anyone who has just spent eight chapters building
 forecasting models. If markets are efficient, the tools we have
@@ -314,12 +314,12 @@ fig.tight_layout()
 plt.show()
 ```
 
-The picture is visually striking. The mean return is essentially flat —
+The mean return is essentially flat —
 consistent with the EMH. But the *width* of the fluctuations around that mean
-is anything but constant. The crash of October 1987 (Black Monday) generates
-a single-day return of around −20 percent. The Russian debt crisis and LTCM
-collapse of 1998, the dot-com unwinding of 2000–2002, and the Global Financial
-Crisis of 2008–2009 all produce extended episodes where large swings are
+is anything but constant. The crash of [October 1987 (Black Monday)](https://en.wikipedia.org/wiki/Black_Monday_(1987)) generates
+a single-day return of around −20 percent. The [Russian debt crisis](https://en.wikipedia.org/wiki/1998_Russian_financial_crisis) and [LTCM
+collapse of 1998](https://en.wikipedia.org/wiki/Long-Term_Capital_Management), the [dot-com unwinding of 2000–2002](https://en.wikipedia.org/wiki/Dot-com_bubble), and the [Global Financial
+Crisis of 2008–2009](https://en.wikipedia.org/wiki/2008_financial_crisis) all produce extended episodes where large swings are
 followed by more large swings. Between those episodes, the market is
 comparatively quiet.
 
@@ -346,7 +346,7 @@ question shifts from "what will tomorrow's return be?" — which markets answer
 before we can — to "how uncertain is tomorrow's return?" That second question
 is both forecastable and economically important. Volatility drives option
 prices, risk management decisions, portfolio allocation, and the calibration of
-Value at Risk models. A model for the conditional variance is not just a
+Value-at-Risk (VaR) models. A model for the conditional variance is not just a
 descriptive exercise; it is a fundamental input into financial decision-making.
 
 ::: {.callout-note icon=false}
@@ -448,7 +448,7 @@ autocorrelation in $r_t^2$ is a symptom, not a model. To produce forecasts of
 tomorrow's variance — or to quantify how uncertain a future return is — we
 need a parametric specification that captures the clustering mechanism.
 
-The key observation, due to Engle (1982), is deceptively simple: the reason
+The key observation, due to [Engle (1982)](https://doi.org/10.2307/1912773), is deceptively simple: the reason
 today's squared return predicts tomorrow's is that **large shocks cluster
 together**. After a large shock, the conditional variance remains elevated,
 making further large shocks more likely. After a period of small shocks, the
@@ -467,7 +467,7 @@ $$r_t = \mu + \varepsilon_t \tag{9.3}$$
 
 where $\mu$ is the constant mean return and $\varepsilon_t$ is the innovation.
 In the standard ARMA framework, we would assume $\varepsilon_t \sim
-\text{i.i.d.}(0, \sigma^2)$ — the variance is fixed. ARCH relaxes this. We
+\text{i.i.d.}(0, \sigma^2)$ — the variance is fixed. [ARCH](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity) relaxes this. We
 decompose the innovation into a time-varying scale and a standardised shock:
 
 $$\varepsilon_t = \sigma_t \, z_t, \qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.4}$$
@@ -589,7 +589,7 @@ parameter.
 ### The ARCH-LM Test
 
 Before committing to any model, we should confirm that ARCH effects are
-statistically present in the data. The **ARCH-LM test** (Engle, 1982) is the
+statistically present in the data. The **ARCH-LM test** is the
 standard diagnostic.
 
 The null hypothesis is that the first $q$ autocorrelations of $\varepsilon_t^2$
@@ -722,7 +722,7 @@ provides.
 Section 9.2 ended with a problem: fitting the slowly decaying autocorrelation
 of squared returns requires an ARCH model with a very long lag polynomial —
 potentially $q = 20$ or more parameters, all subject to non-negativity
-constraints. Bollerslev (1986) solved this by analogy with the ARMA solution
+constraints. [Bollerslev (1986)](https://www.sciencedirect.com/science/article/abs/pii/0304407686900631) solved this by analogy with the ARMA solution
 to the analogous problem for the conditional mean.
 
 Recall from Chapter 3 that an MA($\infty$) process with geometrically declining
@@ -734,7 +734,7 @@ $\sigma_{t-1}^2$ to the ARCH equation, we allow the current variance to
 depend on all past squared shocks with geometrically declining weights — an
 ARCH($\infty$) — at the cost of one extra parameter.
 
-This is the **GARCH(1,1)** model. Writing it out alongside the mean equation:
+This is the **[GARCH(1,1)](https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity#GARCH)** model. Writing it out alongside the mean equation:
 
 $$r_t = \mu + \varepsilon_t, \qquad \varepsilon_t = \sigma_t z_t,
 \qquad z_t \sim \text{i.i.d.}(0,1) \tag{9.9}$$
@@ -1189,7 +1189,7 @@ by exactly as much as a return of $-3$ percent. Is this symmetry empirically
 justified?
 
 For equity markets, the answer is no — and the asymmetry has a name. The
-**leverage effect**, first documented by Black (1976), refers to the empirical
+**leverage effect**, first documented by [Black (1976)](https://www.sciencedirect.com/science/article/abs/pii/0304405X76900246), refers to the empirical
 regularity that negative returns raise future volatility by more than equally
 sized positive returns. The intuition Black proposed was mechanical: a stock
 price decline increases the debt-to-equity ratio of the firm (leverage rises),
@@ -1246,7 +1246,7 @@ skewed shape the data actually show.
 
 ### GJR-GARCH: An Indicator for Bad News
 
-Glosten, Jagannathan, and Runkle (1993) proposed the simplest possible fix:
+[Glosten, Jagannathan, and Runkle (1993)](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1993.tb05128.x?msockid=16cd1bb13ae96053213f0dc03b106163) proposed the simplest possible fix:
 add an indicator variable that switches on when the shock is negative, giving
 bad news an extra contribution to the conditional variance. The
 **GJR-GARCH(1,1)** variance equation is:
@@ -1293,7 +1293,7 @@ This is the leverage effect made arithmetic.
 
 ### EGARCH: Asymmetry Without Constraints
 
-Nelson (1991) proposed an alternative that addresses both the asymmetry
+[Nelson (1991)](https://doi.org/10.2307/2938260) proposed an alternative that addresses both the asymmetry
 problem and a technical limitation of GJR-GARCH: the need to impose
 non-negativity constraints on $\omega$, $\alpha$, $\gamma$, and $\beta$ to
 ensure $\sigma_t^2 > 0$. The **EGARCH(1,1)** model avoids this by modelling
@@ -1531,7 +1531,7 @@ under-hedged during the episodes that matter most.
 Every model in Sections 9.2 through 9.4 treats one return series at a time.
 But risk management — portfolio construction, hedging, regulatory capital
 calculation — is fundamentally about how assets move *together*. The
-**Dynamic Conditional Correlation (DCC)** model, proposed by Engle (2002),
+**Dynamic Conditional Correlation (DCC)** model, proposed by [Engle (2002)](https://www.tandfonline.com/doi/abs/10.1198/073500102288618487),
 extends the GARCH framework to joint modelling of multiple return series. It
 provides a time-varying correlation matrix $R_t$ that responds to market
 conditions, capturing the well-documented phenomenon that correlations between
@@ -1696,9 +1696,9 @@ translates directly to code once the univariate GARCH margins are in hand.
 :::
 
 
-## Value at Risk with GARCH {#sec-var}
+## Value-at-Risk with GARCH {#sec-var}
 
-### What Is Value at Risk?
+### What Is Value-at-Risk?
 
 In most of this course, risk has been measured through the standard deviation:
 how far a series typically deviates from its mean. The standard deviation is a
@@ -1713,7 +1713,7 @@ fundamentally different aspects of risk: one is about typical spread, the other
 about tail severity.
 
 Risk managers and regulators need a single number that summarises the downside
-exposure of a portfolio on a given horizon. **Value at Risk (VaR)** is that
+exposure of a portfolio on a given horizon. **Value-at-Risk (VaR)** is that
 number: the loss that will not be exceeded with probability $1 - \alpha$ over
 horizon $h$. At the most common specification — one-day horizon, 1% tail
 probability — the daily VaR is the loss level that will be exceeded on only 1%
@@ -1826,7 +1826,7 @@ relying on it for regulatory capital or stop-loss decisions.*
 
 ### Kupiec Backtesting
 
-Reporting an exceedance rate is informative but informal. The **Kupiec (1995)
+Reporting an exceedance rate is informative but informal. The **[Kupiec (1995)](https://www.pm-research.com/content/iijderiv/3/2/73)
 proportion-of-failures (POF) test** provides a formal statistical assessment.
 The null hypothesis is that the true probability of exceeding the VaR on any
 given day equals the stated coverage probability $\alpha$:
@@ -1895,7 +1895,7 @@ The Kupiec test only checks **unconditional coverage** — whether the right
 fraction of days are exceedances, averaged over the whole sample. It does not
 check whether exceedances cluster in time. If the model produces 1% exceedances
 on average but they all occur during the GFC, it is failing on a different
-dimension: **conditional coverage**. The Christoffersen (1998) test addresses
+dimension: **conditional coverage**. The [Christoffersen (1998)](https://doi.org/10.2307/2527341) test addresses
 this by testing independence of exceedances as well as correct unconditional
 coverage; it is the natural next step beyond Kupiec for serious backtesting.
 

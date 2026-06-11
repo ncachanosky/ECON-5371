@@ -230,7 +230,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 5: Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -385,7 +385,7 @@ window.Quarto = {
 <section id="does-the-economy-follow-the-same-law-in-recessions-and-expansions" class="level3">
 <h3 class="anchored" data-anchor-id="does-the-economy-follow-the-same-law-in-recessions-and-expansions">Does the Economy Follow the Same Law in Recessions and Expansions?</h3>
 <p>Every ARIMA model in Chapter 4 asked: given the history of GDP growth up to today, what is our best prediction for next quarter? The answer came from a single estimated equation whose coefficients were fixed for the entire postwar sample — the same mean, the same persistence, the same variance in 1955Q1 as in 2009Q1. That is a convenient assumption. It is not obviously a true one.</p>
-<p>The National Bureau of Economic Research designates business cycle turning points based on a broad reading of macroeconomic data. Recessions, by its definition, are periods of significant decline in economic activity. What Figure 10.1 makes immediately visible is that the quarterly real GDP growth rate — the annualised log difference of GDPC1 — looks qualitatively different during those shaded periods than outside them. Outside recessions, growth is positive, moderately persistent, and clustered around a stable trend. During recessions, growth turns sharply negative, the volatility increases, and the series behaves like a different data-generating process altogether.</p>
+<p>The <a href="https://www.nber.org/">National Bureau of Economic Research (NBER)</a> designates business cycle turning points based on a broad reading of macroeconomic data. Recessions, by its definition, are periods of significant decline in economic activity. What Figure 10.1 makes immediately visible is that the quarterly real GDP growth rate — the annualised log difference of <a href="https://fred.stlouisfed.org/series/GDPC1/"><code>GDPC1</code></a> — looks qualitatively different during those shaded periods than outside them. Outside recessions, growth is positive, moderately persistent, and clustered around a stable trend. During recessions, growth turns sharply negative, the volatility increases, and the series behaves like a different data-generating process altogether.</p>
 <div id="cell-fig-gdp-growth" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -551,7 +551,7 @@ Table&nbsp;10.1
 <p>Standard regularity conditions for likelihood-ratio tests fail when comparing a model with <span class="math inline">\(M\)</span> regimes against one with <span class="math inline">\(M-1\)</span> regimes. Under the null hypothesis of <span class="math inline">\(M-1\)</span> regimes, the parameters specific to the <span class="math inline">\(M\)</span>-th regime are unidentified, and the transition probabilities lie on the boundary of their parameter space. As a result, the LR statistic does not follow a <span class="math inline">\(\chi^2\)</span> distribution. In practice, the number of regimes is typically chosen on economic grounds (two regimes for the business cycle is the canonical choice) and validated by the interpretability of the estimated regimes rather than by a formal test. Information criteria such as AIC and BIC can be used for model comparison after estimation, though their theoretical properties in this context are less well established than in the linear case.</p>
 </div>
 </div>
-<p>These costs are real but manageable. Hamilton’s (1989) two-state model has been applied to US GDP growth for more than three decades, and its ability to identify recessions without using NBER dates has made it one of the most influential papers in macroeconometrics. We build it from scratch in the next section.</p>
+<p>These costs are real but manageable. <a href="https://doi.org/10.2307/1912559">Hamilton’s (1989)</a> two-state model has been applied to US GDP growth for more than three decades, and its ability to identify recessions without using NBER dates has made it one of the most influential papers in macroeconometrics. We build it from scratch in the next section.</p>
 </section>
 </section>
 <section id="sec-msmodel" class="level2" data-number="10.2">
@@ -784,7 +784,7 @@ Table&nbsp;10.2
 </figure>
 </div>
 <p><em>Main Markov-switching specifications. The mean-switching model is the simplest and most interpretable: it identifies two levels of average growth. Variance switching adds a further degree of freedom that may or may not be supported by the data — in our GDP growth sample, the regime-specific standard deviations are nearly equal, so the mean-switching specification captures most of the action. The MS-AR specifications add persistence to the within-regime dynamics. The working model for this chapter is the <strong>mean-switching</strong> MS-AR(2) of equations (10.9)–(10.10): common variance, regime-specific means. This follows Hamilton (1989) and avoids the estimation difficulties that arise when variance is also free to switch on a sample where recessions are only 12% of quarters.</em></p>
-<p>For our GDP growth application, the case for mean switching is clear and strong: the 5.1 pp gap between the expansion mean (3.71%) and the recession mean (−1.41%) is the dominant feature of the data. The standard deviations are nearly identical across the two NBER-classified phases, so variance switching adds little signal but creates an estimation problem — the likelihood surface has a variance-only local optimum that is numerically easier to find than the mean-switching solution. The working model for this chapter is therefore mean-switching with a common variance, following Hamilton (1989) exactly. We return to variance switching as a modelling choice in Section 10.4.</p>
+<p>For our GDP growth application, the case for mean switching is clear and strong: the 5.1 pp gap between the expansion mean (3.71%) and the recession mean (−1.41%) is the dominant feature of the data. The standard deviations are nearly identical across the two NBER-classified phases, so variance switching adds little signal but creates an estimation problem — the likelihood surface has a variance-only local optimum that is numerically easier to find than the mean-switching solution. The working model for this chapter is therefore mean-switching with a common variance, following <a href="https://doi.org/10.2307/1912559">Hamilton (1989)</a> exactly. We return to variance switching as a modelling choice in Section 10.4.</p>
 </section>
 </section>
 <section id="sec-hamilton" class="level2" data-number="10.3">
@@ -806,7 +806,7 @@ Table&nbsp;10.2
 </section>
 <section id="the-filter-recursion" class="level3">
 <h3 class="anchored" data-anchor-id="the-filter-recursion">The Filter Recursion</h3>
-<p>The filter alternates between two steps at each <span class="math inline">\(t\)</span>: a <strong>prediction step</strong> that uses the transition matrix to project the regime probability forward, and an <strong>update step</strong> that uses the new observation <span class="math inline">\(y_t\)</span> to revise that prediction. Both steps are applications of Bayes’ rule.</p>
+<p>The filter alternates between two steps at each <span class="math inline">\(t\)</span>: a <strong>prediction step</strong> that uses the transition matrix to project the regime probability forward, and an <strong>update step</strong> that uses the new observation <span class="math inline">\(y_t\)</span> to revise that prediction. Both steps are applications of <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a>.</p>
 <p><strong>Step 1 — Prediction.</strong> Given the filtered probability <span class="math inline">\(\xi_{t-1|t-1}\)</span> at the end of period <span class="math inline">\(t-1\)</span>, we predict the regime probability at period <span class="math inline">\(t\)</span> before observing <span class="math inline">\(y_t\)</span>:</p>
 <p><span class="math display">\[
 \xi_{t|t-1} = P' \, \xi_{t-1|t-1}
@@ -823,13 +823,13 @@ Table&nbsp;10.2
 \end{aligned}
 \]</span></p>
 <p>The predicted probability of being in expansion tomorrow is the probability of being in expansion today and staying, plus the probability of being in recession today and switching. No observation of <span class="math inline">\(y_t\)</span> has been used yet.</p>
-<p><strong>Step 2 — Update.</strong> When <span class="math inline">\(y_t\)</span> arrives, we use it to revise the predicted regime probabilities via Bayes’ rule. The conditional density of <span class="math inline">\(y_t\)</span> given regime <span class="math inline">\(j\)</span> and the past is:</p>
+<p><strong>Step 2 — Update.</strong> When <span class="math inline">\(y_t\)</span> arrives, we use it to revise the predicted regime probabilities via <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a>. The conditional density of <span class="math inline">\(y_t\)</span> given regime <span class="math inline">\(j\)</span> and the past is:</p>
 <p><span class="math display">\[
 f(y_t \mid s_t = j,\, \mathcal{F}_{t-1}) = \frac{1}{\sqrt{2\pi\sigma_j^2}}
 \exp\!\left(-\frac{(y_t - \mu_j^*)^2}{2\sigma_j^2}\right)
 \tag{10.13}
 \]</span></p>
-<p>where <span class="math inline">\(\mu_j^*\)</span> is the regime-<span class="math inline">\(j\)</span> conditional mean of <span class="math inline">\(y_t\)</span> given past data (from the AR terms in equation (10.9)). Applying Bayes’ rule:</p>
+<p>where <span class="math inline">\(\mu_j^*\)</span> is the regime-<span class="math inline">\(j\)</span> conditional mean of <span class="math inline">\(y_t\)</span> given past data (from the AR terms in equation (10.9)). Applying <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a>:</p>
 <p><span class="math display">\[
 \Pr(s_t = j \mid \mathcal{F}_t) = \frac{f(y_t \mid s_t = j,\, \mathcal{F}_{t-1})
   \cdot \Pr(s_t = j \mid \mathcal{F}_{t-1})}{\sum_{m=0}^{1} f(y_t \mid s_t = m,\,
@@ -977,7 +977,7 @@ f(y_2 \mid s_2 = 1) &amp;= \phi\!\left(\frac{-3.8 - (-2)}{2}\right) = \phi(-0.90
 <section id="filtered-vs.-smoothed-probabilities" class="level3">
 <h3 class="anchored" data-anchor-id="filtered-vs.-smoothed-probabilities">Filtered vs.&nbsp;Smoothed Probabilities</h3>
 <p>The Hamilton filter produces <strong>filtered probabilities</strong> <span class="math inline">\(\xi_{t|t}\)</span> — the best estimate of the current regime using only data available through period <span class="math inline">\(t\)</span>. These are the probabilities a real-time forecaster could have computed. They are causal: no future observation influences <span class="math inline">\(\xi_{t|t}\)</span>.</p>
-<p><strong>Smoothed probabilities</strong> <span class="math inline">\(\xi_{t|T}\)</span> use the full sample <span class="math inline">\(y_1, \ldots, y_T\)</span> to form a retrospective estimate of the regime at each date <span class="math inline">\(t \leq T\)</span>. The smoothing algorithm runs the filter forward from <span class="math inline">\(t=1\)</span> to <span class="math inline">\(T\)</span>, then passes backward from <span class="math inline">\(T\)</span> to <span class="math inline">\(1\)</span>, propagating information from future observations back through the transition structure. The Kim (1994) smoother is the standard implementation:</p>
+<p><strong>Smoothed probabilities</strong> <span class="math inline">\(\xi_{t|T}\)</span> use the full sample <span class="math inline">\(y_1, \ldots, y_T\)</span> to form a retrospective estimate of the regime at each date <span class="math inline">\(t \leq T\)</span>. The smoothing algorithm runs the filter forward from <span class="math inline">\(t=1\)</span> to <span class="math inline">\(T\)</span>, then passes backward from <span class="math inline">\(T\)</span> to <span class="math inline">\(1\)</span>, propagating information from future observations back through the transition structure. The [Kim (1994])(https://www.sciencedirect.com/science/article/abs/pii/0304407694900361) smoother is the standard implementation:</p>
 <p><span class="math display">\[
 \xi_{t|T} = \xi_{t|t} \odot \left[ P \left(\xi_{t+1|T} \,/\, \xi_{t+1|t}\right) \right]
 \tag{10.15}
@@ -1408,7 +1408,7 @@ Table&nbsp;10.3
 <h2 data-number="10.5" class="anchored" data-anchor-id="sec-threshold"><span class="header-section-number">10.5</span> Threshold Models: A Brief Tour</h2>
 <section id="observable-vs.-hidden-threshold" class="level3">
 <h3 class="anchored" data-anchor-id="observable-vs.-hidden-threshold">Observable vs.&nbsp;Hidden Threshold</h3>
-<p>The Markov-switching models of the previous sections assume the regime is driven by a <strong>hidden</strong> state variable — something unobserved that must be inferred probabilistically from the data. The Hamilton filter exists precisely because we cannot see <span class="math inline">\(s_t\)</span> directly. But there is a parallel class of regime-switching models in which the switch is triggered by a variable we <em>can</em> observe. These are <strong>threshold models</strong>, and the key distinction is worth stating clearly before the notation:</p>
+<p>The Markov-switching models of the previous sections assume the regime is driven by a <strong>hidden</strong> state variable — something unobserved that must be inferred probabilistically from the data. The Hamilton filter exists precisely because we cannot see <span class="math inline">\(s_t\)</span> directly. But there is a parallel class of regime-switching models in which the switch is triggered by a variable we <em>can</em> observe. These are <strong><a href="https://en.wikipedia.org/wiki/Threshold_model">threshold models</a></strong>, and the key distinction is worth stating clearly before the notation:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1437,13 +1437,13 @@ y_t = \begin{cases}
 \end{cases}
 \tag{10.18}
 \]</span></p>
-<p>where <span class="math inline">\(d\)</span> is the <strong>delay parameter</strong> (how many lags back we look to determine the regime) and <span class="math inline">\(\gamma\)</span> is the threshold. When the threshold variable is a lagged value of <span class="math inline">\(y_t\)</span> itself — as in (10.18) — the model is called a <strong>self-exciting TAR</strong> or <strong>SETAR</strong>, introduced by Tong (1978) and developed extensively by Tong and Lim (1980). The “self-exciting” label captures the idea that the process determines its own regime: past behaviour triggers the switch.</p>
+<p>where <span class="math inline">\(d\)</span> is the <strong>delay parameter</strong> (how many lags back we look to determine the regime) and <span class="math inline">\(\gamma\)</span> is the threshold. When the threshold variable is a lagged value of <span class="math inline">\(y_t\)</span> itself — as in (10.18) — the model is called a <strong>self-exciting TAR</strong> or <strong><a href="https://en.wikipedia.org/wiki/SETAR_(model)">SETAR</a></strong>, introduced by Tong (1978) and developed extensively by Tong and Lim (1980). The “self-exciting” label captures the idea that the process determines its own regime: past behaviour triggers the switch.</p>
 <p>Applied to GDP growth, a SETAR with <span class="math inline">\(d = 1\)</span> would ask: does the economy follow different AR dynamics when last quarter’s growth was negative versus positive? This is a natural formalisation of asymmetric business cycle behaviour — the hypothesis that contractions propagate differently from expansions — without requiring us to estimate a hidden state.</p>
 <p>Estimation proceeds by conditional least squares: for any candidate threshold <span class="math inline">\(\gamma\)</span>, split the sample by whether <span class="math inline">\(y_{t-d} \leq \gamma\)</span> or not, estimate two separate AR regressions by OLS, and collect the sum of squared residuals. The estimated threshold <span class="math inline">\(\hat{\gamma}\)</span> minimises the total SSR across the grid of candidate values. Hansen (1997) provides the asymptotic theory for inference on <span class="math inline">\(\gamma\)</span>, including a bootstrap procedure for the threshold confidence interval.</p>
 </section>
 <section id="smooth-transition-star-models" class="level3">
 <h3 class="anchored" data-anchor-id="smooth-transition-star-models">Smooth Transition: STAR Models</h3>
-<p>The TAR model has a sharp switch: the economy is entirely in one regime or entirely in the other, with no gradual adjustment. The <strong>smooth transition autoregression</strong> (STAR), introduced by Chan and Tong (1986) and developed by Teräsvirta (1994), replaces the indicator function with a smooth transition function <span class="math inline">\(G(q_t; \gamma, c)\)</span> that takes values between 0 and 1:</p>
+<p>The TAR model has a sharp switch: the economy is entirely in one regime or entirely in the other, with no gradual adjustment. The <strong>smooth transition autoregression</strong> (STAR), introduced by <a href="https://doi.org/10.1111/j.1467-9892.1986.tb00501.x">Chan and Tong (1986)</a> and developed by Teräsvirta (1994), replaces the indicator function with a smooth transition function <span class="math inline">\(G(q_t; \gamma, c)\)</span> that takes values between 0 and 1:</p>
 <p><span class="math display">\[
 y_t = \bigl(1 - G_t\bigr)\bigl(\phi_{1,0} + \boldsymbol{\phi}_1' \mathbf{y}_{t-1}\bigr)
     + G_t\bigl(\phi_{2,0} + \boldsymbol{\phi}_2' \mathbf{y}_{t-1}\bigr) + \varepsilon_t
@@ -1634,8 +1634,8 @@ Table&nbsp;10.4
 </section>
 <section id="sec-looking-ahead" class="level2" data-number="10.7">
 <h2 data-number="10.7" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">10.7</span> Looking Ahead</h2>
-<p>The Hamilton filter developed in this chapter solves a discrete inference problem: given a sequence of observations, recover the probabilities of belonging to one of <span class="math inline">\(M\)</span> discrete hidden states. The prediction step projects the current state distribution through a finite transition matrix; the update step applies Bayes’ rule using a Gaussian likelihood evaluated at the current observation. Every element of this algorithm — the prior, the likelihood, the posterior, the forward projection — has a direct counterpart in the Kalman filter of Chapter 11.</p>
-<p>The Kalman filter solves the same problem for a continuous hidden state. Instead of a probability vector over <span class="math inline">\(M\)</span> regimes, the state is a real-valued vector <span class="math inline">\(\boldsymbol{\alpha}_t\)</span> that evolves according to a linear Gaussian state equation. Instead of a finite transition matrix, there is a state transition matrix <span class="math inline">\(T\)</span> and a Gaussian process noise. Instead of evaluating a mixture of <span class="math inline">\(M\)</span> Gaussians at each step, there is a single multivariate Gaussian prediction that is updated by the observation equation. The prediction step produces a predicted mean and variance for <span class="math inline">\(\boldsymbol{\alpha}_t\)</span>; the update step revises these using the new observation and the Kalman gain — the multivariate analogue of the weight that Bayes’ rule assigns to the new data relative to the prior.</p>
+<p>The Hamilton filter developed in this chapter solves a discrete inference problem: given a sequence of observations, recover the probabilities of belonging to one of <span class="math inline">\(M\)</span> discrete hidden states. The prediction step projects the current state distribution through a finite transition matrix; the update step applies <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a> using a Gaussian likelihood evaluated at the current observation. Every element of this algorithm — the prior, the likelihood, the posterior, the forward projection — has a direct counterpart in the Kalman filter of Chapter 11.</p>
+<p>The Kalman filter solves the same problem for a continuous hidden state. Instead of a probability vector over <span class="math inline">\(M\)</span> regimes, the state is a real-valued vector <span class="math inline">\(\boldsymbol{\alpha}_t\)</span> that evolves according to a linear Gaussian state equation. Instead of a finite transition matrix, there is a state transition matrix <span class="math inline">\(T\)</span> and a Gaussian process noise. Instead of evaluating a mixture of <span class="math inline">\(M\)</span> Gaussians at each step, there is a single multivariate Gaussian prediction that is updated by the observation equation. The prediction step produces a predicted mean and variance for <span class="math inline">\(\boldsymbol{\alpha}_t\)</span>; the update step revises these using the new observation and the Kalman gain — the multivariate analogue of the weight that <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a> assigns to the new data relative to the prior.</p>
 <p>Chapter 11 builds this framework from scratch, starting with the local level model — the simplest state space system, in which the only state is a slowly drifting level — and working up to multivariate systems capable of extracting unobserved components such as the output gap, trend inflation, and the natural rate of interest. The connection to the Hamilton filter ensures that nothing in Chapter 11 will feel unfamiliar: the architecture is the same, the notation changes, and the state space becomes richer. Together, the tools developed across these eleven chapters — from the ACF of a stationary process to Markov-switching dynamics and state-space filtering — form a complete vocabulary for empirical time series work. The methods that appeared exotic at the outset of the course are, by now, a natural part of the toolkit.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2417,11 +2417,11 @@ Table&nbsp;10.4
 <span id="cb20-288"><a href="#cb20-288" aria-hidden="true" tabindex="-1"></a>sample — the same mean, the same persistence, the same variance in 1955Q1 as</span>
 <span id="cb20-289"><a href="#cb20-289" aria-hidden="true" tabindex="-1"></a>in 2009Q1. That is a convenient assumption. It is not obviously a true one.</span>
 <span id="cb20-290"><a href="#cb20-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a>The National Bureau of Economic Research designates business cycle turning</span>
+<span id="cb20-291"><a href="#cb20-291" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">National Bureau of Economic Research (NBER)</span><span class="co">](https://www.nber.org/)</span> designates business cycle turning</span>
 <span id="cb20-292"><a href="#cb20-292" aria-hidden="true" tabindex="-1"></a>points based on a broad reading of macroeconomic data. Recessions, by its</span>
 <span id="cb20-293"><a href="#cb20-293" aria-hidden="true" tabindex="-1"></a>definition, are periods of significant decline in economic activity. What</span>
 <span id="cb20-294"><a href="#cb20-294" aria-hidden="true" tabindex="-1"></a>Figure 10.1 makes immediately visible is that the quarterly real GDP growth</span>
-<span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a>rate — the annualised log difference of GDPC1 — looks qualitatively different</span>
+<span id="cb20-295"><a href="#cb20-295" aria-hidden="true" tabindex="-1"></a>rate — the annualised log difference of <span class="co">[</span><span class="ot">`GDPC1`</span><span class="co">](https://fred.stlouisfed.org/series/GDPC1/)</span> — looks qualitatively different</span>
 <span id="cb20-296"><a href="#cb20-296" aria-hidden="true" tabindex="-1"></a>during those shaded periods than outside them. Outside recessions, growth is</span>
 <span id="cb20-297"><a href="#cb20-297" aria-hidden="true" tabindex="-1"></a>positive, moderately persistent, and clustered around a stable trend. During</span>
 <span id="cb20-298"><a href="#cb20-298" aria-hidden="true" tabindex="-1"></a>recessions, growth turns sharply negative, the volatility increases, and the</span>
@@ -2608,7 +2608,7 @@ Table&nbsp;10.4
 <span id="cb20-485"><a href="#cb20-485" aria-hidden="true" tabindex="-1"></a>this context are less well established than in the linear case.</span>
 <span id="cb20-486"><a href="#cb20-486" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb20-487"><a href="#cb20-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-488"><a href="#cb20-488" aria-hidden="true" tabindex="-1"></a>These costs are real but manageable. Hamilton's (1989) two-state model has</span>
+<span id="cb20-488"><a href="#cb20-488" aria-hidden="true" tabindex="-1"></a>These costs are real but manageable. <span class="co">[</span><span class="ot">Hamilton's (1989)</span><span class="co">](https://doi.org/10.2307/1912559)</span> two-state model has</span>
 <span id="cb20-489"><a href="#cb20-489" aria-hidden="true" tabindex="-1"></a>been applied to US GDP growth for more than three decades, and its ability to</span>
 <span id="cb20-490"><a href="#cb20-490" aria-hidden="true" tabindex="-1"></a>identify recessions without using NBER dates has made it one of the most</span>
 <span id="cb20-491"><a href="#cb20-491" aria-hidden="true" tabindex="-1"></a>influential papers in macroeconometrics. We build it from scratch in the next</span>
@@ -2922,7 +2922,7 @@ Table&nbsp;10.4
 <span id="cb20-803"><a href="#cb20-803" aria-hidden="true" tabindex="-1"></a>adds little signal but creates an estimation problem — the likelihood surface</span>
 <span id="cb20-804"><a href="#cb20-804" aria-hidden="true" tabindex="-1"></a>has a variance-only local optimum that is numerically easier to find than the</span>
 <span id="cb20-805"><a href="#cb20-805" aria-hidden="true" tabindex="-1"></a>mean-switching solution. The working model for this chapter is therefore</span>
-<span id="cb20-806"><a href="#cb20-806" aria-hidden="true" tabindex="-1"></a>mean-switching with a common variance, following Hamilton (1989) exactly. We</span>
+<span id="cb20-806"><a href="#cb20-806" aria-hidden="true" tabindex="-1"></a>mean-switching with a common variance, following <span class="co">[</span><span class="ot">Hamilton (1989)</span><span class="co">](https://doi.org/10.2307/1912559)</span> exactly. We</span>
 <span id="cb20-807"><a href="#cb20-807" aria-hidden="true" tabindex="-1"></a>return to variance switching as a modelling choice in Section 10.4.</span>
 <span id="cb20-808"><a href="#cb20-808" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-809"><a href="#cb20-809" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Hamilton Filter {#sec-hamilton}</span></span>
@@ -2965,7 +2965,7 @@ Table&nbsp;10.4
 <span id="cb20-846"><a href="#cb20-846" aria-hidden="true" tabindex="-1"></a>The filter alternates between two steps at each $t$: a **prediction step**</span>
 <span id="cb20-847"><a href="#cb20-847" aria-hidden="true" tabindex="-1"></a>that uses the transition matrix to project the regime probability forward,</span>
 <span id="cb20-848"><a href="#cb20-848" aria-hidden="true" tabindex="-1"></a>and an **update step** that uses the new observation $y_t$ to revise that</span>
-<span id="cb20-849"><a href="#cb20-849" aria-hidden="true" tabindex="-1"></a>prediction. Both steps are applications of Bayes' rule.</span>
+<span id="cb20-849"><a href="#cb20-849" aria-hidden="true" tabindex="-1"></a>prediction. Both steps are applications of <span class="co">[</span><span class="ot">Bayes' rule</span><span class="co">](https://en.wikipedia.org/wiki/Bayes%27_theorem)</span>.</span>
 <span id="cb20-850"><a href="#cb20-850" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-851"><a href="#cb20-851" aria-hidden="true" tabindex="-1"></a>**Step 1 — Prediction.** Given the filtered probability $\xi_{t-1|t-1}$ at</span>
 <span id="cb20-852"><a href="#cb20-852" aria-hidden="true" tabindex="-1"></a>the end of period $t-1$, we predict the regime probability at period $t$</span>
@@ -2994,7 +2994,7 @@ Table&nbsp;10.4
 <span id="cb20-875"><a href="#cb20-875" aria-hidden="true" tabindex="-1"></a>recession today and switching. No observation of $y_t$ has been used yet.</span>
 <span id="cb20-876"><a href="#cb20-876" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-877"><a href="#cb20-877" aria-hidden="true" tabindex="-1"></a>**Step 2 — Update.** When $y_t$ arrives, we use it to revise the predicted</span>
-<span id="cb20-878"><a href="#cb20-878" aria-hidden="true" tabindex="-1"></a>regime probabilities via Bayes' rule. The conditional density of $y_t$ given</span>
+<span id="cb20-878"><a href="#cb20-878" aria-hidden="true" tabindex="-1"></a>regime probabilities via <span class="co">[</span><span class="ot">Bayes' rule</span><span class="co">](https://en.wikipedia.org/wiki/Bayes%27_theorem)</span>. The conditional density of $y_t$ given</span>
 <span id="cb20-879"><a href="#cb20-879" aria-hidden="true" tabindex="-1"></a>regime $j$ and the past is:</span>
 <span id="cb20-880"><a href="#cb20-880" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-881"><a href="#cb20-881" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -3004,7 +3004,7 @@ Table&nbsp;10.4
 <span id="cb20-885"><a href="#cb20-885" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb20-886"><a href="#cb20-886" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-887"><a href="#cb20-887" aria-hidden="true" tabindex="-1"></a>where $\mu_j^*$ is the regime-$j$ conditional mean of $y_t$ given past data</span>
-<span id="cb20-888"><a href="#cb20-888" aria-hidden="true" tabindex="-1"></a>(from the AR terms in equation (10.9)). Applying Bayes' rule:</span>
+<span id="cb20-888"><a href="#cb20-888" aria-hidden="true" tabindex="-1"></a>(from the AR terms in equation (10.9)). Applying <span class="co">[</span><span class="ot">Bayes' rule</span><span class="co">](https://en.wikipedia.org/wiki/Bayes%27_theorem)</span>:</span>
 <span id="cb20-889"><a href="#cb20-889" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-890"><a href="#cb20-890" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb20-891"><a href="#cb20-891" aria-hidden="true" tabindex="-1"></a>\Pr(s_t = j \mid \mathcal{F}_t) = \frac{f(y_t \mid s_t = j,\, \mathcal{F}_{t-1})</span>
@@ -3177,7 +3177,7 @@ Table&nbsp;10.4
 <span id="cb20-1060"><a href="#cb20-1060" aria-hidden="true" tabindex="-1"></a>to form a retrospective estimate of the regime at each date $t \leq T$. The</span>
 <span id="cb20-1061"><a href="#cb20-1061" aria-hidden="true" tabindex="-1"></a>smoothing algorithm runs the filter forward from $t=1$ to $T$, then passes</span>
 <span id="cb20-1062"><a href="#cb20-1062" aria-hidden="true" tabindex="-1"></a>backward from $T$ to $1$, propagating information from future observations</span>
-<span id="cb20-1063"><a href="#cb20-1063" aria-hidden="true" tabindex="-1"></a>back through the transition structure. The Kim (1994) smoother is the standard</span>
+<span id="cb20-1063"><a href="#cb20-1063" aria-hidden="true" tabindex="-1"></a>back through the transition structure. The <span class="co">[</span><span class="ot">Kim (1994</span><span class="co">]</span>)(https://www.sciencedirect.com/science/article/abs/pii/0304407694900361) smoother is the standard</span>
 <span id="cb20-1064"><a href="#cb20-1064" aria-hidden="true" tabindex="-1"></a>implementation:</span>
 <span id="cb20-1065"><a href="#cb20-1065" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1066"><a href="#cb20-1066" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -3654,7 +3654,7 @@ Table&nbsp;10.4
 <span id="cb20-1545"><a href="#cb20-1545" aria-hidden="true" tabindex="-1"></a>inferred probabilistically from the data. The Hamilton filter exists precisely</span>
 <span id="cb20-1546"><a href="#cb20-1546" aria-hidden="true" tabindex="-1"></a>because we cannot see $s_t$ directly. But there is a parallel class of</span>
 <span id="cb20-1547"><a href="#cb20-1547" aria-hidden="true" tabindex="-1"></a>regime-switching models in which the switch is triggered by a variable we</span>
-<span id="cb20-1548"><a href="#cb20-1548" aria-hidden="true" tabindex="-1"></a>*can* observe. These are **threshold models**, and the key distinction is</span>
+<span id="cb20-1548"><a href="#cb20-1548" aria-hidden="true" tabindex="-1"></a>*can* observe. These are **[threshold models](https://en.wikipedia.org/wiki/Threshold_model)**, and the key distinction is</span>
 <span id="cb20-1549"><a href="#cb20-1549" aria-hidden="true" tabindex="-1"></a>worth stating clearly before the notation:</span>
 <span id="cb20-1550"><a href="#cb20-1550" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1551"><a href="#cb20-1551" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
@@ -3698,7 +3698,7 @@ Table&nbsp;10.4
 <span id="cb20-1589"><a href="#cb20-1589" aria-hidden="true" tabindex="-1"></a>where $d$ is the **delay parameter** (how many lags back we look to determine</span>
 <span id="cb20-1590"><a href="#cb20-1590" aria-hidden="true" tabindex="-1"></a>the regime) and $\gamma$ is the threshold. When the threshold variable is a</span>
 <span id="cb20-1591"><a href="#cb20-1591" aria-hidden="true" tabindex="-1"></a>lagged value of $y_t$ itself — as in (10.18) — the model is called a</span>
-<span id="cb20-1592"><a href="#cb20-1592" aria-hidden="true" tabindex="-1"></a>**self-exciting TAR** or **SETAR**, introduced by Tong (1978) and developed</span>
+<span id="cb20-1592"><a href="#cb20-1592" aria-hidden="true" tabindex="-1"></a>**self-exciting TAR** or **[SETAR](https://en.wikipedia.org/wiki/SETAR_(model))**, introduced by Tong (1978) and developed</span>
 <span id="cb20-1593"><a href="#cb20-1593" aria-hidden="true" tabindex="-1"></a>extensively by Tong and Lim (1980). The "self-exciting" label captures the</span>
 <span id="cb20-1594"><a href="#cb20-1594" aria-hidden="true" tabindex="-1"></a>idea that the process determines its own regime: past behaviour triggers</span>
 <span id="cb20-1595"><a href="#cb20-1595" aria-hidden="true" tabindex="-1"></a>the switch.</span>
@@ -3721,7 +3721,7 @@ Table&nbsp;10.4
 <span id="cb20-1612"><a href="#cb20-1612" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1613"><a href="#cb20-1613" aria-hidden="true" tabindex="-1"></a>The TAR model has a sharp switch: the economy is entirely in one regime or</span>
 <span id="cb20-1614"><a href="#cb20-1614" aria-hidden="true" tabindex="-1"></a>entirely in the other, with no gradual adjustment. The **smooth transition</span>
-<span id="cb20-1615"><a href="#cb20-1615" aria-hidden="true" tabindex="-1"></a>autoregression** (STAR), introduced by Chan and Tong (1986) and developed by</span>
+<span id="cb20-1615"><a href="#cb20-1615" aria-hidden="true" tabindex="-1"></a>autoregression** (STAR), introduced by <span class="co">[</span><span class="ot">Chan and Tong (1986)</span><span class="co">](https://doi.org/10.1111/j.1467-9892.1986.tb00501.x)</span> and developed by</span>
 <span id="cb20-1616"><a href="#cb20-1616" aria-hidden="true" tabindex="-1"></a>Teräsvirta (1994), replaces the indicator function with a smooth transition</span>
 <span id="cb20-1617"><a href="#cb20-1617" aria-hidden="true" tabindex="-1"></a>function $G(q_t; \gamma, c)$ that takes values between 0 and 1:</span>
 <span id="cb20-1618"><a href="#cb20-1618" aria-hidden="true" tabindex="-1"></a></span>
@@ -4000,7 +4000,7 @@ Table&nbsp;10.4
 <span id="cb20-1895"><a href="#cb20-1895" aria-hidden="true" tabindex="-1"></a>problem: given a sequence of observations, recover the probabilities of</span>
 <span id="cb20-1896"><a href="#cb20-1896" aria-hidden="true" tabindex="-1"></a>belonging to one of $M$ discrete hidden states. The prediction step projects</span>
 <span id="cb20-1897"><a href="#cb20-1897" aria-hidden="true" tabindex="-1"></a>the current state distribution through a finite transition matrix; the update</span>
-<span id="cb20-1898"><a href="#cb20-1898" aria-hidden="true" tabindex="-1"></a>step applies Bayes' rule using a Gaussian likelihood evaluated at the current</span>
+<span id="cb20-1898"><a href="#cb20-1898" aria-hidden="true" tabindex="-1"></a>step applies <span class="co">[</span><span class="ot">Bayes' rule</span><span class="co">](https://en.wikipedia.org/wiki/Bayes%27_theorem)</span> using a Gaussian likelihood evaluated at the current</span>
 <span id="cb20-1899"><a href="#cb20-1899" aria-hidden="true" tabindex="-1"></a>observation. Every element of this algorithm — the prior, the likelihood, the</span>
 <span id="cb20-1900"><a href="#cb20-1900" aria-hidden="true" tabindex="-1"></a>posterior, the forward projection — has a direct counterpart in the Kalman</span>
 <span id="cb20-1901"><a href="#cb20-1901" aria-hidden="true" tabindex="-1"></a>filter of Chapter 11.</span>
@@ -4014,7 +4014,7 @@ Table&nbsp;10.4
 <span id="cb20-1909"><a href="#cb20-1909" aria-hidden="true" tabindex="-1"></a>prediction that is updated by the observation equation. The prediction step</span>
 <span id="cb20-1910"><a href="#cb20-1910" aria-hidden="true" tabindex="-1"></a>produces a predicted mean and variance for $\boldsymbol{\alpha}_t$; the</span>
 <span id="cb20-1911"><a href="#cb20-1911" aria-hidden="true" tabindex="-1"></a>update step revises these using the new observation and the Kalman gain — the</span>
-<span id="cb20-1912"><a href="#cb20-1912" aria-hidden="true" tabindex="-1"></a>multivariate analogue of the weight that Bayes' rule assigns to the new data</span>
+<span id="cb20-1912"><a href="#cb20-1912" aria-hidden="true" tabindex="-1"></a>multivariate analogue of the weight that <span class="co">[</span><span class="ot">Bayes' rule</span><span class="co">](https://en.wikipedia.org/wiki/Bayes%27_theorem)</span> assigns to the new data</span>
 <span id="cb20-1913"><a href="#cb20-1913" aria-hidden="true" tabindex="-1"></a>relative to the prior.</span>
 <span id="cb20-1914"><a href="#cb20-1914" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-1915"><a href="#cb20-1915" aria-hidden="true" tabindex="-1"></a>Chapter 11 builds this framework from scratch, starting with the local level</span>

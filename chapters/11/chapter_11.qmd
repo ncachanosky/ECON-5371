@@ -251,7 +251,7 @@ data. Section 10.5 sharpens the distinction between filtering, smoothing, and
 forecasting. Section 10.6 presents the general matrix form of the state space
 model and shows that ARIMA, exponential smoothing, and time-varying parameter
 regressions are all special cases. Section 10.7 applies the full apparatus to
-core PCE inflation, tracing the Great Inflation and the Great Moderation through
+core PCE inflation, tracing the Great Inflation and the [Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation) through
 a smoothed trend estimate. Section 10.8 connects the Kalman filter to
 nowcasting. Throughout, the running example is monthly core PCE inflation from
 1960 through 2019.
@@ -571,7 +571,7 @@ The subscript notation is important and worth fixing precisely. We write:
 - $P_{t|t}$: the **filtered variance** — the mean squared error of
   $\hat{\mu}_{t|t}$.
 
-The Kalman filter is the recursive algorithm that computes all four of these
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) is the recursive algorithm that computes all four of these
 objects period by period, starting from an initial condition and updating as
 new observations arrive.
 
@@ -822,7 +822,7 @@ decisive, but the weight of consistent evidence gradually overrides the prior.*
 
 ### What Makes This Optimal?
 
-The Kalman filter is not just a plausible updating rule — it is the
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) is not just a plausible updating rule — it is the
 minimum-mean-squared-error estimator of the state, given the model. Under the
 assumption that $\varepsilon_t$ and $\eta_t$ are Gaussian, it is also the
 exact conditional expectation: $\hat{\mu}_{t|t} = \mathbb{E}[\mu_t \mid
@@ -840,7 +840,7 @@ formula (10.11) is not an ad hoc choice but a derived result.
 ::: {.callout-warning}
 ## The Filter Requires Correct Parameter Values
 
-The Kalman filter recursion (10.7)–(10.13) takes $\sigma_\varepsilon^2$ and
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) recursion (10.7)–(10.13) takes $\sigma_\varepsilon^2$ and
 $\sigma_\eta^2$ as given. In the numerical example above, we assumed specific
 values for illustration. In practice these parameters are unknown and must be
 estimated from the data. Section 10.4 explains how maximum likelihood
@@ -965,7 +965,7 @@ given by equation (10.15).
 
 How do we estimate $\sigma_\varepsilon^2$ and $\sigma_\eta^2$ — equivalently,
 $\sigma_\varepsilon^2$ and $q$ — from data? The answer is maximum likelihood,
-and the Kalman filter provides the likelihood as a by-product of its
+and the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) provides the likelihood as a by-product of its
 recursion.
 
 At each period $t$, the filter computes the innovation $v_t = y_t -
@@ -1001,7 +1001,7 @@ parameters alongside the state estimates.
 
 The key property exploited in equation (10.18) is that the innovations
 $v_1, \ldots, v_T$ are serially uncorrelated. This follows directly from the
-optimality of the Kalman filter: if the innovations had any autocorrelation,
+optimality of the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter): if the innovations had any autocorrelation,
 the filter could exploit it to improve its predictions, contradicting the
 claim that $\hat{\mu}_{t|t-1}$ is already the minimum-MSE prediction. The
 same logic applies to GARCH: the standardised residuals $v_t / \sqrt{F_t}$
@@ -1016,7 +1016,7 @@ the local level model.
 
 ### Three Different Questions About the Hidden State
 
-The Kalman filter of Section 10.3 answers one specific question: what is our
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) of Section 10.3 answers one specific question: what is our
 best estimate of $\mu_t$ using data up to and including time $t$? This is the
 right question for a policymaker or forecaster operating in real time — they
 can only use information available at $t$.
@@ -1041,7 +1041,7 @@ the right object to report.
 
 ### The Filtered Estimate
 
-The **filtered state** $\hat{\mu}_{t|t}$ is what the Kalman filter computes
+The **filtered state** $\hat{\mu}_{t|t}$ is what the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) computes
 forward, period by period. It uses only past and current observations
 $\{y_1, \ldots, y_t\}$. Because it cannot see the future, it will
 sometimes be slow to recognise a permanent shift in trend: if inflation
@@ -1141,7 +1141,7 @@ decompositions where the full sample is legitimately in scope.
 
 ### From Two Equations to a Framework
 
-Everything we have done so far — the local level model, the Kalman filter
+Everything we have done so far — the local level model, the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter)
 recursion, the prediction error likelihood — applies to a specific and simple
 model. The power of the state space framework is that the same machinery
 extends, without modification, to a vastly broader class of models. This
@@ -1240,7 +1240,7 @@ stacks the current and lagged values of $y_t$; the transition matrix
 $\mathbf{T}$ is the companion matrix whose top row carries the AR
 coefficients; the observation matrix $\mathbf{Z}$ picks off the first
 element; and $H = 0$ because the observed series contains no separate
-measurement error. The Kalman filter applied to this representation
+measurement error. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) applied to this representation
 recovers exactly the linear projections computed in Chapter 3 — the
 state space form adds nothing new for pure ARMA models, but it places
 them on the same footing as the models with genuine latent states.
@@ -1256,7 +1256,7 @@ $\sigma_\varepsilon^2$.
 **A time-varying parameter (TVP) regression** generalises the local level
 idea to a regression setting: the slope coefficient $\beta_t$ in
 $y_t = \beta_t x_t + \varepsilon_t$ is itself a random walk,
-$\beta_t = \beta_{t-1} + \eta_t$, so the Kalman filter estimates a
+$\beta_t = \beta_{t-1} + \eta_t$, so the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) estimates a
 coefficient path rather than a fixed number. This is the natural tool
 for studying whether the Phillips curve slope or the monetary policy
 transmission coefficient has drifted over time; Cogley and Sargent
@@ -1279,7 +1279,7 @@ TVP case as an important extension for further reading.
 ### What the General Form Buys
 
 The practical payoff of recognising these models as special cases is
-threefold. First, a single estimation routine — the Kalman filter plus
+threefold. First, a single estimation routine — the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) plus
 prediction error MLE — estimates all of them. `statsmodels` implements
 this through the `MLEModel` base class, from which `UnobservedComponents`,
 `SARIMAX`, and `DynamicFactor` all inherit. The difference between fitting
@@ -1297,7 +1297,7 @@ data. The decomposition is not imposed; it is estimated.
 Third, the state space form provides the natural language for nowcasting,
 which we take up in Section 10.8. When new data arrive at mixed frequencies
 — some monthly, some quarterly — the challenge is updating the state estimate
-as each observation becomes available. The Kalman filter handles this
+as each observation becomes available. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) handles this
 natively: missing observations are simply periods in which $y_t$ is not
 observed, and the filter skips the update step and runs only the prediction
 step. No special treatment is required.
@@ -1320,7 +1320,7 @@ The stakes are not merely academic. The Federal Reserve's policy framework
 since the 1990s has been built around the concept of a long-run inflation
 anchor. Whether inflation was "well-anchored" in the 1970s, whether the
 Volcker disinflation produced a permanent shift in the trend or merely a
-temporary deviation, and whether the Great Moderation represented a genuine
+temporary deviation, and whether the [Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation) represented a genuine
 regime change or a fortunate run of small shocks — all of these questions
 require separating trend from noise. The local level model gives us a
 disciplined, data-driven answer.
@@ -1485,7 +1485,7 @@ above 5 percent by the mid-1970s before accelerating to a peak near 10 percent
 around the first Volcker tightening in 1974. A brief pause follows before
 the second inflation surge of the early 1980s, after which the trend falls
 rapidly and stabilises in a narrow range around 2--2.5 percent for the
-subsequent three decades -- the Great Moderation in the trend estimate.
+subsequent three decades -- the [Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation) in the trend estimate.
 The filtered trend follows the same arc but lags visibly at both major
 turning points: it was still rising in late 1974 when the smoother's
 hindsight reveals the peak had already passed, and it overshot briefly at
@@ -1493,7 +1493,7 @@ the trough of the Volcker disinflation before the evidence of stabilisation
 accumulated. The ±1 standard deviation band around the filtered estimate
 is visibly wider during the volatile 1970s, when month-to-month inflation
 was swinging by several percentage points, and contracts to a narrow sliver
-in the post-1985 period as the stable Great Moderation makes trend estimation
+in the post-1985 period as the stable [Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation) makes trend estimation
 considerably easier.*
 
 ### Residual Diagnostics
@@ -1694,7 +1694,7 @@ into a genuine mixed-frequency nowcasting model for real GDP.*
 
 Most of the forecasting in this course has been prospective: we stand at the
 end of a sample and project forward. But there is a different and equally
-important problem that the Kalman filter is uniquely suited to address —
+important problem that the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) is uniquely suited to address —
 the problem of **nowcasting**.
 
 Nowcasting is the estimation of the current value of a variable that is
@@ -1711,7 +1711,7 @@ possible estimate of the current quarter's GDP growth, before the official
 figure is released?
 
 This is a signal-extraction problem. GDP growth is the latent state; monthly
-indicators are the noisy observations. The Kalman filter is the natural tool.
+indicators are the noisy observations. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) is the natural tool.
 
 ### The Mixed-Frequency Problem
 
@@ -1722,7 +1722,7 @@ do not align, and we cannot simply stack them in the same observation vector
 without confronting the fact that GDP is missing in eleven of every three
 months.
 
-The Kalman filter handles this natively through its missing-observation
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) handles this natively through its missing-observation
 logic. Run the filter at the monthly frequency — the higher of the two
 clocks. In months 1 and 2 of each quarter, only the monthly indicators are
 observed; the GDP row of the observation equation is treated as missing and
@@ -1738,8 +1738,8 @@ economic activity over three months. Specifically, quarterly GDP growth
 is approximately the sum of the three monthly growth rates within the
 quarter. We therefore cannot link GDP directly to $\alpha_t$ alone; we
 need the filter to track the running sum of monthly states within the
-current quarter. The standard solution, due to Mariano and Murasawa
-(2003), is to augment the state vector with enough lags of the monthly
+current quarter. The standard solution, due to [Mariano and Murasawa
+(2003)](https://doi.org/10.1002/jae.695), is to augment the state vector with enough lags of the monthly
 state that the quarterly GDP observation can be expressed as a weighted
 sum of current and lagged states:
 
@@ -1752,7 +1752,7 @@ $(\alpha_t,\, \alpha_{t-1},\, \alpha_{t-2},\, \alpha_{t-3},\,
 is one-dimensional — so that the temporal aggregation can be expressed as
 a linear combination of state elements. The transition matrix $\mathbf{T}$
 shifts the lags forward each period exactly like the companion matrix of an
-AR model. No new estimation machinery is needed beyond the Kalman filter
+AR model. No new estimation machinery is needed beyond the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter)
 recursion of Section 10.3, applied to this larger system.
 
 ::: {.callout-note icon=false}
@@ -2129,7 +2129,7 @@ one quarterly target are enough to illustrate the mixed-frequency mechanics,
 but an operational nowcasting model uses many more series. The Federal
 Reserve Bank of New York's Weekly Economic Index, published every Thursday,
 combines high-frequency daily and weekly series in exactly this framework.
-The Giannone, Reichlin, and Small (2008) model — the academic foundation
+The [Giannone, Reichlin, and Small (2008)](https://doi.org/10.1016/j.jmoneco.2008.05.010) model — the academic foundation
 of most central bank nowcasting systems — uses a large dynamic factor model
 with dozens of monthly indicators, all linked to quarterly GDP through the
 temporal aggregation equation (10.23).
@@ -2139,7 +2139,7 @@ principles. They use larger $\mathbf{Z}$ and $\mathbf{T}$ matrices,
 more free parameters, and more sophisticated initialisation — but the
 same prediction-correction recursion, the same prediction error likelihood,
 and the same missing-observation logic that drives the two-indicator model
-above. The Kalman filter scales from the local level model of Section 10.2
+above. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) scales from the local level model of Section 10.2
 to the most complex macroeconomic forecasting systems in use today.
 
 
@@ -2191,10 +2191,10 @@ literature: dynamic factor models and the principal-components approach to
 large panels, mixed-frequency VARs that combine monthly and quarterly data
 in a single system, time-varying parameter VARs that allow regression
 coefficients to drift as in our Section 10.6 TVP example, particle filters
-for nonlinear and non-Gaussian state equations that the Kalman filter cannot
+for nonlinear and non-Gaussian state equations that the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) cannot
 handle. Structural DSGE models — the workhorse of modern macroeconomic
 policy analysis — are estimated by writing the model's equilibrium
-conditions in state space form and running the Kalman filter on the
+conditions in state space form and running the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) on the
 observable variables. Machine learning methods are increasingly combined
 with state space models to allow more flexible functional forms in the
 observation and state equations. Each of these extensions uses the

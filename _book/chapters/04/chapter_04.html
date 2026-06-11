@@ -404,7 +404,7 @@ window.Quarto = {
 <section id="from-stationarity-to-the-unit-root" class="level3">
 <h3 class="anchored" data-anchor-id="from-stationarity-to-the-unit-root">From Stationarity to the Unit Root</h3>
 <p>Chapter 3 assumed throughout that all characteristic roots of the AR lag polynomial lie strictly inside the unit circle. That condition is what guarantees mean reversion, finite variance, and the convergence of the MA(<span class="math inline">\(\infty\)</span>) representation. Now we ask: what happens at the boundary? What if one characteristic root is exactly 1?</p>
-<p>The answer is a <strong>unit root process</strong> — and the consequences are severe enough that it fundamentally changes how we model, estimate, and forecast.</p>
+<p>The answer is a <strong><a href="https://en.wikipedia.org/wiki/Unit_root">unit root process</a></strong> — and the consequences are severe enough that it fundamentally changes how we model, estimate, and forecast.</p>
 <p>Start from the AR(1) and let <span class="math inline">\(\phi_1 \to 1\)</span>. Recall from Chapter 3 that the variance of a stationary AR(1) is <span class="math inline">\(\sigma^2/(1-\phi_1^2)\)</span>. As <span class="math inline">\(\phi_1 \to 1\)</span>, this expression diverges — the unconditional variance becomes infinite. The mean reversion formula <span class="math inline">\(\hat{y}_{T+h|T} \to \mu\)</span> as <span class="math inline">\(h \to \infty\)</span> also breaks down: with <span class="math inline">\(\phi_1 = 1\)</span>, the forecast is simply <span class="math inline">\(\hat{y}_{T+h|T} = y_T\)</span> for all horizons — the best we can do is stay at the current level forever, with no force pulling the series back toward any fixed mean. And the ACF, <span class="math inline">\(\rho(h) =
 \phi_1^h\)</span>, no longer decays: at <span class="math inline">\(\phi_1 = 1\)</span>, <span class="math inline">\(\rho(h) = 1\)</span> for all <span class="math inline">\(h\)</span>. These are not just mathematical curiosities — they describe the actual behaviour of economic time series like GDP levels, price indices, and interest rates.</p>
 <p>What about <span class="math inline">\(\phi_1 &gt; 1\)</span>? This produces an <strong>explosive process</strong> — the characteristic root lies outside the unit circle, and the consequences are the mirror image of the stationary case. Instead of shocks dying out (<span class="math inline">\(|\phi_1| &lt; 1\)</span>) or persisting permanently (<span class="math inline">\(|\phi_1| = 1\)</span>), shocks <em>amplify</em> over time. The variance grows geometrically: <span class="math inline">\(\text{Var}(y_t) \sim
@@ -412,7 +412,7 @@ window.Quarto = {
 </section>
 <section id="the-random-walk" class="level3">
 <h3 class="anchored" data-anchor-id="the-random-walk">The Random Walk</h3>
-<p>The simplest unit root process is the <strong>random walk</strong>:</p>
+<p>The simplest unit root process is the <strong><a href="https://en.wikipedia.org/wiki/Random_walk">random walk</a></strong>:</p>
 <p><span class="math display">\[y_t = y_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim WN(0,\sigma^2)
 \tag{4.1}\]</span></p>
 <p>Starting from <span class="math inline">\(y_0\)</span>, the solution is <span class="math inline">\(y_t = y_0 + \sum_{j=1}^t \varepsilon_j\)</span>. Every shock is permanently embedded in the level — there is no mechanism to dissipate it. The variance grows linearly with time:</p>
@@ -509,7 +509,7 @@ Figure&nbsp;4.1: Random walks without drift (left column) and with drift <span c
 </section>
 <section id="i1-i2-and-the-integration-order" class="level3">
 <h3 class="anchored" data-anchor-id="i1-i2-and-the-integration-order"><span class="math inline">\(I(1)\)</span>, <span class="math inline">\(I(2)\)</span>, and the Integration Order</h3>
-<p>A series requiring <span class="math inline">\(d\)</span> rounds of differencing to achieve stationarity is <strong>integrated of order <span class="math inline">\(d\)</span></strong>, written <span class="math inline">\(I(d)\)</span>. First differencing removes one unit root; second differencing removes two.</p>
+<p>A series requiring <span class="math inline">\(d\)</span> rounds of differencing to achieve stationarity is <strong><a href="https://en.wikipedia.org/wiki/Order_of_integration">integrated of order <span class="math inline">\(d\)</span></a></strong>, written <span class="math inline">\(I(d)\)</span>. First differencing removes one unit root; second differencing removes two.</p>
 <p><span class="math display">\[\Delta^2 y_t = \Delta y_t - \Delta y_{t-1}\]</span></p>
 <p><span class="math inline">\(I(2)\)</span> processes appear occasionally in economics — some nominal price indices and interest rate series over long samples exhibit behaviour suggesting a second unit root — but <span class="math inline">\(I(1)\)</span> is by far the most common case. The rule of thumb: if the level is nonstationary but the first difference is stationary, the series is <span class="math inline">\(I(1)\)</span>. If the first difference is still nonstationary, consider <span class="math inline">\(I(2)\)</span>. In practice, economic reasoning usually guides the choice before formal testing: a log GDP series should be <span class="math inline">\(I(1)\)</span>, not <span class="math inline">\(I(2)\)</span>, because a growing trend in growth rates is economically implausible over long horizons.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -528,7 +528,7 @@ Figure&nbsp;4.1: Random walks without drift (left column) and with drift <span c
 </section>
 <section id="why-ols-fails-the-spurious-regression-problem" class="level3">
 <h3 class="anchored" data-anchor-id="why-ols-fails-the-spurious-regression-problem">Why OLS Fails: The Spurious Regression Problem</h3>
-<p>The consequences of ignoring a unit root extend beyond the series itself. If we regress one <span class="math inline">\(I(1)\)</span> series on another — even two completely independent random walks — OLS will almost always find a statistically significant relationship. This is the <strong>spurious regression</strong> problem, first documented by Granger and Newbold (1974) and explained by Phillips (1986).</p>
+<p>The consequences of ignoring a unit root extend beyond the series itself. If we regress one <span class="math inline">\(I(1)\)</span> series on another — even two completely independent random walks — OLS will almost always find a statistically significant relationship. This is the <strong><a href="https://en.wikipedia.org/wiki/Spurious_relationship">spurious regression</a></strong> problem, first documented by <a href="https://www.sciencedirect.com/science/article/abs/pii/0304407674900347">Granger and Newbold (1974)</a> and explained by <a href="https://www.sciencedirect.com/science/article/pii/0304407686900011">Phillips (1986)</a>.</p>
 <p>The mechanism is straightforward: two independent random walks both tend to drift, and any two drifting series will appear correlated in finite samples. The <span class="math inline">\(t\)</span>-statistics and <span class="math inline">\(R^2\)</span> are meaningless — they diverge as <span class="math inline">\(T \to \infty\)</span> rather than converging to their true values. Standard inference fails completely.</p>
 <p>This is not an obscure pathology. It is an everyday hazard in macroeconomic research: regressing GDP on money supply, or inflation on unemployment, without first checking for unit roots and cointegration can produce dramatically misleading results. The appropriate framework — cointegration, which asks whether two <span class="math inline">\(I(1)\)</span> series share a common stochastic trend — is developed in Chapter 6. For now, the practical rule is: <strong>always test for unit roots before estimating any regression involving level variables.</strong></p>
 <p>Two examples make this concrete — one obviously absurd, one deceptively plausible. Both are spurious for the same reason.</p>
@@ -638,7 +638,7 @@ Figure&nbsp;4.2: Two spurious regression examples. Left: Nicolas Cage films vs p
 <h2 data-number="4.2" class="anchored" data-anchor-id="sec-urtests"><span class="header-section-number">4.2</span> Unit Root Testing</h2>
 <section id="from-data-description-to-model-specification" class="level3">
 <h3 class="anchored" data-anchor-id="from-data-description-to-model-specification">From Data Description to Model Specification</h3>
-<p>Chapter 1 introduced the ADF and KPSS tests as data characterisation tools — run them on a series to establish basic facts before modelling begins. Here we treat them as <strong>model specification tools</strong>. The distinction matters because the choices made in applying these tests — which deterministic terms to include, how many lags to use, which test to prioritise — directly determine the model we go on to estimate. A misspecified unit root test leads to a misspecified ARIMA model and forecasts that are systematically wrong. Getting the tests right is not a preliminary step; it is part of the modelling workflow.</p>
+<p>Chapter 1 introduced the <a href="https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test">ADF</a> and <a href="https://en.wikipedia.org/wiki/KPSS_test">KPSS</a> tests as data characterisation tools — run them on a series to establish basic facts before modelling begins. Here we treat them as <strong>model specification tools</strong>. The distinction matters because the choices made in applying these tests — which deterministic terms to include, how many lags to use, which test to prioritise — directly determine the model we go on to estimate. A misspecified unit root test leads to a misspecified ARIMA model and forecasts that are systematically wrong. Getting the tests right is not a preliminary step; it is part of the modelling workflow.</p>
 <p>The Chapter 1 treatment established: (i) the ADF null is a unit root, the KPSS null is stationarity; (ii) the tests have non-standard distributions with left-skewed critical values (ADF) or right-skewed critical values (KPSS); (iii) using both jointly resolves the ambiguity that either test alone cannot address. Chapter 1’s applied results confirmed that log SA real GDP is <span class="math inline">\(I(1)\)</span> — both tests agreed — and that GDP growth is <span class="math inline">\(I(0)\)</span>. We take those results as given and deepen the technical treatment here.</p>
 </section>
 <section id="choosing-the-adf-specification" class="level3">
@@ -705,7 +705,7 @@ p_{\max}\)</span> and choose the <span class="math inline">\(p\)</span> that min
 <section id="the-kpss-long-run-variance" class="level3">
 <h3 class="anchored" data-anchor-id="the-kpss-long-run-variance">The KPSS Long-Run Variance</h3>
 <p>The KPSS statistic divides the partial sum of residuals by an estimate of the long-run variance <span class="math inline">\(\hat\lambda^2\)</span>, which corrects for serial correlation under the null of stationarity. Without this correction, a series with positively autocorrelated residuals would produce an inflated KPSS statistic and spuriously reject stationarity.</p>
-<p>The estimator uses a <strong>Newey-West HAC</strong> approach: a weighted sum of sample autocovariances with weights that decline to zero for distant lags:</p>
+<p>The estimator uses a <strong><a href="https://en.wikipedia.org/wiki/Newey%E2%80%93West_estimator">Newey-West HAC</a></strong> approach: a weighted sum of sample autocovariances with weights that decline to zero for distant lags:</p>
 <p><span class="math display">\[\hat\lambda^2 = \hat\gamma(0) + 2\sum_{j=1}^{l}
 \left(1 - \frac{j}{l+1}\right)\hat\gamma(j) \tag{4.5}\]</span></p>
 <p>The bandwidth <span class="math inline">\(l\)</span> controls how many autocovariances are included. The automatic rule <span class="math inline">\(l = \lfloor 4(T/100)^{1/4}\rfloor\)</span> works well for most economic series. Because the KPSS result can be sensitive to this choice, the Python cell below checks robustness across three bandwidths — a standard practice.</p>
@@ -773,7 +773,7 @@ p_{\max}\)</span> and choose the <span class="math inline">\(p\)</span> that min
 </section>
 <section id="elliott-rothenberg-stock-a-more-powerful-adf" class="level3">
 <h3 class="anchored" data-anchor-id="elliott-rothenberg-stock-a-more-powerful-adf">Elliott-Rothenberg-Stock: A More Powerful ADF</h3>
-<p>The standard ADF has low power against near-integrated alternatives — a series with <span class="math inline">\(\phi_1 = 0.97\)</span> is stationary, but the ADF will often fail to reject the unit root null in samples of typical macroeconomic length. The <strong>Elliott-Rothenberg-Stock (ERS) test</strong> (1996) addresses this by using GLS rather than OLS to remove deterministic components before applying the ADF regression, substantially improving power against near-integrated alternatives. For most applications the ADF remains the standard workhorse, but the ERS test is worth running when the ADF result is borderline — for example, when the <span class="math inline">\(p\)</span>-value falls between 0.05 and 0.15 and the economic prior on integration order is unclear. In <code>statsmodels</code> it is available via <code>statsmodels.tsa.stattools.unitroot_adf</code> with <code>method='ers-ro'</code>.</p>
+<p>The standard ADF has low power against near-integrated alternatives — a series with <span class="math inline">\(\phi_1 = 0.97\)</span> is stationary, but the ADF will often fail to reject the unit root null in samples of typical macroeconomic length. The <strong><a href="https://en.wikipedia.org/wiki/ADF-GLS_test">Elliott-Rothenberg-Stock (ERS) test</a></strong> (<a href="https://www.sciencedirect.com/science/article/abs/pii/0304407696000182">1996</a>) addresses this by using GLS rather than OLS to remove deterministic components before applying the ADF regression, substantially improving power against near-integrated alternatives. For most applications the ADF remains the standard workhorse, but the ERS test is worth running when the ADF result is borderline — for example, when the <span class="math inline">\(p\)</span>-value falls between 0.05 and 0.15 and the economic prior on integration order is unclear. In <code>statsmodels</code> it is available via <code>statsmodels.tsa.stattools.unitroot_adf</code> with <code>method='ers-ro'</code>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1001,7 +1001,7 @@ Table&nbsp;4.1
 </section>
 <section id="sec-arima" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="sec-arima"><span class="header-section-number">4.3</span> ARIMA Models</h2>
-<p>The <strong>ARIMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(d\)</span>,<span class="math inline">\(q\)</span>)</strong> model builds the differencing operator <span class="math inline">\(\Delta^d =
+<p>The <strong>[ARIMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(d\)</span>,<span class="math inline">\(q\)</span>)](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average</strong> model builds the differencing operator <span class="math inline">\(\Delta^d =
 (1-L)^d\)</span> inside the specification. For the most common case <span class="math inline">\(d = 1\)</span>, the model in expanded form is:</p>
 <p><span class="math display">\[\begin{aligned}
 \Delta y_t &amp;= \mu^* + \phi_1 \Delta y_{t-1} + \cdots + \phi_p \Delta y_{t-p} \\
@@ -1035,7 +1035,7 @@ Table&nbsp;4.1
 </div>
 <section id="why-difference-rather-than-add-a-trend-term" class="level3">
 <h3 class="anchored" data-anchor-id="why-difference-rather-than-add-a-trend-term">Why Difference Rather Than Add a Trend Term?</h3>
-<p>Before identifying <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, it is worth addressing a question that naturally arises at this point: if log GDP grows along what looks like a linear trend, why not simply add a trend term <span class="math inline">\(\beta t\)</span> to an ARMA model rather than differencing? The answer depends on whether the series is trend-stationary or difference-stationary, and the distinction has real consequences.</p>
+<p>Before identifying <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, it is worth addressing a question that naturally arises at this point: if log GDP grows along what looks like a linear trend, why not simply add a trend term <span class="math inline">\(\beta t\)</span> to an ARMA model rather than differencing? The answer depends on whether the series is <a href="https://en.wikipedia.org/wiki/Trend-stationary_process">trend-stationary</a> or <a href="https://en.wikipedia.org/wiki/Unit_root">difference-stationary</a>, and the distinction has real consequences.</p>
 <p>A <strong>trend-stationary</strong> process fluctuates around a deterministic linear trend:</p>
 <p><span class="math display">\[y_t = \alpha + \beta t + u_t, \qquad u_t \sim \text{stationary}\]</span></p>
 <p>Here, detrending — regressing <span class="math inline">\(y_t\)</span> on a constant and <span class="math inline">\(t\)</span> and working with the residuals — is the right correction. Shocks to <span class="math inline">\(u_t\)</span> are transitory; the series eventually returns to the trend line. Adding <span class="math inline">\(\beta t\)</span> to an ARMA model is exactly right.</p>
@@ -1389,8 +1389,8 @@ auto_arima cross-check (BIC, stepwise, 1947–2019):
 ==============================================================================
 Dep. Variable:                 Log SA   No. Observations:                   72
 Model:                 ARIMA(1, 1, 1)   Log Likelihood                 268.887
-Date:                Wed, 03 Jun 2026   AIC                           -531.774
-Time:                        20:25:46   BIC                           -524.986
+Date:                Mon, 08 Jun 2026   AIC                           -531.774
+Time:                        11:04:24   BIC                           -524.986
 Sample:                    01-01-2002   HQIC                          -529.075
                          - 10-01-2019                                         
 Covariance Type:                  opg                                         
@@ -1855,8 +1855,8 @@ BIC-preferred: SARIMA(0,1,1)(0,1,1)_4
 =========================================================================================
 Dep. Variable:                           Log NSA   No. Observations:                   91
 Model:             SARIMAX(0, 1, 1)x(0, 1, 1, 4)   Log Likelihood                 243.209
-Date:                           Wed, 03 Jun 2026   AIC                           -478.418
-Time:                                   20:25:48   BIC                           -468.601
+Date:                           Mon, 08 Jun 2026   AIC                           -478.418
+Time:                                   11:04:26   BIC                           -468.601
 Sample:                               01-01-2002   HQIC                          -474.467
                                     - 07-01-2024                                         
 Covariance Type:                             opg                                         
@@ -3107,7 +3107,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-234"><a href="#cb23-234" aria-hidden="true" tabindex="-1"></a>representation. Now we ask: what happens at the boundary? What if one</span>
 <span id="cb23-235"><a href="#cb23-235" aria-hidden="true" tabindex="-1"></a>characteristic root is exactly 1?</span>
 <span id="cb23-236"><a href="#cb23-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-237"><a href="#cb23-237" aria-hidden="true" tabindex="-1"></a>The answer is a **unit root process** — and the consequences are severe enough</span>
+<span id="cb23-237"><a href="#cb23-237" aria-hidden="true" tabindex="-1"></a>The answer is a **[unit root process](https://en.wikipedia.org/wiki/Unit_root)** — and the consequences are severe enough</span>
 <span id="cb23-238"><a href="#cb23-238" aria-hidden="true" tabindex="-1"></a>that it fundamentally changes how we model, estimate, and forecast.</span>
 <span id="cb23-239"><a href="#cb23-239" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-240"><a href="#cb23-240" aria-hidden="true" tabindex="-1"></a>Start from the AR(1) and let $\phi_1 \to 1$. Recall from Chapter 3 that the</span>
@@ -3138,7 +3138,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-265"><a href="#cb23-265" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-266"><a href="#cb23-266" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Random Walk</span></span>
 <span id="cb23-267"><a href="#cb23-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-268"><a href="#cb23-268" aria-hidden="true" tabindex="-1"></a>The simplest unit root process is the **random walk**:</span>
+<span id="cb23-268"><a href="#cb23-268" aria-hidden="true" tabindex="-1"></a>The simplest unit root process is the **[random walk](https://en.wikipedia.org/wiki/Random_walk)**:</span>
 <span id="cb23-269"><a href="#cb23-269" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-270"><a href="#cb23-270" aria-hidden="true" tabindex="-1"></a>$$y_t = y_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim WN(0,\sigma^2)</span>
 <span id="cb23-271"><a href="#cb23-271" aria-hidden="true" tabindex="-1"></a>\tag{4.1}$$</span>
@@ -3257,7 +3257,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-386"><a href="#cb23-386" aria-hidden="true" tabindex="-1"></a><span class="fu">### $I(1)$, $I(2)$, and the Integration Order</span></span>
 <span id="cb23-387"><a href="#cb23-387" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-388"><a href="#cb23-388" aria-hidden="true" tabindex="-1"></a>A series requiring $d$ rounds of differencing to achieve stationarity is</span>
-<span id="cb23-389"><a href="#cb23-389" aria-hidden="true" tabindex="-1"></a>**integrated of order $d$**, written $I(d)$. First differencing removes one unit</span>
+<span id="cb23-389"><a href="#cb23-389" aria-hidden="true" tabindex="-1"></a>**[integrated of order $d$](https://en.wikipedia.org/wiki/Order_of_integration)**, written $I(d)$. First differencing removes one unit</span>
 <span id="cb23-390"><a href="#cb23-390" aria-hidden="true" tabindex="-1"></a>root; second differencing removes two.</span>
 <span id="cb23-391"><a href="#cb23-391" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-392"><a href="#cb23-392" aria-hidden="true" tabindex="-1"></a>$$\Delta^2 y_t = \Delta y_t - \Delta y_{t-1}$$</span>
@@ -3285,8 +3285,8 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-414"><a href="#cb23-414" aria-hidden="true" tabindex="-1"></a>The consequences of ignoring a unit root extend beyond the series itself. If</span>
 <span id="cb23-415"><a href="#cb23-415" aria-hidden="true" tabindex="-1"></a>we regress one $I(1)$ series on another — even two completely independent</span>
 <span id="cb23-416"><a href="#cb23-416" aria-hidden="true" tabindex="-1"></a>random walks — OLS will almost always find a statistically significant</span>
-<span id="cb23-417"><a href="#cb23-417" aria-hidden="true" tabindex="-1"></a>relationship. This is the **spurious regression** problem, first documented by</span>
-<span id="cb23-418"><a href="#cb23-418" aria-hidden="true" tabindex="-1"></a>Granger and Newbold (1974) and explained by Phillips (1986).</span>
+<span id="cb23-417"><a href="#cb23-417" aria-hidden="true" tabindex="-1"></a>relationship. This is the **[spurious regression](https://en.wikipedia.org/wiki/Spurious_relationship)** problem, first documented by</span>
+<span id="cb23-418"><a href="#cb23-418" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Granger and Newbold (1974)</span><span class="co">](https://www.sciencedirect.com/science/article/abs/pii/0304407674900347)</span> and explained by <span class="co">[</span><span class="ot">Phillips (1986)</span><span class="co">](https://www.sciencedirect.com/science/article/pii/0304407686900011)</span>.</span>
 <span id="cb23-419"><a href="#cb23-419" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-420"><a href="#cb23-420" aria-hidden="true" tabindex="-1"></a>The mechanism is straightforward: two independent random walks both tend to</span>
 <span id="cb23-421"><a href="#cb23-421" aria-hidden="true" tabindex="-1"></a>drift, and any two drifting series will appear correlated in finite samples.</span>
@@ -3446,7 +3446,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-577"><a href="#cb23-577" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-578"><a href="#cb23-578" aria-hidden="true" tabindex="-1"></a><span class="fu">### From Data Description to Model Specification</span></span>
 <span id="cb23-579"><a href="#cb23-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-580"><a href="#cb23-580" aria-hidden="true" tabindex="-1"></a>Chapter 1 introduced the ADF and KPSS tests as data characterisation tools —</span>
+<span id="cb23-580"><a href="#cb23-580" aria-hidden="true" tabindex="-1"></a>Chapter 1 introduced the <span class="co">[</span><span class="ot">ADF</span><span class="co">](https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test)</span> and <span class="co">[</span><span class="ot">KPSS</span><span class="co">](https://en.wikipedia.org/wiki/KPSS_test)</span> tests as data characterisation tools —</span>
 <span id="cb23-581"><a href="#cb23-581" aria-hidden="true" tabindex="-1"></a>run them on a series to establish basic facts before modelling begins. Here we</span>
 <span id="cb23-582"><a href="#cb23-582" aria-hidden="true" tabindex="-1"></a>treat them as **model specification tools**. The distinction matters because</span>
 <span id="cb23-583"><a href="#cb23-583" aria-hidden="true" tabindex="-1"></a>the choices made in applying these tests — which deterministic terms to include,</span>
@@ -3533,7 +3533,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-664"><a href="#cb23-664" aria-hidden="true" tabindex="-1"></a>autocorrelated residuals would produce an inflated KPSS statistic and spuriously</span>
 <span id="cb23-665"><a href="#cb23-665" aria-hidden="true" tabindex="-1"></a>reject stationarity.</span>
 <span id="cb23-666"><a href="#cb23-666" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-667"><a href="#cb23-667" aria-hidden="true" tabindex="-1"></a>The estimator uses a **Newey-West HAC** approach: a weighted sum of sample</span>
+<span id="cb23-667"><a href="#cb23-667" aria-hidden="true" tabindex="-1"></a>The estimator uses a **[Newey-West HAC](https://en.wikipedia.org/wiki/Newey%E2%80%93West_estimator)** approach: a weighted sum of sample</span>
 <span id="cb23-668"><a href="#cb23-668" aria-hidden="true" tabindex="-1"></a>autocovariances with weights that decline to zero for distant lags:</span>
 <span id="cb23-669"><a href="#cb23-669" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-670"><a href="#cb23-670" aria-hidden="true" tabindex="-1"></a>$$\hat\lambda^2 = \hat\gamma(0) + 2\sum_{j=1}^{l}</span>
@@ -3585,7 +3585,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-716"><a href="#cb23-716" aria-hidden="true" tabindex="-1"></a>The standard ADF has low power against near-integrated alternatives — a series</span>
 <span id="cb23-717"><a href="#cb23-717" aria-hidden="true" tabindex="-1"></a>with $\phi_1 = 0.97$ is stationary, but the ADF will often fail to reject the</span>
 <span id="cb23-718"><a href="#cb23-718" aria-hidden="true" tabindex="-1"></a>unit root null in samples of typical macroeconomic length. The</span>
-<span id="cb23-719"><a href="#cb23-719" aria-hidden="true" tabindex="-1"></a>**Elliott-Rothenberg-Stock (ERS) test** (1996) addresses this by using GLS</span>
+<span id="cb23-719"><a href="#cb23-719" aria-hidden="true" tabindex="-1"></a>**[Elliott-Rothenberg-Stock (ERS) test](https://en.wikipedia.org/wiki/ADF-GLS_test)** (<span class="co">[</span><span class="ot">1996</span><span class="co">](https://www.sciencedirect.com/science/article/abs/pii/0304407696000182)</span>) addresses this by using GLS</span>
 <span id="cb23-720"><a href="#cb23-720" aria-hidden="true" tabindex="-1"></a>rather than OLS to remove deterministic components before applying the ADF</span>
 <span id="cb23-721"><a href="#cb23-721" aria-hidden="true" tabindex="-1"></a>regression, substantially improving power against near-integrated alternatives.</span>
 <span id="cb23-722"><a href="#cb23-722" aria-hidden="true" tabindex="-1"></a>For most applications the ADF remains the standard workhorse, but the ERS test</span>
@@ -3782,7 +3782,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-917"><a href="#cb23-917" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-918"><a href="#cb23-918" aria-hidden="true" tabindex="-1"></a><span class="fu">## ARIMA Models {#sec-arima}</span></span>
 <span id="cb23-919"><a href="#cb23-919" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-920"><a href="#cb23-920" aria-hidden="true" tabindex="-1"></a>The **ARIMA($p$,$d$,$q$)** model builds the differencing operator $\Delta^d =</span>
+<span id="cb23-920"><a href="#cb23-920" aria-hidden="true" tabindex="-1"></a>The **[ARIMA($p$,$d$,$q$)](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average** model builds the differencing operator $\Delta^d =</span>
 <span id="cb23-921"><a href="#cb23-921" aria-hidden="true" tabindex="-1"></a>(1-L)^d$ inside the specification. For the most common case $d = 1$, the</span>
 <span id="cb23-922"><a href="#cb23-922" aria-hidden="true" tabindex="-1"></a>model in expanded form is:</span>
 <span id="cb23-923"><a href="#cb23-923" aria-hidden="true" tabindex="-1"></a></span>
@@ -3830,8 +3830,8 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-965"><a href="#cb23-965" aria-hidden="true" tabindex="-1"></a>Before identifying $p$ and $q$, it is worth addressing a question that naturally</span>
 <span id="cb23-966"><a href="#cb23-966" aria-hidden="true" tabindex="-1"></a>arises at this point: if log GDP grows along what looks like a linear trend,</span>
 <span id="cb23-967"><a href="#cb23-967" aria-hidden="true" tabindex="-1"></a>why not simply add a trend term $\beta t$ to an ARMA model rather than</span>
-<span id="cb23-968"><a href="#cb23-968" aria-hidden="true" tabindex="-1"></a>differencing? The answer depends on whether the series is trend-stationary or</span>
-<span id="cb23-969"><a href="#cb23-969" aria-hidden="true" tabindex="-1"></a>difference-stationary, and the distinction has real consequences.</span>
+<span id="cb23-968"><a href="#cb23-968" aria-hidden="true" tabindex="-1"></a>differencing? The answer depends on whether the series is <span class="co">[</span><span class="ot">trend-stationary</span><span class="co">](https://en.wikipedia.org/wiki/Trend-stationary_process)</span> or</span>
+<span id="cb23-969"><a href="#cb23-969" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">difference-stationary</span><span class="co">](https://en.wikipedia.org/wiki/Unit_root)</span>, and the distinction has real consequences.</span>
 <span id="cb23-970"><a href="#cb23-970" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-971"><a href="#cb23-971" aria-hidden="true" tabindex="-1"></a>A **trend-stationary** process fluctuates around a deterministic linear trend:</span>
 <span id="cb23-972"><a href="#cb23-972" aria-hidden="true" tabindex="-1"></a></span>

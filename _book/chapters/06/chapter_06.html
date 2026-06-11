@@ -230,7 +230,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 5: Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -387,7 +387,7 @@ window.Quarto = {
 </section>
 <section id="the-great-moderation-as-a-running-example" class="level3">
 <h3 class="anchored" data-anchor-id="the-great-moderation-as-a-running-example">The Great Moderation as a Running Example</h3>
-<p>The canonical empirical application in this chapter is the <strong>Great Moderation</strong> — the dramatic decline in the volatility of US real GDP growth that began around 1984. The observation itself is not contested: anyone who plots GDP growth can see it. The series is visibly more turbulent before 1984 than after.</p>
+<p>The canonical empirical application in this chapter is the <strong><a href="https://en.wikipedia.org/wiki/Great_Moderation">Great Moderation</a></strong> — the dramatic decline in the volatility of US real GDP growth that began around 1984. The observation itself is not contested: anyone who plots GDP growth can see it. The series is visibly more turbulent before 1984 than after.</p>
 <div id="cell-fig-gdp-motivation" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — GDP growth with Great Moderation marker</summary>
@@ -450,7 +450,7 @@ Figure&nbsp;6.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The
 </div>
 </div>
 </div>
-<p>The fact of the volatility reduction is clear. Its interpretation is genuinely contested. Kim and Nelson (1999) and McConnell and Pérez-Quirós (2000) dated the break to around 1984 and attributed it primarily to improved inventory management — just-in-time production techniques that dampened the amplification of demand shocks through the supply chain. Stock and Watson (2002) emphasised good luck: the shocks hitting the economy in the post-1984 period were simply smaller, not better absorbed. Bernanke (2004) made the case for good policy — that the Federal Reserve’s adoption of a more systematic, expectations-anchoring approach to monetary policy after the Volcker disinflation reduced the policy uncertainty that had amplified fluctuations in the 1970s.</p>
+<p>The fact of the volatility reduction is clear. Its interpretation is genuinely contested. <a href="https://direct.mit.edu/books/monograph/3265/State-Space-Models-with-Regime-SwitchingClassical">Kim and Nelson (1999)</a> and <a href="https://www.aeaweb.org/articles?id=10.1257/aer.90.5.1464">McConnell and Pérez-Quirós (2000)</a> dated the break to around 1984 and attributed it primarily to improved inventory management — just-in-time production techniques that dampened the amplification of demand shocks through the supply chain. <a href="https://www.princeton.edu/~mwatson/papers/Stock_Watson_JBES_2002.pdf">Stock and Watson (2002)</a> emphasised good luck: the shocks hitting the economy in the post-1984 period were simply smaller, not better absorbed. <a href="https://www.federalreserve.gov/boarddocs/speeches/2004/20040220/">Bernanke (2004)</a> made the case for good policy — that the Federal Reserve’s adoption of a more systematic, expectations-anchoring approach to monetary policy after the Volcker disinflation reduced the policy uncertainty that had amplified fluctuations in the 1970s.</p>
 <p>We do not need to resolve this debate to use the break productively. For our purposes, the Great Moderation is valuable precisely because it is a case where everyone agrees that something changed — so we can use it to calibrate the tests we develop, checking that they find what we can already see. It also connects directly to the Chapter 5 puzzle: if the variance of GDP growth roughly halved after 1984, then an ARIMA estimated on the full sample overestimates volatility in the post-1984 period and underestimates it in the pre-1984 period. The rolling evaluation was detecting the cost of that averaging.</p>
 </section>
 <section id="what-structural-change-looks-like-statistically" class="level3">
@@ -465,7 +465,7 @@ Figure&nbsp;6.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The
 <section id="the-core-idea" class="level3">
 <h3 class="anchored" data-anchor-id="the-core-idea">The Core Idea</h3>
 <p>Suppose we have a strong prior about when a break occurred. For GDP growth and the Great Moderation, that prior is 1984 Q1 — the date that appears repeatedly in the literature, is consistent with the visual evidence in Figure 6.1, and has the economic interpretation of the post-Volcker monetary policy stabilisation beginning to propagate through the real economy. Given that prior, the simplest possible question is: do the coefficients of our regression model differ across the two subsamples that the break defines?</p>
-<p>The <strong>Chow test</strong>, proposed by Gregory Chow in 1960, is the <span class="math inline">\(F\)</span>-test version of that question. It is one of the oldest procedures in applied econometrics and remains the natural starting point for structural break analysis precisely because it is transparent: it makes no attempt to be clever about what it does not know, so when the break date is known, it delivers the clearest possible answer.</p>
+<p>The <strong><a href="https://en.wikipedia.org/wiki/Chow_test">Chow test</a></strong>, proposed by Gregory Chow in 1960, is the <span class="math inline">\(F\)</span>-test version of that question. It is one of the oldest procedures in applied econometrics and remains the natural starting point for structural break analysis precisely because it is transparent: it makes no attempt to be clever about what it does not know, so when the break date is known, it delivers the clearest possible answer.</p>
 </section>
 <section id="the-regression-setup" class="level3">
 <h3 class="anchored" data-anchor-id="the-regression-setup">The Regression Setup</h3>
@@ -795,7 +795,7 @@ Variance ratio:      4.73x (std dev ratio: 2.18x)
 <section id="sec-qlr" class="level3">
 <h3 class="anchored" data-anchor-id="sec-qlr">The Quandt Likelihood Ratio Test</h3>
 <p>The Chow test answered our question cleanly — but only because we were willing to commit to 1984 Q1 before looking at the test statistic. That commitment is defensible for GDP growth and the Great Moderation, where the prior comes from a large external literature. For an analyst working with a series without that literature — a sectoral employment series, a regional housing index, a commodity price — there may be no credible prior break date. Choosing <span class="math inline">\(\tau\)</span> by inspecting the data and then applying the Chow test at that date is circular: we have used the data twice, and the resulting <span class="math inline">\(p\)</span>-value is not trustworthy.</p>
-<p>The <strong>Quandt likelihood ratio (QLR) test</strong>, developed by Richard Quandt (1960) and formalised for practical use by Donald Andrews (1993), resolves this by turning the unknown break date from a problem into a parameter. Instead of conditioning on a single <span class="math inline">\(\tau\)</span>, we compute the Chow <span class="math inline">\(F\)</span>-statistic at every candidate date within a trimmed interior of the sample, and we take the maximum. The candidate break is wherever the data most strongly suggest a break.</p>
+<p>The <strong>Quandt likelihood ratio (QLR) test</strong>, developed by <a href="https://www.jstor.org/stable/2281745?seq=1">Richard Quandt (1960)</a> and formalised for practical use by <a href="https://www.jstor.org/stable/2951764">Donald Andrews (1993)</a>, resolves this by turning the unknown break date from a problem into a parameter. Instead of conditioning on a single <span class="math inline">\(\tau\)</span>, we compute the Chow <span class="math inline">\(F\)</span>-statistic at every candidate date within a trimmed interior of the sample, and we take the maximum. The candidate break is wherever the data most strongly suggest a break.</p>
 </section>
 <section id="the-qlr-statistic" class="level3">
 <h3 class="anchored" data-anchor-id="the-qlr-statistic">The QLR Statistic</h3>
@@ -955,7 +955,7 @@ Figure&nbsp;6.3: Chow <span class="math inline">\(F\)</span>-statistic sequence 
 <section id="sec-baiperron" class="level3">
 <h3 class="anchored" data-anchor-id="sec-baiperron">The Bai-Perron Procedure: Multiple Breaks</h3>
 <p>The QLR test answers one question: is there at least one break, and if so, where is the most prominent one? It does not answer a second question that the <span class="math inline">\(F\)</span>-sequence in Figure 6.2 already raises: what if there are multiple breaks? A series with one large break and one smaller break would show a QLR statistic driven by the larger one, but the smaller break would remain undetected and the estimated model would still pool two different regimes.</p>
-<p>The <strong>Bai-Perron procedure</strong> (Bai and Perron, 1998, 2003) addresses both the detection and the dating of multiple breaks simultaneously. It treats the number of breaks <span class="math inline">\(m\)</span> and their dates <span class="math inline">\(\tau_1 &lt; \tau_2 &lt; \cdots &lt; \tau_m\)</span> as jointly unknown parameters to be estimated from the data.</p>
+<p>The <strong>Bai-Perron procedure</strong> (Bai and Perron, <a href="https://www.jstor.org/stable/2998540?seq=1">1998</a>, <a href="https://onlinelibrary.wiley.com/doi/10.1002/jae.659">2003</a>) addresses both the detection and the dating of multiple breaks simultaneously. It treats the number of breaks <span class="math inline">\(m\)</span> and their dates <span class="math inline">\(\tau_1 &lt; \tau_2 &lt; \cdots &lt; \tau_m\)</span> as jointly unknown parameters to be estimated from the data.</p>
 </section>
 <section id="the-bai-perron-estimator" class="level3">
 <h3 class="anchored" data-anchor-id="the-bai-perron-estimator">The Bai-Perron Estimator</h3>
@@ -1166,7 +1166,7 @@ Figure&nbsp;6.5: US CPI inflation (year-on-year, percent), 1948–2019. The Volc
 </section>
 <section id="the-zivot-andrews-model" class="level3">
 <h3 class="anchored" data-anchor-id="the-zivot-andrews-model">The Zivot-Andrews Model</h3>
-<p>Eric Zivot and Jing Andrew (1992) proposed a unit root test that allows for a single endogenous break in the deterministic trend. They consider three model variants: a break in the intercept only (Model A), a break in the slope of a time trend only (Model B), and a break in both (Model C). In practice, Model C is the most general and is used by default.</p>
+<p><a href="https://www.jstor.org/stable/1391541?seq=1">Eric Zivot and Jing Andrew (1992)</a> proposed a unit root test that allows for a single endogenous break in the deterministic trend. They consider three model variants: a break in the intercept only (Model A), a break in the slope of a time trend only (Model B), and a break in both (Model C). In practice, Model C is the most general and is used by default.</p>
 <p>Model C for a time series <span class="math inline">\(y_t\)</span> with a potential break at unknown date <span class="math inline">\(\tau\)</span> is:</p>
 <p><span class="math display">\[y_t = c + \beta t + \gamma D U_t(\tau) + \delta D T_t(\tau) + \alpha y_{t-1}
         + \sum_{j=1}^{k} d_j \Delta y_{t-j} + \varepsilon_t \tag{6.8}\]</span></p>
@@ -2163,8 +2163,8 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../chapters/05/chapter_05.html" class="pagination-link" aria-label="Chapter 5: Forecast Evaluation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 5: Forecast Evaluation</span></span>
+      <a href="../../chapters/05/chapter_05.html" class="pagination-link" aria-label="Forecast Evaluation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -2459,7 +2459,7 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-288"><a href="#cb19-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-289"><a href="#cb19-289" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Great Moderation as a Running Example</span></span>
 <span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a>The canonical empirical application in this chapter is the **Great Moderation**</span>
+<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a>The canonical empirical application in this chapter is the **[Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation)**</span>
 <span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a>— the dramatic decline in the volatility of US real GDP growth that began around</span>
 <span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a><span class="ss">1984. </span>The observation itself is not contested: anyone who plots GDP growth can</span>
 <span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a>see it. The series is visibly more turbulent before 1984 than after.</span>
@@ -2525,12 +2525,12 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-356"><a href="#cb19-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-357"><a href="#cb19-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-358"><a href="#cb19-358" aria-hidden="true" tabindex="-1"></a>The fact of the volatility reduction is clear. Its interpretation is genuinely</span>
-<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>contested. Kim and Nelson (1999) and McConnell and Pérez-Quirós (2000) dated</span>
+<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>contested. <span class="co">[</span><span class="ot">Kim and Nelson (1999)</span><span class="co">](https://direct.mit.edu/books/monograph/3265/State-Space-Models-with-Regime-SwitchingClassical)</span> and <span class="co">[</span><span class="ot">McConnell and Pérez-Quirós (2000)</span><span class="co">](https://www.aeaweb.org/articles?id=10.1257/aer.90.5.1464)</span> dated</span>
 <span id="cb19-360"><a href="#cb19-360" aria-hidden="true" tabindex="-1"></a>the break to around 1984 and attributed it primarily to improved inventory</span>
 <span id="cb19-361"><a href="#cb19-361" aria-hidden="true" tabindex="-1"></a>management — just-in-time production techniques that dampened the amplification</span>
-<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a>of demand shocks through the supply chain. Stock and Watson (2002) emphasised</span>
+<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a>of demand shocks through the supply chain. <span class="co">[</span><span class="ot">Stock and Watson (2002)</span><span class="co">](https://www.princeton.edu/~mwatson/papers/Stock_Watson_JBES_2002.pdf)</span> emphasised</span>
 <span id="cb19-363"><a href="#cb19-363" aria-hidden="true" tabindex="-1"></a>good luck: the shocks hitting the economy in the post-1984 period were simply</span>
-<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a>smaller, not better absorbed. Bernanke (2004) made the case for good policy —</span>
+<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a>smaller, not better absorbed. <span class="co">[</span><span class="ot">Bernanke (2004)</span><span class="co">](https://www.federalreserve.gov/boarddocs/speeches/2004/20040220/)</span> made the case for good policy —</span>
 <span id="cb19-365"><a href="#cb19-365" aria-hidden="true" tabindex="-1"></a>that the Federal Reserve's adoption of a more systematic, expectations-anchoring</span>
 <span id="cb19-366"><a href="#cb19-366" aria-hidden="true" tabindex="-1"></a>approach to monetary policy after the Volcker disinflation reduced the policy</span>
 <span id="cb19-367"><a href="#cb19-367" aria-hidden="true" tabindex="-1"></a>uncertainty that had amplified fluctuations in the 1970s.</span>
@@ -2584,7 +2584,7 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a>prior, the simplest possible question is: do the coefficients of our regression</span>
 <span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a>model differ across the two subsamples that the break defines?</span>
 <span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a>The **Chow test**, proposed by Gregory Chow in 1960, is the $F$-test version</span>
+<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a>The **[Chow test](https://en.wikipedia.org/wiki/Chow_test)**, proposed by Gregory Chow in 1960, is the $F$-test version</span>
 <span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a>of that question. It is one of the oldest procedures in applied econometrics</span>
 <span id="cb19-420"><a href="#cb19-420" aria-hidden="true" tabindex="-1"></a>and remains the natural starting point for structural break analysis precisely</span>
 <span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a>because it is transparent: it makes no attempt to be clever about what it does</span>
@@ -2960,8 +2960,8 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-797"><a href="#cb19-797" aria-hidden="true" tabindex="-1"></a>the data and then applying the Chow test at that date is circular: we have used</span>
 <span id="cb19-798"><a href="#cb19-798" aria-hidden="true" tabindex="-1"></a>the data twice, and the resulting $p$-value is not trustworthy.</span>
 <span id="cb19-799"><a href="#cb19-799" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-800"><a href="#cb19-800" aria-hidden="true" tabindex="-1"></a>The **Quandt likelihood ratio (QLR) test**, developed by Richard Quandt (1960)</span>
-<span id="cb19-801"><a href="#cb19-801" aria-hidden="true" tabindex="-1"></a>and formalised for practical use by Donald Andrews (1993), resolves this by</span>
+<span id="cb19-800"><a href="#cb19-800" aria-hidden="true" tabindex="-1"></a>The **Quandt likelihood ratio (QLR) test**, developed by <span class="co">[</span><span class="ot">Richard Quandt (1960)</span><span class="co">](https://www.jstor.org/stable/2281745?seq=1)</span></span>
+<span id="cb19-801"><a href="#cb19-801" aria-hidden="true" tabindex="-1"></a>and formalised for practical use by <span class="co">[</span><span class="ot">Donald Andrews (1993)</span><span class="co">](https://www.jstor.org/stable/2951764)</span>, resolves this by</span>
 <span id="cb19-802"><a href="#cb19-802" aria-hidden="true" tabindex="-1"></a>turning the unknown break date from a problem into a parameter. Instead of</span>
 <span id="cb19-803"><a href="#cb19-803" aria-hidden="true" tabindex="-1"></a>conditioning on a single $\tau$, we compute the Chow $F$-statistic at every</span>
 <span id="cb19-804"><a href="#cb19-804" aria-hidden="true" tabindex="-1"></a>candidate date within a trimmed interior of the sample, and we take the maximum.</span>
@@ -3162,7 +3162,7 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-1001"><a href="#cb19-1001" aria-hidden="true" tabindex="-1"></a>driven by the larger one, but the smaller break would remain undetected and</span>
 <span id="cb19-1002"><a href="#cb19-1002" aria-hidden="true" tabindex="-1"></a>the estimated model would still pool two different regimes.</span>
 <span id="cb19-1003"><a href="#cb19-1003" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-1004"><a href="#cb19-1004" aria-hidden="true" tabindex="-1"></a>The **Bai-Perron procedure** (Bai and Perron, 1998, 2003) addresses both</span>
+<span id="cb19-1004"><a href="#cb19-1004" aria-hidden="true" tabindex="-1"></a>The **Bai-Perron procedure** (Bai and Perron, <span class="co">[</span><span class="ot">1998</span><span class="co">](https://www.jstor.org/stable/2998540?seq=1)</span>, <span class="co">[</span><span class="ot">2003</span><span class="co">](https://onlinelibrary.wiley.com/doi/10.1002/jae.659)</span>) addresses both</span>
 <span id="cb19-1005"><a href="#cb19-1005" aria-hidden="true" tabindex="-1"></a>the detection and the dating of multiple breaks simultaneously. It treats the</span>
 <span id="cb19-1006"><a href="#cb19-1006" aria-hidden="true" tabindex="-1"></a>number of breaks $m$ and their dates $\tau_1 &lt; \tau_2 &lt; \cdots &lt; \tau_m$ as</span>
 <span id="cb19-1007"><a href="#cb19-1007" aria-hidden="true" tabindex="-1"></a>jointly unknown parameters to be estimated from the data.</span>
@@ -3449,7 +3449,7 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 <span id="cb19-1292"><a href="#cb19-1292" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-1293"><a href="#cb19-1293" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Zivot-Andrews Model</span></span>
 <span id="cb19-1294"><a href="#cb19-1294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-1295"><a href="#cb19-1295" aria-hidden="true" tabindex="-1"></a>Eric Zivot and Jing Andrew (1992) proposed a unit root test that allows for a</span>
+<span id="cb19-1295"><a href="#cb19-1295" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Eric Zivot and Jing Andrew (1992)</span><span class="co">](https://www.jstor.org/stable/1391541?seq=1)</span> proposed a unit root test that allows for a</span>
 <span id="cb19-1296"><a href="#cb19-1296" aria-hidden="true" tabindex="-1"></a>single endogenous break in the deterministic trend. They consider three model</span>
 <span id="cb19-1297"><a href="#cb19-1297" aria-hidden="true" tabindex="-1"></a>variants: a break in the intercept only (Model A), a break in the slope of a</span>
 <span id="cb19-1298"><a href="#cb19-1298" aria-hidden="true" tabindex="-1"></a>time trend only (Model B), and a break in both (Model C). In practice, Model C</span>

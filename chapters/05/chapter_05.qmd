@@ -1,5 +1,5 @@
 ---
-title: "Chapter 5: Forecast Evaluation"
+title: "Forecast Evaluation"
 author: ""
 abstract: |
   Building a model is only half of the forecasting problem. The other half is
@@ -251,7 +251,7 @@ about the process generating the data. It has memorised the sample. Ask it
 to forecast the 101st observation and it has nothing to say — its parameters
 were tuned to noise, not signal.
 
-This is **overfitting**, and in time series analysis it has a specific
+This is **[overfitting](https://en.wikipedia.org/wiki/Overfitting)**, and in time series analysis it has a specific
 character. Because observations are temporally ordered, a model that captures
 features of the training period — a particular recession's shape, a
 transitory monetary policy episode, a one-time measurement anomaly — will
@@ -269,6 +269,8 @@ different sample draw. This makes principled evaluation design — choosing
 evaluation windows carefully, committing to them in advance, and respecting
 the temporal boundary between estimation and evaluation — not merely good
 practice but the only protection available.
+
+![Noisy (roughly linear) data is fitted to a linear function and a polynomial function. Although the polynomial function is a perfect fit, the linear function can be expected to generalize better: If the two functions were used to extrapolate beyond the fitted data, the linear function should make better predictions.](/figures/chapter_05/overfitting.png){#fig-overfitting width="55%"}
 
 ### Information Criteria as Partial Solutions
 
@@ -354,7 +356,7 @@ strategies on a specific task.
 :::
 
 This distinction is what motivates everything that follows. The tools in this
-chapter — loss functions, evaluation designs, the Diebold-Mariano test,
+chapter — loss functions, evaluation designs, the [Diebold-Mariano test](https://en.wikipedia.org/wiki/Mean_absolute_scaled_error),
 forecast combination, interval calibration checks — are all ways of asking
 the same underlying question: how useful is this model for predicting the
 future, on the terms that the future will actually be judged?
@@ -365,7 +367,7 @@ future, on the terms that the future will actually be judged?
 ### What Is a Forecast Error?
 
 Before we can measure accuracy, we need to agree on what we are measuring.
-The starting point is the **forecast error**: the gap between what the model
+The starting point is the **[forecast error](https://en.wikipedia.org/wiki/Forecast_error)**: the gap between what the model
 predicted and what actually happened.
 
 Suppose we are standing at time $t$ and want to forecast the value of $y$ at
@@ -435,19 +437,19 @@ reported separately by horizon.
 ### Symmetric Loss: MSE, RMSE, and MAE
 
 The simplest way to summarise a sequence of forecast errors is to average some
-function of them. The function we choose is the **loss function**, and the
+function of them. The function we choose is the **[loss function](https://en.wikipedia.org/wiki/Loss_function)**, and the
 choice is consequential.
 
 The two most common choices for symmetric loss — where errors of equal
-magnitude in either direction are penalised equally — are the **mean squared
-error** (MSE) and the **mean absolute error** (MAE).
+magnitude in either direction are penalised equally — are the **[mean squared
+error](https://en.wikipedia.org/wiki/Mean_squared_error)** (MSE) and the **[mean absolute error](https://en.wikipedia.org/wiki/Mean_absolute_error)** (MAE).
 
 $$\text{MSE} = \frac{1}{n} \sum_{t=T_0}^{T_0+n-1} e_{t+h|t}^2 \tag{5.2}$$
 
 $$\text{MAE} = \frac{1}{n} \sum_{t=T_0}^{T_0+n-1} |e_{t+h|t}| \tag{5.3}$$
 
 where $n$ is the number of forecast origins in the evaluation window. The
-**root mean squared error** (RMSE) is simply $\sqrt{\text{MSE}}$, which
+**[root mean squared error](https://en.wikipedia.org/wiki/Root_mean_square_deviation)** (RMSE) is simply $\sqrt{\text{MSE}}$, which
 returns the loss to the same units as the original series and is often easier
 to interpret.
 
@@ -510,7 +512,7 @@ variability.
 
 Two scale-free alternatives address this.
 
-The **mean absolute percentage error** (MAPE) expresses each error as a
+The **[mean absolute percentage error](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error)** (MAPE) expresses each error as a
 percentage of the actual value:
 
 $$\text{MAPE} = \frac{1}{n} \sum_{t=T_0}^{T_0+n-1}
@@ -530,7 +532,7 @@ is $3.2$, despite the second error being twenty times larger in absolute
 terms. Handle with care on any series that crosses zero.
 :::
 
-The **mean absolute scaled error** (MASE), introduced by Hyndman and Koehler
+The **[mean absolute scaled error](https://en.wikipedia.org/wiki/Mean_absolute_scaled_error)** (MASE), introduced by Hyndman and Koehler
 (2006), avoids this problem by expressing forecast errors relative to how
 large errors would have been under the simplest conceivable benchmark: the
 **naïve random walk**, which predicts that the next observation will equal the
@@ -1033,7 +1035,7 @@ the observed difference in accuracy could plausibly have arisen from sampling
 variation alone.
 
 This is the question the **Diebold-Mariano (DM) test** answers. Introduced by
-Diebold and Mariano (1995), it provides a formal hypothesis test for equal
+[Diebold and Mariano (1995)](https://www.jstor.org/stable/1392185?seq=1), it provides a formal hypothesis test for equal
 predictive accuracy between two competing forecast sequences. Its appeal is
 its generality: it works for any loss function, makes no assumption about the
 parametric form of the models producing the forecasts, and does not require
@@ -1283,8 +1285,8 @@ probabilities over the model space.
 
 ### Bates-Granger Optimal Weights
 
-The formal framework for forecast combination originates with Bates and
-Granger (1969), who asked: given two unbiased forecasts $\hat{y}^{(1)}_{t+h|t}$
+The formal framework for forecast combination originates with [Bates and
+Granger (1969)](https://link.springer.com/article/10.1057/jors.1969.103), who asked: given two unbiased forecasts $\hat{y}^{(1)}_{t+h|t}$
 and $\hat{y}^{(2)}_{t+h|t}$, what linear combination minimises the variance
 of the combined forecast error?
 
@@ -1569,7 +1571,7 @@ distribution that is shifted relative to the actual outcomes in a systematic
 way. Checking only coverage would miss these problems.
 
 The standard tool for assessing full distributional calibration is the
-**probability integral transform (PIT)**. The idea is elegant. If the model's
+**[probability integral transform (PIT)](https://en.wikipedia.org/wiki/Probability_integral_transform)**. The idea is elegant. If the model's
 predictive distribution $F_{t+h|t}(\cdot)$ is correctly specified, then the
 probability that the actual outcome falls below the forecast's $p$th quantile
 is exactly $p$ — by definition of what it means to have a correct
@@ -1683,7 +1685,7 @@ pre-1985 period and the calmer Great Moderation, producing a variance estimate
 and a mean growth estimate that misrepresent the later, higher-growth portion
 of the evaluation window.*
 
-Beyond the PIT histogram, the **continuous ranked probability score (CRPS)**
+Beyond the PIT histogram, the **[continuous ranked probability score (CRPS)](https://en.wikipedia.org/wiki/Scoring_rule#Continuous_ranked_probability_score)**
 offers a single-number summary of distributional forecast accuracy that
 rewards both sharpness (narrow intervals) and calibration (correct
 coverage). The CRPS for a single forecast origin is:

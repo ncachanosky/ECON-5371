@@ -230,7 +230,7 @@ mean reversion, finite variance, and the convergence of the MA($\infty$)
 representation. Now we ask: what happens at the boundary? What if one
 characteristic root is exactly 1?
 
-The answer is a **unit root process** — and the consequences are severe enough
+The answer is a **[unit root process](https://en.wikipedia.org/wiki/Unit_root)** — and the consequences are severe enough
 that it fundamentally changes how we model, estimate, and forecast.
 
 Start from the AR(1) and let $\phi_1 \to 1$. Recall from Chapter 3 that the
@@ -261,7 +261,7 @@ which we note here for completeness but do not develop further.
 
 ### The Random Walk
 
-The simplest unit root process is the **random walk**:
+The simplest unit root process is the **[random walk](https://en.wikipedia.org/wiki/Random_walk)**:
 
 $$y_t = y_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim WN(0,\sigma^2)
 \tag{4.1}$$
@@ -380,7 +380,7 @@ for now the notation previews where we are headed.
 ### $I(1)$, $I(2)$, and the Integration Order
 
 A series requiring $d$ rounds of differencing to achieve stationarity is
-**integrated of order $d$**, written $I(d)$. First differencing removes one unit
+**[integrated of order $d$](https://en.wikipedia.org/wiki/Order_of_integration)**, written $I(d)$. First differencing removes one unit
 root; second differencing removes two.
 
 $$\Delta^2 y_t = \Delta y_t - \Delta y_{t-1}$$
@@ -408,8 +408,8 @@ is stationary. Most economic level series are $I(1)$.
 The consequences of ignoring a unit root extend beyond the series itself. If
 we regress one $I(1)$ series on another — even two completely independent
 random walks — OLS will almost always find a statistically significant
-relationship. This is the **spurious regression** problem, first documented by
-Granger and Newbold (1974) and explained by Phillips (1986).
+relationship. This is the **[spurious regression](https://en.wikipedia.org/wiki/Spurious_relationship)** problem, first documented by
+[Granger and Newbold (1974)](https://www.sciencedirect.com/science/article/abs/pii/0304407674900347) and explained by [Phillips (1986)](https://www.sciencedirect.com/science/article/pii/0304407686900011).
 
 The mechanism is straightforward: two independent random walks both tend to
 drift, and any two drifting series will appear correlated in finite samples.
@@ -569,7 +569,7 @@ systems.
 
 ### From Data Description to Model Specification
 
-Chapter 1 introduced the ADF and KPSS tests as data characterisation tools —
+Chapter 1 introduced the [ADF](https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test) and [KPSS](https://en.wikipedia.org/wiki/KPSS_test) tests as data characterisation tools —
 run them on a series to establish basic facts before modelling begins. Here we
 treat them as **model specification tools**. The distinction matters because
 the choices made in applying these tests — which deterministic terms to include,
@@ -656,7 +656,7 @@ the null of stationarity. Without this correction, a series with positively
 autocorrelated residuals would produce an inflated KPSS statistic and spuriously
 reject stationarity.
 
-The estimator uses a **Newey-West HAC** approach: a weighted sum of sample
+The estimator uses a **[Newey-West HAC](https://en.wikipedia.org/wiki/Newey%E2%80%93West_estimator)** approach: a weighted sum of sample
 autocovariances with weights that decline to zero for distant lags:
 
 $$\hat\lambda^2 = \hat\gamma(0) + 2\sum_{j=1}^{l}
@@ -708,7 +708,7 @@ changed. Chapter 5 addresses structural break testing formally.
 The standard ADF has low power against near-integrated alternatives — a series
 with $\phi_1 = 0.97$ is stationary, but the ADF will often fail to reject the
 unit root null in samples of typical macroeconomic length. The
-**Elliott-Rothenberg-Stock (ERS) test** (1996) addresses this by using GLS
+**[Elliott-Rothenberg-Stock (ERS) test](https://en.wikipedia.org/wiki/ADF-GLS_test)** ([1996](https://www.sciencedirect.com/science/article/abs/pii/0304407696000182)) addresses this by using GLS
 rather than OLS to remove deterministic components before applying the ADF
 regression, substantially improving power against near-integrated alternatives.
 For most applications the ADF remains the standard workhorse, but the ERS test
@@ -905,7 +905,7 @@ as the data require, no more.
 
 ## ARIMA Models {#sec-arima}
 
-The **ARIMA($p$,$d$,$q$)** model builds the differencing operator $\Delta^d =
+The **[ARIMA($p$,$d$,$q$)](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average** model builds the differencing operator $\Delta^d =
 (1-L)^d$ inside the specification. For the most common case $d = 1$, the
 model in expanded form is:
 
@@ -953,8 +953,8 @@ $I(d)$ process.
 Before identifying $p$ and $q$, it is worth addressing a question that naturally
 arises at this point: if log GDP grows along what looks like a linear trend,
 why not simply add a trend term $\beta t$ to an ARMA model rather than
-differencing? The answer depends on whether the series is trend-stationary or
-difference-stationary, and the distinction has real consequences.
+differencing? The answer depends on whether the series is [trend-stationary](https://en.wikipedia.org/wiki/Trend-stationary_process) or
+[difference-stationary](https://en.wikipedia.org/wiki/Unit_root), and the distinction has real consequences.
 
 A **trend-stationary** process fluctuates around a deterministic linear trend:
 

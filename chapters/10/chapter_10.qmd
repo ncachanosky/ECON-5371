@@ -282,11 +282,11 @@ single estimated equation whose coefficients were fixed for the entire postwar
 sample — the same mean, the same persistence, the same variance in 1955Q1 as
 in 2009Q1. That is a convenient assumption. It is not obviously a true one.
 
-The National Bureau of Economic Research designates business cycle turning
+The [National Bureau of Economic Research (NBER)](https://www.nber.org/) designates business cycle turning
 points based on a broad reading of macroeconomic data. Recessions, by its
 definition, are periods of significant decline in economic activity. What
 Figure 10.1 makes immediately visible is that the quarterly real GDP growth
-rate — the annualised log difference of GDPC1 — looks qualitatively different
+rate — the annualised log difference of [`GDPC1`](https://fred.stlouisfed.org/series/GDPC1/) — looks qualitatively different
 during those shaded periods than outside them. Outside recessions, growth is
 positive, moderately persistent, and clustered around a stable trend. During
 recessions, growth turns sharply negative, the volatility increases, and the
@@ -473,7 +473,7 @@ for model comparison after estimation, though their theoretical properties in
 this context are less well established than in the linear case.
 :::
 
-These costs are real but manageable. Hamilton's (1989) two-state model has
+These costs are real but manageable. [Hamilton's (1989)](https://doi.org/10.2307/1912559) two-state model has
 been applied to US GDP growth for more than three decades, and its ability to
 identify recessions without using NBER dates has made it one of the most
 influential papers in macroeconometrics. We build it from scratch in the next
@@ -787,7 +787,7 @@ nearly identical across the two NBER-classified phases, so variance switching
 adds little signal but creates an estimation problem — the likelihood surface
 has a variance-only local optimum that is numerically easier to find than the
 mean-switching solution. The working model for this chapter is therefore
-mean-switching with a common variance, following Hamilton (1989) exactly. We
+mean-switching with a common variance, following [Hamilton (1989)](https://doi.org/10.2307/1912559) exactly. We
 return to variance switching as a modelling choice in Section 10.4.
 
 ## The Hamilton Filter {#sec-hamilton}
@@ -830,7 +830,7 @@ return to this distinction after deriving the filter.
 The filter alternates between two steps at each $t$: a **prediction step**
 that uses the transition matrix to project the regime probability forward,
 and an **update step** that uses the new observation $y_t$ to revise that
-prediction. Both steps are applications of Bayes' rule.
+prediction. Both steps are applications of [Bayes' rule](https://en.wikipedia.org/wiki/Bayes%27_theorem).
 
 **Step 1 — Prediction.** Given the filtered probability $\xi_{t-1|t-1}$ at
 the end of period $t-1$, we predict the regime probability at period $t$
@@ -859,7 +859,7 @@ of being in expansion today and staying, plus the probability of being in
 recession today and switching. No observation of $y_t$ has been used yet.
 
 **Step 2 — Update.** When $y_t$ arrives, we use it to revise the predicted
-regime probabilities via Bayes' rule. The conditional density of $y_t$ given
+regime probabilities via [Bayes' rule](https://en.wikipedia.org/wiki/Bayes%27_theorem). The conditional density of $y_t$ given
 regime $j$ and the past is:
 
 $$
@@ -869,7 +869,7 @@ f(y_t \mid s_t = j,\, \mathcal{F}_{t-1}) = \frac{1}{\sqrt{2\pi\sigma_j^2}}
 $$
 
 where $\mu_j^*$ is the regime-$j$ conditional mean of $y_t$ given past data
-(from the AR terms in equation (10.9)). Applying Bayes' rule:
+(from the AR terms in equation (10.9)). Applying [Bayes' rule](https://en.wikipedia.org/wiki/Bayes%27_theorem):
 
 $$
 \Pr(s_t = j \mid \mathcal{F}_t) = \frac{f(y_t \mid s_t = j,\, \mathcal{F}_{t-1})
@@ -1042,7 +1042,7 @@ They are causal: no future observation influences $\xi_{t|t}$.
 to form a retrospective estimate of the regime at each date $t \leq T$. The
 smoothing algorithm runs the filter forward from $t=1$ to $T$, then passes
 backward from $T$ to $1$, propagating information from future observations
-back through the transition structure. The Kim (1994) smoother is the standard
+back through the transition structure. The [Kim (1994])(https://www.sciencedirect.com/science/article/abs/pii/0304407694900361) smoother is the standard
 implementation:
 
 $$
@@ -1519,7 +1519,7 @@ driven by a **hidden** state variable — something unobserved that must be
 inferred probabilistically from the data. The Hamilton filter exists precisely
 because we cannot see $s_t$ directly. But there is a parallel class of
 regime-switching models in which the switch is triggered by a variable we
-*can* observe. These are **threshold models**, and the key distinction is
+*can* observe. These are **[threshold models](https://en.wikipedia.org/wiki/Threshold_model)**, and the key distinction is
 worth stating clearly before the notation:
 
 ::: {.callout-note}
@@ -1563,7 +1563,7 @@ $$
 where $d$ is the **delay parameter** (how many lags back we look to determine
 the regime) and $\gamma$ is the threshold. When the threshold variable is a
 lagged value of $y_t$ itself — as in (10.18) — the model is called a
-**self-exciting TAR** or **SETAR**, introduced by Tong (1978) and developed
+**self-exciting TAR** or **[SETAR](https://en.wikipedia.org/wiki/SETAR_(model))**, introduced by Tong (1978) and developed
 extensively by Tong and Lim (1980). The "self-exciting" label captures the
 idea that the process determines its own regime: past behaviour triggers
 the switch.
@@ -1586,7 +1586,7 @@ confidence interval.
 
 The TAR model has a sharp switch: the economy is entirely in one regime or
 entirely in the other, with no gradual adjustment. The **smooth transition
-autoregression** (STAR), introduced by Chan and Tong (1986) and developed by
+autoregression** (STAR), introduced by [Chan and Tong (1986)](https://doi.org/10.1111/j.1467-9892.1986.tb00501.x) and developed by
 Teräsvirta (1994), replaces the indicator function with a smooth transition
 function $G(q_t; \gamma, c)$ that takes values between 0 and 1:
 
@@ -1865,7 +1865,7 @@ The Hamilton filter developed in this chapter solves a discrete inference
 problem: given a sequence of observations, recover the probabilities of
 belonging to one of $M$ discrete hidden states. The prediction step projects
 the current state distribution through a finite transition matrix; the update
-step applies Bayes' rule using a Gaussian likelihood evaluated at the current
+step applies [Bayes' rule](https://en.wikipedia.org/wiki/Bayes%27_theorem) using a Gaussian likelihood evaluated at the current
 observation. Every element of this algorithm — the prior, the likelihood, the
 posterior, the forward projection — has a direct counterpart in the Kalman
 filter of Chapter 11.
@@ -1879,7 +1879,7 @@ mixture of $M$ Gaussians at each step, there is a single multivariate Gaussian
 prediction that is updated by the observation equation. The prediction step
 produces a predicted mean and variance for $\boldsymbol{\alpha}_t$; the
 update step revises these using the new observation and the Kalman gain — the
-multivariate analogue of the weight that Bayes' rule assigns to the new data
+multivariate analogue of the weight that [Bayes' rule](https://en.wikipedia.org/wiki/Bayes%27_theorem) assigns to the new data
 relative to the prior.
 
 Chapter 11 builds this framework from scratch, starting with the local level

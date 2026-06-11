@@ -358,7 +358,7 @@ equation. The VAR in differences omits that term entirely.
 We now ground the abstract discussion in the pair of series that serves as the
 running example for this chapter. Figure 8.1 plots the 10-year Treasury constant
 maturity yield and the 3-month Treasury bill rate for the United States from
-1954Q1 through 2019Q4, constructed from FRED series GS10 and TB3MS, resampled
+1954Q1 through 2019Q4, constructed from FRED series [`GS10`](https://fred.stlouisfed.org/series/GS10) and [`TB3MS`](https://fred.stlouisfed.org/series/TB3MS), resampled
 to quarterly averages. We restrict to the pre-COVID sample for the same reasons
 given in previous chapters.
 
@@ -508,9 +508,9 @@ share the stochastic trend of the monetary cycle, the spread is visibly
 mean-reverting: it widens, narrows, occasionally turns negative, and pulls
 back toward its long-run average. This is exactly what cointegration predicts —
 the common stochastic trend cancels when the spread is formed, leaving a
-stationary residual. Crucially, the figure also highlights the **yield curve
-inversion** — the period when the spread crosses zero from above, shaded in
-terracotta. In the VECM framework, an inversion means the error correction
+stationary residual. Crucially, the figure also highlights the **[yield curve
+inversion](https://en.wikipedia.org/wiki/Inverted_yield_curve)** — the period when the spread crosses zero from above, shaded in
+terracotta. In the [VECM](https://en.wikipedia.org/wiki/Error_correction_model#VECM) framework, an inversion means the error correction
 term has turned negative: the system is below its long-run equilibrium, and
 the adjustment mechanism implies forces that push the spread back up. The
 near-perfect record of inversions preceding recessions — visible in the
@@ -567,7 +567,7 @@ stationary. Two I(1) series can therefore produce a stationary linear
 combination precisely when they share a common stochastic trend that cancels
 when the combination is formed.
 
-This is the essence of cointegration: the non-stationarity in both series comes
+This is the essence of [cointegration](https://en.wikipedia.org/wiki/Cointegration): the non-stationarity in both series comes
 from the same source, so it can be subtracted away. Cointegrated series are
 sometimes described as moving together in the long run — not in the sense that
 they are always equal or always close, but in the sense that their deviations
@@ -631,7 +631,7 @@ positive territory.
 
 ### The Expectations Hypothesis as an Identifying Restriction
 
-The expectations hypothesis of the term structure (EH) is one of the oldest
+The [expectations hypothesis](https://en.wikipedia.org/wiki/Expectations_hypothesis) of the term structure (EH) is one of the oldest
 and most tested relationships in financial economics. Its logic is simple: if
 financial markets are efficient and investors care only about expected returns,
 then the yield on a long-term bond must equal the average of expected future
@@ -746,7 +746,7 @@ We now develop the test.
 
 ### From VAR to the $\Pi$ Matrix
 
-The Johansen procedure begins not with a new model but with the VAR in levels
+The [Johansen procedure](https://en.wikipedia.org/wiki/Johansen_test) begins not with a new model but with the VAR in levels
 we were warned against estimating for inference — because despite its inferential
 problems, the levels VAR contains the information needed to test for
 cointegration. The key insight is that cointegrating relationships, if they
