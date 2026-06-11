@@ -246,8 +246,6 @@ volatility episode of the past four decades is visible.
 
 ## Stock Returns and the Limits of the Mean Model {#sec-eff-market}
 
-### The Random Walk and the Efficient Market
-
 Chapter 4 spent considerable effort establishing that many macroeconomic series
 — real GDP, the price level, interest rates — behave like integrated processes:
 shocks accumulate, and the best forecast of tomorrow's value is roughly today's
@@ -423,7 +421,7 @@ This single graph — flat ACF for $r_t$, slowly decaying ACF for $r_t^2$ —
 is the empirical motivation for everything that follows. The mean is
 unforecastable. The variance is not.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## A Subtle Distinction: Unconditional vs. Conditional Moments
 
 The slowly decaying ACF of squared returns does *not* contradict the EMH. The
@@ -923,7 +921,7 @@ tail shape is not. Keeping these two components conceptually distinct is one
 of the most useful habits in applied volatility modelling.
 :::
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Initialising the Variance Recursion
 
 The GARCH variance recursion requires a starting value $\sigma_1^2$.
@@ -1162,7 +1160,7 @@ standardised residuals in levels — a consequence of the constant-mean
 specification rather than the volatility model. The primary diagnostic of
 interest — whether ARCH effects are absorbed — passes cleanly.*
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Fat Tails and the Limits of Gaussian GARCH
 
 The Jarque-Bera rejection and the S-curve in the Q-Q plot are expected, not
@@ -1515,8 +1513,6 @@ smaller. The DM test from Chapter 5 applies directly to this comparison.
 
 ## Dynamic Conditional Correlation {#sec-dcc}
 
-### Beyond Univariate Volatility
-
 If two assets both become more volatile during a crisis, does that make them
 more dangerous together — or could the increased volatility offset itself
 through diversification? The answer depends entirely on whether their
@@ -1684,7 +1680,7 @@ note realised volatility as the natural extension when intraday data are
 available.
 :::
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## DCC Python Implementation
 
 The `arch` library's DCC support is limited and not production-ready as of
@@ -1700,7 +1696,7 @@ translates directly to code once the univariate GARCH margins are in hand.
 
 ### What Is Value-at-Risk?
 
-In most of this course, risk has been measured through the standard deviation:
+Throughout the preceding chapters, risk has been measured through the standard deviation:
 how far a series typically deviates from its mean. The standard deviation is a
 symmetric, average measure — it weighs large positive and large negative
 deviations equally, and it tells us about a *typical* fluctuation. VaR asks a
@@ -2002,7 +1998,6 @@ concern: the primary object of interest in this chapter is the conditional
 variance, which all three models handle well. On AIC and BIC, GJR-GARCH wins
 convincingly, with GARCH(1,1) second and EGARCH third on this sample.*
 
-### Connecting Back to Chapter 5
 
 The model selection problem for GARCH specifications is structurally identical
 to the problem we faced in Chapter 5 for ARIMA forecasts. Information criteria
@@ -2073,17 +2068,11 @@ probabilistically from the data. Hamilton's (1989) model of US business
 cycles is the canonical application, and the connection to GARCH is direct:
 where GARCH specifies $\sigma_t^2$ as a deterministic function of past
 data, a Markov-switching variance model treats $\sigma_t^2$ as a discrete
-random variable that we filter out of the observed series.
-
-The algorithm that accomplishes this filtering — the Hamilton filter — shares
-the same prediction-correction logic as the Kalman filter introduced in
-Chapter 11. Both process observations sequentially, form a prediction of the
-current hidden state, update that prediction upon observing the data, and
-produce a smoothed retrospective estimate of the state path. The difference
-is that the Hamilton filter operates on a discrete state space (two or three
-regimes) while the Kalman filter operates on a continuous one. Understanding
-the Hamilton filter first makes the Kalman filter's structure immediately
-recognisable.
+random variable that we filter out of the observed series. The filter that
+accomplishes this inference — the Hamilton filter — turns out to share the
+same prediction-correction logic that the Kalman filter will use in Chapter 11,
+making Chapter 10 a natural conceptual bridge between the parametric volatility
+models here and the state space framework that closes the course.
 
 
 ::: {.callout-note icon=false}

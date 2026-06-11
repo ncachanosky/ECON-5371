@@ -264,8 +264,6 @@ chapter with impulse responses and forecasts.
 
 ## The Problem with I(1) Variables in a VAR {#sec-problem}
 
-### What Goes Wrong in a Levels VAR
-
 Chapter 4 established that regressing one I(1) series on another produces
 spurious results unless the two series are cointegrated: $t$-statistics are
 inflated, $R^2$ is high even when the series are independent, and the residuals
@@ -297,7 +295,7 @@ permanent effects of shocks. Depending on whether the variables are cointegrated
 or not, those permanent effects either make economic sense or represent
 a modelling artefact.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Do Not Estimate a VAR in Levels with I(1) Variables
 
 If unit root tests indicate that one or more variables in your system are I(1),
@@ -575,7 +573,7 @@ from each other are bounded. Shocks may push them apart temporarily, but an
 equilibrating force eventually pulls them back.
 
 ::: {.callout-note}
-## Definition: Cointegration
+## Definition 8.1 — Cointegration
 
 Two I(1) series $y_t$ and $x_t$ are **cointegrated** if there exists a constant
 $\beta$ such that
@@ -658,7 +656,7 @@ the zero-lower-bound period after 2008. We make no prior commitment to the
 outcome. The Johansen procedure estimates $\beta$ as part of the cointegration
 analysis, and we will report what the data say.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Cointegration Does Not Imply Causality
 
 The cointegrating vector tells us the long-run proportional relationship between
@@ -931,7 +929,7 @@ $r = 1$. Test $r = 1$ against $r \geq 2$. Continue until the null is not
 rejected. The rank at which we first fail to reject is the estimated
 cointegrating rank $\hat{r}$.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Sequential Testing Inflates the Type I Error Rate
 
 Testing $r = 0$, then $r = 1$, then $r = 2$, and so on involves multiple
@@ -972,7 +970,7 @@ fluctuates around a constant term premium with no deterministic trend. We
 therefore use `det_order = 0` in `coint_johansen`, which corresponds to a
 restricted constant in the cointegrating space.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The `det_order` Argument in `coint_johansen`
 
 In `statsmodels`, the `coint_johansen` function's `det_order` argument controls
@@ -1444,7 +1442,7 @@ confirming that the Federal Reserve's active management of short-term rates
 bears most of the adjustment burden while long rates respond more gradually
 to disequilibria.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Weak Exogeneity and the $\alpha$ Coefficients
 
 If $\alpha_i = 0$ for a particular variable $i$, that variable does not respond
@@ -1940,7 +1938,7 @@ forecast horizon and is the definitive evidence that cointegration matters.
 
 Before leaving the diagnostic section, three failure modes are worth naming
 explicitly — not because they afflict the yield curve application, but because
-students will encounter them in their own projects.
+they are common enough to name explicitly.
 
 **Over-differencing.** If a system is cointegrated but the analyst estimates a
 VAR in differences, the model is misspecified by omission: the error correction
@@ -1975,7 +1973,7 @@ multiple testing. When the test result at any step is marginal — a trace
 statistic just above the critical value — estimating VECMs at adjacent ranks
 and comparing residual diagnostics is good practice.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Cointegration and Structural Breaks Do Not Mix Well
 
 The Johansen test assumes the cointegrating relationship is stable over the
@@ -1993,8 +1991,6 @@ relationship.
 :::
 
 ## Impulse Responses and Forecasting from the VECM {#sec-irf}
-
-### Orthogonalised IRFs: Same Mechanics, New Interpretation
 
 The impulse response functions of a VECM are computed in exactly the same way
 as those of a VAR. Chapter 7 showed that to identify structural shocks from

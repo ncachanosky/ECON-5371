@@ -274,8 +274,6 @@ brief map of MS-VAR models.
 
 ## Why Parameters Might Switch {#sec-motivation}
 
-### Does the Economy Follow the Same Law in Recessions and Expansions?
-
 Every ARIMA model in Chapter 4 asked: given the history of GDP growth up to
 today, what is our best prediction for next quarter? The answer came from a
 single estimated equation whose coefficients were fixed for the entire postwar
@@ -457,7 +455,7 @@ grounds before estimation, since standard likelihood-ratio tests do not have
 their usual distributions when comparing models with different numbers of
 regimes.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Testing for the Number of Regimes
 
 Standard regularity conditions for likelihood-ratio tests fail when comparing
@@ -1055,7 +1053,7 @@ probabilities are sharper — they assign more decisive regime classifications
 — because they incorporate evidence that a recession began or ended near date
 $t$ even if that evidence only arrived in later periods.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Filtered vs. Smoothed: Which to Use
 
 Use **filtered probabilities** when the question is about real-time inference:
@@ -1124,7 +1122,7 @@ OLS but tractable for the sample sizes typical in macroeconomics. Standard
 numerical optimisers (BFGS, Nelder-Mead) are used in practice; `statsmodels`
 wraps this for the two-state MS-AR case.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Identification and Labelling
 
 The two regimes are interchangeable in the likelihood: swapping all
@@ -1279,7 +1277,7 @@ duration of 22.7 quarters (about 5.7 years). The recession state exits
 quickly: $\hat{p}_{11} = 0.400$, implying an average recession duration of
 only 1.7 quarters.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Why Is the Estimated Recession Duration So Short?
 
 An average recession duration of 1.7 quarters is shorter than any NBER
@@ -1511,8 +1509,6 @@ window that included the 1970s and early 1980s would almost certainly
 reverse this ranking.*
 
 ## Threshold Models: A Brief Tour {#sec-threshold}
-
-### Observable vs. Hidden Threshold
 
 The Markov-switching models of the previous sections assume the regime is
 driven by a **hidden** state variable — something unobserved that must be
@@ -1850,7 +1846,7 @@ combinations thereof). Modern implementations are available in R (`MSwM`,
 `MSBVAR`) and Python (`statsmodels.tsa.regime_switching` for univariate
 cases; full MS-VAR requires bespoke code or the `markovian` package).
 
-For students whose research projects involve multivariate systems with
+For applications involving multivariate systems with
 potential structural breaks or time-varying dynamics, the MS-VAR is a
 natural next step beyond the linear VAR of Chapter 7. The intuition from
 the univariate Hamilton model carries over directly — the same
@@ -1892,7 +1888,7 @@ changes, and the state space becomes richer. Together, the tools developed
 across these eleven chapters — from the ACF of a stationary process to
 Markov-switching dynamics and state-space filtering — form a complete
 vocabulary for empirical time series work. The methods that appeared exotic
-at the outset of the course are, by now, a natural part of the toolkit.
+at the outset are, by now, a natural part of the toolkit.
 
 
 ::: {.callout-note icon=false}

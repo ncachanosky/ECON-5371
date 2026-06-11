@@ -13,7 +13,7 @@ abstract: |
   strategy, maximum likelihood estimation, residual diagnostics, and forecasting.
   We close with ARMAX models, which extend the framework to include exogenous
   regressors. The tools developed here are the foundation for every model class
-  that follows in the course.
+  that follows.
 jupyter: python3
 format:
   html:
@@ -368,7 +368,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 This is finite and positive as long as $|\phi_1| < 1$, confirming the stationarity
-requirement. In the autocovariance notation used throughout the course,
+requirement. In the autocovariance notation used throughout,
 $\sigma_y^2 = \gamma(0)$ — the autocovariance at lag zero is just the variance.
 The autocovariance at lag $h > 0$ follows by the same logic, multiplying
 $\tilde{y}_t = \phi_1\tilde{y}_{t-1} + \varepsilon_t$ by $\tilde{y}_{t-h}$
@@ -588,7 +588,7 @@ deindustrialisation that permanently altered the composition of the workforce.
 Whether a single AR model is the right representation for the full sample is a
 genuine empirical question. We note the issue here and proceed with the full sample
 to illustrate the identification and estimation workflow, but if we were writing a
-research paper we would be more careful. Chapter 4 provides the tools — Chow tests,
+research paper we would be more careful. Chapter 6 provides the tools — Chow tests,
 Bai-Perron, Zivot-Andrews — for addressing this formally.
 
 ### The Yule-Walker Equations
@@ -655,8 +655,6 @@ likelihood.
 
 
 ## The Wold Decomposition {#sec-wold}
-
-### A Question About Representations
 
 Section 3.2 showed that any stationary AR($p$) can be written as an MA($\infty$):
 an infinite weighted sum of current and past innovations. This is a useful result
@@ -741,8 +739,6 @@ does not tell us what $\psi_j$ are for a given process. We compute them either b
 fitting a specific parametric model — AR, MA, ARMA — and reading off the implied
 coefficients, or by estimating them directly from data using nonparametric methods.
 
-### The Bridge to Section 3.4
-
 Section 3.2 showed that any stationary AR has an MA($\infty$) representation. The
 Wold theorem shows the converse is also true in a broad sense: any stationary
 process has an MA($\infty$) representation. Together, these results tell us that
@@ -753,8 +749,6 @@ becomes a practical tool for building parsimonious models.
 
 
 ## Moving Average Models {#sec-ma}
-
-### A Different Kind of Memory
 
 Autoregressive models capture persistence through a direct feedback mechanism: the
 past value of $y_t$ influences its future values. But there is a second, conceptually
@@ -1118,9 +1112,8 @@ developed in Section 3.6.
 
 The PACF panels show the complementary pattern: no clean cutoff anywhere, just a
 gradual decay with occasional spikes that reflect the complex infinite AR
-representation underlying every MA model. If a student shows you an ACF that drops
-after lag 2 and a PACF that shows no obvious cutoff, the data are telling you to
-consider an MA(2).
+representation underlying every MA model. An ACF that drops after lag 2 with a PACF that shows no obvious cutoff is the
+signature of an MA(2).
 
 
 ## ARMA Models {#sec-arma}
@@ -1222,7 +1215,7 @@ the unreduced form wastes parameters, inflates standard errors, and can cause
 numerical instability in estimation — the likelihood surface becomes flat along
 the direction of the common root, making optimisation unreliable.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Cancellation Problem
 
 An ARMA($p$,$q$) specification is **parameter redundant** if $\phi(L)$ and
@@ -1500,8 +1493,7 @@ and pay attention when they agree. When they disagree, the disagreement itself i
 informative — it usually means the data do not strongly discriminate between model
 orders, and a simpler model is defensible.
 
-**Why not adjusted $R^2$?** A student familiar with regression will naturally ask
-whether the adjusted $R^2$ — which does penalise for extra parameters — can serve
+**Why not adjusted $R^2$?** The natural question is whether the adjusted $R^2$ — which does penalise for extra parameters — can serve
 as a model selection criterion here. It is a reasonable instinct: adjusted $R^2$
 imposes a penalty of one degree of freedom per added regressor, so it does not
 mechanically prefer the most heavily parameterised model. The problem is that the
@@ -1849,7 +1841,7 @@ expected.
 **Heteroskedasticity ($H$)** tests whether the residual variance is stable over
 time, comparing the variance in the first and last thirds of the sample. Rejection
 points to time-varying volatility — the clustering visible in the residual plot.
-A forward pointer to ARCH and GARCH models in Chapter 8.
+A forward pointer to ARCH and GARCH models in Chapter 9.
 
 **Condition number** measures numerical stability of the optimisation. Very large
 values (above $10^3$–$10^4$) suggest near-multicollinearity or near-cancellation
@@ -1921,7 +1913,7 @@ the ACF and PACF have disappeared — the two MA terms have absorbed the structu
 the AR(1) missed. What remains is the heteroskedastic bursting pattern: volatility
 that spikes during recessions and subsides during expansions. This is volatility
 clustering — second-moment dependence that ARMA models are not designed to capture,
-and the subject of Chapter 8.
+and the subject of Chapter 9.
 
 This visual result is also the answer to why we prefer ARMA(1,2) over ARMA(3,3).
 The ARMA(1,2) residuals pass the mean-independence test — no significant
@@ -2095,8 +2087,8 @@ and they have a direct interpretation in terms of model misspecification:
   monthly; 52 for weekly) suggest a seasonal component the ARMA model has not
   captured — a forward pointer to SARIMA in Chapter 4.
 - **No significant spikes anywhere** — the model is adequate on the mean. This
-  does not rule out volatility clustering (Chapter 8) or structural instability
-  (Chapter 4), but it means the ARMA specification has done its job.
+  does not rule out volatility clustering (Chapter 9) or structural instability
+  (Chapter 6), but it means the ARMA specification has done its job.
 
 The 95% confidence bands at $\pm 1.96/\sqrt{T}$ are the reference. As noted in
 Section 3.6, a few bars barely crossing the band may be noise; a cluster of bars
@@ -2203,7 +2195,7 @@ jobless claims is much higher during recessions than during expansions. This
 is not a flaw in the ARMA specification — ARMA models are designed to capture
 the conditional mean, not the conditional variance. It is, however, a signal that
 the ARMA model leaves something important on the table, and that a GARCH model
-(Chapter 8) may be warranted for applications that require accurate prediction
+(Chapter 9) may be warranted for applications that require accurate prediction
 intervals or risk measures.
 
 ### Python: Formal Diagnostics for the ARMA(1,2)
@@ -2583,7 +2575,7 @@ all extrapolative forecasting models: they assume the future will resemble the
 past in its statistical structure. When that assumption breaks down — due to
 structural change, policy shifts, or tail events — forecast intervals provide
 false assurance. Chapter 4 removes the stationarity assumption and provides the
-ARIMA machinery for modelling integrated series; Chapter 5 addresses structural
+ARIMA machinery for modelling integrated series; Chapter 6 addresses structural
 instability directly with formal break tests and modelling strategies.
 
 
@@ -2668,7 +2660,7 @@ on historical data reflect the joint equilibrium of a system, not deep structura
 parameters. An ARMAX model may forecast well when the relationship between $x$ and
 $y$ is stable, but it cannot reliably predict the effect of a deliberate policy
 that changes $x$ in ways outside the historical experience. For causal questions,
-a structural model is required. Chapter 6 develops VAR and SVAR models that address
+a structural model is required. Chapter 7 develops VAR and SVAR models that address
 structural identification in a multivariate setting, providing the framework within
 which the ARMAX coefficient would find its proper structural interpretation.
 
@@ -2885,10 +2877,10 @@ reflects the endogeneity problem discussed above: the Fed tends to raise rates
 when the labour market is strong and claims are already low, so the contemporaneous
 correlation is negative. This is not a causal estimate — it is exactly the
 simultaneity bias the Lucas critique warns against, and it reinforces why
-structural identification (Chapter 6) is needed before drawing any policy
+structural identification (Chapter 7) is needed before drawing any policy
 conclusions.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Endogeneity in Practice
 
 The negative $\hat\beta_{FFR}$ here is not a curiosity — it is a warning about
@@ -2897,7 +2889,7 @@ model fitted to the same data, which accounts for the simultaneity by modelling
 both log claims and the funds rate jointly, recovers a positive impulse response
 of claims to a contractionary funds rate shock — the expected direction. The
 difference between $-0.013$ in the ARMAX and the positive structural response in
-the VAR is the endogeneity bias in quantitative form. Chapter 6 provides the
+the VAR is the endogeneity bias in quantitative form. Chapter 7 provides the
 identification tools to recover the structural response; until then, the ARMAX
 coefficient should be used for forecasting — where the bias may be modest if the
 relationship is stable — and not for policy analysis.
@@ -2917,7 +2909,7 @@ motivated regressor to the ARMA(1,2), is supported by all three information
 criteria, has stable and interpretable AR and MA coefficients, and avoids the
 parameter instability of the AR(2) variants. The negative sign on the funds rate
 is a reminder that reduced-form coefficients are not structural parameters — a
-lesson to carry into Chapter 6.
+lesson to carry into Chapter 7.
 
 
 ## Looking Ahead {#sec-lookahead}
@@ -3073,7 +3065,7 @@ uncertainty accumulates with horizon.
 \boldsymbol\beta'\mathbf{x}_t + \theta(L)\varepsilon_t$. A reduced-form model;
 $\boldsymbol\beta$ measures conditional association, not causal effects.
 Endogeneity of $\mathbf{x}_t$ biases $\hat{\boldsymbol\beta}$ toward structural
-identification; see Chapter 6 for resolution.
+identification; see Chapter 7 for resolution.
 
 **Mean reversion** — The property of stationary ARMA forecasts: $\hat
 y_{T+h|T} \to \hat\mu$ as $h \to \infty$. The speed of convergence is governed

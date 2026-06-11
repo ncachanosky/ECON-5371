@@ -217,7 +217,7 @@ ARIMA and SARIMA extensions that handle them, and finally using the ARIMA
 machinery to revisit and resolve two open questions from earlier chapters —
 the ETS-ARIMA duality from Chapter 2 and the trend-cycle decomposition problem
 that motivated Chapter 2's filters. The running example throughout is US real
-GDP, the series students have followed since Chapter 1.
+GDP, the series followed since Chapter 1.
 
 
 ## Integration and Stochastic Trends {#sec-integration}
@@ -560,14 +560,12 @@ significant $p$-value, and a high $R^2$ are all consistent with a completely
 meaningless regression when the variables are integrated. The only protection
 is to test for unit roots before estimating any regression involving level
 variables, and to understand whether a genuine long-run equilibrium — cointegration
-— exists. Chapter 7 develops the tools for testing and modelling cointegrated
+— exists. Chapter 8 develops the tools for testing and modelling cointegrated
 systems.
 
 
 
 ## Unit Root Testing {#sec-urtests}
-
-### From Data Description to Model Specification
 
 Chapter 1 introduced the [ADF](https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test) and [KPSS](https://en.wikipedia.org/wiki/KPSS_test) tests as data characterisation tools —
 run them on a series to establish basic facts before modelling begins. Here we
@@ -701,7 +699,7 @@ a stochastic trend) while appearing stationary to the ADF in a local window.
 The inflation example from Chapter 1 was exactly this case — pre-1979 inflation
 looked like a unit root; post-1983 it looked stationary. Pooling the full
 sample gave contradictory test results because the data-generating process
-changed. Chapter 5 addresses structural break testing formally.
+changed. Chapter 6 addresses structural break testing formally.
 
 ### Elliott-Rothenberg-Stock: A More Powerful ADF
 
@@ -1288,7 +1286,7 @@ print(f"  AIC: {auto_mod.aic():.1f}  BIC: {auto_mod.bic():.1f}")
 *Top ARIMA specifications for log SA real GDP by BIC, sorted ascending.
 `auto_arima` (BIC, stepwise) cross-check shown below the table.*
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## auto\_arima Is a Search Tool, Not a Black Box
 
 `auto_arima` is useful for quickly surveying candidate specifications, but
@@ -1932,8 +1930,6 @@ $(P,D,Q,s)$.
 
 ## The ETS-ARIMA Duality {#sec-etsduality}
 
-### A Surprising Connection
-
 Chapter 2 introduced exponential smoothing — SES, Holt's method, and
 Holt-Winters — as intuitive, computationally efficient forecasting procedures.
 Each was motivated by the idea that recent observations should receive more
@@ -2159,8 +2155,6 @@ details.
 
 
 ## The Beveridge-Nelson Decomposition {#sec-bn}
-
-### The Trend-Cycle Problem Revisited
 
 Chapter 2 confronted the trend-cycle problem head-on: given an observed series
 like log GDP, how do we separate the long-run trend from the shorter-run
@@ -2402,7 +2396,7 @@ them in a smoothing parameter.
 
 ### The Model Hierarchy
 
-By this point in the course, students have encountered four model families
+By this point, four model families have been introduced
 across Chapters 3 and 4. It is worth pausing to see how they fit together,
 because each is a special case of the next:
 
@@ -2439,7 +2433,7 @@ One additional consideration arises when $y_t$ is $I(1)$: the exogenous
 regressors $\mathbf{x}_t$ may themselves be integrated. If $\mathbf{x}_t \sim
 I(1)$ and $y_t \sim I(1)$, their relationship may reflect cointegration rather
 than a simple regression. In that case, the ARIMAX framework is not the right
-tool — the vector error correction model (VECM) developed in Chapter 6 is more
+tool — the vector error correction model (VECM) developed in Chapter 8 is more
 appropriate, as it explicitly models the long-run equilibrium relationship
 between $y_t$ and $\mathbf{x}_t$. ARIMAX with integrated regressors is safe
 only when the regressors are known to be $I(0)$ (stationary) or when the
@@ -2496,7 +2490,7 @@ ARMA, ARMAX, ARIMA, ARIMAX, SARIMA, and SARIMAX.
    nonzero mean (the level series trends under the stationary alternative).
 10. Consider exogenous regressors ($X$): if economic theory suggests a
     relevant $I(0)$ variable, add it via `exog`. If the regressor is $I(1)$,
-    consider VECM (Chapter 7) instead of ARIMAX/SARIMAX.
+    consider VECM (Chapter 8) instead of ARIMAX/SARIMAX.
 
 **Phase 5 — Estimate and Diagnose**
 
@@ -2530,7 +2524,7 @@ ARMA, ARMAX, ARIMA, ARIMAX, SARIMA, and SARIMAX.
 :::
 
 At every model endpoint, if the candidate exogenous regressor is itself $I(1)$,
-stop — VECM in Chapter 7 is the appropriate framework, not ARIMAX or SARIMAX.
+stop — VECM in Chapter 8 is the appropriate framework, not ARIMAX or SARIMAX.
 
 ## Looking Ahead {#sec-lookahead4}
 
@@ -2545,10 +2539,7 @@ and prediction intervals are only as useful as our ability to assess their
 accuracy out of sample. Chapter 5 develops the tools: a principled out-of-sample
 evaluation design, loss functions and their properties, the **Diebold-Mariano
 test** for comparing the forecast accuracy of two competing models, and forecast
-combination methods that often outperform any individual specification. These
-tools are needed for project work from Week 6 onward — the data memo requires
-evaluating a forecast — and they complete the modelling workflow that Chapters
-3 and 4 built.
+combination methods that often outperform any individual specification. These tools complete the modelling workflow that Chapters 3 and 4 built.
 
 
 ## Key Terms {#sec-keyterms4}
@@ -2569,7 +2560,7 @@ grow linearly at rate $\mu$; intervals widen around the trend at rate $\sqrt{h}$
 **Spurious regression** — The finding of a statistically significant OLS
 relationship between two independent $I(1)$ series due to shared trending
 behaviour. A consequence of not accounting for unit roots; resolved by
-cointegration analysis (Chapter 6).
+cointegration analysis (Chapter 8).
 
 **ADF test** — Augmented Dickey-Fuller test. $H_0$: unit root ($\delta = 0$ in
 $\Delta y_t = \delta y_{t-1} + \ldots$). Non-standard left-skewed distribution.
@@ -2640,7 +2631,7 @@ $\psi(1)$ means most shocks are permanent and the BN cycle is small.
 
 **ARIMAX($p$,$d$,$q$)** — ARIMA with exogenous regressors: $\phi(L)(1-L)^d y_t
 = \mu^* + \boldsymbol\beta'\mathbf{x}_t + \theta(L)\varepsilon_t$. Same
-endogeneity caveats as ARMAX. If regressors are $I(1)$, VECM (Chapter 6) is
+endogeneity caveats as ARMAX. If regressors are $I(1)$, VECM (Chapter 8) is
 preferred over ARIMAX.
 :::
 

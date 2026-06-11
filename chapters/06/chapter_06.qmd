@@ -247,8 +247,6 @@ one has been found.
 
 ## When the Rules Change {#sec-motivation}
 
-### The Problem Stated Plainly
-
 Every regression, every ARMA, every ARIMA we have estimated carries an implicit
 assumption: that the coefficients we estimate on the first half of the data are
 the same coefficients that govern the second half. This is the assumption of
@@ -399,8 +397,6 @@ statistical complications that arise when those quantities are unknown.
 
 ## The Chow Test: A Known Break Date {#sec-chow}
 
-### The Core Idea
-
 Suppose we have a strong prior about when a break occurred. For GDP growth and
 the Great Moderation, that prior is 1984 Q1 — the date that appears repeatedly
 in the literature, is consistent with the visual evidence in Figure 6.1, and
@@ -503,7 +499,7 @@ is known, and it will return a significant result at many dates if the true
 break is nearby. And it does not rule out additional breaks elsewhere in the
 sample.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Chow Test Requires a Pre-Specified Break Date
 
 The Chow test conditions on $\tau$ being known. If $\tau$ is chosen by looking
@@ -718,7 +714,7 @@ Its assumptions are stronger than the Chow test — it requires normally
 distributed errors and is sensitive to departures from normality — but as a
 first-pass diagnostic it is transparent and easy to interpret.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Variance Ratio Test Requires a Pre-Specified Break Date
 
 Like the Chow test, the variance ratio test conditions on a known break date.
@@ -828,7 +824,7 @@ the null of no break, it still has a distribution, but that distribution has
 thicker right tails than the $F$: we will sometimes obtain a large maximum
 purely by chance, just because we searched over many dates.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Davies Problem
 
 When a parameter (here, the break date $\tau$) appears only under the
@@ -1480,8 +1476,6 @@ plt.show()
 
 ## What to Do After Finding a Break {#sec-response}
 
-### Detection Is Not Enough
-
 Finding a structural break is the beginning of the analysis, not the end.
 The tests in Sections 6.2 through 6.4 tell us that the data-generating process
 shifted — but they do not tell us how to respond. A significant Chow statistic
@@ -1563,7 +1557,7 @@ estimation. The connection is not coincidental: the Chapter 4 outlier dummies
 were a special case of this broader framework, restricted to single-observation
 blips rather than permanent level shifts.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Dummy Variables Require a Known Break Date
 
 Adding a dummy requires committing to a break date before estimation. If that
@@ -1610,8 +1604,7 @@ is in one of $K$ regimes, and the probability of transitioning between regimes
 is governed by a fixed transition matrix. Regime-switching is a natural
 extension of the structural break framework when breaks are recurrent rather
 than one-time events. We mention it here as an important member of the same
-model family, but defer its formal treatment to the frontiers discussion in
-Week 13.
+model family, but defer its formal treatment to Chapter 10.
 
 ::: {.callout-note icon=false}
 ## The Transition Matrix
@@ -1930,20 +1923,17 @@ to the other, or how much of the variance in GDP growth is explained by inflatio
 shocks versus own shocks. These are multivariate questions and they require a
 multivariate framework.
 
-**Chapter 7 — VAR, SVAR, and Cointegration** builds that framework. We begin
-with the **reduced-form VAR**, which lets GDP growth and inflation (and any
-other variables we choose) depend on lags of each other, and derive its lag
-selection criteria. **Granger causality** asks whether inflation helps predict
-GDP growth beyond what GDP growth's own history already contains — the
-operational time series definition of predictive precedence. **Impulse response
-functions** trace the dynamic path of both variables after a shock to one of
-them, making the propagation mechanism visible. And **cointegration** addresses
-a new question that arises when some of the variables in the system have unit
-roots: can two $I(1)$ series be linked by a stable long-run relationship even
-though each one individually wanders without bound? The Phillips curve —
-the relationship between inflation and unemployment — is exactly this kind of
-potentially cointegrated system, and Chapter 7 gives us the tools to test and
-model it.
+Chapter 7 builds that framework. The **reduced-form VAR** lets GDP growth and
+inflation — and any other variables we choose — depend on lags of each other,
+replacing the single equation with a system. **Granger causality** asks whether
+inflation helps predict GDP growth beyond what GDP growth's own history already
+contains — the operational time series definition of predictive precedence. The
+structural VAR adds identifying restrictions that allow us to say something about
+*causal* mechanisms, not just predictive ones: the Cholesky decomposition and
+sign restrictions each impose different economic priors about how shocks propagate.
+**Impulse response functions** then trace the dynamic path of both variables after
+a shock to one of them, making the propagation mechanism visible in a way that
+single-equation forecasting models never can.
 
 
 

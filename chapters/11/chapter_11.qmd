@@ -12,7 +12,7 @@ abstract: |
   to its own dynamics. What we observe is a noisy signal of that state. The
   Kalman filter is the algorithm that recovers the best estimate of the hidden
   state from the noisy observations, updating in real time as new data arrive.
-  We begin by showing that the framework is not new to this course: the
+  We begin by showing that the framework is not new: the
   GARCH(1,1) recursion of Chapter 9 is already a state equation in disguise,
   and the Kalman filter and the GARCH filter share the same
   prediction-correction logic. From there we build upward: the local level
@@ -235,24 +235,24 @@ By the end of this chapter, you will be able to:
 
 Chapter 9 closed with a question: what if the parameters of a volatility model
 are not constant across time? That question opens the door to the state space
-framework, the most general modelling architecture we encounter in this course.
-Section 10.1 begins by honouring the bridge from Chapter 9: the GARCH(1,1)
+framework, the most general modelling architecture introduced in this book.
+Section 11.1 begins by honouring the bridge from Chapter 9: the GARCH(1,1)
 variance recursion, reread carefully, is already a state equation — the
 conditional variance is an unobserved state, and the squared return is a noisy
 observation of it. That reinterpretation motivates the general vocabulary of
 observation equations, state equations, and the signal-noise decomposition.
-Section 10.2 introduces the local level model: the simplest non-trivial state
+Section 11.2 introduces the local level model: the simplest non-trivial state
 space model, and the one that does most of the pedagogical work in this chapter.
-Section 10.3 derives the Kalman filter from scratch in scalar form, walking
+Section 11.3 derives the Kalman filter from scratch in scalar form, walking
 through the prediction and update steps with enough algebra to make the
-recursion completely transparent. Section 10.4 addresses practical matters —
+recursion completely transparent. Section 11.4 addresses practical matters —
 initialisation, the signal-to-noise ratio, and how the filter is estimated from
-data. Section 10.5 sharpens the distinction between filtering, smoothing, and
-forecasting. Section 10.6 presents the general matrix form of the state space
+data. Section 11.5 sharpens the distinction between filtering, smoothing, and
+forecasting. Section 11.6 presents the general matrix form of the state space
 model and shows that ARIMA, exponential smoothing, and time-varying parameter
-regressions are all special cases. Section 10.7 applies the full apparatus to
+regressions are all special cases. Section 11.7 applies the full apparatus to
 core PCE inflation, tracing the Great Inflation and the [Great Moderation](https://en.wikipedia.org/wiki/Great_Moderation) through
-a smoothed trend estimate. Section 10.8 connects the Kalman filter to
+a smoothed trend estimate. Section 11.8 connects the Kalman filter to
 nowcasting. Throughout, the running example is monthly core PCE inflation from
 1960 through 2019.
 
@@ -296,7 +296,7 @@ not just a variance model — it is an algorithm for extracting a signal from a
 noisy measurement.
 
 ::: {.callout-note icon=false}
-## Definition 10.1 — State Variable and Observation
+## Definition 11.1 — State Variable and Observation
 
 A **state variable** is an unobserved quantity that summarises all
 past-relevant information about the system at time $t$. In the GARCH(1,1),
@@ -369,7 +369,7 @@ on how noisy the observation is relative to how uncertain the prediction is.
 When observations are very noisy, the filter trusts the prediction and updates
 little. When observations are precise relative to the prior uncertainty, the
 filter updates aggressively. The GARCH gain parameter $\alpha$ is a fixed
-version of this weight. The Kalman gain, which we derive in Section 10.3, is
+version of this weight. The Kalman gain, which we derive in Section 11.3, is
 the time-varying optimal version.
 :::
 
@@ -405,7 +405,7 @@ moves our estimate only modestly, say to 8.7 percent. The prior dominates.
 If the monthly reading is relatively precise — observation standard deviation
 of 0.8 percent — then the new reading carries more weight and our estimate
 moves further, say to 10.6 percent. The Kalman gain is the formula that
-computes this weight optimally. We derive it in Section 10.3; for now the
+computes this weight optimally. We derive it in Section 11.3; for now the
 intuition is what matters.
 
 Notice also what happens to uncertainty after the update. Before observing
@@ -421,14 +421,12 @@ This two-number summary — a state estimate and an uncertainty measure — is
 what flows forward into the next period's prediction step. January's posterior
 becomes February's prior. The filter is a machine for converting a sequence
 of noisy observations into a sequence of progressively refined state estimates,
-each carrying its own measure of how confident we should be. Section 10.2
+each carrying its own measure of how confident we should be. Section 11.2
 writes this down precisely for the simplest possible case.
 
 ## The Local Level Model {#sec-llm}
 
-### What Is the Simplest Possible State Space Model?
-
-The inflation example in Section 10.1 had all the ingredients of a state space
+The inflation example in Section 11.1 had all the ingredients of a state space
 model: an unobserved trend, noisy monthly observations, and a question about
 how the trend evolves. The **local level model** is the minimal formal
 structure that captures exactly this. It has two equations and two parameters,
@@ -457,7 +455,7 @@ Equation (10.6) is the **state equation**: the trend itself evolves as a
 random walk, drifting by a shock $\eta_t$ each period.
 
 ::: {.callout-note icon=false}
-## Definition 10.2 — The Local Level Model
+## Definition 11.2 — The Local Level Model
 
 The **local level model** is the state space model defined by equations
 (10.5) and (10.6). It is characterised by two variance parameters:
@@ -468,7 +466,7 @@ The **local level model** is the state space model defined by equations
   itself moves from period to period.
 
 Everything about the model's behaviour is governed by the ratio of these two
-variances, which we examine in detail in Section 10.4.
+variances, which we examine in detail in Section 11.4.
 :::
 
 The economic interpretation is immediate. Inflation in any given month is not
@@ -486,7 +484,7 @@ inflation from one period to the next.
 ### Connecting to Models You Already Know
 
 The local level model is not new. It is a formal statement of something we
-already encountered twice in this course, in different guises.
+already encountered twice in earlier chapters, in different guises.
 
 First, look at the observation equation (10.5) alone. If the trend $\mu_t$
 were constant — if $\sigma_\eta^2 = 0$ — the model reduces to a fixed mean
@@ -513,9 +511,9 @@ has converged to its steady state. The smoothing parameter $\lambda$ is not
 arbitrary — it is the steady-state Kalman gain, determined by the
 signal-to-noise ratio $q = \sigma_\eta^2 / \sigma_\varepsilon^2$. The state
 space framework gives the heuristic of Chapter 2 a rigorous derivation and
-a statistical interpretation. We return to this connection in Section 10.4.
+a statistical interpretation. We return to this connection in Section 11.4.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Random Walk Trend Is Not the Same as Nonstationarity
 
 The state equation $\mu_t = \mu_{t-1} + \eta_t$ looks like a unit root
@@ -546,7 +544,7 @@ forward through the data produces the prediction errors (called **innovations**)
 that enter the likelihood, and those innovations can be evaluated at any
 candidate parameter values. Maximising the resulting **prediction error
 decomposition** of the likelihood over $(\sigma_\varepsilon^2, \sigma_\eta^2)$
-gives maximum likelihood estimates. We return to estimation in Section 10.4
+gives maximum likelihood estimates. We return to estimation in Section 11.4
 after deriving the filter itself.
 
 
@@ -660,7 +658,7 @@ a single new data point?
 
 ### A Numerical Example: Filtering Inflation in January 1975
 
-We return to the January 1975 scenario from Section 10.1, now with the algebra
+We return to the January 1975 scenario from Section 11.1, now with the algebra
 in hand. Suppose the model parameters (estimated from pre-1975 data) are
 $\sigma_\varepsilon^2 = 4.0$ (percent$^2$, annualised) and $\sigma_\eta^2 =
 0.5$. The filtered state from December 1974 is $\hat{\mu}_{t-1|t-1} = 7.5$
@@ -719,7 +717,7 @@ see why the recursion matters — why running it for twelve consecutive months
 produces something qualitatively different from any single update — it helps
 to watch the filter work through a full year.
 
-Figure 10.5 traces the filter through all twelve months of 1979, a year in
+Figure 11.5 traces the filter through all twelve months of 1979, a year in
 which observed inflation was running well above any plausible prior estimate
 of the trend. Each month, a new observation arrives, a new Kalman gain is
 computed, and the trend estimate is revised. The figure shows the cumulative
@@ -740,9 +738,9 @@ accumulated evidence gradually overrides the prior.
 #|   persistent, not transitory."
 
 # ── Self-contained fit to obtain parameters and Dec 1978 posterior ────────────
-# Section 10.7 fits and interprets the full model; this cell fits it silently
-# here so Figure 10.5 does not depend on Section 10.7's execution order.
-# Underscore-prefixed names avoid collision with Section 10.7 variables.
+# Section 11.7 fits and interprets the full model; this cell fits it silently
+# here so Figure 11.5 does not depend on Section 11.7's execution order.
+# Underscore-prefixed names avoid collision with Section 11.7 variables.
 _llm_early  = UnobservedComponents(pce["Inflation"], level="local level")
 _llm_fit    = _llm_early.fit(disp=False)
 _s2_eps     = _llm_fit.params["sigma2.irregular"]
@@ -800,13 +798,13 @@ ax.set_ylabel("Annualised %")
 ax.set_title("Kalman filter: monthly updates through 1979")
 ax.legend(loc="lower right", fontsize=6)
 eo_style_ax(ax)
-eo_suptitle(fig, "Figure 10.5 — Recursive state updating, calendar year 1979")
+eo_suptitle(fig, "Figure 11.5 — Recursive state updating, calendar year 1979")
 
 fig.tight_layout()
 plt.show()
 ```
 
-*Figure 10.5 shows the filter working through all twelve months of 1979.
+*Figure 11.5 shows the filter working through all twelve months of 1979.
 The December 1978 prior sits at approximately 6.5 percent (dotted line).
 The January reading comes in close to the prior and produces only a modest
 upward revision, but the February observation falls sharply to around 4 percent
@@ -837,13 +835,13 @@ those observations — exactly the function the Kalman recursion implements. We
 do not work through the full proof here; the important thing is that the gain
 formula (10.11) is not an ad hoc choice but a derived result.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Filter Requires Correct Parameter Values
 
 The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) recursion (10.7)–(10.13) takes $\sigma_\varepsilon^2$ and
 $\sigma_\eta^2$ as given. In the numerical example above, we assumed specific
 values for illustration. In practice these parameters are unknown and must be
-estimated from the data. Section 10.4 explains how maximum likelihood
+estimated from the data. Section 11.4 explains how maximum likelihood
 estimation via the prediction error decomposition accomplishes this. A
 misspecified signal-to-noise ratio leads to a suboptimal gain — the filter
 either over-reacts to noisy observations or under-reacts to genuine state
@@ -881,7 +879,7 @@ unconditional mean to initialise from. The diffuse prior is therefore the
 standard choice for the local level model, and it is what `statsmodels` uses
 by default.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Burn the First Few Observations
 
 When using the diffuse prior, the filtered states and variances in the first
@@ -950,7 +948,7 @@ directly — but with the added benefit of a confidence interval on the
 underlying parameter $q$.
 
 ::: {.callout-note icon=false}
-## Definition 10.3 — Signal-to-Noise Ratio
+## Definition 11.3 — Signal-to-Noise Ratio
 
 The **signal-to-noise ratio** of the local level model is $q =
 \sigma_\eta^2 / \sigma_\varepsilon^2$. It governs the responsiveness of the
@@ -1016,7 +1014,7 @@ the local level model.
 
 ### Three Different Questions About the Hidden State
 
-The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) of Section 10.3 answers one specific question: what is our
+The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) of Section 11.3 answers one specific question: what is our
 best estimate of $\mu_t$ using data up to and including time $t$? This is the
 right question for a policymaker or forecaster operating in real time — they
 can only use information available at $t$.
@@ -1071,7 +1069,7 @@ sample, the smoothed and filtered estimates converge, since there is little
 future data to draw on.
 
 ::: {.callout-note icon=false}
-## Definition 10.4 — Filter, Smoother, and Forecast
+## Definition 11.4 — Filter, Smoother, and Forecast
 
 Let $\hat{\mu}_{t|s}$ denote the minimum-MSE estimate of the state $\mu_t$
 given observations $\{y_1, \ldots, y_s\}$.
@@ -1108,7 +1106,7 @@ long-horizon forecast uncertainty is genuinely unbounded.
 
 ### The Filtered vs. Smoothed Distinction in Practice
 
-Figure 10.2 in Section 10.7 will show both estimates on the same axes, making
+Figure 11.2 in Section 11.7 will show both estimates on the same axes, making
 the practical difference vivid. For now, the key intuition is this: the
 filtered estimate is what a real-time analyst had access to at each date; the
 smoothed estimate is the revised historical picture that emerges in hindsight.
@@ -1124,7 +1122,7 @@ estimate — what the Fed could have known at the time — not the smoothed
 estimate, which incorporates information only available later. The two
 estimates answer two genuinely different historical questions.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Do Not Report Smoothed States as Real-Time Estimates
 
 A common mistake in applied work is to fit a state space model over the full
@@ -1138,8 +1136,6 @@ decompositions where the full sample is legitimately in scope.
 
 
 ## The General State Space Form {#sec-general}
-
-### From Two Equations to a Framework
 
 Everything we have done so far — the local level model, the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter)
 recursion, the prediction error likelihood — applies to a specific and simple
@@ -1203,7 +1199,7 @@ here for completeness because some implementations, including
 `statsmodels`, use them to handle intercepts explicitly.
 
 ::: {.callout-note icon=false}
-## Definition 10.5 — System Matrices
+## Definition 11.5 — System Matrices
 
 In the general state space model (10.20)–(10.21):
 
@@ -1223,8 +1219,8 @@ In the general state space model (10.20)–(10.21):
 ### Special Cases: A Taxonomy
 
 The value of the general form lies in recognising familiar models as special
-cases. Setting the system matrices appropriately recovers every model in this
-course that involves a recursive structure.
+cases. Setting the system matrices appropriately recovers every model
+introduced in this book that involves a recursive structure.
 
 **The local level model** (Sections 10.2–10.5) is the case $p = m = 1$:
 
@@ -1247,7 +1243,7 @@ them on the same footing as the models with genuine latent states.
 
 **Simple exponential smoothing** (Chapter 2) corresponds to the local level
 model with $Q = 0$ — no state noise — evaluated at the steady-state gain.
-As discussed in Section 10.4, the smoothing parameter $\lambda$ is identified
+As discussed in Section 11.4, the smoothing parameter $\lambda$ is identified
 with $\bar{K}$, the steady-state Kalman gain. The state space representation
 makes clear that exponential smoothing is a degenerate local level model
 in which the trend is non-stochastic and the only free parameter is
@@ -1262,7 +1258,7 @@ for studying whether the Phillips curve slope or the monetary policy
 transmission coefficient has drifted over time; Cogley and Sargent
 (2005) and Stock and Watson (2007) are accessible entry points.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Time-Varying $\mathbf{Z}_t$ Requires Care
 
 When the observation matrix $\mathbf{Z}_t$ is time-varying — as in the TVP
@@ -1272,7 +1268,7 @@ a pure latent variable; it is a coefficient being estimated from data that
 enter both the observation matrix and the dependent variable. Missing
 observations in $x_t$ affect both sides of the observation equation
 simultaneously, and the filter must be modified accordingly. For the
-applications in this course, $\mathbf{Z}$ is time-invariant; we flag the
+applications covered here, $\mathbf{Z}$ is time-invariant; we flag the
 TVP case as an important extension for further reading.
 :::
 
@@ -1295,7 +1291,7 @@ and the Kalman smoother extracts each component separately from the same
 data. The decomposition is not imposed; it is estimated.
 
 Third, the state space form provides the natural language for nowcasting,
-which we take up in Section 10.8. When new data arrive at mixed frequencies
+which we take up in Section 11.8. When new data arrive at mixed frequencies
 — some monthly, some quarterly — the challenge is updating the state estimate
 as each observation becomes available. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) handles this
 natively: missing observations are simply periods in which $y_t$ is not
@@ -1304,8 +1300,6 @@ step. No special treatment is required.
 
 
 ## Application: Time-Varying Trend Inflation {#sec-application}
-
-### The Question
 
 What has the underlying trend of US core PCE inflation been since 1960? This
 sounds like a question with an obvious answer — plot inflation and look at
@@ -1350,13 +1344,13 @@ ax.set_xlim(dates[0], dates[-1])
 ax.set_ylabel("Annualised % change")
 ax.set_title("Core PCE inflation, monthly (annualised m-o-m log change)")
 eo_style_ax(ax)
-eo_suptitle(fig, "Figure 10.1 — Core PCE inflation, 1960–2019")
+eo_suptitle(fig, "Figure 11.1 — Core PCE inflation, 1960–2019")
 
 fig.tight_layout()
 plt.show()
 ```
 
-*Figure 10.1 plots raw monthly core PCE inflation over the full sample.
+*Figure 11.1 plots raw monthly core PCE inflation over the full sample.
 The three-regime narrative is immediately visible: inflation trends upward
 from the mid-1960s through the late 1970s, peaks near 10 percent at the
 start of the Volcker episode, falls sharply through 1983, and then settles
@@ -1472,13 +1466,13 @@ ax.set_ylabel("Annualised %")
 ax.set_title("Filtered vs. smoothed trend inflation")
 ax.legend(loc="upper right", fontsize=6)
 eo_style_ax(ax)
-eo_suptitle(fig, "Figure 10.2 — Filtered and smoothed trend inflation, 1960–2019")
+eo_suptitle(fig, "Figure 11.2 — Filtered and smoothed trend inflation, 1960–2019")
 
 fig.tight_layout()
 plt.show()
 ```
 
-*Figure 10.2 is the main empirical result of the chapter. The smoothed
+*Figure 11.2 is the main empirical result of the chapter. The smoothed
 trend traces the three-regime history of US inflation with striking clarity.
 From the early 1960s it drifts upward, rising from around 1.5 percent to
 above 5 percent by the mid-1970s before accelerating to a peak near 10 percent
@@ -1538,7 +1532,7 @@ axes[1].set_ylabel("")
 eo_style_ax(axes[1])
 
 fig.tight_layout()
-eo_suptitle(fig, "Figure 10.3 — Local level model: innovation diagnostics")
+eo_suptitle(fig, "Figure 11.3 — Local level model: innovation diagnostics")
 plt.show()
 
 # Ljung-Box test on standardised innovations
@@ -1555,7 +1549,7 @@ print("-" * 50)
 print("  * p<0.10  ** p<0.05  *** p<0.01")
 ```
 
-*Figure 10.3 shows one extreme outlier: a standardised innovation near
+*Figure 11.3 shows one extreme outlier: a standardised innovation near
 $-6.5$ around September 2001. This is expected behaviour, not a model
 failure. The September 11 attacks produced an abrupt, temporary decline
 in the PCE price index that the local level model had no basis to
@@ -1567,7 +1561,7 @@ The Ljung-Box test rejects the null of no autocorrelation at both horizons:
 $Q(12) = 21.14$ ($p = 0.048$) and $Q(24) = 37.91$ ($p = 0.035$). Both
 reject at the 5 percent level, meaning the local level model leaves
 statistically detectable residual autocorrelation in the innovations.
-This is a diagnostic signal worth taking seriously. The ACF in Figure 10.3
+This is a diagnostic signal worth taking seriously. The ACF in Figure 11.3
 shows no single dominant lag; the rejections reflect a diffuse pattern of
 small positive autocorrelations rather than a clean AR(1) structure. The
 most natural interpretation is that the simple random-walk trend equation
@@ -1587,7 +1581,7 @@ the state estimates are not materially distorted. Replacing
 `level='local level'` with `level='local linear trend'` in
 `UnobservedComponents` adds a stochastic slope to the state vector and
 eliminates the Ljung-Box rejection on these data — a useful exercise
-for students who want to explore the extension. But the simpler model
+for readers who want to explore the extension. But the simpler model
 serves the chapter's purpose, and the Ljung-Box rejection is itself a
 reminder that model adequacy is always provisional and that the
 diagnostic step is not a formality.*
@@ -1661,13 +1655,13 @@ ax.set_ylabel("Annualised %")
 ax.set_title("Trend inflation forecast, 2020–2021")
 ax.legend(loc="lower left", fontsize=6)
 eo_style_ax(ax)
-eo_suptitle(fig, "Figure 10.4 — Local level model fan chart, 2020–2021")
+eo_suptitle(fig, "Figure 11.4 — Local level model fan chart, 2020–2021")
 
 fig.tight_layout()
 plt.show()
 ```
 
-*Figure 10.4 shows the 24-month ahead fan chart originating from December
+*Figure 11.4 shows the 24-month ahead fan chart originating from December
 2019. The point forecast is 1.62 percent -- the smoothed trend estimate at
 the end of the sample -- reflecting the model's reading that US core PCE
 inflation had settled into a stable range just below 2 percent by the final
@@ -1682,7 +1676,7 @@ at the 12-month horizon, widens to approximately ±1.2 percentage points
 at 24 months. These are honest intervals: they reflect genuine uncertainty
 about where a slowly-drifting, unobserved trend will be in one to two years,
 not the narrower intervals one would obtain by assuming the trend is fixed.
-Section 10.8 takes the state space framework to its natural limit,
+Section 11.8 takes the state space framework to its natural limit,
 combining everything developed in this chapter — the prediction-correction
 recursion, the missing-observation logic, and the general matrix form —
 into a genuine mixed-frequency nowcasting model for real GDP.*
@@ -1692,7 +1686,7 @@ into a genuine mixed-frequency nowcasting model for real GDP.*
 
 ### The Real-Time Problem
 
-Most of the forecasting in this course has been prospective: we stand at the
+Most of the forecasting covered in this book has been prospective: we stand at the
 end of a sample and project forward. But there is a different and equally
 important problem that the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) is uniquely suited to address —
 the problem of **nowcasting**.
@@ -1715,7 +1709,7 @@ indicators are the noisy observations. The [Kalman filter](https://en.wikipedia.
 
 ### The Mixed-Frequency Problem
 
-What makes nowcasting harder than the local level model of Section 10.2 is
+What makes nowcasting harder than the local level model of Section 11.2 is
 the **mixed-frequency** structure of the data. Monthly indicators arrive
 twelve times per year; quarterly GDP arrives four times. The two clocks
 do not align, and we cannot simply stack them in the same observation vector
@@ -1753,7 +1747,7 @@ is one-dimensional — so that the temporal aggregation can be expressed as
 a linear combination of state elements. The transition matrix $\mathbf{T}$
 shifts the lags forward each period exactly like the companion matrix of an
 AR model. No new estimation machinery is needed beyond the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter)
-recursion of Section 10.3, applied to this larger system.
+recursion of Section 11.3, applied to this larger system.
 
 ::: {.callout-note icon=false}
 ## Nowcasting and the Kalman Filter: The Core Idea
@@ -1827,7 +1821,7 @@ each corresponding to a distinct part of the filter machinery:
 
 4. **Run MLE** by calling `.fit()`, which maximises the prediction error
    likelihood (10.18) over the free parameters using the same numerical
-   optimiser used by `UnobservedComponents` in Section 10.7.
+   optimiser used by `UnobservedComponents` in Section 11.7.
 
 The extracted filtered state $\hat{\alpha}_{t|t}$ is the nowcast of
 monthly economic activity. Mapped back through the temporal aggregation,
@@ -2097,11 +2091,11 @@ axes[1].legend(loc="lower left", fontsize=6)
 eo_style_ax(axes[1])
 fig.tight_layout(h_pad=1.5)  # extra vertical padding since panels have different x ranges
 
-eo_suptitle(fig, "Figure 10.6 — Mixed-frequency GDP nowcasting")
+eo_suptitle(fig, "Figure 11.6 — Mixed-frequency GDP nowcasting")
 plt.show()
 ```
 
-*Figure 10.6 is the empirical payoff of the chapter. The top panel shows
+*Figure 11.6 is the empirical payoff of the chapter. The top panel shows
 the monthly GDP nowcast overlaid on the quarterly GDP releases. The nowcast
 tracks the broad contours of growth across six decades and deteriorates ahead
 of each NBER recession, as weakening industrial production and rising
@@ -2139,74 +2133,57 @@ principles. They use larger $\mathbf{Z}$ and $\mathbf{T}$ matrices,
 more free parameters, and more sophisticated initialisation — but the
 same prediction-correction recursion, the same prediction error likelihood,
 and the same missing-observation logic that drives the two-indicator model
-above. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) scales from the local level model of Section 10.2
+above. The [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) scales from the local level model of Section 11.2
 to the most complex macroeconomic forecasting systems in use today.
 
 
 ## Looking Ahead {#sec-looking-ahead}
 
-This is the final chapter of the course. It is worth pausing to take stock
-of how far the toolkit has come since Chapter 1.
+This is the final chapter. It is worth pausing to take stock of how far
+the toolkit has come since Chapter 1.
 
 We began with the simplest possible question: is this series predictable
 from its own past? The ACF and PACF gave a visual answer; the white noise
 tests gave a formal one. Chapter 1's stationarity assumption — that the
 mean, variance, and autocovariance structure of a series are constant over
-time — was the foundation on which everything else was built. By the end
-of that chapter, you could characterise the serial dependence structure of
-a stationary series and identify whether a given process was consistent
-with white noise.
+time — was the foundation on which everything else was built. Chapter 4
+extended that foundation to integrated processes and the machinery of ARIMA
+and SARIMA modelling. Chapter 5 gave it operational discipline: the
+distinction between in-sample fit and out-of-sample forecast accuracy, the
+Diebold-Mariano test, and the question of when a more complex model
+genuinely improves predictions. Chapters 6 through 8 opened the framework
+to multivariate and non-stationary settings — structural breaks, vector
+autoregressions, cointegration — where the behaviour of a single series can
+only be understood through its relationships with others. Chapter 9 turned
+to the second moment: the discovery that while the mean of a financial
+return may be unforecastable, its variance is not, and GARCH gave us the
+tools to model and forecast that time-varying uncertainty. And in this
+chapter, the state space framework revealed that all of these models —
+ARIMA, GARCH, exponential smoothing, VAR — are special cases of a single
+architecture in which an unobserved state evolves according to its own
+dynamics and is observed through a noisy measurement equation.
 
-By Chapter 4, that foundation had been extended to integrated processes
-and the machinery of ARIMA and SARIMA modelling. Chapter 5 gave it
-operational discipline: the distinction between in-sample fit and
-out-of-sample forecast accuracy, the Diebold-Mariano test, and the
-question of when a more complex model genuinely improves predictions.
-Chapters 6 through 8 opened the framework to multivariate and
-non-stationary settings — structural breaks, vector autoregressions,
-cointegration — where the behaviour of a single series can only be
-understood through its relationships with others. Chapter 9 turned to the
-second moment: the discovery that while the mean of a financial return may
-be unforecastable, its variance is not, and GARCH gave us the tools to
-model and forecast that time-varying uncertainty. And in this chapter, the
-state space framework revealed that all of these models — ARIMA, GARCH,
-exponential smoothing, VAR — are special cases of a single architecture in
-which an unobserved state evolves according to its own dynamics and is
-observed through a noisy measurement equation.
-
-What can you do now that you could not do in Week 1? Given any economic
-time series, you can build a complete empirical workflow: test for
-stationarity, fit and evaluate a conditional mean model, test for structural
-change, extend to multivariate systems where theory implies long-run
-restrictions, model time-varying volatility, and extract unobserved
-components when the quantity of interest is inherently latent. You have the
-tools to read and critically evaluate the applied time series literature,
-to replicate existing results, and to produce original analysis. The
-research project you are completing is your first opportunity to use all
-of them together.
-
-The road beyond this course is long and worth taking. The state space
-framework introduced in this chapter is the entry point to a vast
-literature: dynamic factor models and the principal-components approach to
-large panels, mixed-frequency VARs that combine monthly and quarterly data
-in a single system, time-varying parameter VARs that allow regression
-coefficients to drift as in our Section 10.6 TVP example, particle filters
-for nonlinear and non-Gaussian state equations that the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) cannot
-handle. Structural DSGE models — the workhorse of modern macroeconomic
-policy analysis — are estimated by writing the model's equilibrium
-conditions in state space form and running the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) on the
-observable variables. Machine learning methods are increasingly combined
-with state space models to allow more flexible functional forms in the
-observation and state equations. Each of these extensions uses the
-prediction-correction logic you learned in Section 10.3 as its foundation.
-You are not at the end of the subject. You are at the point where the
-interesting questions begin.
+The road ahead is long and worth taking. The state space framework
+introduced in this chapter is the entry point to a vast literature: dynamic
+factor models and the principal-components approach to large panels,
+mixed-frequency VARs that combine monthly and quarterly data in a single
+system, time-varying parameter VARs that allow regression coefficients to
+drift as in Section 11.6, particle filters for nonlinear and non-Gaussian
+state equations that the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) cannot handle. Structural DSGE models
+— the workhorse of modern macroeconomic policy analysis — are estimated by
+writing the model's equilibrium conditions in state space form and running
+the [Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter) on the observable variables. Machine learning methods
+are increasingly combined with state space models to allow more flexible
+functional forms in the observation and state equations. Each of these
+extensions uses the prediction-correction logic of Section 11.3 as its
+foundation. The eleven chapters of this book are not the end of the
+subject. They are the point where the interesting questions begin.
 
 
 ## Key Terms {#sec-key-terms}
 
 ::: {.callout-note icon=false}
-## Key Terms — Chapter 10
+## Key Terms — Chapter 11
 
 **State variable** — an unobserved quantity that summarises all
 past-relevant information about the system at time $t$. Examples: trend

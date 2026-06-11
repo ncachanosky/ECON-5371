@@ -194,8 +194,6 @@ By the end of this chapter, you will be able to:
 
 ## The Organizing Idea: Decomposing a Time Series {#sec-decomp-intro}
 
-### What Is the Economy Doing Right Now?
-
 Here is a question that sounds simple but turns out to be surprisingly difficult: is the economy doing well right now, or poorly?
 
 Not in an absolute sense — we can always read off the level of [GDP](https://en.wikipedia.org/wiki/Gross_domestic_product) — but relative to where it ought to be. Is output above its [long-run potential](https://en.wikipedia.org/wiki/Potential_output), with the economy running hot and inflation building? Or is it below, with resources idle and slack still to absorb? This is the question that central bankers, finance ministers, and forecasters are always trying to answer. And it is a question that cannot be answered without first deciding what "where it ought to be" means — which is precisely a question about how we decompose a time series.
@@ -648,8 +646,6 @@ The business cycle, in other words, is real — the economy genuinely expands an
 
 ## Seasonal Adjustment in Practice {#sec-seasonal}
 
-### Why Seasonal Adjustment Matters
-
 Seasonal patterns in economic data are large, predictable, and economically uninteresting — which is exactly what makes them dangerous. A policymaker looking at raw retail sales in January would see a sharp drop from December every single year, regardless of underlying economic conditions. A central bank reacting to every seasonal swing in the unemployment rate would be setting monetary policy in response to noise. Seasonal adjustment strips out these predictable rhythms so that the signal — the underlying trend and cycle — is easier to see.
 
 Most official economic statistics are reported in seasonally adjusted form as the default. The employment situation report, the GDP advance estimate, industrial production, new housing starts — all are seasonally adjusted before publication. The methodology behind those adjustments matters because it shapes the data that researchers, forecasters, and policymakers use every day.
@@ -766,8 +762,6 @@ One practical implication: seasonal adjustment can interact with structural chan
 
 
 ## Exponential Smoothing {#sec-ses}
-
-### A Different Approach: Adapting to New Information
 
 The decomposition methods of the previous sections were retrospective: given the full series, extract components by filtering or regression. Forecasting with those components is straightforward — extrapolate the trend forward, add the seasonal factors, assume the irregular averages out — but the method itself was not designed with forecasting as its primary purpose.
 
@@ -1164,13 +1158,9 @@ The train-test exercise illustrates a lesson that comes up repeatedly in forecas
 
 ## Looking Ahead
 
-The tools developed in this chapter serve as a practical foundation that will be enriched considerably in the chapters that follow.
+The decomposition and smoothing methods in this chapter are intuitive and practically useful, but they rest on assumptions that Chapter 3 will justify — and in some cases tighten.
 
-**Chapter 3** provides the theoretical justification for much of what we have done here on intuitive grounds. Simple exponential smoothing is the optimal forecast for an ARIMA(0,1,1) process; Holt's method corresponds to ARIMA(0,2,2); Holt-Winters corresponds to a seasonal ARIMA model. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. When we fit an ETS model by maximum likelihood, we are implicitly estimating a restricted ARIMA. Understanding the ARIMA representation unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also provides the formal machinery for the Beveridge-Nelson decomposition, which separates a unit-root process into its permanent and transitory components — offering a model-based answer to the same trend-cycle separation problem we approached statistically in this chapter, with no free smoothing parameter and a cycle uniquely pinned down by the estimated ARIMA model.
-
-**Chapter 4** addresses a limitation implicit throughout this chapter: all our methods assume the data-generating process is stable over the sample. If the trend growth rate of GDP changed structurally — as it did in the early 1970s productivity slowdown, and arguably again after 2008 — then a single HP filter or Holt-Winters model estimated over the full sample will fit neither regime well. Structural break tests, and the methods for handling them, belong to Chapter 4.
-
-**Chapter 5** provides the formal framework for evaluating the forecasts produced in this chapter. The train-test exercise above uses RMSE as a loss function, but that is only one of many possibilities. The Diebold-Mariano test asks whether two competing forecasts have statistically different accuracy. Forecast combination — averaging ETS with ARIMA with HP-based projections — often outperforms any individual method. And proper calibration of prediction intervals requires checking their empirical coverage over rolling windows. All of this infrastructure is in Chapter 5.
+Chapter 3 develops the ARMA family of models, which provide the theoretical foundation for the methods introduced here. Simple exponential smoothing turns out to be the optimal forecast for an ARIMA(0,1,1) process; Holt's linear method corresponds to ARIMA(0,2,2); the Holt-Winters seasonal model corresponds to a seasonal ARIMA. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. Understanding that connection unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also connects the trend-cycle question from this chapter to a model-based answer: the Beveridge-Nelson decomposition, developed in Chapter 4, uses the estimated ARIMA structure of a series to separate its permanent and transitory components — no smoothing parameter required, and a cycle uniquely pinned down by the data.
 
 
 ## Key Terms
@@ -1222,5 +1212,5 @@ The tools developed in this chapter serve as a practical foundation that will be
 
 **AIC** — Akaike Information Criterion; $-2\ell + 2k$ where $\ell$ is the log-likelihood and $k$ is the number of parameters; lower is better; used for model selection within the ETS family.
 
-**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 3.
+**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 4.
 :::

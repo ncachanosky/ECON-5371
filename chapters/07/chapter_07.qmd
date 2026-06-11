@@ -244,8 +244,6 @@ of Chapter 8.
 
 ## Why Univariate Models Are Not Enough {#sec-motivation}
 
-### The Endogeneity Problem, Revisited
-
 Chapter 3 introduced the ARMAX model and attached a warning: if the exogenous
 regressor $x_t$ is itself influenced by $y_t$ — if causality runs in both
 directions — then the ARMAX coefficient on $x_t$ is biased and inconsistent.
@@ -328,7 +326,7 @@ $\mathbf{A}_0$. Recovering the structural shocks from the reduced-form
 residuals is the **identification problem**, which Section 7.5 addresses
 directly.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Reduced-Form Coefficients Are Not Structural Parameters
 
 The coefficients estimated in each VAR equation are the elements of
@@ -551,7 +549,7 @@ described in Chapter 4. Checking the modulus of every companion eigenvalue
 after estimation is therefore not a formality but a diagnostic step that
 validates everything that follows.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## VAR Estimation Requires Stationary Variables
 
 **Before estimating a VAR, every variable in the system must be tested for
@@ -778,7 +776,7 @@ iterative revision.
 The `statsmodels` summary produces one block per equation — each variable's
 own lags and the cross-variable lags, along with standard errors,
 $t$-statistics, and equation-level fit statistics. This is the multivariate
-analogue of the ARMA summary students saw in Chapter 3: a separate regression
+analogue of the ARMA summary in Chapter 3: a separate regression
 table for each endogenous variable, sharing the same right-hand side structure.
 
 ```{python}
@@ -808,7 +806,7 @@ We verify the system is stable by examining the roots of the lag polynomial —
 the values of $z$ for which
 $\det(\mathbf{I} - \mathbf{A}_1 z - \cdots - \mathbf{A}_p z^p) = 0$.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Roots vs Eigenvalues: A Convention to Watch
 
 The stability condition can be stated two equivalent ways. In terms of the
@@ -1378,7 +1376,7 @@ causality hypotheses: each variable may or may not Granger-cause each of the
 other two. We test all six and report them in a single table, which makes
 the full predictive structure of the system legible at a glance.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Granger Causality Is Not Structural Causality
 
 A finding that $x$ Granger-causes $y$ means that lagged $x$ predicts $y$
@@ -1639,7 +1637,7 @@ the same sequential logic, adding a third row: solve the diagonal, then the
 two off-diagonals in order, each depending only on entries already determined
 above it.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## The Ordering Assumption Is Substantive
 
 The Cholesky ordering is not a technical choice — it is an economic one. A
@@ -1686,8 +1684,6 @@ projects and further reading.
 
 
 ## Impulse Response Functions {#sec-irf}
-
-### How Does the System Respond to a Shock?
 
 The reduced-form VAR describes how each variable evolves as a linear function
 of its own past and the past of all other variables. But the object of
@@ -2200,8 +2196,6 @@ from output and inflation dynamics, not from discretionary surprises.
 
 ## Adding Exogenous Variables: The VARX {#sec-varx}
 
-### When Endogeneity Is Not the Right Assumption
-
 The VAR treats every variable in the system symmetrically — each one has its
 own equation, its own structural shock, and contributes to the FEVD of every
 other variable. This is the right framework when we believe all variables are
@@ -2275,7 +2269,7 @@ to $\boldsymbol{\Sigma}_u$, not to $\mathbf{x}_t$.
 
 ### Why Lagged Exogenous Variables Matter in a VARX but Not in an ARMAX
 
-Students familiar with the ARMAX model from Chapter 3 may wonder why the
+It is worth asking why the
 VARX includes $s$ lags of $\mathbf{x}_t$ rather than just the contemporaneous
 value. In a single-equation ARMAX, the argument for omitting lagged $x_t$ is
 compelling: if $x_t$ is serially correlated, its past values are correlated
@@ -2316,7 +2310,7 @@ $\mathbf{y}_t$ must be $I(0)$. For exogenous variables the answer is more
 nuanced, and getting it wrong has the same consequences as including $I(1)$
 variables in levels in a pure VAR.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Stationarity Rules for Exogenous Variables
 
 - **$\mathbf{x}_t$ is $I(0)$:** include in levels. No adjustment needed.
@@ -2327,7 +2321,7 @@ variables in levels in a pure VAR.
 - **$\mathbf{x}_t$ is $I(1)$, cointegrated with $\mathbf{y}_t$:** the correct
   framework is a VECMX — a vector error correction model with exogenous
   variables — which includes the cointegrating residual as an error correction
-  term. This is Chapter 8 territory. The practical rule for this course: if
+  term. This is Chapter 8 territory. The practical rule: if
   you suspect cointegration between an exogenous and an endogenous variable,
   treat the exogenous variable as endogenous and use the VECM framework.
 
@@ -2437,7 +2431,7 @@ are orthogonal to the VAR's own dynamics. Conditioning on oil price growth
 therefore tightens the VAR residuals and improves the identification of the
 domestic monetary policy shock.
 
-For students whose projects involve series plausibly affected by external
+For applications involving series plausibly affected by external
 drivers — commodity prices, trade volumes, foreign interest rates — the VARX
 offers a principled way to condition on those drivers without modelling them.
 The workflow is: test the exogenous variable for stationarity, transform if
@@ -2451,8 +2445,6 @@ pure VAR may change once the external driver is properly controlled for.
 
 
 ## When Variables Are I(1) {#sec-integrated}
-
-### What Goes Wrong
 
 Everything in this chapter has assumed that all three variables in the VAR
 are stationary. The ADF tests in Section 7.2 confirmed this cleanly for
@@ -2503,7 +2495,7 @@ special case — when there is no cointegration — and adds the error correctio
 terms that describe how the system returns to its long-run attractor after
 a shock.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Do Not Estimate a VAR in Levels with I(1) Variables
 
 If unit root tests suggest that one or more variables in your system are
@@ -2650,6 +2642,6 @@ first differences) from the long-run equilibrium relationship (the
 cointegrating vector, which acts as an error correction term pulling the
 system back toward equilibrium after shocks). The VECM is a special case
 of a state space model: the cointegrating residual is an unobserved state
-estimated optimally by the Kalman filter. Full treatment in Chapter 8.
+estimated optimally by the Kalman filter. Full treatment in Chapter 11.
 :::
 

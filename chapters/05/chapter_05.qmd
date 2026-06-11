@@ -520,7 +520,7 @@ $$\text{MAPE} = \frac{1}{n} \sum_{t=T_0}^{T_0+n-1}
 
 MAPE is intuitive and widely reported, but it has a serious pathology.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## MAPE Near Zero
 
 MAPE is undefined when $y_{t+h} = 0$ and becomes extremely large and
@@ -589,7 +589,7 @@ where $\alpha \in (0,1)$ determines the asymmetry. When $\alpha = 0.5$, this
 reduces to the standard MAE. When $\alpha > 0.5$, overprediction is penalised
 more heavily; when $\alpha < 0.5$, underprediction bears the higher cost.
 
-For this course, asymmetric loss is primarily a conceptual tool. It reminds
+In this context, asymmetric loss is primarily a conceptual tool. It reminds
 us that the choice of evaluation criterion is a substantive decision, not a
 default. In the empirical applications that follow, we use RMSE as our primary
 criterion — it is the standard in macroeconomic forecasting, it facilitates
@@ -709,7 +709,7 @@ its parameters have been influenced by the data it is supposedly being tested
 on. The errors we compute are in-sample errors dressed up as out-of-sample
 ones.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## Look-Ahead Bias: Forms to Watch For
 
 **Direct form:** Estimating the model on the full sample and evaluating on a
@@ -1024,8 +1024,6 @@ structure. The table confirms this difficulty: the ARIMA edges ahead at $h =
 
 ## The Diebold-Mariano Test {#sec-dm}
 
-### Comparing Two Forecasters
-
 The RMSE table in the previous section tells us which model produced smaller
 errors on average over the evaluation period. But averages from finite samples
 are noisy. Even if two models have identical expected accuracy, one will look
@@ -1099,7 +1097,7 @@ Under $H_0$ and standard regularity conditions, $\text{DM}
 critical values: $\pm 1.96$ for a 5% two-sided test, or $-1.645$ for a 5%
 one-sided test that model 1 is superior (i.e., $\bar{d} < 0$).
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## What the DM Test Does and Does Not Tell You
 
 The DM test is a test of **equal unconditional expected loss** over the
@@ -1248,8 +1246,6 @@ around the recessions in the evaluation window.*
 
 
 ## Forecast Combination {#sec-combination}
-
-### Why Not Just Pick the Best Model?
 
 The DM test in the previous section answers a binary question: does one model
 beat another? The natural follow-up is: once we know which model is better,
@@ -1484,8 +1480,8 @@ A point forecast is only one output of a forecasting model. The other —
 arguably more important for decision-making — is the prediction interval:
 the range within which the outcome is expected to fall with some stated
 probability. Chapters 3 and 4 showed how to construct 95% prediction
-intervals for ARIMA models, and Figure 3.X displayed the widening fan chart
-as horizon grows. But we have not yet asked the obvious follow-up question:
+intervals for ARIMA models, and those fan charts illustrated how the interval
+width grows with the forecast horizon. But we have not yet asked the obvious follow-up question:
 do those intervals actually contain the outcome 95% of the time?
 
 This is the **coverage** question, and it is the first diagnostic for interval
@@ -1714,9 +1710,7 @@ showed how to build a model and produce forecasts; this chapter showed how
 to know whether those forecasts are worth trusting. The toolkit — loss
 functions, rolling evaluation design, the Diebold-Mariano test, forecast
 combination, coverage checks, and the PIT — is portable: it applies to any
-model class, any loss function, and any series. Students will use it directly
-in the data memo (Week 6) and again in the draft paper (Week 12), wherever
-two competing specifications need to be compared.
+model class, any loss function, and any series.
 
 The empirical results from this chapter leave an open question that the next
 chapter is designed to address. The GDP growth evaluation showed that the

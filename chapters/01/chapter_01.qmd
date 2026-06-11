@@ -218,8 +218,6 @@ What these series share is that they are all ordered by time, all exhibit some f
 
 ## What Is Forecasting?
 
-### The Question at the Heart of the Course
-
 [Forecasting](https://en.wikipedia.org/wiki/Forecasting) means using what we know today to say something credible about tomorrow. It sounds simple, and in some settings it is. A meteorologist uses today's atmospheric conditions to forecast tomorrow's weather. A shipping company uses historical demand patterns to forecast container volumes next month. In economics and finance the same logic applies — but the execution is considerably harder, for reasons we examine shortly. Before getting there, it is worth being precise about what forecasting actually is, and distinguishing it carefully from two activities it is frequently confused with: cross-sectional prediction and causal inference.
 
 ### Forecasting vs. Prediction
@@ -236,7 +234,7 @@ A model that fits historical data brilliantly may still fail as a forecast if it
 
 Forecasting asks only: given everything we observe up to time $T$, what is our best guess of $Y$ at time $T + h$? This is an exercise in conditional expectation, not causal identification. A variable can be a powerful predictor without causing $Y$. And a genuine cause can be a poor predictor if it operates with long and uncertain lags, or if it is itself difficult to forecast.
 
-::: {.callout-warning}
+::: {.callout-warning icon=false}
 ## A Common Mistake
 
 A finding that lagged values of $X$ help forecast $Y$ is tempting to interpret as evidence that $X$ causes $Y$. It is not. It says only that $X$ contains information about the future path of $Y$. Granger causality, which we study later in the course, formalizes this predictive notion precisely, and deliberately avoids claiming anything about true causation.
@@ -972,8 +970,6 @@ plt.show()
 
 ## Stationarity {#sec-stationarity}
 
-### Why Stationarity Matters
-
 The mathematics of the difference equations section revealed something fundamental: the behavior of a time series process — whether its past influences decay, persist, or explode — depends on where the eigenvalues of its companion matrix sit relative to the unit circle. The ACF and PACF tools just introduced gave us a way to see this dependence structure empirically. The statistical concept of stationarity now translates both of these insights into the language of probability.
 
 [Stationarity](https://en.wikipedia.org/wiki/Stationary_process) is the condition that a process has a stable probabilistic structure over time. Not that it is constant — economic time series fluctuate continuously — but that the statistical properties governing those fluctuations do not themselves change. A stationary process today has, in a precise sense, the same distribution it had yesterday and will have tomorrow. This stability is what makes it possible to estimate parameters from a single observed history and trust that those parameters remain relevant for the future.
@@ -1050,8 +1046,6 @@ When any eigenvalue has modulus strictly greater than 1, the process is **explos
 
 
 ## Assessing and Addressing Non-Stationarity {#sec-unitroots}
-
-### Starting with Visual Inspection
 
 Before reaching for a formal statistical test, the first step in assessing stationarity is always visual inspection. A well-constructed time plot reveals most of what we need to know.
 
@@ -1166,7 +1160,7 @@ Once we have identified that a series is nonstationary, the question becomes: ho
 
 **Detrending** is appropriate for trend-stationary series. Regress $y_t$ on a constant and time, and work with the residuals. Applying detrending to a difference-stationary series produces **spurious detrending**: the estimated trend is itself a random variable, and the residuals are not stationary.
 
-**First differencing** is appropriate for difference-stationary series. The differenced series $\Delta y_t$ is $I(0)$ by construction when $y_t \sim I(1)$. Differencing does have a cost: it removes information about the long-run level. If two series share a common stochastic trend — they are **cointegrated** — differencing each one separately discards the long-run relationship between them. Cointegration is covered in Chapter 6.
+**First differencing** is appropriate for difference-stationary series. The differenced series $\Delta y_t$ is $I(0)$ by construction when $y_t \sim I(1)$. Differencing does have a cost: it removes information about the long-run level. If two series share a common stochastic trend — they are **cointegrated** — differencing each one separately discards the long-run relationship between them. Cointegration is covered in Chapter 8.
 
 **Log transformation** linearizes exponential growth and stabilizes variance. Combined with first differencing, **log-differencing** gives:
 
@@ -1288,17 +1282,13 @@ The inflation result deserves careful reading and connects directly to the chall
 What changed was not just the level of inflation — it was the structure of the inflation process. Wage-setting, price-setting, and expectation formation all shifted when agents recognized the Fed had genuinely changed its reaction function. This is the Lucas critique in action: reduced-form persistence coefficients reflected the old regime, not deep parameters. When the regime changed, so did the persistence. A forecaster in 1979 who estimated an inflation model on 1960–1978 data would have found a near-unit-root process. Applying that model to post-1983 data would have grossly overestimated inflation's tendency to return to high levels. When we pool the full 1960–2024 sample, we average over two quite different regimes — explaining why the tests give mixed signals. The appropriate response is to recognize that the stationarity of inflation is itself regime-dependent, and to model that dependence explicitly when it matters.
 
 
-## Looking Ahead: The Road Ahead
+## Looking Ahead
 
-The tools developed in this chapter are not prerequisites that can be set aside once we move to the next topic. They are the recurring language of the entire course. Characteristic roots, eigenvalues, stationarity, white noise, the ACF and PACF — these concepts will appear in every model class we study, and the intuitions built here will be called upon at each step.
+The tools developed in this chapter are the recurring language of everything that follows. Characteristic roots, eigenvalues, stationarity, white noise, the ACF and PACF — these concepts reappear in every model class, and the intuitions built here are called upon at each step.
 
-**Chapter 2** introduces the first practical family of forecasting tools: decomposition methods, exponential smoothing, and the Holt-Winters family. These methods share a common organizing idea — that a time series can be separated into distinct components (trend, seasonal, and irregular) and that useful forecasts can be built by extrapolating each component forward. The stationarity concepts from this chapter underpin the decomposition: the trend component is nonstationary (it drifts without a fixed mean), while the irregular component is stationary (it fluctuates around zero). Understanding the difference between these two behaviors — established formally here — is what makes the decomposition economically interpretable rather than a purely mechanical exercise.
+The chapters ahead move through a sequence of increasingly general frameworks: univariate stationary models (Chapters 3–4), forecast evaluation (Chapter 5), structural change (Chapter 6), multivariate systems including VARs and cointegration (Chapters 7–8), time-varying volatility (Chapter 9), regime switching (Chapter 10), and the state space framework that unifies them all (Chapter 11). Each extension relaxes one or more assumptions introduced here — stationarity, linearity, parameter constancy — and the tools for testing and handling those relaxations build directly on the difference equation and stationarity theory of this chapter.
 
-**Chapter 3** is where the mathematical machinery of this chapter pays its largest dividend. The AR, MA, ARMA, and SARIMA model families are stochastic difference equations — the precise objects analyzed in the difference equations section. The stationarity condition derived here (all eigenvalues of the companion matrix inside the unit circle) becomes the stationarity condition for AR models and the invertibility condition for MA models. The ACF and PACF patterns introduced in this chapter become the identification tools for choosing model order: an AR($p$) process has a PACF that cuts off sharply after lag $p$; an MA($q$) process has an ACF that cuts off after lag $q$. Students who leave this chapter with a firm grasp of characteristic roots, the unit circle, and what ACF/PACF plots reveal will find Chapter 3 considerably more tractable than those who do not.
-
-**Chapter 6** raises the unit root analysis developed here to a multivariate setting, introducing vector autoregressions (VAR) and the concept of **cointegration** — what it means for two or more $I(1)$ series to share a common stochastic trend. The Engle-Granger and Johansen approaches to testing for cointegration, and the error correction models that describe cointegrated systems, all rest directly on the unit root and difference equation theory of this chapter.
-
-Beyond these immediate chapters, the foundations here underpin every advanced topic in the course — structural break testing (Chapter 4), forecast evaluation and combination (Chapter 5), state-space models and the Kalman filter (Chapter 7), and ARCH/GARCH volatility models (Chapter 8). The investment in the foundations of this chapter pays returns throughout the course, and the concepts introduced here will feel increasingly natural as each new model class connects back to the same underlying mathematics.
+Chapter 2 is the immediate next step, and it asks a practical question: can we decompose a time series into its constituent parts — trend, seasonal variation, and irregular fluctuation — and use those components to build useful forecasts? The decomposition methods and exponential smoothing families introduced there are the first complete forecasting workflow, and they set up the contrast that motivates the ARMA framework in Chapter 3: forecasts built from decomposed components versus forecasts built from the full stochastic structure of the series. The stationarity concepts established here are what make that contrast precise — the trend component is nonstationary (it drifts without a fixed mean), while the irregular component is stationary (it fluctuates around zero), and knowing the difference between those two behaviors is what makes the decomposition economically interpretable rather than a purely mechanical exercise.
 
 
 ## Key Terms
@@ -1358,5 +1348,5 @@ Beyond these immediate chapters, the foundations here underpin every advanced to
 
 **Spurious regression** — The false appearance of a relationship between two unrelated nonstationary series, arising because both trend in the same direction.
 
-**Cointegration** — Two $I(1)$ series are cointegrated if a linear combination of them is $I(0)$; they share a common stochastic trend. Covered in Chapter 6.
+**Cointegration** — Two $I(1)$ series are cointegrated if a linear combination of them is $I(0)$; they share a common stochastic trend. Covered in Chapter 8.
 :::
