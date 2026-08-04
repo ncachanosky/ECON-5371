@@ -1,5 +1,28 @@
-# Preface {.unnumbered}
+---
+title: "Preface"
+author: ""
+format:
+  html:
+    toc: false
+    number-sections: false
+    theme: cosmo
+    css: styles.css
+    html-math-method: mathjax
+    embed-resources: false
+---
 
-This is a Quarto book.
+## Preface
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Economic and financial data arrive in sequence. That sequence is not incidental — it is the most important thing about the data. Knowing what inflation was last month tells you something about what it will be this month. Knowing how a market moved yesterday tells you something about how it might move tomorrow. The discipline of time series analysis is the systematic study of that temporal dependence: how to measure it, model it, and use it to form credible statements about the future.
+
+This book develops that discipline from the ground up. We begin with the simplest possible question — is this series predictable from its own past? — and work outward from there. Each chapter relaxes one assumption from the one before. The series may have a trend. Its parameters may shift over time. It may move jointly with other series in ways that matter for forecasting. Its variance, not just its mean, may be time-varying. At each step, the new complexity is introduced because the previous framework encountered a question it could not answer — and the tools that resolve it are developed in response to that question, not in advance of it. By the end of Chapter 11, the state space framework will reveal that almost every model introduced along the way is a special case of a single, elegant architecture. The full landscape only becomes visible from that vantage point, but each station along the road is worth the stop.
+
+The methods in this book are not academic exercises. They appear — sometimes under different names, often without explicit attribution — in the daily work of economists and analysts across a wide range of settings. A central bank economist trying to determine whether the inflation process broke in 1979 — whether the data are consistent with a single stable model or with two different regimes — is applying the tools of Chapter 6. A risk manager computing Value-at-Risk for a portfolio of fixed-income securities is relying on the conditional volatility estimates that Chapter 9 produces. A development economist trying to estimate GDP growth for a country that publishes quarterly figures with a three-month lag, using monthly survey indicators as proxies, is doing nowcasting — the real-time signal-extraction problem of Chapter 11. These are not stylized examples invented for pedagogical purposes. They are the actual questions that appear in policy memos, research papers, and trading desk risk reports.
+
+This book assumes you are comfortable with matrix algebra, basic probability, and the mechanics of OLS regression. If the matrix algebra is rusty, the appendix is the right starting point — it covers everything the book uses, and working through it will pay dividends throughout. It does not assume any prior exposure to time series. What it does assume is a willingness to take the mathematics seriously: not as an end in itself, but as the language that makes precise statements possible. Every formal result in this book is followed by an economic interpretation, because a result that cannot be interpreted has not been fully understood.
+
+The chapters are designed to be read in sequence. Each one closes with a Looking Ahead section that plants the question motivating the next chapter, and the empirical examples are chosen so that the same series — US real GDP growth, CPI inflation, initial jobless claims, equity returns, Treasury yields — recur across chapters, allowing the methods to be compared on common ground. All data are drawn from publicly available sources (FRED, Yahoo Finance), all code is included, and all results are reproducible. The goal throughout is not to present time series analysis as a collection of tests and procedures to be applied mechanically, but as a way of thinking about data that, once learned, becomes difficult to set aside.
+
+---
+
+*A note on notation and conventions.* Mathematical conventions are introduced where they first appear and collected in the glossary at the end of each chapter. Python code is included in collapsible cells throughout; the setup cell at the beginning of each chapter defines the color palette, plot style, and helper functions used consistently across all figures. The matrix algebra appendix uses the same notation as the main text.
