@@ -1,0 +1,29 @@
+format:
+  revealjs:
+    theme: [default, eo-slides.scss]
+    slide-number: true
+    footer: "ECON-5371 · Time Series Analysis and Forecasting"
+    logo: ""
+    chalkboard: false
+    preview-links: auto
+    transition: fade
+    background-transition: fade
+    highlight-style: github
+    fig-align: center
+    fig-responsive: true
+    html-math-method: mathjax
+    embed-resources: false
+    center-title-slide: false
+    controls: true
+    progress: true
+    hash: true
+    width: 1280
+    height: 720
+    margin: 0.08
+    css: slides-extra.css
+
+execute:
+  echo: false
+  warning: false
+  message: false
+  cache: false
