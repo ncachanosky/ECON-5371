@@ -1,0 +1,104 @@
+---
+title: "Chapter X: [Chapter Title]"
+subtitle: "ECON-5371 — Time Series Analysis and Forecasting"
+author: "[Your Name], [Affiliation]"
+date: "Week X"
+---
+
+<!--
+  TEMPLATE — copy this file to slidesXX.qmd (e.g. slides05.qmd) and fill in.
+  This file inherits format/theme settings from _metadata.yml automatically
+  (Quarto merges any _metadata.yml in the same directory into every .qmd).
+  Do not repeat the format: block below unless overriding something chapter-specific.
+-->
+
+## Roadmap
+
+> One question or observation that motivates the whole chapter.
+
+- Point one
+- Point two
+- Point three
+
+---
+
+## Section Divider Example {.section-divider}
+
+Use `{.section-divider}` on a level-2 heading to mark a new major section
+within the chapter (dark background, mirrors the numbered-section breaks
+in the textbook).
+
+---
+
+## A Concept Slide
+
+Plain-language statement of the idea first.
+
+::: {.eo-definition}
+**Definition.** Formal statement goes here, kept short — one or two lines,
+not the full textbook derivation.
+:::
+
+A single compact equation if needed:
+
+$$
+\hat{y}_{t+h|t} = \phi^h y_t \tag{1}
+$$
+
+Economic interpretation in one sentence immediately after.
+
+---
+
+## A Hazard / Common-Pitfall Slide
+
+::: {.eo-hazard}
+**Watch out.** The thing students usually get wrong.
+:::
+
+::: {.notes}
+Speaker note: ~3 min here. This is where students usually confuse
+in-sample fit with out-of-sample accuracy — pause for questions.
+:::
+
+---
+
+## A Figure Slide (PNG imported from textbook rendering)
+
+![](figures/ch05/fig_forecast_fanchart.png){fig-alt="Fan chart of GDP growth forecast"}
+
+*Caption in italic prose, matching the textbook convention.*
+
+---
+
+## Two-Column Slide (text + diagram)
+
+::: {.eo-columns}
+::: {}
+- Bullet explaining the diagram
+- Second bullet
+:::
+::: {}
+![](figures/ch05/fig_diagram.png)
+:::
+:::
+
+---
+
+## Recap {.section-divider}
+
+::: {.eo-recap}
+**Recap.** One or two sentences tying the chapter's ideas together
+before Key Terms.
+:::
+
+---
+
+## Key Terms
+
+::: {.eo-keyterms}
+Loss function
+: Definition in one line.
+
+Diebold-Mariano test
+: Definition in one line.
+:::

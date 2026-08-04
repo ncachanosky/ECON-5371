@@ -1,0 +1,715 @@
+---
+title: "Matrix Algebra, Part II"
+subtitle: "ECON-5371 — Time Series Analysis and Forecasting"
+author: "Nicolas Cachanosky, Department of Economics and Finance"
+date: today
+title-slide-attributes:
+  data-background-color: "#36454F"
+  data-footer: ""
+---
+
+## Where We Left Off
+
+> Part I gave us the tools to build, classify, and multiply matrices, and to compute a determinant. What do we actually *do* with a determinant?
+
+- $\det(\mathbf{A}) \neq 0$ told us $\mathbf{A}$ is invertible — but we never computed an inverse
+- We defined rank and linear independence — but never solved an actual system of equations
+- We wrote $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$ on the very first slide — but never derived or computed it
+
+Today we close all three loops.
+
+---
+
+## Today's Roadmap {.outline-slide}
+
+1. The matrix inverse — and what happens when it doesn't exist
+2. Solving a linear system: by hand, and by inverse
+3. Eigenvalues and eigenvectors
+4. Deriving and computing OLS — by hand and by matrix — and where standard errors come from
+
+---
+
+## The Matrix Inverse {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## What the Inverse *Is*
+
+For a scalar, $a^{-1} = 1/a$ undoes multiplication by $a$ — as long as $a \neq 0$.
+
+::: {.eo-definition}
+**Matrix inverse.** For a square matrix $\mathbf{A}$, the inverse $\mathbf{A}^{-1}$ is the unique matrix satisfying $\mathbf{A}\mathbf{A}^{-1} = \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}$.
+:::
+
+Exactly one condition determines whether $\mathbf{A}^{-1}$ exists — the one we already have:
+
+$$
+\mathbf{A}^{-1} \text{ exists} \iff \det(\mathbf{A}) \neq 0 \iff \mathbf{A} \text{ is full rank}
+$$
+
+Three ways of saying the same thing, from Part I. Today we compute the inverse itself.
+
+---
+
+## Two Ways to Compute It
+
+::: {.eo-definition}
+**The adjugate formula.** $\mathbf{A}^{-1} = \dfrac{1}{\det(\mathbf{A})}\,\text{adj}(\mathbf{A})$ — exact, and useful for seeing *why* $\det(\mathbf{A})=0$ breaks everything (division by zero, directly).
+:::
+
+::: {.eo-hazard}
+The adjugate formula needs a cofactor for **every** entry. For a $4\times4$ matrix that is sixteen $3\times3$ determinants — it does not scale. Software never uses it.
+:::
+
+What software — and this course — uses instead: **Gauss-Jordan elimination**. Same row operations you already used to think about rank; now we push them all the way to a solution.
+
+---
+
+## Gauss-Jordan: The Idea
+
+::: {.eo-definition}
+**Gauss-Jordan elimination.** Augment $\mathbf{A}$ with the identity, $[\,\mathbf{A} \mid \mathbf{I}\,]$, then apply row operations until the left block *becomes* the identity. Whatever the right block becomes is $\mathbf{A}^{-1}$:
+
+$$
+[\,\mathbf{A} \mid \mathbf{I}\,] \;\longrightarrow\; [\,\mathbf{I} \mid \mathbf{A}^{-1}\,]
+$$
+:::
+
+Three legal row operations, same as always: swap two rows, scale a row by a nonzero constant, add a multiple of one row to another.
+
+---
+
+## Gauss-Jordan: Worked Example (Part 1)
+
+$$
+\mathbf{A} = \begin{bmatrix} 3 & 2 \\ 4 & 3 \end{bmatrix}, \qquad \det(\mathbf{A}) = 1
+$$
+
+$$
+\left[\begin{array}{cc|cc} 3 & 2 & 1 & 0 \\ 4 & 3 & 0 & 1 \end{array}\right]
+$$
+
+$$
+\begin{aligned}
+&: \left[\begin{array}{cc|cc} 3 & 2 & 1 & 0 \\ 4 & 3 & 0 & 1 \end{array}\right] \\[4pt]
+R_1 \to R_1 - R_2 &:
+\left[\begin{array}{cc|cc} -1 & -1 & 1 & -1 \\ 4 & 3 & 0 & 1 \end{array}\right] \\[4pt]
+R_1 \to -R_1 &:
+\left[\begin{array}{cc|cc} 1 & 1 & -1 & 1 \\ 4 & 3 & 0 & 1 \end{array}\right]
+\end{aligned}
+$$
+
+---
+
+## Gauss-Jordan: Worked Example (Part 2)
+
+$$
+\begin{aligned}
+R_2 \to R_2 - 4R_1 &:
+\left[\begin{array}{cc|cc} 1 & 1 & -1 & 1 \\ 0 & -1 & 4 & -3 \end{array}\right] \\[4pt]
+R_2 \to -R_2 &:
+\left[\begin{array}{cc|cc} 1 & 1 & -1 & 1 \\ 0 & 1 & -4 & 3 \end{array}\right] \\[4pt]
+R_1 \to R_1 - R_2 &:
+\left[\begin{array}{cc|cc} 1 & 0 & 3 & -2 \\ 0 & 1 & -4 & 3 \end{array}\right]
+\end{aligned}
+$$
+
+$$
+\mathbf{A}^{-1} = \begin{bmatrix} 3 & -2 \\ -4 & 3 \end{bmatrix}
+$$
+
+::: {.notes}
+Verify live if time allows: A A^-1 should equal I. Good comprehension check —
+ask a student to do the multiplication on the board.
+:::
+
+---
+
+## When Inversion Breaks: Perfect Multicollinearity
+
+$$
+\mathbf{A} = \begin{bmatrix} 1 & 2 & 1 \\ 2 & 1 & 3 \\ 3 & 3 & 4 \end{bmatrix}
+$$
+
+Row 3 is exactly row 1 $+$ row 2 — no new information, exactly the dependence structure from Part I.
+
+$$
+\left[\begin{array}{ccc|ccc} 1 & 2 & 1 & 1 & 0 & 0 \\ 2 & 1 & 3 & 0 & 1 & 0 \\ 3 & 3 & 4 & 0 & 0 & 1 \end{array}\right]
+\;\xrightarrow{R_3 \to R_3 - R_1 - R_2}\;
+\left[\begin{array}{ccc|ccc} 1 & 2 & 1 & 1 & 0 & 0 \\ 2 & 1 & 3 & 0 & 1 & 0 \\ 0 & 0 & 0 & -1 & -1 & 1 \end{array}\right]
+$$
+
+::: {.eo-hazard}
+A row of zeros on the left with a nonzero entry on the right. There is **no way** to turn row 3 into part of the identity — elimination cannot continue. $\det(\mathbf{A})=0$; the inverse simply does not exist.
+:::
+
+---
+
+## Near Multicollinearity: Barely Broken
+
+Change one entry by $0.1$ — row 3 is no longer *exactly* row 1 $+$ row 2:
+
+$$
+\mathbf{A}_\varepsilon = \begin{bmatrix} 1 & 2 & 1 \\ 2 & 1 & 3 \\ 3 & 3 & 4.1 \end{bmatrix}
+$$
+
+$$
+\det(\mathbf{A}_\varepsilon) = -0.3
+$$
+
+Nonzero — technically invertible. Small, though, compared to the determinants we have seen so far. What does "technically invertible but nearly singular" actually look like once we compute the inverse?
+
+---
+
+## Near Multicollinearity: The Inverse Blows Up
+
+$$
+\mathbf{A}_\varepsilon^{-1} =
+\begin{bmatrix}
+16.3 & 17.3 & -16.7 \\
+-2.7 & -3.7 & 3.3 \\
+-10 & -10 & 10
+\end{bmatrix}
+$$
+
+::: {.eo-recap}
+**Nearly dependent rows produce a nearly-singular matrix — and a wildly inflated inverse.** The determinant crossing zero is not a cliff edge; it's the limit of a slope that gets steeper and steeper as $\det(\mathbf{A}) \to 0$. We come back to *why this matters numerically* once we reach standard errors.
+:::
+
+---
+
+## Properties of the Inverse
+
+$$
+(\mathbf{A}^{-1})^{-1} = \mathbf{A}, \qquad
+(\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}, \qquad
+(\mathbf{A}')^{-1} = (\mathbf{A}^{-1})'
+$$
+
+::: {.eo-hazard}
+Inverting a **product reverses order** — exactly the same pattern as the transpose in Part I. To undo "first $\mathbf{A}$, then $\mathbf{B}$," you must undo $\mathbf{B}$ first: $(\mathbf{AB})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}$, not $\mathbf{A}^{-1}\mathbf{B}^{-1}$.
+:::
+
+Only square, full-rank matrices have an inverse. A non-square matrix is never invertible — there is no such thing as "the inverse of a $3\times 2$ matrix."
+
+---
+
+## Solving a Linear System {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## From Equations to $\mathbf{Ax} = \mathbf{b}$
+
+Three equations, three unknowns — the kind of small equilibrium system that shows up constantly in economics:
+
+$$
+\begin{aligned}
+x_1 &= 2 \\
+2x_1 + x_2 + x_3 &= 8 \\
+x_1 + 3x_2 + 2x_3 &= 11
+\end{aligned}
+$$
+
+In matrix form:
+
+$$
+\underbrace{\begin{bmatrix} 1 & 0 & 0 \\ 2 & 1 & 1 \\ 1 & 3 & 2 \end{bmatrix}}_{\mathbf{A}}
+\underbrace{\begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}}_{\mathbf{x}}
+=
+\underbrace{\begin{bmatrix} 2 \\ 8 \\ 11 \end{bmatrix}}_{\mathbf{b}}
+$$
+
+::: {.eo-recap}
+Any system of linear equations is $\mathbf{Ax}=\mathbf{b}$: $\mathbf{A}$ holds the coefficients, $\mathbf{x}$ the unknowns, $\mathbf{b}$ the right-hand side. This is the single most common matrix equation you will write all semester.
+:::
+
+---
+
+## By Hand: Triangularize First
+
+The idea: use row operations to eliminate variables one at a time — the same thing you would do by substitution, but systematic. Target an **upper triangular** system: zeros below the diagonal.
+
+$$
+\left[\begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 2 & 1 & 1 & 8 \\ 1 & 3 & 2 & 11 \end{array}\right]
+$$
+
+$$
+\begin{aligned}
+R_2 \to R_2 - 2R_1 &:
+\left[\begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 1 & 4 \\ 1 & 3 & 2 & 11 \end{array}\right] \\[4pt]
+R_3 \to R_3 - R_1 &:
+\left[\begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 1 & 4 \\ 0 & 3 & 2 & 9 \end{array}\right] \\[4pt]
+R_3 \to R_3 - 3R_2 &:
+\left[\begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 1 & 4 \\ 0 & 0 & -1 & -3 \end{array}\right]
+\end{aligned}
+$$
+
+Triangular — every row now has at most one more nonzero entry than the row above it.
+
+---
+
+## By Hand: Back-Substitute
+
+The triangular system from the previous step:
+
+$$
+\left[\begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 1 & 4 \\ 0 & 0 & -1 & -3 \end{array}\right]
+$$
+
+Read it straight off, **starting from the bottom row** — it already has only one unknown:
+
+$$
+\begin{aligned}
+-x_3 &= -3 &&\Rightarrow \quad x_3 = 3 \\
+x_2 + x_3 &= 4 &&\Rightarrow \quad x_2 = 4 - 3 = 1 \\
+x_1 &= 2 &&\Rightarrow \quad x_1 = 2
+\end{aligned}
+$$
+
+$$
+(x_1, x_2, x_3) = (2, 1, 3)
+$$
+
+::: {.eo-recap}
+**Back-substitution is why we triangularize.** Once the system is triangular, each row hands you one unknown in terms of ones already solved — no simultaneous solving required, just substitute upward from the bottom.
+:::
+
+---
+
+## The Alternative: Solve via the Inverse
+
+Triangularization solves *this* system. What if tomorrow $\mathbf{b}$ changes — new policy targets, a new forecast origin — but $\mathbf{A}$ stays the same?
+
+$$
+\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}
+$$
+
+::: {.eo-recap}
+**The same formula, every time, for any $\mathbf{b}$.** Once $\mathbf{A}^{-1}$ is computed — by Gauss-Jordan, exactly as in Section 1 — solving for a new $\mathbf{x}$ is one matrix multiplication, not a fresh triangularization from scratch.
+:::
+
+::: {.eo-hazard}
+This is also why software never triangularizes "by hand" the way we just did. A computer does not need the intuition of back-substitution — it needs a procedure that is **identical regardless of the system's size or structure**. $\mathbf{x}=\mathbf{A}^{-1}\mathbf{b}$ is that procedure: the same three symbols whether $\mathbf{A}$ is $3\times3$ or $300\times300$.
+:::
+
+---
+
+## Eigenvalues and Eigenvectors {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## What an Eigenvector *Is*
+
+> Most vectors, multiplied by a matrix, change both length **and** direction. Is there ever a direction a matrix leaves alone?
+
+For most $\mathbf{v}$, $\mathbf{A}\mathbf{v}$ points somewhere new. But for special directions, $\mathbf{A}$ only **stretches or shrinks** $\mathbf{v}$ — it never rotates it.
+
+::: {.eo-definition}
+**Eigenvector / eigenvalue.** $\mathbf{v} \neq \mathbf{0}$ is an eigenvector of $\mathbf{A}$ with eigenvalue $\lambda$ if
+
+$$
+\mathbf{A}\mathbf{v} = \lambda\mathbf{v}
+$$
+
+$\mathbf{A}$ acting on $\mathbf{v}$ is the same as just multiplying $\mathbf{v}$ by the scalar $\lambda$.
+:::
+
+We will need this constantly once we study VAR stability and state-space models — a system is stable exactly when its eigenvalues satisfy a size condition we make precise later.
+
+---
+
+## Finding Eigenvalues: The Characteristic Equation
+
+Rearranging $\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$:
+
+$$
+(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}
+$$
+
+For a **nonzero** $\mathbf{v}$ to solve this, $(\mathbf{A}-\lambda\mathbf{I})$ must be singular — a direct callback to Part I.
+
+::: {.eo-definition}
+**Characteristic equation.** $\det(\mathbf{A} - \lambda\mathbf{I}) = 0$. For an $n\times n$ matrix this is a degree-$n$ polynomial in $\lambda$ — up to $n$ eigenvalues.
+:::
+
+---
+
+## Eigenvalues: Worked Example
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 0 & 2 & 0 \\ 1 & 0 & 2 \end{bmatrix}
+$$
+
+$$
+\det(\mathbf{A}-\lambda\mathbf{I}) =
+\det\begin{bmatrix} 2-\lambda & 0 & 1 \\ 0 & 2-\lambda & 0 \\ 1 & 0 & 2-\lambda \end{bmatrix}
+$$
+
+Expanding along the middle row (mostly zeros — the easy row to expand on):
+
+$$
+\begin{aligned}
+\det(\mathbf{A}-\lambda\mathbf{I}) &= (2-\lambda)\Big[(2-\lambda)^2 - 1\Big] \\
+&= -\lambda^3 + 6\lambda^2 - 11\lambda + 6
+\end{aligned}
+$$
+
+Setting this to zero and factoring:
+
+$$
+\lambda^3 - 6\lambda^2 + 11\lambda - 6 = (\lambda-1)(\lambda-2)(\lambda-3) = 0
+$$
+
+$$
+\lambda_1 = 1, \qquad \lambda_2 = 2, \qquad \lambda_3 = 3
+$$
+
+---
+
+## Eigenvectors: $\lambda_1 = 1$
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 0 & 2 & 0 \\ 1 & 0 & 2 \end{bmatrix}
+\qquad\Longrightarrow\qquad
+\mathbf{A} - 1\cdot\mathbf{I} = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & 1 \end{bmatrix}
+$$
+
+Row 3 is identical to row 1 — the linear combination is $\text{row 3} = 1\cdot(\text{row 1})$, confirming $\det(\mathbf{A}-\mathbf{I})=0$ exactly as the characteristic equation requires.
+
+Reading the two independent rows as equations: row 1 gives $v_1+v_3=0$; row 2 gives $v_2=0$.
+
+$$
+\mathbf{v}_1 = \begin{bmatrix} -1 \\ 0 \\ 1 \end{bmatrix}
+$$
+
+---
+
+## Eigenvectors: $\lambda_2 = 2$
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 0 & 2 & 0 \\ 1 & 0 & 2 \end{bmatrix}
+\qquad\Longrightarrow\qquad
+\mathbf{A} - 2\cdot\mathbf{I} = \begin{bmatrix} 0 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 0 \end{bmatrix}
+$$
+
+Row 2 is entirely zero — the linear combination is $\text{row 2} = 0\cdot(\text{row 1}) + 0\cdot(\text{row 3})$, the simplest possible dependence, and again confirms singularity.
+
+Row 1 gives $v_3=0$; row 3 gives $v_1=0$ — $v_2$ is free.
+
+$$
+\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}
+$$
+
+---
+
+## Eigenvectors: $\lambda_3 = 3$
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 0 & 2 & 0 \\ 1 & 0 & 2 \end{bmatrix}
+\qquad\Longrightarrow\qquad
+\mathbf{A} - 3\cdot\mathbf{I} = \begin{bmatrix} -1 & 0 & 1 \\ 0 & -1 & 0 \\ 1 & 0 & -1 \end{bmatrix}
+$$
+
+Row 3 is $-1\times$ row 1 — the linear combination is $\text{row 3} = -1\cdot(\text{row 1})$, again singular by construction.
+
+Row 1 gives $-v_1+v_3=0$; row 2 gives $v_2=0$.
+
+$$
+\mathbf{v}_3 = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}
+$$
+
+::: {.eo-hazard}
+Eigenvectors are **not unique** — any nonzero multiple of $\mathbf{v}_1,\mathbf{v}_2,\mathbf{v}_3$ is equally valid. Software reports a normalized (unit-length) version; the direction is what matters, not the scale.
+:::
+
+---
+
+## Why Eigenvalues Matter Here
+
+::: {.eo-recap}
+**The preview, not the whole story.** Later in the course, a VAR or a state-space model is stable exactly when the eigenvalues of its coefficient matrix are small enough in absolute value (formally: modulus less than one). One number per direction — $\lambda$ — tells us whether shocks fade out or explode. That is the entire reason this section exists in a forecasting course.
+:::
+
+We are not proving stability conditions today — just building the vocabulary so that "the eigenvalues of the companion matrix" is not a new phrase when it shows up in Chapter 7.
+
+---
+
+## Deriving and Computing OLS {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## The Payoff Section
+
+Back to the very first slide of Part I:
+
+> OLS itself collapses from page-long summation formulas to $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$
+
+We now have every tool needed to actually *derive* this claim — not just state it — and to see exactly why it scales in a way the scalar approach does not.
+
+::: {.eo-recap}
+Two derivations, same destination: minimize the sum of squared residuals. One route gets harder with every added regressor. The other does not change shape at all.
+:::
+
+---
+
+## Deriving OLS the Scalar Way: Set Up the Problem
+
+One regressor, $n$ observations. The residual for observation $i$:
+
+$$
+e_i = y_i - \hat{y}_i = y_i - \beta_0 - \beta_1 x_i
+$$
+
+::: {.eo-definition}
+**Ordinary least squares.** Choose $\beta_0,\beta_1$ to minimize the sum of squared residuals:
+
+$$
+S(\beta_0,\beta_1) = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2
+$$
+:::
+
+Two unknowns, so we need two first-order conditions — set both partial derivatives to zero.
+
+---
+
+## Deriving OLS the Scalar Way: First-Order Conditions
+
+$$
+\frac{\partial S}{\partial \beta_0} = -2\sum_i (y_i - \beta_0 - \beta_1 x_i) = 0
+$$
+
+$$
+\frac{\partial S}{\partial \beta_1} = -2\sum_i x_i(y_i - \beta_0 - \beta_1 x_i) = 0
+$$
+
+Rearranging both gives the **normal equations** — two linear equations in $\beta_0,\beta_1$, next slide.
+
+---
+
+## Deriving OLS the Scalar Way: The Normal Equations
+
+$$
+\begin{aligned}
+n\beta_0 + \beta_1\sum_i x_i &= \sum_i y_i \\
+\beta_0\sum_i x_i + \beta_1\sum_i x_i^2 &= \sum_i x_i y_i
+\end{aligned}
+$$
+
+Two linear equations, two unknowns — solvable by substitution:
+
+$$
+\hat{\beta}_1 = \frac{\sum_i(x_i-\bar{x})(y_i-\bar{y})}{\sum_i(x_i-\bar{x})^2}, \qquad
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1\bar{x}
+$$
+
+::: {.eo-hazard}
+This is already two normal equations from two regressors ($1$ and $x$). A third regressor means **three** normal equations in three unknowns, solved by substitution or Cramer's rule. A fourth means four — and by the time a model has eight or ten controls, this is no longer something anyone does by hand. The algebra does not scale.
+:::
+
+---
+
+## Deriving OLS in Matrix Form: Set Up the Problem
+
+Same minimization, written for **any** number of regressors at once. Stack every observation:
+
+$$
+\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{e}, \qquad
+\mathbf{e} = \mathbf{y} - \mathbf{X}\boldsymbol{\beta}
+$$
+
+$\mathbf{X}$ is $n\times k$ — $n$ observations, $k$ regressors (including the intercept column). $\boldsymbol{\beta}$ is $k\times 1$, whatever $k$ happens to be.
+
+$$
+S(\boldsymbol{\beta}) = \mathbf{e}'\mathbf{e} = (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{y}-\mathbf{X}\boldsymbol{\beta})
+$$
+
+::: {.eo-recap}
+**One scalar objective, regardless of $k$.** Whether $\mathbf{X}$ has two columns or twenty, $\mathbf{e}'\mathbf{e}$ is always a $(1\times n)(n\times 1) \to 1\times 1$ — a single number — because conformability guarantees it.
+:::
+
+---
+
+## Deriving OLS in Matrix Form: Expanding
+
+$$
+\begin{aligned}
+S(\boldsymbol{\beta}) &= (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{y}-\mathbf{X}\boldsymbol{\beta}) \\
+&= \mathbf{y}'\mathbf{y} - \mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y} + \boldsymbol{\beta}'\mathbf{X}'\mathbf{X}\boldsymbol{\beta} \\
+&= \mathbf{y}'\mathbf{y} - 2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y} + \boldsymbol{\beta}'\mathbf{X}'\mathbf{X}\boldsymbol{\beta}
+\end{aligned}
+$$
+
+::: {.eo-hazard}
+The middle two terms are each scalars, and a scalar always equals its own transpose: $\mathbf{y}'\mathbf{X}\boldsymbol{\beta} = (\mathbf{y}'\mathbf{X}\boldsymbol{\beta})' = \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$. That is what collapses $-\mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$ into $-2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$.
+:::
+
+---
+
+## Deriving OLS in Matrix Form: The First-Order Condition
+
+Differentiate with respect to the **vector** $\boldsymbol{\beta}$ and set to zero — one matrix equation replaces $k$ separate scalar equations:
+
+$$
+\frac{\partial S}{\partial \boldsymbol{\beta}} = -2\mathbf{X}'\mathbf{y} + 2\mathbf{X}'\mathbf{X}\boldsymbol{\beta} = \mathbf{0}
+$$
+
+$$
+\mathbf{X}'\mathbf{X}\boldsymbol{\beta} = \mathbf{X}'\mathbf{y}
+$$
+
+These **are** the normal equations from the scalar case — $k$ of them, packaged into one matrix equation. Now solve exactly as we solved $\mathbf{Ax}=\mathbf{b}$ in Section 2: left-multiply by $(\mathbf{X}'\mathbf{X})^{-1}$.
+
+$$
+\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}
+$$
+
+::: {.eo-recap}
+**This is the whole point.** One formula, one derivation, works for $k=2$ or $k=20$. The scalar route needs a fresh, larger system of normal equations every time a regressor is added. The matrix route needs nothing new — just a bigger $\mathbf{X}$.
+:::
+
+---
+
+## Applying Both Routes to the Same Data
+
+Four observations, one regressor:
+
+| $i$ | $x_i$ | $y_i$ |
+|:---:|:---:|:---:|
+| 1 | 1 | 3 |
+| 2 | 2 | 5 |
+| 3 | 3 | 6 |
+| 4 | 4 | 9 |
+
+*A minimal dataset — small enough to carry through both routes by hand in full.*
+
+---
+
+## Route 1: Scalar Formula Applied
+
+With $\bar{x}=2.5$, $\bar{y}=5.75$:
+
+$$
+\begin{aligned}
+\sum_i (x_i-\bar{x})(y_i-\bar{y}) &= (-1.5)(-2.75)+(-0.5)(-0.75)+(0.5)(0.25)+(1.5)(3.25) = 9.5 \\
+\sum_i (x_i-\bar{x})^2 &= 2.25+0.25+0.25+2.25 = 5
+\end{aligned}
+$$
+
+$$
+\hat{\beta}_1 = \frac{9.5}{5} = 1.9, \qquad \hat{\beta}_0 = 5.75 - (1.9)(2.5) = 1.0
+$$
+
+---
+
+## Route 2: Matrix Formula Applied — Building the Pieces
+
+$$
+\mathbf{X} = \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \\ 1 & 4 \end{bmatrix}, \qquad
+\mathbf{y} = \begin{bmatrix} 3 \\ 5 \\ 6 \\ 9 \end{bmatrix}
+$$
+
+$$
+\mathbf{X}'\mathbf{X} = \begin{bmatrix} 4 & 10 \\ 10 & 30 \end{bmatrix}, \qquad
+\mathbf{X}'\mathbf{y} = \begin{bmatrix} 23 \\ 67 \end{bmatrix}
+$$
+
+The column of ones in $\mathbf{X}$ is exactly what produces the row/column sums of $1$, $x_i$, and $x_i^2$ that the scalar formula computes term by term. Same information, packaged differently.
+
+---
+
+## Route 2: Matrix Formula Applied — Inverting and Solving
+
+$$
+\det(\mathbf{X}'\mathbf{X}) = (4)(30) - (10)(10) = 20
+$$
+
+$2\times2$ shortcut, $\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1} = \frac{1}{\det}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$ — safe by hand only at $2\times2$; larger cases use Gauss-Jordan as in Section 1:
+
+$$
+(\mathbf{X}'\mathbf{X})^{-1} = \frac{1}{20}\begin{bmatrix} 30 & -10 \\ -10 & 4 \end{bmatrix} = \begin{bmatrix} 1.5 & -0.5 \\ -0.5 & 0.2 \end{bmatrix}
+$$
+
+$$
+\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y} =
+\begin{bmatrix} 1.5 & -0.5 \\ -0.5 & 0.2 \end{bmatrix}
+\begin{bmatrix} 23 \\ 67 \end{bmatrix}
+=
+\begin{bmatrix} 1.0 \\ 1.9 \end{bmatrix}
+$$
+
+::: {.eo-recap}
+$\hat{\beta}_0 = 1.0$, $\hat{\beta}_1 = 1.9$ — **identical** to Route 1. Two derivations, one algebraic and one that scales, arriving at the same number.
+:::
+
+---
+
+## Standard Errors: Where $(\mathbf{X}'\mathbf{X})^{-1}$ Earns Its Keep
+
+The matrix route does not stop at $\hat{\boldsymbol{\beta}}$ — it hands us standard errors for free, using the inverse we already computed:
+
+::: {.eo-definition}
+**Variance of $\hat{\boldsymbol{\beta}}$.**
+
+$$
+\widehat{\text{Var}}(\hat{\boldsymbol{\beta}}) = \hat{\sigma}^2 (\mathbf{X}'\mathbf{X})^{-1}, \qquad
+\hat{\sigma}^2 = \frac{\sum_i \hat{e}_i^2}{n-k}
+$$
+
+where $\hat{e}_i = y_i - \hat{y}_i$ are the residuals and $k$ the number of estimated coefficients. (You will derive this formally in econometrics; here we only need the mechanical link to $(\mathbf{X}'\mathbf{X})^{-1}$.)
+:::
+
+Fitted values $\hat{y}_i = (2.9,\, 4.8,\, 6.7,\, 8.6)$, residuals $\hat{e}_i = (0.1,\, 0.2,\, -0.7,\, 0.4)$, giving $\hat{\sigma}^2 = 0.35$.
+
+$$
+\widehat{\text{Var}}(\hat{\boldsymbol{\beta}}) = 0.35\begin{bmatrix} 1.5 & -0.5 \\ -0.5 & 0.2 \end{bmatrix}
+= \begin{bmatrix} 0.525 & -0.175 \\ -0.175 & 0.070 \end{bmatrix}
+$$
+
+$$
+\text{SE}(\hat{\beta}_0) = \sqrt{0.525} \approx 0.72, \qquad \text{SE}(\hat{\beta}_1) = \sqrt{0.070} \approx 0.26
+$$
+
+---
+
+## Reading the Variance-Covariance Matrix
+
+::: {.eo-definition}
+**The variance-covariance matrix of $\hat{\boldsymbol{\beta}}$** is always symmetric, $k\times k$:
+
+- **Diagonal** — $\text{Var}(\hat{\beta}_j)$; its square root is $\text{SE}(\hat{\beta}_j)$, the number every regression table reports
+- **Off-diagonal** — $\text{Cov}(\hat{\beta}_i,\hat{\beta}_j)$; how estimation error in one coefficient moves with estimation error in another
+:::
+
+Here, $\text{Cov}(\hat{\beta}_0,\hat{\beta}_1) = -0.175$. Dividing by both standard errors gives the correlation of their sampling errors:
+
+$$
+\text{Corr}(\hat{\beta}_0,\hat{\beta}_1) = \frac{-0.175}{(0.72)(0.26)} \approx -0.91
+$$
+
+::: {.eo-recap}
+**Why the sign makes sense.** Push the fitted line's intercept up and, to keep fitting the same data, its slope typically has to come down — the two coefficients are not estimated independently. This off-diagonal term is *why* joint hypothesis tests on several coefficients at once need the whole variance-covariance matrix, not just a list of individual standard errors.
+:::
+
+---
+
+## Closing the Loop: Multicollinearity and Standard Errors
+
+Recall $\mathbf{A}_\varepsilon^{-1}$ from Section 1 — entries in the teens, from a determinant of just $-0.3$.
+
+::: {.eo-hazard}
+**Now replace $\mathbf{A}_\varepsilon$ with $\mathbf{X}'\mathbf{X}$.** If two regressors are nearly collinear, $\mathbf{X}'\mathbf{X}$ is nearly singular — its determinant is close to zero, and $(\mathbf{X}'\mathbf{X})^{-1}$ has huge entries, exactly as we saw. Since $\widehat{\text{Var}}(\hat{\boldsymbol{\beta}}) = \hat{\sigma}^2(\mathbf{X}'\mathbf{X})^{-1}$, that inflation passes straight through: standard errors explode, $t$-statistics collapse toward zero, and coefficients that may be economically large look statistically insignificant.
+:::
+
+This is the mechanical reason multicollinearity produces the textbook symptom — "high $R^2$, but nothing individually significant." It was never a separate phenomenon; it is the same singularity problem from Section 1, one formula later.
+
+---
+
+## Recap {.recap-slide background-color="#87A96B" footer=false}
+
+We computed the matrix inverse by Gauss-Jordan, saw exactly how and why it fails under multicollinearity, solved a full linear system both by hand triangularization and by inverse, found eigenvalues and eigenvectors by hand, then derived OLS two ways — scalar and matrix — confirming they agree, reading the variance-covariance matrix, and tracing standard errors back to the same inverse that broke down under collinearity.
+
+---
+
+## Looking Ahead
+
+With matrix notation now fully in hand — construction, multiplication, transposition, inversion, eigenstructure, and the OLS derivation itself — you are ready to make your  math-life easier. Use it. You are welcome :-)

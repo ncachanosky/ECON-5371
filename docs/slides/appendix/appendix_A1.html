@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="appendix_A1_files/libs/revealjs/dist/theme/quarto-e94edbe477dfa35222a42559a0855e8b.css">
+  <link rel="stylesheet" href="appendix_A1_files/libs/revealjs/dist/theme/quarto-d976585da3f45c524a7cd8235a644962.css">
   <link rel="stylesheet" href="../slides-extra.css">
   <link href="appendix_A1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="appendix_A1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -151,6 +151,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 <li>Matrix algebra is a <strong>labor-saving device</strong>, not an added layer of abstraction</li>
 <li>Every result we prove later — stability, forecast variance, impulse responses — is easier once written this way</li>
 <li>OLS itself collapses from page-long summation formulas to <span class="math inline">\(\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}\)</span></li>
+<li>By reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake</li>
 </ul>
 <aside class="notes">
 <p>Open with the VAR example on the board or a slide before this one if useful. Framing: this is not math for its own sake — it’s the language the rest of the course is written in. ~3 min.</p>
@@ -189,7 +190,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 <li>Rank and linear independence — and why regressions fail</li>
 </ol>
 </section>
-<section id="scalars-vectors-matrices" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="scalars-vectors-matrices" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Scalars → Vectors → Matrices</h2>
 </section>
 <section id="from-scalar-to-vector" class="slide level2">
@@ -232,7 +233,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </ul>
 <p>A vector is just a special case — <span class="math inline">\(n\times 1\)</span> or <span class="math inline">\(1 \times n\)</span> — so the same notation and operations apply to both.</p>
 </section>
-<section id="special-matrix-types" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="special-matrix-types" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Special Matrix Types</h2>
 </section>
 <section id="square-diagonal-identity" class="slide level2">
@@ -281,11 +282,11 @@ Nicolas Cachanosky, Department of Economics and Finance
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-basic-operations" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="the-basic-operations" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>The Basic Operations</h2>
 </section>
-<section id="addition-and-scalar-multiplication" class="slide level2">
-<h2>Addition and Scalar Multiplication</h2>
+<section id="addition-and-subtraction" class="slide level2">
+<h2>Addition ( and subtraction)</h2>
 <p>Entry by entry — exactly what intuition suggests.</p>
 <p><span class="math display">\[
 \begin{bmatrix} 3 &amp; 1 \\ 2 &amp; 4 \end{bmatrix} +
@@ -295,7 +296,15 @@ Nicolas Cachanosky, Department of Economics and Finance
 <div class="eo-hazard">
 <p>Addition requires <strong>identical dimensions</strong> — not identical entry count. A <span class="math inline">\(3\times 4\)</span> and a <span class="math inline">\(4\times 3\)</span> matrix cannot be added, even though both hold twelve numbers.</p>
 </div>
+</section>
+<section id="scalar-multiplication" class="slide level2">
+<h2>Scalar Multiplication</h2>
 <p>Scalar multiplication scales every entry by the same number: <span class="math inline">\(3\mathbf{A}\)</span> multiplies each <span class="math inline">\(a_{ij}\)</span> by 3.</p>
+<p><span class="math display">\[
+3 \times
+\begin{bmatrix} 5 &amp; 0 \\ 1 &amp; 2 \end{bmatrix} =
+\begin{bmatrix} 15 &amp; 0 \\ 3 &amp; 12 \end{bmatrix}
+\]</span></p>
 </section>
 <section id="matrix-multiplication-conformability" class="slide level2">
 <h2>Matrix Multiplication: Conformability</h2>
@@ -329,6 +338,29 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 \]</span></p>
 <p><span class="math inline">\(c_{11}\)</span> pairs row 1 of <span class="math inline">\(\mathbf{A}\)</span> with column 1 of <span class="math inline">\(\mathbf{B}\)</span>; <span class="math inline">\(c_{12}\)</span> pairs row 1 with column 2; and so on.</p>
 </section>
+<section id="matrix-multiplication-a-non-square-example" class="slide level2">
+<h2>Matrix Multiplication: A Non-Square Example</h2>
+<p>Conformability doesn’t require square matrices — only that inner dimensions match.</p>
+<p><span class="math display">\[
+\mathbf{A}_{3\times 2} =
+\begin{bmatrix} 1 &amp; 0 \\ 2 &amp; 1 \\ 0 &amp; 3 \end{bmatrix}
+\qquad
+\mathbf{B}_{2\times 4} =
+\begin{bmatrix} 1 &amp; 2 &amp; 0 &amp; 1 \\ 3 &amp; 1 &amp; 2 &amp; 0 \end{bmatrix}
+\]</span></p>
+<p><span class="math inline">\((3\times 2)(2\times 4)\)</span>: inner dimensions match (<span class="math inline">\(2=2\)</span>) — conformable. Result is <span class="math inline">\(3\times 4\)</span>: <strong>outer</strong> dimensions, not the shape of either input.</p>
+<p><span class="math display">\[
+\mathbf{AB} =
+\begin{bmatrix}
+1 &amp; 2 &amp; 0 &amp; 1 \\
+5 &amp; 5 &amp; 2 &amp; 2 \\
+9 &amp; 3 &amp; 6 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>The shape changes.</strong> Multiplying a <span class="math inline">\(3\times 2\)</span> by a <span class="math inline">\(2\times 4\)</span> produces a <span class="math inline">\(3\times 4\)</span> — neither input’s shape survives. This is exactly what happens in a regression: <span class="math inline">\(\mathbf{X}\)</span> (<span class="math inline">\(T\times k\)</span>) and <span class="math inline">\(\boldsymbol{\beta}\)</span> (<span class="math inline">\(k\times 1\)</span>) multiply to a <span class="math inline">\(T\times 1\)</span> vector of fitted values.</p>
+</div>
+</section>
 <section id="matrix-multiplication-is-not-commutative" class="slide level2">
 <h2>Matrix Multiplication Is Not Commutative</h2>
 <div class="eo-hazard">
@@ -353,7 +385,7 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
           display:block!important;
       }</style></aside>
 </section>
-<section id="transpose-and-adjugate" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="transpose-and-adjugate" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Transpose and Adjugate</h2>
 </section>
 <section id="the-transpose" class="slide level2">
@@ -383,9 +415,8 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 <p><strong>Adjugate</strong> <span class="math inline">\(\text{adj}(\mathbf{A})\)</span> — the transpose of the cofactor matrix.</p>
 </div>
 <p>Not useful on its own — it’s the numerator in the classical inverse formula, which we build in Part II.</p>
-<p>We return to a full worked calculation once the determinant is defined — next.</p>
 </section>
-<section id="the-determinant" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="the-determinant" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>The Determinant</h2>
 </section>
 <section id="the-determinant-what-it-tells-us" class="slide level2">
@@ -435,7 +466,23 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 \det(\mathbf{A}) = \underbrace{10+0+6}_{\text{diagonal sum}} - \underbrace{1-0-16}_{\text{diagonal sum}} = -1
 \]</span></p>
 </section>
-<section id="rank-and-linear-independence-and-why-regressions-fail" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="determinant-by-diagonals-a-full-worked-example" class="slide level2">
+<h2>Determinant by Diagonals: A Full Worked Example</h2>
+<p><span class="math display">\[
+\mathbf{A} =
+\begin{bmatrix} 2 &amp; 0 &amp; 1 \\ 1 &amp; 3 &amp; 2 \\ 4 &amp; 1 &amp; 3 \end{bmatrix}
+\]</span></p>
+<p>Copy the first two columns to the right, then multiply along the six diagonals:</p>
+<ul>
+<li>Sum of top left <span class="math inline">\(\to\)</span> bottom-right diagonals: (2)(3)(3) + (0)(2)(4) + (1)(1)(1) = 18 + 0 + 1 = 19</li>
+<li>Sum of botton-left <span class="math inline">\(\to\)</span> top-right diagonals: (4)(3)(1) + (1)(2)(2) + (3)(1)(0) = 12 + 4 + 0 = 16</li>
+</ul>
+<p>Determinant: <span class="math inline">\(\det(\mathbf{A}) = |A| = 19-16=3\)</span></p>
+<div class="eo-recap">
+<p><span class="math inline">\(\det(\mathbf{A}) = 3 \neq 0 \Rightarrow \mathbf{A}\)</span> is <strong>nonsingular</strong>, full rank, invertible. The rows carry three genuinely independent pieces of information.</p>
+</div>
+</section>
+<section id="rank-and-linear-independence-and-why-regressions-fail" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Rank and Linear Independence — and Why Regressions Fail</h2>
 </section>
 <section id="linear-independence" class="slide level2">
@@ -448,10 +495,17 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 \mathbf{v}_2 = \begin{bmatrix}3\\1\end{bmatrix}, \quad
 \mathbf{v}_3 = \begin{bmatrix}4\\3\end{bmatrix}
 \]</span></p>
-<p><span class="math inline">\(\mathbf{v}_3 = \mathbf{v}_1+\mathbf{v}_2\)</span> exactly — once we know <span class="math inline">\(\mathbf{v}_1,\mathbf{v}_2\)</span>, <span class="math inline">\(\mathbf{v}_3\)</span> adds nothing new. <strong>Linearly dependent.</strong></p>
+<p>These three vectors are linearly dependent.</p>
+<ul>
+<li>There exists <span class="math inline">\(\omega_2, \omega_3 \rightarrow \mathbf{v}_1 = \omega_2 \mathbf{v}_2 + \omega_3 \mathbf{v}_3\)</span></li>
+</ul>
 <p>The same relationship rearranges either way — dependence runs in both directions, not just “toward” <span class="math inline">\(\mathbf{v}_3\)</span>:</p>
 <p><span class="math display">\[
-\mathbf{v}_1 = \mathbf{v}_3 - \mathbf{v}_2, \qquad \mathbf{v}_2 = \mathbf{v}_3 - \mathbf{v}_1
+\begin{aligned}
+\mathbf{v}_1 &amp;= \mathbf{v}_3 - \mathbf{v}_2 \\
+\mathbf{v}_2 &amp;= \mathbf{v}_3 - \mathbf{v}_1 \\
+\mathbf{v}_3 &amp;= \mathbf{v}_2 - \mathbf{v}_1
+\end{aligned}
 \]</span></p>
 <p>Any one of the three can be written as a combination of the other two — that symmetry is exactly what “linearly dependent” means.</p>
 </section>
@@ -472,45 +526,13 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 </div>
 <p>Rank is not bookkeeping — it is the reason a regression can fail to run.</p>
 </section>
-<section id="recap" class="slide level2" data-background-color="#B87333" data-footer="false">
+<section id="recap" class="slide level2 recap-slide" data-footer="false">
 <h2>Recap</h2>
 <p>We built matrices from scalars up, classified the types that make later work tractable, defined the operations — especially the non-obvious rule for multiplication — and connected the determinant to rank and multicollinearity.</p>
-<p><strong>Next time (Part II):</strong> the matrix inverse, eigenvalues and eigenvectors, and two worked examples — solving a system by triangularization, and OLS by hand versus by matrix.</p>
 </section>
-<section id="key-terms" class="slide level2">
-<h2>Key Terms</h2>
-<div class="eo-keyterms">
-<dl>
-<dt>Scalar, vector, matrix</dt>
-<dd>
-A single number; an ordered <span class="math inline">\(n\)</span>-tuple; a rectangular array — dimension always rows <span class="math inline">\(\times\)</span> columns.
-</dd>
-<dt>Square / diagonal / identity / triangular / symmetric / zero matrix</dt>
-<dd>
-Special structures that simplify later operations.
-</dd>
-<dt>Conformability</dt>
-<dd>
-The requirement for <span class="math inline">\(\mathbf{AB}\)</span>: columns of <span class="math inline">\(\mathbf{A}\)</span> = rows of <span class="math inline">\(\mathbf{B}\)</span>.
-</dd>
-<dt>Transpose <span class="math inline">\(\mathbf{A}'\)</span></dt>
-<dd>
-Rows become columns; reverses order under products.
-</dd>
-<dt>Determinant <span class="math inline">\(\det(\mathbf{A})\)</span></dt>
-<dd>
-Scalar summary of a square matrix; zero iff singular.
-</dd>
-<dt>Rank</dt>
-<dd>
-Maximum number of linearly independent rows/columns; full rank iff nonsingular.
-</dd>
-<dt>Linear (in)dependence</dt>
-<dd>
-Whether a vector supplies genuinely new information beyond the others in a set.
-</dd>
-</dl>
-</div>
+<section id="looking-ahead" class="slide level2">
+<h2>Looking Ahead</h2>
+<p><strong>Part II</strong> picks up where the determinant leaves off: the <strong>matrix inverse</strong>, <strong>eigenvalues and eigenvectors</strong>, and two worked examples — solving a system by triangularization, and OLS by hand versus by matrix.</p>
 
 </section>
     </div>

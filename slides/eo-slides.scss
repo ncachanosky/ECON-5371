@@ -1,0 +1,210 @@
+/*-- scss:defaults --*/
+
+// ── EO Brand Palette (matches textbook Python setup exactly) ──────────────
+$eo-charcoal:   #36454F;
+$eo-copper:     #B87333;
+$eo-sage:       #87A96B;
+$eo-skyblue:    #5B9BD5;
+$eo-terracotta: #D4745E;
+$eo-lavender:   #8E7AB5;
+$page-bg:       #FAFAF8;
+
+// Fonts (same pairing as the textbook: Palatino body, Calibri titles)
+$font-family-serif:  "Palatino Linotype", Palatino, Georgia, "DejaVu Serif", serif;
+$font-family-sans:   Calibri, Arial, "DejaVu Sans", sans-serif;
+
+$body-bg:           $page-bg;
+$body-color:        $eo-charcoal;
+$link-color:        $eo-copper;
+
+$presentation-heading-font: $font-family-sans;
+$presentation-heading-color: $eo-charcoal;
+$presentation-font-size-root: 28px;
+$presentation-line-height: 1.4;
+
+/*-- scss:rules --*/
+
+.reveal {
+  font-family: $font-family-serif;
+  color: $eo-charcoal;
+
+  h1, h2, h3, h4 {
+    font-family: $font-family-sans;
+    font-weight: bold;
+    color: $eo-charcoal;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  h2 {
+    font-size: 1.35em;
+    border-bottom: 2px solid $eo-copper;
+    padding-bottom: 0.2em;
+    margin-bottom: 0.5em;
+  }
+
+  // ── Title slide ──────────────────────────────────────────────────────
+  .title-slide,
+  .reveal .slides section.title-slide {
+    text-align: left;
+
+    h1.title {
+      color: $eo-charcoal;
+      font-size: 1.9em;
+      border-bottom: none;
+    }
+    p.subtitle {
+      color: $eo-copper;
+      font-family: $font-family-sans;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    p.author, p.date, .quarto-title-affiliation {
+      color: $eo-charcoal;
+      font-family: $font-family-sans;
+      font-size: 0.75em;
+      opacity: 0.85;
+    }
+  }
+
+  // ── Section-divider slides (chapter section breaks) ────────────────────
+  // Usage in .qmd:
+  //   ## Section Title {.section-divider background-color="#B87333" footer=false}
+  // "Section N" label is auto-numbered and auto-inserted via ::before —
+  // no manual text needed in the .qmd source. Numbering resets each time
+  // the deck restarts (i.e., per rendered file / per chapter).
+  .slides {
+    counter-reset: section-counter;
+  }
+
+  section.section-divider {
+    counter-increment: section-counter;
+    text-align: center;
+
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h2 {
+      color: $page-bg;
+      border-bottom: 3px solid $eo-copper;
+      display: inline-block;
+      text-align: center;
+    }
+
+    &::after {
+      content: "Section " counter(section-counter);
+      display: block;
+      font-family: $font-family-sans;
+      font-size: 1.1em;
+      font-weight: 500;
+      color: rgba($page-bg, 0.75);
+      margin-top: 0.3em;
+      text-align: center;
+    }
+  }
+
+  // ── Recap slide (chapter wrap-up) ───────────────────────────────────────
+  // Usage in .qmd:
+  //   ## Recap {.recap-slide background-color="#87A96B" footer=false}
+  section.recap-slide,
+  section[data-background-color="#87A96B"] {
+    h2 {
+      color: $page-bg;
+      border-bottom: 3px solid $page-bg;
+    }
+    p, li, strong {
+      color: $page-bg;
+    }
+    strong {
+      color: $page-bg;
+      opacity: 1;
+    }
+  }
+
+  // ── Callout-style boxes reused from textbook conventions ───────────────
+  .eo-definition, .eo-hazard, .eo-recap {
+    border-radius: 4px;
+    padding: 0.5em 0.9em;
+    font-size: 0.85em;
+    margin: 0.4em 0;
+  }
+  .eo-definition {
+    background-color: rgba($eo-skyblue, 0.10);
+    border-left: 4px solid $eo-skyblue;
+  }
+  .eo-hazard {
+    background-color: rgba($eo-terracotta, 0.10);
+    border-left: 4px solid $eo-terracotta;
+  }
+  .eo-recap {
+    background-color: rgba($eo-sage, 0.12);
+    border-left: 4px solid $eo-sage;
+  }
+
+  // ── Key terms glossary slide (mirrors textbook glossary) ───────────────
+  .eo-keyterms {
+    font-size: 0.75em;
+    dt { color: $eo-copper; font-weight: bold; font-family: $font-family-sans; }
+    dd { margin-bottom: 0.4em; }
+  }
+
+  // ── Footer / slide number ───────────────────────────────────────────────
+  .reveal .footer {
+    color: $eo-charcoal;
+    opacity: 0.65;
+    font-family: $font-family-sans;
+    font-size: 0.45em;
+  }
+  .reveal .slide-number {
+    color: $eo-charcoal;
+    opacity: 0.65;
+    background-color: transparent;
+    font-family: $font-family-sans;
+  }
+
+  // ── Figures: consistent framing for imported PNGs ──────────────────────
+  figure, .reveal figure {
+    img {
+      border-radius: 2px;
+    }
+    figcaption {
+      font-size: 0.55em;
+      font-style: italic;
+      color: $eo-charcoal;
+      opacity: 0.8;
+      margin-top: 0.3em;
+    }
+  }
+
+  // ── Tables (journal-style, consistent with textbook) ───────────────────
+  table {
+    font-family: $font-family-serif;
+    font-size: 0.7em;
+    border-collapse: collapse;
+    th {
+      font-family: $font-family-sans;
+      border-bottom: 2px solid $eo-charcoal;
+    }
+    td, th {
+      padding: 0.3em 0.6em;
+    }
+  }
+
+  // ── Code (rarely used, but kept consistent if a snippet ever appears) ──
+  pre, code {
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 0.65em;
+  }
+
+  // ── Blockquotes for "opens with a question" convention ─────────────────
+  blockquote {
+    font-family: $font-family-serif;
+    font-style: italic;
+    color: $eo-charcoal;
+    border-left: 3px solid $eo-copper;
+    padding-left: 0.7em;
+    opacity: 0.9;
+  }
+}

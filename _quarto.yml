@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: _book
+  output-dir: docs
 
 book:
   title: "Time Series Analysis for Economists"
@@ -49,6 +49,7 @@ book:
     - chapters/09/chapter_09.qmd  
     - chapters/10/chapter_10.qmd  
     - chapters/11/chapter_11.qmd       
+    - chapters/appendix/appendix.qmd
 
   page-footer:
     left: "© Nicolas Cachanosky, The University of Texas at El Paso, Center for Free Enterprise"

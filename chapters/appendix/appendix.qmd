@@ -1,0 +1,1394 @@
+---
+title: "Appendix: A Primer on Matrix Algebra"
+author: ""
+abstract: |
+  Matrix algebra is not a detour from time series econometrics — it is the language in which most of it is written. A vector autoregression is a system of equations that becomes, in matrix notation, a single equation. The Kalman filter is a sequence of matrix operations applied to a state vector. Even ordinary least squares, familiar from a first course in econometrics, compresses an entire system of normal equations into one compact expression once we adopt matrix notation. This appendix assumes no prior exposure to matrix algebra. It builds the tools from the ground up — starting with scalars and vectors, working through the operations that make matrices useful, and closing with two worked examples that show exactly why economists bother with this machinery in the first place.
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "In this appendix"
+    number-sections: true
+    theme: cosmo
+    css: styles.css
+    highlight-style: github
+    fig-align: center
+    fig-cap-location: bottom
+    fig-responsive: true
+    html-math-method: mathjax
+    embed-resources: false
+---
+
+
+## Why This Appendix Exists
+
+Here is a question worth asking before writing down a single matrix: why do economists bother with this notation at all? Why not just write out every equation in a system term by term, the way an introductory statistics course does?
+
+The honest answer is that matrix algebra is not an extra layer of abstraction sitting on top of the economics — it is a labor-saving device. A vector autoregression with four variables and four lags involves sixteen equations, each with its own set of coefficients. Written out in full, the system spans pages. Written in matrix form, it is a single line: $\mathbf{y}_t = \mathbf{A}_1 \mathbf{y}_{t-1} + \cdots + \mathbf{A}_p \mathbf{y}_{t-p} + \boldsymbol{\varepsilon}_t$. Every result we would want to prove about that system — stability, forecast variance, impulse responses — is easier to derive and easier to compute once it is written this way. The same is true of ordinary least squares, which this appendix's closing example develops in full: the tedious summation formulas taught in an introductory course collapse into $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$, a single expression that generalizes immediately from two regressors to two hundred.
+
+This appendix is a self-contained reference, not a chapter meant to be read once and set aside. It assumes no prior exposure to matrix algebra, and it is written to be returned to whenever a later chapter leans on a tool introduced here. A closing map at the end of the appendix points to exactly where each concept resurfaces in the chapters ahead.
+
+::::: {.callout-note}
+## Notation Used in This Course
+
+Throughout this appendix and the rest of the course, we distinguish scalars, vectors, and matrices by how they are typeset:
+
+- A **scalar** — a single number — is written in italics: $x$, $\beta$, $\sigma^2$.
+- A **vector** is written in bold lowercase: $\mathbf{x}$, $\boldsymbol{\beta}$, $\mathbf{y}_t$. Unless stated otherwise, a vector is a **column vector** — a matrix with one column and $n$ rows.
+- A **matrix** is written in bold uppercase: $\mathbf{X}$, $\mathbf{A}$, $\boldsymbol{\Sigma}$.
+
+This convention is not universal — some textbooks use arrows over vectors, others do not bold anything and rely on context — so a Wikipedia page or another reference you consult may look slightly different even when describing the identical object.
+::::
+
+## Scalars, Vectors, and Matrices
+
+### Starting Small: The Scalar
+
+The simplest object in this appendix is one every student already knows: a single number, called a **[scalar](https://en.wikipedia.org/wiki/Scalar_(mathematics))**. A price, an interest rate, an estimated coefficient — each is a scalar. Everything that follows is built by organizing scalars into ordered collections.
+
+### One Step Up: The Vector
+
+Suppose instead of a single number we have an ordered list of numbers — say, the GDP growth rate, the inflation rate, and the unemployment rate, all measured in the same quarter. Stacking them in a column gives a **[vector](https://en.wikipedia.org/wiki/Row_and_column_vectors)**:
+
+$$
+\mathbf{x} =
+\begin{bmatrix}
+2.1 \\
+3.4 \\
+4.0
+\end{bmatrix}
+\tag{A.1}
+$$
+
+::::: {.callout-note}
+## Definition A.1 — Vector
+
+A **vector** is an ordered collection of $n$ scalars, arranged in a single column (a **column vector**, $n \times 1$) or a single row (a **row vector**, $1 \times n$). The number of elements, $n$, is called the **dimension** of the vector. Each individual scalar in the vector is called an **element** or **entry**, and its position matters: $\mathbf{x}$ and a vector with the same three numbers in a different order are not the same vector.
+::::
+
+The vector in equation (A.1) is a column vector with dimension $n = 3$. Its transpose — a concept we formalize shortly — is the corresponding row vector:
+
+$$
+\mathbf{x}' = \begin{bmatrix} 2.1 & 3.4 & 4.0 \end{bmatrix}
+$$
+
+Why bother distinguishing row from column at all, when the same three numbers are involved either way? Because the operations we define next — especially multiplication — depend on it. A column vector and a row vector interact differently in a product, and getting this distinction right early avoids a great deal of confusion later.
+
+### The General Case: The Matrix
+
+Now suppose that instead of one quarter's observations, we have GDP growth, inflation, and unemployment for four consecutive quarters. We could stack four column vectors side by side. The result is a rectangular array of numbers — a **[matrix](https://en.wikipedia.org/wiki/Matrix_(mathematics))**:
+
+$$
+\mathbf{X} =
+\begin{bmatrix}
+2.1 & 2.4 & 1.8 & 2.6 \\
+3.4 & 3.1 & 3.6 & 3.9 \\
+4.0 & 3.9 & 3.8 & 3.7
+\end{bmatrix}
+\tag{A.2}
+$$
+
+::::: {.callout-note}
+## Definition A.2 — Matrix
+
+A **matrix** is a rectangular array of scalars arranged in rows and columns. A matrix with $m$ rows and $n$ columns is said to have **dimension** (or **order**) $m \times n$, read "$m$ by $n$" — rows first, columns second, always. The entry in row $i$ and column $j$ of matrix $\mathbf{A}$ is written $a_{ij}$.
+::::
+
+The matrix in equation (A.2) has dimension $3 \times 4$: three rows (one per variable), four columns (one per quarter). Notice that a vector is simply a special case of a matrix — a column vector is an $n \times 1$ matrix, a row vector a $1 \times n$ matrix — which is why the same notation and many of the same operations apply to both.
+
+::::: {.callout-warning}
+## A Common Mistake
+
+Dimension is always stated **rows by columns**, never the reverse. A matrix described as "$3 \times 4$" has three rows and four columns — not four rows and three columns. This ordering is not a matter of taste; it is the convention every textbook, every piece of software, and every formula in this course relies on, and reversing it silently is one of the most common sources of error when first working with matrices.
+::::
+
+Economists rarely write down a matrix like equation (A.2) by typing out every entry individually. Instead, a matrix is usually the object that results from organizing data or coefficients that already have economic meaning — the data matrix $\mathbf{X}$ in a regression, the coefficient matrices $\mathbf{A}_1, \ldots, \mathbf{A}_p$ in a vector autoregression, the transition matrix in a state-space model. Recognizing a matrix as "a table of numbers with rows and columns that mean something" is the essential first step; the operations in the sections that follow are what let us do useful things with that table once we have it.
+
+
+## Types of Matrices
+
+### Why Classify Matrices at All?
+
+Not every matrix is created equal. Some have special structure — patterns of zeros, symmetry, a particular shape — that makes them dramatically easier to work with than a generic rectangular array. Recognizing these special types on sight is one of the most practical skills this appendix can offer, because the operations we define later (the determinant, the inverse) become far simpler, and sometimes almost trivial, once a matrix's type is known.
+
+### Square Matrices
+
+::::: {.callout-note}
+## Definition A.3 — Square Matrix
+
+A **square matrix** has the same number of rows and columns: $m = n$. Its dimension is written simply as $n \times n$, or "order $n$."
+::::
+
+$$
+\mathbf{A} =
+\begin{bmatrix}
+4 & 1 & 0 \\
+2 & 5 & 3 \\
+1 & 0 & 6
+\end{bmatrix}
+\tag{A.3}
+$$
+
+Square matrices are the workhorses of this course. Every variance-covariance matrix is square. Every coefficient matrix in a vector autoregression is square. Most importantly, only square matrices can have an inverse and a determinant — two of the operations at the heart of this appendix — so recognizing squareness on sight is the first checkpoint before attempting either.
+
+The entries running from the top-left to the bottom-right corner of a square matrix — $a_{11}, a_{22}, a_{33}$ in equation (A.3) — form the **main diagonal**. Several of the special types below are defined entirely in terms of what happens on and around this diagonal.
+
+### Diagonal Matrices
+
+::::: {.callout-note}
+## Definition A.4 — Diagonal Matrix
+
+A **diagonal matrix** is a square matrix in which every off-diagonal entry is zero: $a_{ij} = 0$ for all $i \neq j$. Only the main diagonal may contain nonzero values.
+::::
+
+$$
+\mathbf{D} =
+\begin{bmatrix}
+3 & 0 & 0 \\
+0 & 7 & 0 \\
+0 & 0 & 2
+\end{bmatrix}
+\tag{A.4}
+$$
+
+Diagonal matrices appear constantly in this course — a variance-covariance matrix with uncorrelated variables is diagonal, and the transition mechanics of several models later in the course reduce to particularly simple expressions whenever the matrix involved happens to be diagonal.
+
+### The Identity Matrix
+
+::::: {.callout-note}
+## Definition A.5 — Identity Matrix
+
+The **identity matrix** $\mathbf{I}_n$ is the $n \times n$ diagonal matrix with every diagonal entry equal to one:
+
+$$
+\mathbf{I}_3 =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+::::
+
+The identity matrix is the matrix-algebra counterpart of the number 1 in ordinary scalar arithmetic. Just as multiplying any number by 1 leaves it unchanged, multiplying any conformable matrix $\mathbf{A}$ by the identity leaves it unchanged:
+
+$$
+\mathbf{A}\mathbf{I} = \mathbf{I}\mathbf{A} = \mathbf{A}
+$$
+
+This property looks almost too simple to matter, but it is the reason the matrix inverse — defined later in this appendix — makes sense at all. The inverse of $\mathbf{A}$, when it exists, is the matrix $\mathbf{A}^{-1}$ satisfying $\mathbf{A}\mathbf{A}^{-1} = \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}$: multiplying a matrix by its inverse returns us to "1," in exactly the same sense that multiplying a scalar by its reciprocal does.
+
+### Triangular Matrices
+
+::::: {.callout-note}
+## Definition A.6 — Triangular Matrix
+
+A square matrix is **upper triangular** if every entry below the main diagonal is zero, and **lower triangular** if every entry above the main diagonal is zero.
+::::
+
+$$
+\mathbf{U} =
+\begin{bmatrix}
+2 & 5 & 1 \\
+0 & 3 & 4 \\
+0 & 0 & 6
+\end{bmatrix}
+\qquad
+\mathbf{L} =
+\begin{bmatrix}
+2 & 0 & 0 \\
+5 & 3 & 0 \\
+1 & 4 & 6
+\end{bmatrix}
+\tag{A.5}
+$$
+
+Triangular matrices matter for a very practical reason: solving a system of equations whose coefficient matrix is triangular is easy, because one equation always involves only a single unknown, which can then be substituted into the next. This is precisely the logic behind **triangularization**, the solution method used in this appendix's first worked example, and behind the LU decomposition that underlies most numerical linear algebra software.
+
+### Symmetric Matrices
+
+::::: {.callout-note}
+## Definition A.7 — Symmetric Matrix
+
+A square matrix $\mathbf{A}$ is **symmetric** if it equals its own transpose: $\mathbf{A} = \mathbf{A}'$, equivalently $a_{ij} = a_{ji}$ for all $i, j$.
+::::
+
+$$
+\mathbf{S} =
+\begin{bmatrix}
+4 & 2 & 1 \\
+2 & 5 & 3 \\
+1 & 3 & 6
+\end{bmatrix}
+\tag{A.6}
+$$
+
+Symmetric matrices are not a curiosity — they are everywhere in econometrics. Every variance-covariance matrix is symmetric, because the covariance between variables $i$ and $j$ is, by definition, the same as the covariance between $j$ and $i$. As this appendix's closing example will show, the matrix $\mathbf{X}'\mathbf{X}$ at the heart of ordinary least squares is symmetric by construction, regardless of what $\mathbf{X}$ itself looks like — a fact worth remembering because it guarantees several convenient properties used throughout the rest of the course.
+
+### The Zero Matrix
+
+::::: {.callout-note}
+## Definition A.8 — Zero Matrix
+
+The **zero matrix** $\mathbf{0}$ is a matrix, of any dimension, in which every entry equals zero. It plays the role in matrix addition that the number 0 plays in scalar addition: $\mathbf{A} + \mathbf{0} = \mathbf{A}$.
+::::
+
+
+## Basic Operations
+
+### Addition and Subtraction
+
+Matrix addition and subtraction work exactly the way intuition suggests: entry by entry.
+
+::::: {.callout-note}
+## Definition A.9 — Matrix Addition
+
+If $\mathbf{A}$ and $\mathbf{B}$ are both $m \times n$, their sum $\mathbf{C} = \mathbf{A} + \mathbf{B}$ is the $m \times n$ matrix with entries $c_{ij} = a_{ij} + b_{ij}$.
+::::
+
+::::: {.callout-warning}
+## A Common Mistake
+
+Addition and subtraction require $\mathbf{A}$ and $\mathbf{B}$ to have **identical dimensions**. There is no such thing as adding a $3 \times 4$ matrix to a $4 \times 3$ matrix, even though both contain twelve entries. Matching dimension, not matching entry count, is the requirement.
+::::
+
+Consider two $2 \times 2$ matrices:
+
+$$
+\mathbf{A} = \begin{bmatrix} 3 & 1 \\ 2 & 4 \end{bmatrix}, \qquad
+\mathbf{B} = \begin{bmatrix} 5 & 0 \\ 1 & 2 \end{bmatrix}
+$$
+
+Adding entry by entry:
+
+$$
+\mathbf{A} + \mathbf{B} =
+\begin{bmatrix} 3+5 & 1+0 \\ 2+1 & 4+2 \end{bmatrix} =
+\begin{bmatrix} 8 & 1 \\ 3 & 6 \end{bmatrix}
+\tag{A.7}
+$$
+
+Subtraction follows the identical logic with entries subtracted instead of summed:
+
+$$
+\mathbf{A} - \mathbf{B} =
+\begin{bmatrix} 3-5 & 1-0 \\ 2-1 & 4-2 \end{bmatrix} =
+\begin{bmatrix} -2 & 1 \\ 1 & 2 \end{bmatrix}
+\tag{A.8}
+$$
+
+### Scalar Multiplication
+
+Multiplying a matrix by a scalar is equally direct: every entry is scaled by the same number.
+
+::::: {.callout-note}
+## Definition A.10 — Scalar Multiplication
+
+If $c$ is a scalar and $\mathbf{A}$ is $m \times n$, then $c\mathbf{A}$ is the $m \times n$ matrix with entries $c \, a_{ij}$.
+::::
+
+$$
+3\mathbf{A} = 3\begin{bmatrix} 3 & 1 \\ 2 & 4 \end{bmatrix} = \begin{bmatrix} 9 & 3 \\ 6 & 12 \end{bmatrix}
+\tag{A.9}
+$$
+
+This operation is unglamorous but shows up constantly — rescaling a variance by a constant, converting units, or (as we will see when we reach the matrix inverse) dividing every entry of a matrix by a single number, its determinant.
+
+### Matrix Multiplication
+
+Matrix multiplication is where intuition from scalar arithmetic stops helping and starts misleading, so it is worth slowing down here.
+
+::::: {.callout-warning}
+## A Common Mistake
+
+Matrix multiplication is **not** entry-by-entry the way addition is. $\mathbf{A}\mathbf{B}$ is not the matrix formed by multiplying $a_{ij}$ by $b_{ij}$. The actual rule, defined next, is considerably less obvious the first time you see it.
+::::
+
+#### The Conformability Rule
+
+Before any product $\mathbf{A}\mathbf{B}$ can even be computed, the dimensions of $\mathbf{A}$ and $\mathbf{B}$ must satisfy a specific rule.
+
+::::: {.callout-note}
+## Definition A.11 — Conformability for Multiplication
+
+Two matrices $\mathbf{A}$ ($m \times n$) and $\mathbf{B}$ ($p \times q$) are **conformable** for the product $\mathbf{A}\mathbf{B}$ if and only if $n = p$ — the number of columns of $\mathbf{A}$ equals the number of rows of $\mathbf{B}$. The resulting product $\mathbf{A}\mathbf{B}$ has dimension $m \times q$: the outer dimensions of the two matrices.
+::::
+
+A useful mnemonic: write the two dimensions side by side, $(m \times n)(p \times q)$. The product exists only if the "inner" numbers match ($n = p$), and the result takes the "outer" numbers as its own dimension ($m \times q$). A $(3 \times 2)$ matrix times a $(2 \times 4)$ matrix is conformable — the inner $2$'s match — and produces a $(3 \times 4)$ result. A $(3 \times 2)$ matrix times a $(3 \times 4)$ matrix is not conformable at all; there is no product to compute.
+
+#### How Multiplication Actually Works
+
+::::: {.callout-note}
+## Definition A.12 — Matrix Multiplication
+
+If $\mathbf{A}$ is $m \times n$ and $\mathbf{B}$ is $n \times q$, the product $\mathbf{C} = \mathbf{A}\mathbf{B}$ is the $m \times q$ matrix whose entry $c_{ij}$ is the sum of products of row $i$ of $\mathbf{A}$ with column $j$ of $\mathbf{B}$:
+
+$$
+c_{ij} = \sum_{k=1}^{n} a_{ik} \, b_{kj}
+$$
+::::
+
+This definition is easiest to absorb through a worked example. Take
+
+$$
+\mathbf{A} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \qquad
+\mathbf{B} = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}
+$$
+
+Both are $2 \times 2$, so they are conformable, and the product is $2 \times 2$. Each entry of $\mathbf{C} = \mathbf{A}\mathbf{B}$ is obtained by pairing a **row** of $\mathbf{A}$ with a **column** of $\mathbf{B}$, multiplying corresponding entries, and summing:
+
+$$
+\begin{aligned}
+c_{11} &= (1)(5) + (2)(7) = 5 + 14 = 19 \\
+c_{12} &= (1)(6) + (2)(8) = 6 + 16 = 22 \\
+c_{21} &= (3)(5) + (4)(7) = 15 + 28 = 43 \\
+c_{22} &= (3)(6) + (4)(8) = 18 + 32 = 50
+\end{aligned}
+$$
+
+so that
+
+$$
+\mathbf{A}\mathbf{B} = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}
+\tag{A.10}
+$$
+
+Notice the pattern: $c_{11}$ pairs row 1 of $\mathbf{A}$ with column 1 of $\mathbf{B}$; $c_{12}$ pairs row 1 of $\mathbf{A}$ with column 2 of $\mathbf{B}$; and so on. "Row times column, then sum" is the entire rule — it simply has to be applied once for every entry of the result.
+
+::::: {.callout-warning}
+## A Common Mistake: Multiplication Is Not Commutative
+
+In scalar arithmetic, $ab = ba$ always. In matrix algebra, **$\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$ in general** — order matters, and the two products may not even both exist. Reversing the order in the example above:
+
+$$
+\begin{aligned}
+\mathbf{B}\mathbf{A} &= \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \\[4pt]
+&= \begin{bmatrix} (5)(1)+(6)(3) & (5)(2)+(6)(4) \\ (7)(1)+(8)(3) & (7)(2)+(8)(4) \end{bmatrix}
+= \begin{bmatrix} 23 & 34 \\ 31 & 46 \end{bmatrix}
+\end{aligned}
+$$
+
+which is a completely different matrix from $\mathbf{A}\mathbf{B}$ in equation (A.10). This single fact — that matrices do not commute under multiplication — is also why there is **no such thing as matrix division**. Dividing by a matrix is not defined; instead, as we will see, we multiply by its **inverse**, and we must be careful about which side we multiply on, since $\mathbf{A}^{-1}\mathbf{B}$ and $\mathbf{B}\mathbf{A}^{-1}$ are generally different matrices too.
+::::
+
+
+It is worth noting that matrix multiplication, as defined here, is an entirely different operation from *element-wise* multiplication — multiplying two same-sized matrices entry by entry, the way addition works. Element-wise multiplication requires matching dimensions rather than conformability, and produces a completely different result. This distinction trips up nearly every student encountering matrix algebra for the first time, and is worth keeping firmly separate from Definition A.12.
+
+## Transpose and Adjugate
+
+### The Transpose
+
+Take a matrix and flip it so that its rows become columns and its columns become rows. The result is called the **transpose**, and it is one of the most frequently used operations in this course — every $\mathbf{X}'\mathbf{X}$ and $\mathbf{X}'\mathbf{y}$ we write from here forward depends on it.
+
+::::: {.callout-note}
+## Definition A.13 — Transpose
+
+The **transpose** of an $m \times n$ matrix $\mathbf{A}$, denoted $\mathbf{A}'$ (or $\mathbf{A}^{\mathsf{T}}$ in some references), is the $n \times m$ matrix obtained by writing the rows of $\mathbf{A}$ as the columns of $\mathbf{A}'$: entry $(i,j)$ of $\mathbf{A}$ becomes entry $(j,i)$ of $\mathbf{A}'$.
+::::
+
+$$
+\mathbf{A} =
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}_{2 \times 3}
+\qquad \Longrightarrow \qquad
+\mathbf{A}' =
+\begin{bmatrix}
+1 & 4 \\
+2 & 5 \\
+3 & 6
+\end{bmatrix}_{3 \times 2}
+\tag{A.11}
+$$
+
+The first row of $\mathbf{A}$, $\begin{bmatrix} 1 & 2 & 3 \end{bmatrix}$, becomes the first column of $\mathbf{A}'$. The second row becomes the second column. Notice, too, that the dimension itself flips: a $2 \times 3$ matrix transposes into a $3 \times 2$ matrix. This is why we defined a row vector earlier as the transpose of a column vector — transposing an $n \times 1$ column vector produces a $1 \times n$ row vector, exactly the same operation applied to the special case of a single column.
+
+Three properties of the transpose are used repeatedly in later chapters, especially once we reach ordinary least squares:
+
+$$
+(\mathbf{A}')' = \mathbf{A}, \qquad (\mathbf{A} + \mathbf{B})' = \mathbf{A}' + \mathbf{B}', \qquad (\mathbf{A}\mathbf{B})' = \mathbf{B}'\mathbf{A}'
+$$
+
+The last of these — that transposing a product **reverses the order** of the factors — is easy to forget and worth flagging on its own.
+
+::::: {.callout-warning}
+## A Common Mistake
+
+$(\mathbf{A}\mathbf{B})' \neq \mathbf{A}'\mathbf{B}'$. Transposing a product reverses the order of multiplication: $(\mathbf{A}\mathbf{B})' = \mathbf{B}'\mathbf{A}'$. This rule is precisely what lets us confirm, in the closing example of this appendix, that $\mathbf{X}'\mathbf{X}$ is symmetric: its own transpose is $(\mathbf{X}'\mathbf{X})' = \mathbf{X}'(\mathbf{X}')' = \mathbf{X}'\mathbf{X}$ — the same matrix we started with.
+::::
+
+### The Adjugate (Classical Adjoint)
+
+The **adjugate** — sometimes called the classical adjoint, though it should not be confused with the conjugate transpose used in complex analysis — is a matrix built from the determinant of an original matrix's submatrices. It is less commonly used directly in applied work than the transpose, but it plays a specific and important role: it is the numerator in the classical formula for the matrix inverse, which we reach two sections from now.
+
+::::: {.callout-note}
+## Definition A.14 — Cofactor
+
+The **cofactor** $C_{ij}$ of entry $a_{ij}$ in an $n \times n$ matrix $\mathbf{A}$ is $C_{ij} = (-1)^{i+j} M_{ij}$, where $M_{ij}$ — the **minor** of $a_{ij}$ — is the determinant of the $(n-1) \times (n-1)$ matrix formed by deleting row $i$ and column $j$ from $\mathbf{A}$.
+::::
+
+::::: {.callout-note}
+## Definition A.15 — Adjugate Matrix
+
+The **adjugate** of an $n \times n$ matrix $\mathbf{A}$, denoted $\text{adj}(\mathbf{A})$, is the transpose of the matrix of cofactors: $\text{adj}(\mathbf{A}) = \mathbf{C}'$, where $\mathbf{C}$ is the matrix whose $(i,j)$ entry is the cofactor $C_{ij}$.
+::::
+
+Because both the cofactor and the adjugate are defined in terms of the determinant, we return to this operation with a full worked calculation in the next section, once the determinant itself has been defined. For now, the essential fact to carry forward is this: the adjugate is not an operation used for its own sake, but a stepping stone — the mechanism, together with the determinant, that produces the matrix inverse.
+
+## The Determinant
+
+### What the Determinant Tells Us
+
+Here is a question worth sitting with before writing down a formula: what single number could possibly summarize whether a square matrix is "well-behaved"? The **determinant** is the answer economists and mathematicians have settled on, and it turns out to answer a remarkably practical question: does this system of equations have a unique solution, or does it not?
+
+A matrix with determinant equal to zero is called **singular** — and a singular matrix has no inverse, in exactly the same sense that the number zero has no reciprocal. This connection is not a coincidence; it is the entire reason the determinant matters for this course. When we reach the discussion of rank and multicollinearity, "the determinant of $\mathbf{X}'\mathbf{X}$ is zero" and "the regressors are perfectly collinear" will turn out to be two descriptions of the identical problem.
+
+::::: {.callout-note}
+## Definition A.16 — Determinant
+
+The **[determinant](https://en.wikipedia.org/wiki/Determinant)** of a square matrix $\mathbf{A}$, denoted $\det(\mathbf{A})$ or $|\mathbf{A}|$, is a scalar computed from the entries of $\mathbf{A}$. A matrix is **singular** if $\det(\mathbf{A}) = 0$, and **nonsingular** (or **invertible**) if $\det(\mathbf{A}) \neq 0$.
+::::
+
+### The 2×2 Case
+
+The simplest case is worth memorizing outright, since it also serves as the building block for every larger determinant.
+
+::::: {.callout-note}
+## Definition A.17 — 2×2 Determinant
+
+For $\mathbf{A} = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$, the determinant is
+
+$$
+\det(\mathbf{A}) = ad - bc
+$$
+::::
+
+$$
+\mathbf{A} = \begin{bmatrix} 4 & 3 \\ 2 & 5 \end{bmatrix}
+\qquad \Longrightarrow \qquad
+\det(\mathbf{A}) = (4)(5) - (3)(2) = 20 - 6 = 14
+\tag{A.12}
+$$
+
+Since $14 \neq 0$, this matrix is nonsingular — an inverse exists, and (as we will confirm shortly) the corresponding system of two equations in two unknowns has a unique solution.
+
+### The 3×3 Case: Cofactor Expansion
+
+For larger matrices, the determinant is computed by **[cofactor expansion](https://en.wikipedia.org/wiki/Laplace_expansion)**: pick any row (or column), and combine each entry with its cofactor from Definition A.14. Expanding along the first row of a $3 \times 3$ matrix:
+
+::::: {.callout-note}
+## Definition A.18 — 3×3 Determinant (Expansion Along Row 1)
+
+For $\mathbf{A} = \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{bmatrix}$,
+
+$$
+\det(\mathbf{A}) = a_{11}\begin{vmatrix} a_{22} & a_{23} \\ a_{32} & a_{33} \end{vmatrix} - a_{12}\begin{vmatrix} a_{21} & a_{23} \\ a_{31} & a_{33} \end{vmatrix} + a_{13}\begin{vmatrix} a_{21} & a_{22} \\ a_{31} & a_{32} \end{vmatrix}
+$$
+::::
+
+Each $2 \times 2$ determinant on the right is a **minor** — the determinant left over after deleting the row and column of the entry it is paired with — and the alternating $+, -, +$ signs are exactly the $(-1)^{i+j}$ pattern from the cofactor definition.
+
+::::: {.callout-note}
+## The Direct Formula for a 3×3 Determinant
+
+Expanding Definition A.18 fully gives a direct formula requiring no minors at all — the version most often seen written out in full:
+
+$$
+\det(\mathbf{A}) = a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} - a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
+$$
+
+This is a special case, for $n=3$, of the general **[Leibniz formula](https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants)** for an $n\times n$ determinant — a signed sum over every way of picking one entry from each row and each column. The mnemonic **[rule of Sarrus](https://en.wikipedia.org/wiki/Rule_of_Sarrus)** captures this same formula visually: write the first two columns of $\mathbf{A}$ again to the right of the matrix, then sum the products along the three top-left-to-bottom-right diagonals and subtract the products along the three bottom-left-to-top-right diagonals. This shortcut is specific to $3\times 3$ matrices and does not generalize to larger ones, which is precisely why cofactor expansion — which does generalize, recursively, to any size — is the version this appendix develops in full.
+::::
+
+Let us work through a full numeric example, using both the cofactor expansion of Definition A.18 and the direct formula above, to confirm they agree:
+
+$$
+\mathbf{A} =
+\begin{bmatrix}
+2 & 0 & 1 \\
+3 & 1 & 4 \\
+1 & 2 & 5
+\end{bmatrix}
+$$
+
+Expanding along the first row:
+
+$$
+\begin{aligned}
+\det(\mathbf{A}) &= 2\begin{vmatrix} 1 & 4 \\ 2 & 5 \end{vmatrix} - 0\begin{vmatrix} 3 & 4 \\ 1 & 5 \end{vmatrix} + 1\begin{vmatrix} 3 & 1 \\ 1 & 2 \end{vmatrix} \\[6pt]
+&= 2\big[(1)(5)-(4)(2)\big] - 0\big[(3)(5)-(4)(1)\big] + 1\big[(3)(2)-(1)(1)\big] \\[4pt]
+&= 2(5-8) - 0(15-4) + 1(6-1) \\[4pt]
+&= 2(-3) - 0 + 1(5) \\[4pt]
+&= -6 + 5 = -1
+\end{aligned}
+\tag{A.13}
+$$
+
+Since $\det(\mathbf{A}) = -1 \neq 0$, this matrix is nonsingular. Notice that the middle term vanished entirely because $a_{12} = 0$ — a useful practical shortcut: expanding along whichever row or column contains the most zeros minimizes the arithmetic, and the determinant is guaranteed to come out the same regardless of which row or column is chosen.
+
+As a check, the direct formula gives the identical answer without any minors at all:
+
+$$
+\begin{aligned}
+\det(\mathbf{A}) &= (2)(1)(5) + (0)(4)(1) + (1)(3)(2) - (1)(1)(1) - (0)(3)(5) - (2)(4)(2) \\
+&= 10 + 0 + 6 - 1 - 0 - 16 \\
+&= 16 - 17 = -1
+\end{aligned}
+$$
+
+matching equation (A.13) exactly, as it must — the two formulas are algebraically the same expression, only organized differently.
+
+::::: {.callout-note}
+## A Shortcut for Triangular Matrices
+
+For any triangular matrix (upper or lower), the determinant is simply the **product of the diagonal entries** — every other term in the cofactor expansion vanishes because of the zeros off the diagonal. For the identity matrix, this means $\det(\mathbf{I}) = 1$ always. This shortcut is precisely why the triangularization method in this appendix's first worked example is so convenient: once a system's coefficient matrix has been reduced to triangular form, both its determinant and its solution become almost immediate to read off.
+::::
+
+::::: {.callout-warning}
+## A Note on Scope
+
+Determinants of matrices larger than $3\times 3$ can be computed by the same cofactor-expansion logic, applied recursively — but by hand, this becomes tedious very quickly, since a $4\times 4$ determinant requires four $3\times 3$ determinants, each requiring three $2\times 2$ determinants in turn. In practice, and in the rest of this course, determinants of larger matrices are computed by software. This appendix's first worked example solves a four-equation system directly by triangularization instead, which sidesteps a $4\times 4$ cofactor expansion entirely.
+::::
+
+
+In practice, determinants of matrices beyond $2\times2$ or $3\times3$ are computed by software using numerically stable decompositions rather than cofactor expansion — but the cofactor method above is what makes clear *why* the determinant behaves the way it does.
+
+### Completing the Adjugate: A Worked Example
+
+Returning to the adjugate now that the determinant is in hand, consider the same $3 \times 3$ matrix from equation (A.13):
+
+$$
+\mathbf{A} =
+\begin{bmatrix}
+2 & 0 & 1 \\
+3 & 1 & 4 \\
+1 & 2 & 5
+\end{bmatrix}
+$$
+
+Each cofactor $C_{ij}$ requires deleting row $i$ and column $j$, computing the resulting $2\times 2$ minor's determinant, and applying the $(-1)^{i+j}$ sign. Computing all nine:
+
+$$
+\begin{aligned}
+C_{11} &= +\begin{vmatrix} 1 & 4 \\ 2 & 5 \end{vmatrix} = 5-8 = -3 
+&\quad C_{12} &= -\begin{vmatrix} 3 & 4 \\ 1 & 5 \end{vmatrix} = -(15-4) = -11 
+&\quad C_{13} &= +\begin{vmatrix} 3 & 1 \\ 1 & 2 \end{vmatrix} = 6-1 = 5 \\[6pt]
+C_{21} &= -\begin{vmatrix} 0 & 1 \\ 2 & 5 \end{vmatrix} = -(0-2) = 2 
+&\quad C_{22} &= +\begin{vmatrix} 2 & 1 \\ 1 & 5 \end{vmatrix} = 10-1 = 9 
+&\quad C_{23} &= -\begin{vmatrix} 2 & 0 \\ 1 & 2 \end{vmatrix} = -(4-0) = -4 \\[6pt]
+C_{31} &= +\begin{vmatrix} 0 & 1 \\ 1 & 4 \end{vmatrix} = 0-1 = -1 
+&\quad C_{32} &= -\begin{vmatrix} 2 & 1 \\ 3 & 4 \end{vmatrix} = -(8-3) = -5 
+&\quad C_{33} &= +\begin{vmatrix} 2 & 0 \\ 3 & 1 \end{vmatrix} = 2-0 = 2
+\end{aligned}
+$$
+
+Collecting these into the cofactor matrix $\mathbf{C}$ and transposing gives the adjugate:
+
+$$
+\mathbf{C} =
+\begin{bmatrix} -3 & -11 & 5 \\ 2 & 9 & -4 \\ -1 & -5 & 2 \end{bmatrix}
+\qquad \Longrightarrow \qquad
+\text{adj}(\mathbf{A}) = \mathbf{C}' =
+\begin{bmatrix} -3 & 2 & -1 \\ -11 & 9 & -5 \\ 5 & -4 & 2 \end{bmatrix}
+\tag{A.14}
+$$
+
+
+This worked calculation exists to make Definitions A.14 and A.15 concrete, one entry at a time. In practice, no one computes the adjugate this way for anything beyond a $3\times3$ teaching example; as the next section shows, the inverse is computed directly by software, without ever forming the adjugate explicitly.
+
+## Rank and Linear (In)dependence
+
+### Why a Matrix Can "Run Out" of Information
+
+Here is a question the determinant raises but does not fully answer: *why* does a matrix end up singular in the first place? What is actually going wrong, in economic terms, when $\det(\mathbf{A}) = 0$?
+
+The answer is that one or more rows (or columns) of the matrix fail to carry any genuinely new information — each can be written as a combination of the others. This idea has a name.
+
+::::: {.callout-note}
+## Definition A.19 — Linear Independence
+
+A set of vectors $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_k$ is **linearly independent** if no vector in the set can be written as a weighted sum (a **linear combination**) of the others. Equivalently, the only way to satisfy $c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \cdots + c_k\mathbf{v}_k = \mathbf{0}$ is to set every weight $c_1 = c_2 = \cdots = c_k = 0$. If some other combination of weights also achieves $\mathbf{0}$, the vectors are **linearly dependent**.
+::::
+
+Consider three simple column vectors:
+
+$$
+\mathbf{v}_1 = \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \qquad
+\mathbf{v}_2 = \begin{bmatrix} 3 \\ 1 \end{bmatrix}, \qquad
+\mathbf{v}_3 = \begin{bmatrix} 4 \\ 3 \end{bmatrix}
+$$
+
+Here, $\mathbf{v}_3 = \mathbf{v}_1 + \mathbf{v}_2$ holds exactly, entry by entry: $1+3=4$ and $2+1=3$. These three vectors are **linearly dependent** — once we know $\mathbf{v}_1$ and $\mathbf{v}_2$, $\mathbf{v}_3$ supplies no additional information at all; it is entirely determined by the other two.
+
+### Rank
+
+::::: {.callout-note}
+## Definition A.20 — Rank
+
+The **rank** of a matrix $\mathbf{A}$, denoted $\text{rank}(\mathbf{A})$, is the maximum number of linearly independent rows (equivalently, columns — the two always agree) in $\mathbf{A}$. A square $n \times n$ matrix has **full rank** if $\text{rank}(\mathbf{A}) = n$, and is **rank-deficient** if $\text{rank}(\mathbf{A}) < n$.
+::::
+
+This is the concept that finally answers our opening question directly:
+
+::::: {.callout-note}
+## Rank and the Determinant
+
+A square matrix $\mathbf{A}$ is nonsingular — $\det(\mathbf{A}) \neq 0$ and an inverse exists — **if and only if** $\mathbf{A}$ has full rank. Singularity and rank deficiency are the same condition, described two different ways: one in terms of a computed scalar, the other in terms of the underlying information contained in the matrix's rows or columns.
+::::
+
+Building a matrix from our three vectors above makes the connection concrete:
+
+$$
+\mathbf{M} = \begin{bmatrix} \mathbf{v}_1 & \mathbf{v}_2 \end{bmatrix} = \begin{bmatrix} 1 & 3 \\ 2 & 1 \end{bmatrix}, \qquad
+\det(\mathbf{M}) = (1)(1)-(3)(2) = 1-6 = -5 \neq 0
+$$
+
+$\mathbf{v}_1$ and $\mathbf{v}_2$ are independent, $\mathbf{M}$ has full rank 2, and its determinant is correspondingly nonzero. Now replace the second column with the dependent vector $\mathbf{v}_3$:
+
+$$
+\mathbf{N} = \begin{bmatrix} \mathbf{v}_1 & \mathbf{v}_3 \end{bmatrix} = \begin{bmatrix} 1 & 4 \\ 2 & 3 \end{bmatrix}, \qquad
+\det(\mathbf{N}) = (1)(3)-(4)(2) = 3-8 = -5 \neq 0
+$$
+
+This particular pair still happens to be independent — $\mathbf{v}_3$ being a combination of $\mathbf{v}_1$ and $\mathbf{v}_2$ does not make $\mathbf{v}_1$ and $\mathbf{v}_3$ dependent on each other. Rank deficiency shows up specifically when we try to combine all three dependent vectors into one system, or equivalently when a column truly duplicates information already present. A cleaner illustration: scale $\mathbf{v}_1$ by 2 to build $\mathbf{v}_4 = \begin{bmatrix} 2 \\ 4 \end{bmatrix}$, which is trivially dependent on $\mathbf{v}_1$ ($\mathbf{v}_4 = 2\mathbf{v}_1$):
+
+$$
+\mathbf{P} = \begin{bmatrix} \mathbf{v}_1 & \mathbf{v}_4 \end{bmatrix} = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}, \qquad
+\det(\mathbf{P}) = (1)(4)-(2)(2) = 4-4 = 0
+$$
+
+$\mathbf{P}$ is singular, exactly because its second column carries no information beyond a rescaling of the first — $\text{rank}(\mathbf{P}) = 1$, not the full rank of 2 we would need for an inverse to exist.
+
+::::: {.callout-warning}
+## Why This Matters: Multicollinearity
+
+This is precisely the matrix-algebra language for a problem familiar from any introductory econometrics course: **perfect multicollinearity**. If one regressor is an exact linear combination of others — say, a variable measured in dollars and the identical variable measured in thousands of dollars, included in the same regression — the columns of the data matrix $\mathbf{X}$ are linearly dependent, $\mathbf{X}'\mathbf{X}$ is rank-deficient, $\det(\mathbf{X}'\mathbf{X}) = 0$, and (as the next section will make precise) the OLS estimator $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$ cannot be computed at all, because $(\mathbf{X}'\mathbf{X})^{-1}$ does not exist. Rank is not an abstract bookkeeping device — it is the reason a regression can fail to run.
+::::
+
+
+Notice that $\mathbf{P}$, with linearly dependent columns, has rank 1 rather than the full rank of 2, and its determinant is exactly zero — the concrete confirmation of the rank–determinant equivalence stated above.
+
+## The Matrix Inverse
+
+### The Substitute for Division
+
+We have now assembled every piece needed to define the operation that matrix algebra uses in place of division. Recall from the multiplication section that there is no such thing as dividing by a matrix — but there is a matrix that, multiplied by $\mathbf{A}$, returns the identity, in the same way a reciprocal returns 1 in scalar arithmetic.
+
+::::: {.callout-note}
+## Definition A.21 — Matrix Inverse
+
+The **inverse** of a square matrix $\mathbf{A}$, denoted $\mathbf{A}^{-1}$, is the unique matrix satisfying
+
+$$
+\mathbf{A}\mathbf{A}^{-1} = \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}
+$$
+
+The inverse exists **if and only if** $\mathbf{A}$ is square and nonsingular ($\det(\mathbf{A}) \neq 0$, equivalently full rank). If $\mathbf{A}^{-1}$ does not exist, $\mathbf{A}$ is singular, and we say $\mathbf{A}$ is **not invertible**.
+::::
+
+### The Classical Formula
+
+Having built both the determinant and the adjugate in the two previous sections, we can now assemble them into a single formula.
+
+::::: {.callout-note}
+## Definition A.22 — Inverse via Adjugate
+
+For a nonsingular $n \times n$ matrix $\mathbf{A}$,
+
+$$
+\mathbf{A}^{-1} = \frac{1}{\det(\mathbf{A})}\, \text{adj}(\mathbf{A})
+$$
+::::
+
+This formula makes the earlier singularity condition immediate and almost visual: dividing by $\det(\mathbf{A})$ is only possible when $\det(\mathbf{A}) \neq 0$ — precisely the same reason $1/0$ is undefined in scalar arithmetic. A singular matrix's "reciprocal" simply does not exist, for exactly the same reason zero's does not.
+
+### A Full Worked Example
+
+We already computed both pieces of this formula for the same $3\times 3$ matrix, in equation (A.13) and equation (A.14):
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 3 & 1 & 4 \\ 1 & 2 & 5 \end{bmatrix}, \qquad
+\det(\mathbf{A}) = -1, \qquad
+\text{adj}(\mathbf{A}) = \begin{bmatrix} -3 & 2 & -1 \\ -11 & 9 & -5 \\ 5 & -4 & 2 \end{bmatrix}
+$$
+
+Applying Definition A.22 requires nothing further than dividing every entry of the adjugate by $-1$:
+
+$$
+\mathbf{A}^{-1} = \frac{1}{-1}\begin{bmatrix} -3 & 2 & -1 \\ -11 & 9 & -5 \\ 5 & -4 & 2 \end{bmatrix} = \begin{bmatrix} 3 & -2 & 1 \\ 11 & -9 & 5 \\ -5 & 4 & -2 \end{bmatrix}
+\tag{A.15}
+$$
+
+Before trusting this result, it is worth confirming it directly against Definition A.21 — a habit worth building, since a single arithmetic slip anywhere in the cofactor calculation would silently produce a wrong inverse.
+
+$$
+\mathbf{A}\mathbf{A}^{-1} =
+\begin{bmatrix} 2 & 0 & 1 \\ 3 & 1 & 4 \\ 1 & 2 & 5 \end{bmatrix}
+\begin{bmatrix} 3 & -2 & 1 \\ 11 & -9 & 5 \\ -5 & 4 & -2 \end{bmatrix}
+$$
+
+Computing the first row of the product as a check:
+
+$$
+\begin{aligned}
+\text{row 1, col 1:} &\quad (2)(3)+(0)(11)+(1)(-5) = 6+0-5 = 1 \\
+\text{row 1, col 2:} &\quad (2)(-2)+(0)(-9)+(1)(4) = -4+0+4 = 0 \\
+\text{row 1, col 3:} &\quad (2)(1)+(0)(5)+(1)(-2) = 2+0-2 = 0
+\end{aligned}
+$$
+
+The first row of $\mathbf{A}\mathbf{A}^{-1}$ is $\begin{bmatrix} 1 & 0 & 0 \end{bmatrix}$ — exactly the first row of $\mathbf{I}_3$, as required. The remaining two rows can be verified the same way, and both confirm the identity matrix, as Definition A.21 requires.
+
+This confirms the adjugate formula produces exactly the matrix that Definition A.21 requires: $\mathbf{A}\mathbf{A}^{-1}$ returns the identity. In practice, the inverse is computed directly by software throughout the rest of this course; the adjugate formula exists here to show *why* the inverse behaves the way it does, not as a computational recipe to repeat by hand beyond a $3\times 3$ teaching example.
+
+::::: {.callout-warning}
+## A Note on Scope and Practice
+
+Just as with the determinant, computing an inverse via the adjugate becomes impractical well before matrices reach the sizes used in applied work — a $4\times 4$ inverse by this method requires sixteen $3\times 3$ determinants. Software uses more efficient decompositions (LU, as mentioned earlier, or QR) to compute inverses directly. What is worth carrying forward from this section is not the computational procedure but the two conditions for invertibility that now sit alongside each other: **square**, and **nonsingular** ($\det \neq 0$, equivalently full rank). A matrix failing either condition simply has no inverse — a fact worth checking before attempting to invert one, rather than discovering it partway through a calculation.
+::::
+
+## The Trace
+
+### A Very Short Operation
+
+Compared to the determinant and the inverse, the **[trace](https://en.wikipedia.org/wiki/Trace_(linear_algebra))** is almost disarmingly simple — which is precisely why it is useful. It compresses an entire square matrix into a single number using nothing more than addition.
+
+::::: {.callout-note}
+## Definition A.23 — Trace
+
+The **trace** of a square $n \times n$ matrix $\mathbf{A}$, denoted $\text{tr}(\mathbf{A})$, is the sum of its diagonal entries:
+
+$$
+\text{tr}(\mathbf{A}) = \sum_{i=1}^{n} a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}
+$$
+::::
+
+For the matrix we have carried through the last three sections,
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 & 1 \\ 3 & 1 & 4 \\ 1 & 2 & 5 \end{bmatrix}
+\qquad \Longrightarrow \qquad
+\text{tr}(\mathbf{A}) = 2 + 1 + 5 = 8
+$$
+
+Notice immediately that the trace ignores every off-diagonal entry entirely — it depends only on the main diagonal defined back in Section 2. Two properties are worth carrying forward, because they recur in later chapters when working with variance-covariance matrices and quadratic forms:
+
+$$
+\text{tr}(\mathbf{A} + \mathbf{B}) = \text{tr}(\mathbf{A}) + \text{tr}(\mathbf{B}), \qquad
+\text{tr}(\mathbf{A}\mathbf{B}) = \text{tr}(\mathbf{B}\mathbf{A})
+$$
+
+The second property is worth pausing on, given the non-commutativity warning from the multiplication section: $\mathbf{AB} \neq \mathbf{BA}$ in general, but their **traces** are always equal even when the matrices themselves are not. This "cyclic" property of the trace is what makes it convenient for summarizing quantities that involve long products of matrices — a variance formula, for instance — without needing to carry the full matrix product through every step of a derivation.
+
+## Quadratic Forms
+
+### From a Single Number to a Bilinear Expression
+
+Every introductory statistics course teaches that the sum of squared errors, $\sum_i e_i^2$, sits at the center of ordinary least squares. Here is the matrix-algebra version of that same idea, generalized to allow the terms to interact with each other rather than simply being squared and summed independently.
+
+::::: {.callout-note}
+## Definition A.24 — Quadratic Form
+
+For an $n \times n$ matrix $\mathbf{A}$ and an $n \times 1$ vector $\mathbf{x}$, the expression
+
+$$
+\mathbf{x}'\mathbf{A}\mathbf{x} = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j
+$$
+
+is called a **quadratic form**. It is always a scalar — a $1\times n$ vector times an $n \times n$ matrix times an $n \times 1$ vector reduces, by the conformability rule, to a single $1 \times 1$ number.
+::::
+
+A small worked example makes the mechanics concrete. Let
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}, \qquad
+\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+$$
+
+Multiplying $\mathbf{A}\mathbf{x}$ first, following Definition A.12:
+
+$$
+\mathbf{A}\mathbf{x} = \begin{bmatrix} 2x_1 + x_2 \\ x_1 + 3x_2 \end{bmatrix}
+$$
+
+Then premultiplying by $\mathbf{x}'$:
+
+$$
+\mathbf{x}'\mathbf{A}\mathbf{x} = \begin{bmatrix} x_1 & x_2 \end{bmatrix}\begin{bmatrix} 2x_1 + x_2 \\ x_1 + 3x_2 \end{bmatrix} = x_1(2x_1+x_2) + x_2(x_1+3x_2) = 2x_1^2 + x_1 x_2 + x_1 x_2 + 3x_2^2
+$$
+
+$$
+\mathbf{x}'\mathbf{A}\mathbf{x} = 2x_1^2 + 2x_1x_2 + 3x_2^2
+\tag{A.16}
+$$
+
+The result is a scalar expression in $x_1$ and $x_2$ — a genuine quadratic, with a squared term for each variable plus a cross term connecting them. This cross term is exactly what the symmetric off-diagonal entries of $\mathbf{A}$ contribute, and it is the reason quadratic forms are more general than "sum of squares": they let variables interact.
+
+### Why This Matters: Sums of Squares and Positive Definiteness
+
+Set $\mathbf{A} = \mathbf{I}$, the identity matrix, in Definition A.24. Every off-diagonal entry is zero, so every cross term vanishes, and the quadratic form collapses to
+
+$$
+\mathbf{x}'\mathbf{I}\mathbf{x} = x_1^2 + x_2^2 + \cdots + x_n^2 = \sum_{i=1}^n x_i^2
+$$
+
+which is precisely the familiar sum of squares from introductory statistics — now revealed as a special case of a quadratic form. In this course's closing example, the sum of squared residuals from a regression, $\sum_i e_i^2$, is written in exactly this form as $\mathbf{e}'\mathbf{e}$, and minimizing it with respect to $\boldsymbol{\beta}$ is what produces the ordinary least squares estimator.
+
+This connection also explains why some matrices are singled out for a further property.
+
+::::: {.callout-note}
+## Definition A.25 — Positive Definite Matrix
+
+A symmetric matrix $\mathbf{A}$ is **positive definite** if $\mathbf{x}'\mathbf{A}\mathbf{x} > 0$ for every nonzero vector $\mathbf{x}$, and **positive semi-definite** if $\mathbf{x}'\mathbf{A}\mathbf{x} \geq 0$ for every $\mathbf{x}$.
+::::
+
+::::: {.callout-warning}
+## Why This Matters: OLS Is a Minimum, Not a Saddle Point
+
+A sum of squares can never be negative — each $x_i^2$ term is nonnegative, so their sum is too. This is precisely why $\mathbf{X}'\mathbf{X}$ being positive (semi-)definite matters for ordinary least squares: it is what guarantees that minimizing $\mathbf{e}'\mathbf{e}$ produces an actual minimum, rather than a saddle point or a maximum. Without this property, the first-order condition used to derive $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$ in this appendix's closing example would not necessarily identify the best-fitting line at all.
+::::
+
+## Eigenvalues and Eigenvectors: A First Look
+
+### A Question Worth Asking
+
+Take a square matrix $\mathbf{A}$ and a vector $\mathbf{x}$, and multiply them: $\mathbf{A}\mathbf{x}$. In general, the result points in a completely different direction from $\mathbf{x}$ itself — multiplying a vector by a matrix typically rotates it as well as stretches it. But for a special set of vectors, something much simpler happens: multiplying by $\mathbf{A}$ only **stretches or shrinks** the vector, without changing the direction it points at all.
+
+::::: {.callout-note}
+## Definition A.26 — Eigenvalue and Eigenvector
+
+For a square matrix $\mathbf{A}$, a nonzero vector $\mathbf{v}$ is an **[eigenvector](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors)** of $\mathbf{A}$ if there exists a scalar $\lambda$ (the corresponding **eigenvalue**) satisfying
+
+$$
+\mathbf{A}\mathbf{v} = \lambda\mathbf{v}
+$$
+
+That is, multiplying $\mathbf{v}$ by $\mathbf{A}$ produces the same result as simply multiplying $\mathbf{v}$ by the scalar $\lambda$ — direction is preserved, and only magnitude (and possibly sign) changes.
+::::
+
+A small example makes this concrete without working through the full derivation. Consider
+
+$$
+\mathbf{A} = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}, \qquad
+\mathbf{v} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+$$
+
+Multiplying directly:
+
+$$
+\mathbf{A}\mathbf{v} = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 2 \\ 0 \end{bmatrix} = 2\begin{bmatrix} 1 \\ 0 \end{bmatrix} = 2\mathbf{v}
+$$
+
+So $\mathbf{v} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$ is an eigenvector of $\mathbf{A}$, with eigenvalue $\lambda = 2$: multiplying by $\mathbf{A}$ simply scaled $\mathbf{v}$ by 2, without rotating it at all. This is not a coincidence particular to this example — it is a direct consequence of $\mathbf{A}$ being diagonal, since a diagonal matrix scales each coordinate axis independently, and the coordinate axes themselves are exactly its eigenvectors.
+
+For a general (non-diagonal) $n \times n$ matrix, finding the eigenvalues requires solving $\det(\mathbf{A} - \lambda\mathbf{I}) = 0$, an $n$-th degree polynomial equation in $\lambda$ called the **characteristic equation**. Deriving and solving this equation by hand is beyond the scope of this appendix — in practice, it is solved by software for anything beyond a $2\times 2$ matrix — but the definition above is enough to recognize an eigenvalue-eigenvector pair when a later chapter presents one, and to understand what the numbers are actually telling us.
+
+### Why We Will Need This Later
+
+::::: {.callout-note}
+## Where Eigenvalues Reappear
+
+This appendix does not develop eigenvalues and eigenvectors further, but they resurface at several points later in this course, always answering some version of the same question: **does a dynamic system explode, or does it settle down?**
+
+- In the chapter on vector autoregressions, the eigenvalues of the **companion matrix** determine whether the system is stable — every eigenvalue must lie inside the unit circle, a direct generalization of the stationarity condition for a single autoregressive equation.
+- In the chapter on regime-switching models, the eigenvalues of the **transition matrix** govern how quickly the system's regime probabilities converge to their long-run values.
+- More generally, wherever this course asks "does repeatedly applying this matrix cause the system to grow without bound, or to converge?", the answer is written in the matrix's eigenvalues.
+::::
+
+## Example 1: Solving a System of Equations by Triangularization
+
+### Setting Up the Problem
+
+Every tool developed so far in this appendix converges on a single practical task: solving a system of linear equations. Consider the following system of four equations in four unknowns:
+
+$$
+\begin{aligned}
+x_1 + x_2 + x_3 + x_4 &= 5 \\
+2x_1 + x_2 - x_3 + 3x_4 &= 14 \\
+x_1 - x_2 + 2x_3 + x_4 &= 0 \\
+3x_1 + 2x_2 + x_3 - x_4 &= 3
+\end{aligned}
+$$
+
+Written in matrix notation, this system is $\mathbf{A}\mathbf{x} = \mathbf{b}$:
+
+$$
+\mathbf{A} = \begin{bmatrix} 1 & 1 & 1 & 1 \\ 2 & 1 & -1 & 3 \\ 1 & -1 & 2 & 1 \\ 3 & 2 & 1 & -1 \end{bmatrix}, \qquad
+\mathbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix}, \qquad
+\mathbf{b} = \begin{bmatrix} 5 \\ 14 \\ 0 \\ 3 \end{bmatrix}
+\tag{A.17}
+$$
+
+This single line, $\mathbf{A}\mathbf{x} = \mathbf{b}$, is itself worth pausing on: it compresses four separate equations into one matrix equation, and — as the notation already hints — its formal solution is $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$, obtained by "dividing" both sides by $\mathbf{A}$ in the only sense matrix algebra permits, multiplying by the inverse. We could compute $\mathbf{A}^{-1}$ directly using Definition A.22, but for a $4\times 4$ matrix this would mean building a $4\times 4$ adjugate from sixteen $3\times 3$ determinants — precisely the scale of hand computation the scope warnings in earlier sections cautioned against. **Triangularization** avoids this entirely.
+
+### The Method: Reducing to Triangular Form
+
+Recall from Section 2 that a triangular matrix makes a system trivial to solve: the last equation involves only the last unknown, which can then be substituted backward into the equation above it, and so on. Triangularization is the systematic procedure for turning the general system in equation (A.17) into exactly this form, by combining rows to eliminate unknowns one at a time — without changing the underlying solution.
+
+The operation used at each step is simple: **subtract a multiple of one row from another**. This is legitimate because it does not change the set of $(x_1, x_2, x_3, x_4)$ values that satisfy the system — it only rewrites the equations in a more convenient form. We work with the augmented matrix $[\mathbf{A} \mid \mathbf{b}]$, carrying $\mathbf{b}$ along with $\mathbf{A}$ at every step.
+
+**Step 1 — Eliminate $x_1$ from rows 2, 3, and 4, using row 1 as the pivot.**
+
+$$
+[\mathbf{A} \mid \mathbf{b}] = \left[\begin{array}{rrrr|r} 1 & 1 & 1 & 1 & 5 \\ 2 & 1 & -1 & 3 & 14 \\ 1 & -1 & 2 & 1 & 0 \\ 3 & 2 & 1 & -1 & 3 \end{array}\right]
+$$
+
+Row 2 has a leading entry of 2, so we subtract $2\times$row 1 from row 2. Row 3 has a leading entry of 1, so we subtract $1\times$row 1 from row 3. Row 4 has a leading entry of 3, so we subtract $3\times$row 1 from row 4:
+
+$$
+\begin{aligned}
+R_2 &\leftarrow R_2 - 2R_1: && (2-2, 1-2, -1-2, 3-2 \mid 14-10) = (0, -1, -3, 1 \mid 4) \\
+R_3 &\leftarrow R_3 - 1R_1: && (1-1, -1-1, 2-1, 1-1 \mid 0-5) = (0, -2, 1, 0 \mid -5) \\
+R_4 &\leftarrow R_4 - 3R_1: && (3-3, 2-3, 1-3, -1-3 \mid 3-15) = (0, -1, -2, -4 \mid -12)
+\end{aligned}
+$$
+
+$$
+\left[\begin{array}{rrrr|r} 1 & 1 & 1 & 1 & 5 \\ 0 & -1 & -3 & 1 & 4 \\ 0 & -2 & 1 & 0 & -5 \\ 0 & -1 & -2 & -4 & -12 \end{array}\right]
+$$
+
+**Step 2 — Eliminate $x_2$ from rows 3 and 4, using row 2 as the pivot.**
+
+Row 3 has a leading entry of $-2$ in the second column, against row 2's pivot of $-1$, so we subtract $2\times$row 2 from row 3. Row 4 has a leading entry of $-1$, so we subtract $1\times$row 2 from row 4:
+
+$$
+\begin{aligned}
+R_3 &\leftarrow R_3 - 2R_2: && (0, -2-2(-1), 1-2(-3), 0-2(1) \mid -5-2(4)) = (0, 0, 7, -2 \mid -13) \\
+R_4 &\leftarrow R_4 - 1R_2: && (0, -1-(-1), -2-(-3), -4-1 \mid -12-4) = (0, 0, 1, -5 \mid -16)
+\end{aligned}
+$$
+
+$$
+\left[\begin{array}{rrrr|r} 1 & 1 & 1 & 1 & 5 \\ 0 & -1 & -3 & 1 & 4 \\ 0 & 0 & 7 & -2 & -13 \\ 0 & 0 & 1 & -5 & -16 \end{array}\right]
+$$
+
+**Step 3 — Eliminate $x_3$ from row 4, using row 3 as the pivot.**
+
+Row 4's leading entry in the third column is 1, against row 3's pivot of 7, so we subtract $\tfrac{1}{7}\times$row 3 from row 4:
+
+$$
+R_4 \leftarrow R_4 - \tfrac{1}{7}R_3: \quad \left(0,\ 0,\ 1 - \tfrac{1}{7}(7),\ -5-\tfrac{1}{7}(-2) \;\middle|\; -16-\tfrac{1}{7}(-13)\right) = \left(0, 0, 0, -\tfrac{33}{7} \;\middle|\; -\tfrac{99}{7}\right)
+$$
+
+$$
+\left[\begin{array}{rrrr|r} 1 & 1 & 1 & 1 & 5 \\ 0 & -1 & -3 & 1 & 4 \\ 0 & 0 & 7 & -2 & -13 \\ 0 & 0 & 0 & -\tfrac{33}{7} & -\tfrac{99}{7} \end{array}\right]
+\tag{A.18}
+$$
+
+The coefficient matrix is now upper triangular, exactly the structure defined in Section 2 — every entry below the main diagonal is zero.
+
+### Back-Substitution
+
+With the system in triangular form, we solve from the bottom row upward, substituting each result into the equation above it.
+
+**Row 4** gives $x_4$ directly:
+
+$$
+-\tfrac{33}{7}x_4 = -\tfrac{99}{7} \qquad \Longrightarrow \qquad x_4 = \frac{-99/7}{-33/7} = \frac{99}{33} = 3
+$$
+
+**Row 3** gives $7x_3 - 2x_4 = -13$. Substituting $x_4 = 3$:
+
+$$
+7x_3 - 2(3) = -13 \qquad \Longrightarrow \qquad 7x_3 = -13+6 = -7 \qquad \Longrightarrow \qquad x_3 = -1
+$$
+
+**Row 2** gives $-x_2 - 3x_3 + x_4 = 4$. Substituting $x_3 = -1$ and $x_4 = 3$:
+
+$$
+-x_2 - 3(-1) + 3 = 4 \qquad \Longrightarrow \qquad -x_2 + 3 + 3 = 4 \qquad \Longrightarrow \qquad -x_2 = -2 \qquad \Longrightarrow \qquad x_2 = 2
+$$
+
+**Row 1** gives $x_1 + x_2 + x_3 + x_4 = 5$. Substituting $x_2 = 2$, $x_3 = -1$, $x_4 = 3$:
+
+$$
+x_1 + 2 - 1 + 3 = 5 \qquad \Longrightarrow \qquad x_1 = 5 - 4 = 1
+$$
+
+The full solution is
+
+$$
+x_1 = 1, \qquad x_2 = 2, \qquad x_3 = -1, \qquad x_4 = 3
+\tag{A.19}
+$$
+
+::::: {.callout-note}
+## Checking the Solution
+
+It is worth substituting the solution back into the original system before trusting it, exactly as we verified the inverse by hand in Section 7. The third equation offers a quick check: $x_1 - x_2 + 2x_3 + x_4 = 1 - 2 + 2(-1) + 3 = 1-2-2+3 = 0$, matching $b_3 = 0$ from equation (A.17). The remaining three equations can be verified the same way.
+::::
+
+### Other Solution Methods
+
+Triangularization is not the only way to solve this system, and it is worth knowing how the tools developed earlier in this appendix connect to two classical alternatives, even though we will not carry either through in full:
+
+- **Cramer's rule** solves for each unknown as a ratio of determinants: $x_i = \det(\mathbf{A}_i)/\det(\mathbf{A})$, where $\mathbf{A}_i$ is $\mathbf{A}$ with its $i$-th column replaced by $\mathbf{b}$. This is elegant on paper but requires computing five separate $4\times 4$ determinants for a system this size — considerably more arithmetic than the triangularization above, which is why Cramer's rule is more often taught as a conceptual result than used as a practical method beyond $2\times2$ or $3\times3$ systems.
+- **Gaussian elimination** is, in fact, exactly the row-reduction procedure carried out above — "triangularization" and "Gaussian elimination" describe the same forward-elimination process, with back-substitution as the second half. Where they can differ is in bookkeeping: full Gauss-Jordan elimination continues the row operations until the coefficient matrix becomes the identity matrix itself, reading the solution directly off the augmented column without a separate back-substitution step.
+
+All three methods — triangularization, Cramer's rule, and matrix inversion via $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$ — must agree, since a system with a nonsingular coefficient matrix has exactly one solution. Triangularization is presented here because it scales most gracefully by hand as the system grows, and because it is the same logic — reducing a matrix to triangular form — that underlies the LU decomposition used by software to solve much larger systems in practice.
+
+## Example 2: Ordinary Least Squares, By Hand and By Matrix
+
+### The Question This Example Answers
+
+We opened this appendix with a claim: matrix algebra is not an abstraction layered on top of econometrics, but a labor-saving device. Nowhere is that claim easier to see directly than in ordinary least squares. This example works the identical regression problem twice — once with the scalar summation formulas familiar from an introductory statistics course, and once with matrix notation — so that the payoff is visible rather than asserted.
+
+Consider five paired observations on two variables, $x$ and $y$:
+
+$$
+\begin{array}{c|ccccc}
+x & 1 & 2 & 3 & 4 & 5 \\ \hline
+y & 3 & 5 & 6 & 8 & 9
+\end{array}
+$$
+
+We want the ordinary least squares line $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$ that minimizes the sum of squared residuals.
+
+### Method 1: The Scalar Formulas
+
+An introductory course derives the slope and intercept of the OLS line as
+
+$$
+\hat{\beta}_1 = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - \left(\sum x_i\right)^2}, \qquad
+\hat{\beta}_0 = \frac{\sum y_i - \hat{\beta}_1\sum x_i}{n}
+$$
+
+Applying these requires four separate running sums, each accumulated by hand, term by term, across all five observations. It is worth actually building each sum rather than simply quoting the total, since the point of this comparison is to feel the full amount of arithmetic involved.
+
+**$\sum x_i$**, accumulated one observation at a time:
+
+$$
+\sum x_i = 1+2+3+4+5 = 15
+$$
+
+**$\sum y_i$**, the same way:
+
+$$
+\sum y_i = 3+5+6+8+9 = 31
+$$
+
+**$\sum x_iy_i$** requires first forming each product $x_iy_i$ individually, and only then adding them:
+
+$$
+\begin{aligned}
+x_1y_1 &= (1)(3) = 3 \\
+x_2y_2 &= (2)(5) = 10 \\
+x_3y_3 &= (3)(6) = 18 \\
+x_4y_4 &= (4)(8) = 32 \\
+x_5y_5 &= (5)(9) = 45
+\end{aligned}
+\qquad \Longrightarrow \qquad
+\sum x_iy_i = 3+10+18+32+45 = 108
+$$
+
+**$\sum x_i^2$** requires the same term-by-term treatment:
+
+$$
+\begin{aligned}
+x_1^2 &= 1^2 = 1 \\
+x_2^2 &= 2^2 = 4 \\
+x_3^2 &= 3^2 = 9 \\
+x_4^2 &= 4^2 = 16 \\
+x_5^2 &= 5^2 = 25
+\end{aligned}
+\qquad \Longrightarrow \qquad
+\sum x_i^2 = 1+4+9+16+25 = 55
+$$
+
+With all four sums in hand, and $n=5$, we can finally substitute into the slope formula:
+
+$$
+\hat{\beta}_1 = \frac{n\sum x_iy_i - \sum x_i \sum y_i}{n\sum x_i^2 - \left(\sum x_i\right)^2} = \frac{5(108) - (15)(31)}{5(55) - (15)^2}
+$$
+
+The numerator and denominator each require their own multiplication and subtraction before the division can even be performed:
+
+$$
+\text{numerator: } 5(108) - (15)(31) = 540 - 465 = 75
+$$
+
+$$
+\text{denominator: } 5(55) - (15)^2 = 275 - 225 = 50
+$$
+
+$$
+\hat{\beta}_1 = \frac{75}{50} = 1.5
+$$
+
+Only now, with $\hat{\beta}_1$ finally in hand, can the intercept formula be evaluated — it depends on $\hat{\beta}_1$, so it cannot be computed first or in parallel:
+
+$$
+\hat{\beta}_0 = \frac{\sum y_i - \hat{\beta}_1\sum x_i}{n} = \frac{31 - (1.5)(15)}{5} = \frac{31-22.5}{5} = \frac{8.5}{5} = 1.7
+$$
+
+giving the fitted line $\hat{y} = 1.7 + 1.5x$. Counting the actual steps taken: four separate running sums, each built from five individual terms; two further multiplications and a subtraction to assemble the numerator; the same for the denominator; a division to obtain $\hat{\beta}_1$; and only then a second, dependent calculation to obtain $\hat{\beta}_0$. This is entirely correct, and for two variables it is manageable — but notice how much bookkeeping was required for what is, after all, "just" a one-regressor formula. Adding a third regressor — say, a second explanatory variable $z$ — does not extend this approach; it replaces it. An entirely new, more complicated set of formulas would be needed, involving six or more running sums instead of four, several of them cross-sums between three different variables rather than two. This is precisely the scalability problem matrix notation solves.
+
+### Method 2: The Matrix Formulation
+
+Stack the data into a design matrix $\mathbf{X}$ — a column of ones for the intercept, alongside the $x$ values — and a response vector $\mathbf{y}$:
+
+$$
+\mathbf{X} = \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \\ 1 & 4 \\ 1 & 5 \end{bmatrix}, \qquad
+\mathbf{y} = \begin{bmatrix} 3 \\ 5 \\ 6 \\ 8 \\ 9 \end{bmatrix}
+$$
+
+The regression model, written for all five observations at once, is $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{e}$, where $\boldsymbol{\beta} = \begin{bmatrix}\beta_0 \\ \beta_1\end{bmatrix}$ and $\mathbf{e}$ is the vector of residuals. Recall from Section 9 that the sum of squared residuals is a quadratic form, $\mathbf{e}'\mathbf{e} = \sum_i e_i^2$. Ordinary least squares chooses $\hat{\boldsymbol{\beta}}$ to minimize exactly this quantity.
+
+::::: {.callout-note}
+## Deriving the Normal Equations
+
+Write the sum of squared residuals as a function of $\boldsymbol{\beta}$:
+
+$$
+\begin{aligned}
+S(\boldsymbol{\beta}) &= \mathbf{e}'\mathbf{e} = (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{y}-\mathbf{X}\boldsymbol{\beta}) \\
+&= \mathbf{y}'\mathbf{y} - \mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y} + \boldsymbol{\beta}'\mathbf{X}'\mathbf{X}\boldsymbol{\beta} \\
+&= \mathbf{y}'\mathbf{y} - 2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y} + \boldsymbol{\beta}'\mathbf{X}'\mathbf{X}\boldsymbol{\beta}
+\end{aligned}
+$$
+
+using the fact that $\mathbf{y}'\mathbf{X}\boldsymbol{\beta}$ is a scalar and therefore equals its own transpose, $\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$ — a direct application of the transpose-reverses-order rule from Section 4. Differentiating $S(\boldsymbol{\beta})$ with respect to $\boldsymbol{\beta}$ and setting the result to zero yields the **normal equations**:
+
+$$
+\mathbf{X}'\mathbf{X}\boldsymbol{\beta} = \mathbf{X}'\mathbf{y}
+$$
+
+Because $\mathbf{X}'\mathbf{X}$ is square (Section 2) and symmetric (Section 4 — recall $(\mathbf{X}'\mathbf{X})' = \mathbf{X}'\mathbf{X}$ always), and because we will confirm below that it is nonsingular, we can multiply both sides by its inverse to isolate $\boldsymbol{\beta}$:
+
+$$
+\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}
+\tag{A.20}
+$$
+
+This is precisely the same operation as $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$ from Example 1 — a system of equations solved by inverting a matrix — except here the "system" is the pair of normal equations, and $\mathbf{X}'\mathbf{X}$ plays the role $\mathbf{A}$ played there. Notice also that Section 9's discussion of positive definiteness is exactly what guarantees this stationary point is a **minimum**: because $\mathbf{X}'\mathbf{X}$ is positive (semi-)definite, $S(\boldsymbol{\beta})$ curves upward in every direction away from $\hat{\boldsymbol{\beta}}$, rather than curving down in some direction and up in another.
+::::
+
+### Computing the Example
+
+Applying this to our five observations, first construct $\mathbf{X}'\mathbf{X}$:
+
+$$
+\mathbf{X}'\mathbf{X} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1 \\ 1 & 2 & 3 & 4 & 5 \end{bmatrix}\begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \\ 1 & 4 \\ 1 & 5 \end{bmatrix} = \begin{bmatrix} 5 & 15 \\ 15 & 55 \end{bmatrix}
+$$
+
+Following Definition A.12, the $(1,1)$ entry is $1+1+1+1+1=5$ (the sample size $n$), the $(1,2)$ and $(2,1)$ entries are both $1+2+3+4+5=15$ (matching $\sum x_i$ from Method 1 exactly), and the $(2,2)$ entry is $1+4+9+16+25=55$ (matching $\sum x_i^2$). This is not a coincidence: $\mathbf{X}'\mathbf{X}$ is, entry for entry, nothing more than the running sums Method 1 required — matrix notation has not hidden the arithmetic, it has organized it.
+
+Next, $\mathbf{X}'\mathbf{y}$:
+
+$$
+\mathbf{X}'\mathbf{y} = \begin{bmatrix} 1 & 1 & 1 & 1 & 1 \\ 1 & 2 & 3 & 4 & 5 \end{bmatrix}\begin{bmatrix} 3 \\ 5 \\ 6 \\ 8 \\ 9 \end{bmatrix} = \begin{bmatrix} 3+5+6+8+9 \\ 1(3)+2(5)+3(6)+4(8)+5(9) \end{bmatrix} = \begin{bmatrix} 31 \\ 108 \end{bmatrix}$$
+
+which again reproduces $\sum y_i = 31$ and $\sum x_iy_i = 108$ from Method 1 precisely.
+
+Now invert $\mathbf{X}'\mathbf{X}$ using the $2\times 2$ formula from Definition A.17 and Definition A.22:
+
+$$
+\det(\mathbf{X}'\mathbf{X}) = (5)(55) - (15)(15) = 275 - 225 = 50
+$$
+
+Since $50 \neq 0$, $\mathbf{X}'\mathbf{X}$ is nonsingular, confirming that equation (A.20) is valid for this data. The inverse follows directly:
+
+$$
+(\mathbf{X}'\mathbf{X})^{-1} = \frac{1}{50}\begin{bmatrix} 55 & -15 \\ -15 & 5 \end{bmatrix} = \begin{bmatrix} 1.1 & -0.3 \\ -0.3 & 0.1 \end{bmatrix}
+$$
+
+Finally, assembling equation (A.20):
+
+$$
+\begin{aligned}
+\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}
+&= \begin{bmatrix} 1.1 & -0.3 \\ -0.3 & 0.1 \end{bmatrix}\begin{bmatrix} 31 \\ 108 \end{bmatrix}
+= \begin{bmatrix} 1.1(31) + (-0.3)(108) \\ -0.3(31) + 0.1(108) \end{bmatrix} \\[6pt]
+&= \begin{bmatrix} 34.1 - 32.4 \\ -9.3+10.8 \end{bmatrix}
+= \begin{bmatrix} 1.7 \\ 1.5 \end{bmatrix}
+\end{aligned}
+\tag{A.21}
+$$
+
+so $\hat{\beta}_0 = 1.7$ and $\hat{\beta}_1 = 1.5$ — identical, to the last decimal, to the answer Method 1 produced.
+
+### The Variance-Covariance Matrix of $\hat{\boldsymbol{\beta}}$
+
+A fitted coefficient by itself is only half the story — an economist also needs to know how precisely it has been estimated, and whether the estimates of $\hat{\beta}_0$ and $\hat{\beta}_1$ are related to each other. Both questions are answered by a single object: the **variance-covariance matrix** of $\hat{\boldsymbol{\beta}}$.
+
+::::: {.callout-note}
+## Definition A.27 — Variance-Covariance Matrix
+
+For a vector of estimators $\hat{\boldsymbol{\beta}} = \begin{bmatrix}\hat\beta_0 \\ \hat\beta_1\end{bmatrix}$, the **variance-covariance matrix**, denoted $\text{Var}(\hat{\boldsymbol{\beta}})$, is the square, symmetric matrix whose diagonal entries are the variances of each estimator and whose off-diagonal entries are the covariances between them:
+
+$$
+\text{Var}(\hat{\boldsymbol{\beta}}) = \begin{bmatrix} \text{Var}(\hat\beta_0) & \text{Cov}(\hat\beta_0,\hat\beta_1) \\ \text{Cov}(\hat\beta_1,\hat\beta_0) & \text{Var}(\hat\beta_1) \end{bmatrix}
+$$
+
+Because $\text{Cov}(\hat\beta_0,\hat\beta_1) = \text{Cov}(\hat\beta_1,\hat\beta_0)$ always, this matrix is symmetric — exactly the property defined in Section 4 (Definition A.7), and the same property $\mathbf{X}'\mathbf{X}$ itself has.
+::::
+
+For ordinary least squares specifically, this matrix has a remarkably compact matrix expression, connecting directly back to the inverse we have already computed:
+
+$$
+\text{Var}(\hat{\boldsymbol{\beta}}) = \hat\sigma^2(\mathbf{X}'\mathbf{X})^{-1}
+\tag{A.22}
+$$
+
+where $\hat\sigma^2$ is the estimated variance of the regression residuals — a single scalar that rescales the entire matrix $(\mathbf{X}'\mathbf{X})^{-1}$ we already have on hand.
+
+To compute $\hat\sigma^2$, we first need the residuals themselves, $\hat{e}_i = y_i - \hat{y}_i$, using the fitted line $\hat{y} = 1.7+1.5x$:
+
+$$
+\begin{array}{c|ccccc}
+x_i & 1 & 2 & 3 & 4 & 5 \\
+y_i & 3 & 5 & 6 & 8 & 9 \\
+\hat{y}_i & 3.2 & 4.7 & 6.2 & 7.7 & 9.2 \\
+\hat{e}_i & -0.2 & 0.3 & -0.2 & 0.3 & -0.2
+\end{array}
+$$
+
+Recall from Section 9 that the sum of squared residuals is the quadratic form $\mathbf{e}'\mathbf{e} = \sum_i \hat{e}_i^2$:
+
+$$
+\mathbf{e}'\mathbf{e} = (-0.2)^2+(0.3)^2+(-0.2)^2+(0.3)^2+(-0.2)^2 = 0.04+0.09+0.04+0.09+0.04 = 0.3
+$$
+
+With $n=5$ observations and $k=2$ estimated parameters ($\hat\beta_0$ and $\hat\beta_1$), the estimated residual variance divides the sum of squared residuals by the **degrees of freedom**, $n-k$:
+
+$$
+\hat\sigma^2 = \frac{\mathbf{e}'\mathbf{e}}{n-k} = \frac{0.3}{5-2} = \frac{0.3}{3} = 0.1
+$$
+
+We already computed $(\mathbf{X}'\mathbf{X})^{-1}$ in the course of finding $\hat{\boldsymbol{\beta}}$ above. Applying equation (A.22) requires nothing more than the scalar multiplication defined in Section 3 (Definition A.10) — multiplying every entry of $(\mathbf{X}'\mathbf{X})^{-1}$ by $\hat\sigma^2 = 0.1$:
+
+$$
+\text{Var}(\hat{\boldsymbol{\beta}}) = 0.1\begin{bmatrix} 1.1 & -0.3 \\ -0.3 & 0.1 \end{bmatrix} = \begin{bmatrix} 0.11 & -0.03 \\ -0.03 & 0.01 \end{bmatrix}
+\tag{A.23}
+$$
+
+The diagonal entries are the variances we actually want: $\text{Var}(\hat\beta_0) = 0.11$ and $\text{Var}(\hat\beta_1) = 0.01$. Taking square roots gives the standard errors reported alongside every regression coefficient in this course's tables:
+
+$$
+\text{SE}(\hat\beta_0) = \sqrt{0.11} \approx 0.332, \qquad \text{SE}(\hat\beta_1) = \sqrt{0.01} = 0.1
+$$
+
+The off-diagonal entry, $\text{Cov}(\hat\beta_0,\hat\beta_1) = -0.03$, is negative here — meaning that, across repeated samples, an overestimate of the intercept tends to accompany an underestimate of the slope, and vice versa. This single $2\times 2$ matrix, obtained from one scalar multiplication of a matrix we had already inverted, is precisely what this course will draw on every time a regression table reports standard errors, and it is the same object — now larger and no harder to write down — that stands behind the coefficient covariances in a vector autoregression or the parameter uncertainty of a state-space model later in this course.
+
+### Why This Is the Point of the Whole Appendix
+
+Both methods arrive at the same fitted line, $\hat{y} = 1.7+1.5x$, because they are the same calculation, organized two different ways. That equivalence is not the interesting part. The interesting part is what happens if we now add a second explanatory variable, $z$, to the regression.
+
+Under Method 1, nothing built so far can be extended — a three-variable regression requires deriving an entirely new set of formulas from scratch, with new cross-sums and a more complicated system of three normal equations to solve algebraically. Under Method 2, nothing changes at all. $\mathbf{X}$ simply gains a third column,
+
+$$
+\mathbf{X} = \begin{bmatrix} 1 & x_1 & z_1 \\ 1 & x_2 & z_2 \\ \vdots & \vdots & \vdots \\ 1 & x_n & z_n \end{bmatrix}
+$$
+
+$\boldsymbol{\beta}$ gains a third entry, and equation (A.20), $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$, is applied exactly as written — now producing a $3\times 3$ matrix to invert rather than $2\times 2$, but the formula itself, and every property we used to derive it (symmetry, positive definiteness, the transpose rule), carries over unchanged. This is true whether the regression has two regressors or two hundred. This is the convenience this appendix set out to demonstrate at the very beginning: matrix algebra does not make ordinary least squares different in two variables than in twenty; it makes the *notation* identical, so that everything proved once, here, with a single $x$, remains true without modification for every regression this course encounters from here forward.
+
+## Where This Appendix Reappears
+
+This appendix is a reference, not a chapter meant to be read once and shelved. The table below is a map back to it: each time a later chapter leans on a tool developed here, this is where to return.
+
+| Concept | Where it resurfaces |
+|---|---|
+| Matrix notation, $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{e}$ | Every chapter from here forward writes regressions and models this way |
+| Symmetric matrices, quadratic forms | Loss functions (@sec-loss); variance equations in ARCH/GARCH (@sec-arch, @sec-garch) |
+| Variance-covariance matrix | Every regression table in this course; VAR coefficient covariances (@sec-varmodel) |
+| Rank, linear (in)dependence, multicollinearity | Structural breaks — collinear dummy variables (@sec-chow); cointegration rank (@sec-johansen) |
+| Determinant, singularity | Testing cointegrating rank via the Johansen procedure (@sec-johansen) |
+| Matrix inverse | VAR estimation (@sec-lagselection); the VECM (@sec-vecm); Kalman filter updating equations (@sec-kalman) |
+| Eigenvalues and eigenvectors | VAR stability via the companion matrix (@sec-varmodel); regime-switching transition matrices (@sec-msmodel) |
+| Matrix multiplication of systems | VAR/SVAR (@sec-varmodel, @sec-svar); state-space transition and observation equations (@sec-general) |
+| Triangularization, Gaussian elimination | The mechanics behind most matrix computations performed by software throughout this course |
+
+If a later chapter introduces a matrix expression that looks unfamiliar, the concept behind it was very likely built here first.
+
+## Key Terms
+
+::::: {.callout-note icon=false}
+## Glossary
+
+**Scalar** — A single number, denoted in italics ($x$, $\beta$).
+
+**Vector** — An ordered collection of $n$ scalars, denoted in bold lowercase ($\mathbf{x}$); a column vector by default in this course.
+
+**Column vector** — An $n \times 1$ vector; a vector written as a single column.
+
+**Row vector** — A $1 \times n$ vector; a vector written as a single row.
+
+**Matrix** — A rectangular array of scalars arranged in $m$ rows and $n$ columns, denoted in bold uppercase ($\mathbf{X}$).
+
+**Dimension (order)** — The size of a matrix, stated as rows $\times$ columns ($m \times n$); always rows first.
+
+**Element (entry)** — An individual scalar within a vector or matrix; $a_{ij}$ denotes the entry in row $i$, column $j$ of $\mathbf{A}$.
+
+**Square matrix** — A matrix with equal rows and columns ($n \times n$); required for a determinant or inverse to exist.
+
+**Main diagonal** — The entries $a_{11}, a_{22}, \ldots, a_{nn}$ running from the top-left to bottom-right of a square matrix.
+
+**Diagonal matrix** — A square matrix with all off-diagonal entries equal to zero.
+
+**Identity matrix** $\mathbf{I}$ — The diagonal matrix with all diagonal entries equal to one; satisfies $\mathbf{A}\mathbf{I} = \mathbf{I}\mathbf{A} = \mathbf{A}$; the matrix-algebra counterpart of the scalar 1.
+
+**Triangular matrix** — A square matrix with all entries below (upper triangular) or above (lower triangular) the main diagonal equal to zero.
+
+**Symmetric matrix** — A square matrix equal to its own transpose ($\mathbf{A} = \mathbf{A}'$); every variance-covariance matrix is symmetric.
+
+**Zero matrix** $\mathbf{0}$ — A matrix of any dimension with every entry equal to zero; the additive identity, $\mathbf{A} + \mathbf{0} = \mathbf{A}$.
+
+**Conformability** — The dimensional requirement for two matrices to be multiplied: the number of columns of the first must equal the number of rows of the second.
+
+**Matrix multiplication** — The "row times column, then sum" operation defined for conformable matrices; not commutative in general ($\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$).
+
+**Transpose** $\mathbf{A}'$ — The matrix formed by writing the rows of $\mathbf{A}$ as columns; reverses order under products, $(\mathbf{A}\mathbf{B})' = \mathbf{B}'\mathbf{A}'$.
+
+**Minor** $M_{ij}$ — The determinant of the submatrix formed by deleting row $i$ and column $j$ from $\mathbf{A}$.
+
+**Cofactor** $C_{ij}$ — The signed minor, $C_{ij} = (-1)^{i+j}M_{ij}$.
+
+**Adjugate (classical adjoint)** $\text{adj}(\mathbf{A})$ — The transpose of the cofactor matrix; the numerator of the classical matrix inverse formula.
+
+**Determinant** $\det(\mathbf{A})$, $|\mathbf{A}|$ — A scalar summarizing a square matrix; nonzero if and only if the matrix is invertible.
+
+**Singular matrix** — A square matrix with $\det(\mathbf{A}) = 0$; has no inverse.
+
+**Nonsingular (invertible) matrix** — A square matrix with $\det(\mathbf{A}) \neq 0$; has a unique inverse.
+
+**Linear independence** — A property of a set of vectors in which no vector can be written as a combination of the others.
+
+**Linear dependence** — The opposite of linear independence; at least one vector is a combination of the others and supplies no new information.
+
+**Rank** — The maximum number of linearly independent rows or columns in a matrix; a square matrix has full rank if $\text{rank}(\mathbf{A}) = n$.
+
+**Rank-deficient matrix** — A square matrix with $\text{rank}(\mathbf{A}) < n$; equivalent to being singular.
+
+**Matrix inverse** $\mathbf{A}^{-1}$ — The unique matrix satisfying $\mathbf{A}\mathbf{A}^{-1} = \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}$; exists if and only if $\mathbf{A}$ is square and nonsingular; computed classically as $\mathbf{A}^{-1} = \frac{1}{\det(\mathbf{A})}\text{adj}(\mathbf{A})$.
+
+**Trace** $\text{tr}(\mathbf{A})$ — The sum of the diagonal entries of a square matrix; satisfies $\text{tr}(\mathbf{AB}) = \text{tr}(\mathbf{BA})$ even though $\mathbf{AB} \neq \mathbf{BA}$ in general.
+
+**Quadratic form** $\mathbf{x}'\mathbf{A}\mathbf{x}$ — A scalar expression built from a matrix and a vector; reduces to a sum of squares when $\mathbf{A} = \mathbf{I}$.
+
+**Positive definite matrix** — A symmetric matrix $\mathbf{A}$ for which $\mathbf{x}'\mathbf{A}\mathbf{x} > 0$ for every nonzero vector $\mathbf{x}$; guarantees that a minimization problem (such as OLS) has a genuine minimum.
+
+**Positive semi-definite matrix** — A symmetric matrix $\mathbf{A}$ for which $\mathbf{x}'\mathbf{A}\mathbf{x} \geq 0$ for every vector $\mathbf{x}$.
+
+**Eigenvector** — A nonzero vector $\mathbf{v}$ whose direction is unchanged when multiplied by a matrix $\mathbf{A}$: $\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$.
+
+**Eigenvalue** $\lambda$ — The scalar by which an eigenvector is stretched or shrunk; governs the stability of dynamic systems built from $\mathbf{A}$.
+
+**Characteristic equation** — The equation $\det(\mathbf{A} - \lambda\mathbf{I}) = 0$, whose solutions are the eigenvalues of $\mathbf{A}$.
+
+**Triangularization** — The procedure of reducing a system's coefficient matrix to triangular form via row operations, after which the system is solved by back-substitution.
+
+**Back-substitution** — Solving a triangular system from the last equation upward, substituting each solved unknown into the equation above it.
+
+**Cramer's rule** — A method for solving $\mathbf{A}\mathbf{x} = \mathbf{b}$ by expressing each unknown as a ratio of determinants, $x_i = \det(\mathbf{A}_i)/\det(\mathbf{A})$.
+
+**Gaussian elimination** — The systematic row-reduction procedure of eliminating unknowns one at a time to reach triangular form; the same forward-elimination process as triangularization.
+
+**Design matrix** $\mathbf{X}$ — The matrix of regressor values (including a column of ones for the intercept) in a regression model $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{e}$.
+
+**Normal equations** — The system $\mathbf{X}'\mathbf{X}\boldsymbol{\beta} = \mathbf{X}'\mathbf{y}$, obtained by minimizing the sum of squared residuals; solved for $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$.
+
+**Variance-covariance matrix** $\text{Var}(\hat{\boldsymbol{\beta}})$ — A symmetric matrix whose diagonal entries are the variances of a set of estimators and whose off-diagonal entries are their pairwise covariances; for OLS, $\text{Var}(\hat{\boldsymbol{\beta}}) = \hat\sigma^2(\mathbf{X}'\mathbf{X})^{-1}$.
+
+**Degrees of freedom** — The divisor $n-k$ used in estimating residual variance, where $n$ is the sample size and $k$ is the number of estimated parameters.
+::::

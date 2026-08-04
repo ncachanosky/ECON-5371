@@ -1,0 +1,16 @@
+/* Small overrides not worth putting in the SCSS theme file.
+   Keep this file short — anything structural belongs in eo-slides.scss. */
+
+.reveal .slides section img {
+  max-height: 65vh;
+}
+
+/* Two-column layout helper, e.g. for text | PNG diagram slides */
+.eo-columns {
+  display: flex;
+  gap: 1.5em;
+  align-items: flex-start;
+}
+.eo-columns > div {
+  flex: 1;
+}

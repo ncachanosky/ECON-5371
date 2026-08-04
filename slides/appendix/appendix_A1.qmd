@@ -1,0 +1,482 @@
+---
+title: "Matrix Algebra, Part I"
+subtitle: "ECON-5371 — Time Series Analysis and Forecasting"
+author: "Nicolas Cachanosky, Department of Economics and Finance"
+date: today
+title-slide-attributes:
+  data-background-color: "#36454F"
+  data-footer: ""
+---
+
+## Why Bother With This Notation?
+
+> A VAR with four variables and four lags is sixteen equations. Written in matrix form, it is one line.
+
+- Matrix algebra is a **labor-saving device**, not an added layer of abstraction
+- Every result we prove later — stability, forecast variance, impulse responses — is easier once written this way
+- OLS itself collapses from page-long summation formulas to $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$
+- By reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake
+
+::: {.notes}
+Open with the VAR example on the board or a slide before this one if useful.
+Framing: this is not math for its own sake — it's the language the rest of the
+course is written in. ~3 min.
+:::
+
+---
+
+## Notation Convention
+
+::: {.eo-definition}
+**Convention used throughout this course**
+
+- Scalar — italics: $x$, $\beta$, $\sigma^2$
+- Vector — bold lowercase, column by default: $\mathbf{x}$, $\boldsymbol{\beta}$
+- Matrix — bold uppercase: $\mathbf{X}$, $\mathbf{A}$, $\boldsymbol{\Sigma}$
+:::
+
+Not universal — other references may use arrows, or no bolding at all.
+
+---
+
+## Today's Roadmap {.outline-slide}
+
+1. Scalars → vectors → matrices
+2. Special matrix types
+3. The basic operations: addition, scalar multiplication, **matrix multiplication**
+4. Transpose and adjugate
+5. The determinant
+6. Rank and linear independence — and why regressions fail
+
+---
+
+## Scalars → Vectors → Matrices {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## From Scalar to Vector
+
+A single number — a price, an interest rate — is a **scalar**.
+
+Stack GDP growth, inflation, and unemployment for one quarter:
+
+$$
+\mathbf{x} =
+\begin{bmatrix} 2.1 \\ 3.4 \\ 4.0 \end{bmatrix}
+$$
+
+::: {.eo-definition}
+**Vector.** An ordered collection of $n$ scalars — column ($n \times 1$) by default, or row ($1 \times n$). Order matters: the same numbers in a different order are a different vector.
+:::
+
+---
+
+## From Vector to Matrix
+
+Now stack four quarters of the same three variables side by side:
+
+$$
+\mathbf{X} =
+\begin{bmatrix}
+2.1 & 2.4 & 1.8 & 2.6 \\
+3.4 & 3.1 & 3.6 & 3.9 \\
+4.0 & 3.9 & 3.8 & 3.7
+\end{bmatrix}
+$$
+
+::: {.eo-definition}
+**Matrix.** A rectangular array with dimension $m \times n$ — **rows first, columns second**, always.
+:::
+
+::: {.eo-hazard}
+"$3 \times 4$" means 3 rows, 4 columns — never the reverse. Reversing this silently is the single most common error working with matrices for the first time.
+:::
+
+---
+
+## What a Matrix *Is*, Economically
+
+A matrix is rarely typed out entry by entry. It is usually the object that results from organizing data or coefficients that already mean something:
+
+- The data matrix $\mathbf{X}$ in a regression
+- The coefficient matrices $\mathbf{A}_1, \ldots, \mathbf{A}_p$ in a VAR
+- The transition matrix in a state-space model
+
+A vector is just a special case — $n\times 1$ or $1 \times n$ — so the same notation and operations apply to both.
+
+---
+
+## Special Matrix Types {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## Square, Diagonal, Identity
+
+::: {.eo-columns}
+::: {}
+**Square** ($m=n$)
+
+$$\begin{bmatrix} 4 & 1 & 0 \\ 2 & 5 & 3 \\ 1 & 0 & 6 \end{bmatrix}$$
+
+Only square matrices can have a determinant or inverse.
+:::
+::: {}
+**Diagonal**
+
+$$\begin{bmatrix} 3 & 0 & 0 \\ 0 & 7 & 0 \\ 0 & 0 & 2 \end{bmatrix}$$
+
+All off-diagonal entries zero.
+:::
+:::
+
+::: {.eo-definition}
+**Identity matrix** $\mathbf{I}$ — diagonal, all ones on the diagonal. $\mathbf{A}\mathbf{I} = \mathbf{I}\mathbf{A} = \mathbf{A}$: the matrix counterpart of scalar 1. This is *why* the inverse will make sense later.
+:::
+
+---
+
+## Triangular and Symmetric
+
+::: {.eo-columns}
+::: {}
+**Triangular**
+
+$$\mathbf{U} = \begin{bmatrix} 2 & 5 & 1 \\ 0 & 3 & 4 \\ 0 & 0 & 6 \end{bmatrix}$$
+
+Zero below (upper) or above (lower) the diagonal. Solving a triangular system is easy — one equation, one unknown, substitute upward.
+:::
+::: {}
+**Symmetric**
+
+$$\mathbf{S} = \begin{bmatrix} 4 & 2 & 1 \\ 2 & 5 & 3 \\ 1 & 3 & 6 \end{bmatrix}$$
+
+$\mathbf{A} = \mathbf{A}'$. Every variance-covariance matrix is symmetric — $\text{cov}(i,j) = \text{cov}(j,i)$ by definition.
+:::
+:::
+
+::: {.notes}
+Flag now, briefly, that X'X will turn out to be symmetric by construction —
+we prove it properly when we reach the transpose. Don't dwell.
+:::
+
+---
+
+## The Basic Operations {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## Addition ( and subtraction)
+
+Entry by entry — exactly what intuition suggests.
+
+$$
+\begin{bmatrix} 3 & 1 \\ 2 & 4 \end{bmatrix} +
+\begin{bmatrix} 5 & 0 \\ 1 & 2 \end{bmatrix} =
+\begin{bmatrix} 8 & 1 \\ 3 & 6 \end{bmatrix}
+$$
+
+::: {.eo-hazard}
+Addition requires **identical dimensions** — not identical entry count. A $3\times 4$ and a $4\times 3$ matrix cannot be added, even though both hold twelve numbers.
+:::
+
+---
+
+## Scalar Multiplication
+
+Scalar multiplication scales every entry by the same number: $3\mathbf{A}$ multiplies each $a_{ij}$ by 3.
+
+$$
+3 \times
+\begin{bmatrix} 5 & 0 \\ 1 & 2 \end{bmatrix} =
+\begin{bmatrix} 15 & 0 \\ 3 & 12 \end{bmatrix}
+$$
+
+---
+
+## Matrix Multiplication: Conformability
+
+::: {.eo-hazard}
+$\mathbf{AB}$ is **not** entry-by-entry. Scalar intuition actively misleads here.
+:::
+
+::: {.eo-definition}
+**Conformability.** $\mathbf{A}$ ($m \times n$) and $\mathbf{B}$ ($p \times q$) can be multiplied iff $n = p$ — inner dimensions match. The result is $m \times q$ — outer dimensions.
+:::
+
+$(3\times 2)(2 \times 4) \to$ conformable, result is $3 \times 4$.
+$(3\times 2)(3 \times 4) \to$ **not** conformable — no product exists.
+
+---
+
+## Matrix Multiplication: The Rule
+
+**Row times column, then sum.**
+
+$$
+c_{ij} = \sum_{k=1}^n a_{ik}\,b_{kj}
+$$
+
+$$
+\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+\begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}
+=
+\begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}
+$$
+
+$$
+\begin{aligned}
+c_{11} &= (1)(5)+(2)(7) = 19 \\
+c_{12} &= (1)(6)+(2)(8) = 22 \\
+c_{21} &= (3)(5)+(4)(7) = 43 \\
+c_{22} &= (3)(6)+(4)(8) = 50
+\end{aligned}
+$$
+
+$c_{11}$ pairs row 1 of $\mathbf{A}$ with column 1 of $\mathbf{B}$; $c_{12}$ pairs row 1 with column 2; and so on.
+
+---
+
+## Matrix Multiplication: A Non-Square Example
+
+Conformability doesn't require square matrices — only that inner dimensions match.
+
+$$
+\mathbf{A}_{3\times 2} =
+\begin{bmatrix} 1 & 0 \\ 2 & 1 \\ 0 & 3 \end{bmatrix}
+\qquad
+\mathbf{B}_{2\times 4} =
+\begin{bmatrix} 1 & 2 & 0 & 1 \\ 3 & 1 & 2 & 0 \end{bmatrix}
+$$
+
+$(3\times 2)(2\times 4)$: inner dimensions match ($2=2$) — conformable. Result is $3\times 4$: **outer** dimensions, not the shape of either input.
+
+$$
+\mathbf{AB} =
+\begin{bmatrix}
+1 & 2 & 0 & 1 \\
+5 & 5 & 2 & 2 \\
+9 & 3 & 6 & 0
+\end{bmatrix}
+$$
+
+::: {.eo-recap}
+**The shape changes.** Multiplying a $3\times 2$ by a $2\times 4$ produces a $3\times 4$ — neither input's shape survives. This is exactly what happens in a regression: $\mathbf{X}$ ($T\times k$) and $\boldsymbol{\beta}$ ($k\times 1$) multiply to a $T\times 1$ vector of fitted values.
+:::
+
+---
+
+## Matrix Multiplication Is Not Commutative
+
+::: {.eo-hazard}
+$\mathbf{AB} \neq \mathbf{BA}$ in general — order matters, and one product may not even exist when the other does.
+:::
+
+Reversing the previous example:
+
+$$
+\mathbf{BA} = \begin{bmatrix} 23 & 34 \\ 31 & 46 \end{bmatrix} \neq \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix} = \mathbf{AB}
+$$
+
+This is also **why there is no matrix division**. We multiply by the inverse instead — and must track which side, since $\mathbf{A}^{-1}\mathbf{B} \neq \mathbf{B}\mathbf{A}^{-1}$ in general.
+
+::: {.notes}
+Worth a beat here: element-wise multiplication (Hadamard product) is a
+different operation entirely, requires matching dimensions not
+conformability. Mention only if a student asks — easy to conflate.
+:::
+
+---
+
+## Transpose and Adjugate {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## The Transpose
+
+Flip rows into columns.
+
+$$
+\mathbf{A}_{2\times 3} =
+\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+\quad\Longrightarrow\quad
+\mathbf{A}'_{3\times 2} =
+\begin{bmatrix} 1 & 4 \\ 2 & 5 \\ 3 & 6 \end{bmatrix}
+$$
+
+Three properties used constantly from here forward:
+
+$$
+(\mathbf{A}')' = \mathbf{A}, \qquad
+(\mathbf{A}+\mathbf{B})' = \mathbf{A}'+\mathbf{B}', \qquad
+(\mathbf{A}\mathbf{B})' = \mathbf{B}'\mathbf{A}'
+$$
+
+::: {.eo-hazard}
+Transposing a **product reverses order**: $(\mathbf{AB})' \neq \mathbf{A}'\mathbf{B}'$. This is exactly what proves $\mathbf{X}'\mathbf{X}$ is symmetric: $(\mathbf{X}'\mathbf{X})' = \mathbf{X}''\mathbf{X}' = \mathbf{X}'\mathbf{X}$.
+:::
+
+---
+
+## The Adjugate — A Preview
+
+::: {.eo-definition}
+**Cofactor** $C_{ij} = (-1)^{i+j}M_{ij}$, where $M_{ij}$ (the **minor**) is the determinant left after deleting row $i$, column $j$.
+
+**Adjugate** $\text{adj}(\mathbf{A})$ — the transpose of the cofactor matrix.
+:::
+
+Not useful on its own — it's the numerator in the classical inverse formula, which we build in Part II.
+
+---
+
+## The Determinant {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## The Determinant: What It Tells Us
+
+> What single number could summarize whether a square matrix is "well-behaved"?
+
+- $\det(\mathbf{A}) = 0 \Rightarrow$ **singular** — no inverse, exactly as $0$ has no reciprocal
+- $\det(\mathbf{A}) \neq 0 \Rightarrow$ **nonsingular** — invertible
+
+This single fact drives the rest of the appendix: "$\det(\mathbf{X}'\mathbf{X}) = 0$" and "the regressors are perfectly collinear" are the same statement, said two ways.
+
+---
+
+## The 2×2 and 3×3 Determinant
+
+$$
+\det\begin{bmatrix} a & b \\ c & d \end{bmatrix} = ad-bc
+$$
+
+$3\times 3$: cofactor expansion along any row or column —
+
+$$
+\det(\mathbf{A}) = a_{11}\begin{vmatrix}a_{22}&a_{23}\\a_{32}&a_{33}\end{vmatrix}
+- a_{12}\begin{vmatrix}a_{21}&a_{23}\\a_{31}&a_{33}\end{vmatrix}
++ a_{13}\begin{vmatrix}a_{21}&a_{22}\\a_{31}&a_{32}\end{vmatrix}
+$$
+
+::: {.eo-recap}
+**Shortcut.** For any triangular matrix, $\det(\mathbf{A})$ is just the product of the diagonal entries. $\det(\mathbf{I}) = 1$ always.
+:::
+
+::: {.eo-hazard}
+Beyond $3\times 3$, hand computation gets tedious fast — a $4\times4$ determinant needs four $3\times3$ determinants. In this course, larger determinants are computed by software.
+:::
+
+---
+
+## The Direct Formula: Diagonals, Not Minors
+
+Expanding the cofactor formula fully gives an equivalent version with **no minors at all** — a signed sum of diagonal products:
+
+$$
+\begin{aligned}
+\det(\mathbf{A}) = \; &a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} \\
+- \; &a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
+\end{aligned}
+$$
+
+**Add** the three top-left-to-bottom-right diagonal products, **subtract** the three bottom-left-to-top-right diagonal products.
+
+::: {.eo-definition}
+**Rule of Sarrus.** Write the first two columns of $\mathbf{A}$ again to the right of the matrix, then read the six diagonals directly off the page. Specific to $3\times 3$ — does **not** generalize to larger matrices, unlike cofactor expansion.
+:::
+
+Same numeric example as before, both formulas agree:
+
+$$
+\det(\mathbf{A}) = \underbrace{10+0+6}_{\text{diagonal sum}} - \underbrace{1-0-16}_{\text{diagonal sum}} = -1
+$$
+
+---
+
+## Determinant by Diagonals: A Full Worked Example
+
+$$
+\mathbf{A} =
+\begin{bmatrix} 2 & 0 & 1 \\ 1 & 3 & 2 \\ 4 & 1 & 3 \end{bmatrix}
+$$
+
+Copy the first two columns to the right, then multiply along the six diagonals:
+
+- Sum of top left $\to$ bottom-right diagonals: (2)(3)(3) + (0)(2)(4) + (1)(1)(1) = 18 + 0 + 1 = 19
+- Sum of botton-left $\to$ top-right diagonals: (4)(3)(1) + (1)(2)(2) + (3)(1)(0) = 12 + 4 + 0 = 16
+
+Determinant: $\det(\mathbf{A}) = |A| = 19-16=3$
+
+::: {.eo-recap}
+$\det(\mathbf{A}) = 3 \neq 0 \Rightarrow \mathbf{A}$ is **nonsingular**, full rank, invertible. The rows carry three genuinely independent pieces of information.
+:::
+
+---
+
+## Rank and Linear Independence — and Why Regressions Fail {.section-divider background-color="#B87333" footer=false}
+
+---
+
+## Linear Independence
+
+::: {.eo-definition}
+A set of vectors is **linearly independent** if none can be written as a weighted combination of the others — equivalently, $c_1\mathbf{v}_1+\cdots+c_k\mathbf{v}_k=\mathbf{0}$ only when every $c_i=0$.
+:::
+
+$$
+\mathbf{v}_1 = \begin{bmatrix}1\\2\end{bmatrix}, \quad
+\mathbf{v}_2 = \begin{bmatrix}3\\1\end{bmatrix}, \quad
+\mathbf{v}_3 = \begin{bmatrix}4\\3\end{bmatrix}
+$$
+
+These three vectors are linearly dependent.
+
+* There exists $\omega_2, \omega_3 \rightarrow \mathbf{v}_1 = \omega_2 \mathbf{v}_2 + \omega_3 \mathbf{v}_3$
+
+The same relationship rearranges either way — dependence runs in both directions, not just "toward" $\mathbf{v}_3$:
+
+$$
+\begin{aligned}
+\mathbf{v}_1 &= \mathbf{v}_3 - \mathbf{v}_2 \\
+\mathbf{v}_2 &= \mathbf{v}_3 - \mathbf{v}_1 \\
+\mathbf{v}_3 &= \mathbf{v}_2 - \mathbf{v}_1
+\end{aligned}
+$$
+
+Any one of the three can be written as a combination of the other two — that symmetry is exactly what "linearly dependent" means.
+
+---
+
+## Rank
+
+::: {.eo-definition}
+**Rank.** The maximum number of linearly independent rows (equivalently, columns) in $\mathbf{A}$. Full rank: $\text{rank}(\mathbf{A})=n$. Rank-deficient: $\text{rank}(\mathbf{A})<n$.
+:::
+
+::: {.eo-recap}
+**The connection.** $\mathbf{A}$ is nonsingular $\iff$ full rank. Singularity and rank deficiency are the *same condition*, described two ways: one via a computed scalar, one via the information content of the rows/columns.
+:::
+
+$\mathbf{P} = \begin{bmatrix}1&2\\2&4\end{bmatrix}$, second column $=2\times$ first $\Rightarrow \det(\mathbf{P})=0$, $\text{rank}(\mathbf{P})=1$.
+
+---
+
+## Why This Matters: Multicollinearity
+
+::: {.eo-hazard}
+**Perfect multicollinearity is rank deficiency.** If one regressor is an exact linear combination of others — a variable in dollars and the same variable in thousands of dollars, both included — the columns of $\mathbf{X}$ are dependent, $\mathbf{X}'\mathbf{X}$ is rank-deficient, $\det(\mathbf{X}'\mathbf{X})=0$, and $(\mathbf{X}'\mathbf{X})^{-1}$ **does not exist**. The regression cannot be estimated.
+:::
+
+Rank is not bookkeeping — it is the reason a regression can fail to run.
+
+---
+
+## Recap {.recap-slide footer=false}
+
+We built matrices from scalars up, classified the types that make later work tractable, defined the operations — especially the non-obvious rule for multiplication — and connected the determinant to rank and multicollinearity.
+
+---
+
+## Looking Ahead
+
+**Part II** picks up where the determinant leaves off: the **matrix inverse**, **eigenvalues and eigenvectors**, and two worked examples — solving a system by triangularization, and OLS by hand versus by matrix.
