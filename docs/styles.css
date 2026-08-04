@@ -1,0 +1,690 @@
+/* =============================================================================
+   Money, Institutions, and Markets — styles.css
+   Brand: Economic Order palette throughout
+   Last updated: auto
+
+   EO Palette
+     Charcoal    #36454F   sidebar background, body text, headings
+     Copper      #B87333   primary accent — links, active states, borders
+     Sky Blue    #5B9BD5   callout-note
+     Sage Green  #87A96B   callout-tip
+     Terracotta  #D4745E   callout-warning
+     Lavender    #8E7AB5   tertiary accent
+
+   Neutrals (derived)
+     Charcoal-dark   #243039   sidebar dark mode
+     Warm-white      #FAFAF8   page background (light mode)
+     Muted-text      #8a9ba8   captions, secondary text
+============================================================================= */
+
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+/* @import url('https://fonts.googleapis.com/css2?family=Calibri:wght@300;400;700&display=swap');
+*/
+
+
+/* =============================================================================
+   1. BODY & PAGE BACKGROUND
+============================================================================= */
+
+body {
+  color: #36454F;
+  background-color: #FAFAF8;
+}
+
+.content, .chapter, p, li, td {
+  font-family: 'Palatino Linotype', "Times New Roman", serif;
+  line-height: 1.78;
+}
+
+
+/* =============================================================================
+   2. HEADINGS
+============================================================================= */
+
+h1, h2, h3, h4, h5, h6 {
+  color: #36454F;
+  font-family: 'Calibri', serif;
+}
+
+h2 {
+  border-bottom: 2px solid #B87333;
+  padding-bottom: 0.25em;
+  margin-top: 2em;
+}
+
+.quarto-section-identifier {
+  color: #B87333;
+}
+
+
+/* =============================================================================
+   3. LINKS — Copper, no underline, darker on hover
+============================================================================= */
+
+.content a,
+.chapter-content a,
+main a {
+  color: #B87333;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.content a:hover,
+.chapter-content a:hover,
+main a:hover {
+  color: #8a5626;
+  text-decoration: underline;
+}
+
+
+/* =============================================================================
+   4. SIDEBAR — Charcoal background, copper accents
+============================================================================= */
+
+#quarto-sidebar,
+.sidebar.sidebar-navigation {
+  background-color: #36454F !important;
+  border-right: 3px solid #B87333;
+}
+
+#quarto-sidebar .sidebar-title,
+#quarto-sidebar .sidebar-title a,
+.sidebar-title {
+  color: #FFFFFF !important;
+  font-family: Calibri, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  line-height: 1.4;
+}
+
+#quarto-sidebar .sidebar-author,
+#quarto-sidebar .book-subtitle,
+#quarto-sidebar .sidebar-subtitle {
+  color: #b0bec5 !important;
+  font-family: Calibri, sans-serif;
+  font-size: 0.82rem;
+}
+
+#quarto-sidebar a,
+.sidebar-navigation a,
+.sidebar-item-text {
+  color: #d6dde2 !important;
+  font-family: Calibri, sans-serif;
+  font-size: 0.88rem;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+#quarto-sidebar a:hover,
+.sidebar-navigation a:hover {
+  color: #B87333 !important;
+}
+
+#quarto-sidebar .active > .sidebar-item-text,
+#quarto-sidebar .active > a,
+.sidebar-item.active .sidebar-item-text,
+.sidebar-item.active a {
+  color: #B87333 !important;
+  font-weight: 700;
+}
+
+#quarto-sidebar hr,
+.sidebar hr {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+#quarto-search .form-control,
+#quarto-search input[type="search"],
+.quarto-search input {
+  color: #B87333 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  caret-color: #B87333;
+}
+
+#quarto-search input::placeholder,
+.quarto-search input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+#quarto-sidebar .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+#quarto-sidebar .sidebar-logo {
+  padding: 1rem 1rem 0.5rem;
+}
+
+#quarto-sidebar .sidebar-logo img {
+  max-width: 180px;
+  height: auto;
+  opacity: 0.92;
+}
+
+
+/* =============================================================================
+   5. TOP NAVBAR
+============================================================================= */
+
+.navbar {
+  background-color: #36454F !important;
+  border-bottom: 2px solid #B87333;
+  font-family: Calibri, sans-serif;
+}
+
+.navbar a,
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #d6dde2 !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+.navbar a:hover,
+.navbar-nav .nav-link:hover {
+  color: #B87333 !important;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+}
+
+
+/* =============================================================================
+   6. TABLE OF CONTENTS (right-hand TOC)
+============================================================================= */
+
+#TOC,
+#quarto-margin-sidebar .toc,
+nav[role="doc-toc"] {
+  font-family: Calibri, sans-serif;
+  font-size: 0.84rem;
+}
+
+#TOC a,
+nav[role="doc-toc"] a {
+  color: #4a5f6e !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+#TOC a:hover,
+nav[role="doc-toc"] a:hover {
+  color: #B87333 !important;
+}
+
+#TOC .active,
+nav[role="doc-toc"] .active > a,
+.toc-active {
+  color: #B87333 !important;
+  font-weight: 400;
+  border-left: 2px solid #B87333;
+  padding-left: 0.4em;
+  margin-left: -0.4em;
+}
+
+
+/* =============================================================================
+   7. CALLOUT BOXES
+============================================================================= */
+
+.callout-note {
+  border-left-color: #5B9BD5 !important;
+  background-color: rgba(91, 155, 213, 0.06);
+}
+
+.callout-tip {
+  border-left-color: #87A96B !important;
+  background-color: rgba(135, 169, 107, 0.06);
+}
+
+.callout-warning {
+  border-left-color: #D4745E !important;
+  background-color: rgba(212, 116, 94, 0.06);
+}
+
+.callout-important {
+  border-left-color: #B87333 !important;
+  background-color: rgba(184, 115, 51, 0.06);
+}
+
+.callout-note     .callout-title { color: #5B9BD5; font-family: Calibri, sans-serif; }
+.callout-tip      .callout-title { color: #87A96B; font-family: Calibri, sans-serif; }
+.callout-warning  .callout-title { color: #D4745E; font-family: Calibri, sans-serif; }
+.callout-important .callout-title { color: #B87333; font-family: Calibri, sans-serif; }
+
+
+/* =============================================================================
+   8. TABLES
+============================================================================= */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Calibri, sans-serif;
+  font-size: 0.92rem;
+  margin: 1.5em 0;
+}
+
+thead tr th {
+  background-color: #36454F !important;
+  color: #FFFFFF !important;
+  padding: 0.6em 0.9em;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid #B87333;
+}
+
+tbody tr td {
+  padding: 0.5em 0.9em;
+  border-bottom: 1px solid #e8e8e4;
+  color: #36454F;
+  vertical-align: top;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(184, 115, 51, 0.04);
+}
+
+tbody tr:hover {
+  background-color: rgba(184, 115, 51, 0.08);
+}
+
+
+/* =============================================================================
+   9. PREV / NEXT CHAPTER NAVIGATION
+============================================================================= */
+
+.page-navigation .nav-page a,
+.chapter-nav a {
+  color: #B87333 !important;
+  font-family: Calibri, sans-serif;
+  font-size: 0.88rem;
+  text-decoration: none;
+  border: 1px solid #B87333;
+  padding: 0.3em 0.9em;
+  border-radius: 4px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.page-navigation .nav-page a:hover,
+.chapter-nav a:hover {
+  background-color: #B87333;
+  color: #FFFFFF !important;
+}
+
+
+/* =============================================================================
+   10. PAGE FOOTER
+============================================================================= */
+
+/* ── Tighten prev/next navigation spacing ─────────────────────────────────── */
+.page-navigation {
+  margin-top: 2rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ── Footer — flush with nav buttons, no floating gap ────────────────────── */
+.nav-footer,
+footer {
+  font-family: Calibri, sans-serif;
+  font-size: 0.82rem;
+  color: #36454F;
+  border-top: none;
+  margin-top: 0 !important;
+  padding-top: 0.45rem;
+  padding-bottom: 0 !important;
+  opacity: 0.75;
+}
+
+#quarto-document-content {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+
+/* =============================================================================
+   11. CODE BLOCKS
+============================================================================= */
+
+pre, code {
+  font-size: 0.87em;
+  border-radius: 4px;
+}
+
+pre {
+  border-left: 3px solid #B87333;
+  padding-left: 1em;
+}
+
+
+/* =============================================================================
+   12. FIGURES & CAPTIONS
+============================================================================= */
+
+figcaption,
+.figure-caption,
+.quarto-float-caption {
+  font-family: Calibri, sans-serif;
+  font-size: 0.83rem;
+  color: #8a9ba8;
+  text-align: center;
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+
+/* =============================================================================
+   13. MATH
+============================================================================= */
+
+.math.display {
+  margin: 1.2em 0;
+  overflow-x: auto;
+}
+
+
+/* =============================================================================
+   14. DARK MODE
+============================================================================= */
+
+[data-bs-theme="dark"] body {
+  background-color: #1a2028;
+  color: #d6dde2;
+}
+
+[data-bs-theme="dark"] #quarto-sidebar,
+[data-bs-theme="dark"] .sidebar.sidebar-navigation {
+  background-color: #243039 !important;
+  border-right-color: #B87333;
+}
+
+[data-bs-theme="dark"] .content a,
+[data-bs-theme="dark"] main a {
+  color: #d4975a;
+}
+
+[data-bs-theme="dark"] .content a:hover,
+[data-bs-theme="dark"] main a:hover {
+  color: #e8b47a;
+}
+
+[data-bs-theme="dark"] #TOC a,
+[data-bs-theme="dark"] nav[role="doc-toc"] a {
+  color: #a0b4c0 !important;
+}
+
+[data-bs-theme="dark"] #TOC a:hover,
+[data-bs-theme="dark"] nav[role="doc-toc"] a:hover {
+  color: #d4975a !important;
+}
+
+[data-bs-theme="dark"] .toc-active,
+[data-bs-theme="dark"] nav[role="doc-toc"] .active > a {
+  color: #d4975a !important;
+  border-left-color: #d4975a;
+}
+
+[data-bs-theme="dark"] h2 {
+  border-bottom-color: #B87333;
+  color: #d6dde2;
+}
+
+[data-bs-theme="dark"] thead tr th {
+  background-color: #243039 !important;
+  border-bottom-color: #B87333;
+}
+
+[data-bs-theme="dark"] tbody tr td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #d6dde2;
+}
+
+[data-bs-theme="dark"] tbody tr:nth-child(even) {
+  background-color: rgba(184, 115, 51, 0.08);
+}
+
+[data-bs-theme="dark"] .callout-note      { background-color: rgba(91,  155, 213, 0.10); }
+[data-bs-theme="dark"] .callout-tip       { background-color: rgba(135, 169, 107, 0.10); }
+[data-bs-theme="dark"] .callout-warning   { background-color: rgba(212, 116,  94, 0.10); }
+[data-bs-theme="dark"] .callout-important { background-color: rgba(184, 115,  51, 0.10); }
+
+[data-bs-theme="dark"] pre {
+  border-left-color: #B87333;
+}
+
+[data-bs-theme="dark"] .page-navigation .nav-page a,
+[data-bs-theme="dark"] .chapter-nav a {
+  color: #d4975a !important;
+  border-color: #d4975a;
+}
+
+[data-bs-theme="dark"] .page-navigation .nav-page a:hover,
+[data-bs-theme="dark"] .chapter-nav a:hover {
+  background-color: #d4975a;
+  color: #1a2028 !important;
+}
+
+[data-bs-theme="dark"] .nav-footer {
+  border-top-color: rgba(255, 255, 255, 0.10);
+  color: #6a8090;
+}
+
+[data-bs-theme="dark"] .nav-footer a {
+  color: #d4975a !important;
+}
+
+/* Chapter numbers in sidebar — match link text color */
+#quarto-sidebar .sidebar-item-text .chapter-number,
+#quarto-sidebar .chapter-number {
+  color: #d6dde2 !important;
+}
+
+#quarto-sidebar .active .chapter-number,
+#quarto-sidebar .sidebar-item.active .chapter-number {
+  color: #B87333 !important;   /* copper when chapter is active */
+}
+
+[data-bs-theme="dark"] #quarto-sidebar .chapter-number {
+  color: #d6dde2 !important;
+}
+
+[data-bs-theme="dark"] #quarto-sidebar .active .chapter-number {
+  color: #d4975a !important;
+}
+
+
+
+/* =============================================================================
+   15. PRINT STYLESHEET
+   Hides navigation chrome, resets colors for black-and-white printing,
+   and optimises typography for paper.
+============================================================================= */
+ 
+@media print {
+ 
+  /* ── Hide all navigation and UI chrome ───────────────────────────────────── */
+  #quarto-sidebar,
+  .sidebar.sidebar-navigation,
+  #quarto-margin-sidebar,
+  #TOC,
+  nav[role="doc-toc"],
+  .navbar,
+  .nav-footer,
+  footer,
+  .page-navigation,
+  .chapter-nav,
+  #quarto-search,
+  .quarto-search,
+  .sidebar-toggle,
+  .quarto-sidebar-toggle,
+  .btn-quarto,
+  .repo-action-links,
+  .quarto-other-formats {
+    display: none !important;
+  }
+ 
+  /* ── Full-width content ───────────────────────────────────────────────────── */
+  #quarto-content,
+  .quarto-container,
+  main,
+  .content,
+  article {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+ 
+  /* ── Typography ───────────────────────────────────────────────────────────── */
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000000;
+    background: #ffffff;
+  }
+ 
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+    page-break-after: avoid;
+  }
+ 
+  h1 { font-size: 18pt; margin-top: 0; }
+  h2 { font-size: 14pt; border-bottom: 1pt solid #000000; padding-bottom: 0.2em; }
+  h3 { font-size: 12pt; }
+ 
+  p, li, td {
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000000;
+  }
+ 
+  /* ── Links — show URL after link text ────────────────────────────────────── */
+  a {
+    color: #000000 !important;
+    text-decoration: none;
+  }
+ 
+  /* Uncomment to print URLs after links:
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #444;
+  }
+  a[href^="#"]::after,
+  a[href^="javascript"]::after {
+    content: "";
+  }
+  */
+ 
+  /* ── Callout boxes ────────────────────────────────────────────────────────── */
+  .callout-note,
+  .callout-tip,
+  .callout-warning,
+  .callout-important {
+    border-left-width: 3pt;
+    background-color: transparent !important;
+    page-break-inside: avoid;
+  }
+ 
+  .callout-note      { border-left-color: #5B9BD5; }
+  .callout-tip       { border-left-color: #87A96B; }
+  .callout-warning   { border-left-color: #D4745E; }
+  .callout-important { border-left-color: #B87333; }
+ 
+  .callout-note     .callout-title { color: #5B9BD5; }
+  .callout-tip      .callout-title { color: #87A96B; }
+  .callout-warning  .callout-title { color: #D4745E; }
+  .callout-important .callout-title { color: #B87333; }
+ 
+  /* ── Tables ───────────────────────────────────────────────────────────────── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 10pt;
+    page-break-inside: auto;
+  }
+ 
+  thead tr th {
+    background-color: #36454F !important;
+    color: #ffffff !important;
+    border-bottom: 1.5pt solid #B87333;
+    padding: 0.4em 0.6em;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+ 
+  tbody tr td {
+    padding: 0.35em 0.6em;
+    border-bottom: 0.5pt solid #cccccc;
+    color: #000000;
+  }
+ 
+  tbody tr:nth-child(even) {
+    background-color: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+ 
+  tr { page-break-inside: avoid; }
+ 
+  /* ── Figures ──────────────────────────────────────────────────────────────── */
+  figure, img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+ 
+  figcaption, .figure-caption {
+    font-size: 9pt;
+    color: #444444;
+    text-align: center;
+    font-style: italic;
+  }
+ 
+  /* ── Math ─────────────────────────────────────────────────────────────────── */
+  .math.display {
+    margin: 1em 0;
+    overflow-x: visible;
+  }
+ 
+  /* ── Code blocks ──────────────────────────────────────────────────────────── */
+  pre, code {
+    font-size: 9pt;
+    border: 0.5pt solid #cccccc;
+    border-left: 2pt solid #B87333;
+    background-color: #f8f8f8 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+  }
+ 
+  /* ── Page breaks ──────────────────────────────────────────────────────────── */
+  h2, h3 { page-break-after: avoid; }
+  .callout-note,
+  .callout-tip,
+  .callout-warning,
+  .callout-important { page-break-inside: avoid; }
+ 
+  /* ── Page margins ─────────────────────────────────────────────────────────── */
+  @page {
+    margin: 2.5cm 2cm;
+    size: A4;
+  }
+ 
+  @page :first {
+    margin-top: 3cm;
+  }
+}
+ 
+
+
+
+
+
+
