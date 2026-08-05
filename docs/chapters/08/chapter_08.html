@@ -2,15 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="">
 <meta name="description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
 
-<title>8&nbsp; Cointegration and the Vector Error Correction Model – Time Series Analysis for Economists</title>
+<title>9&nbsp; Cointegration and the Vector Error Correction Model – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/08/chapter_08.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/08/chapter_08.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -196,79 +200,79 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/01/chapter_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/02/chapter_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/03/chapter_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/04/chapter_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/06/chapter_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/07/chapter_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/08/chapter_08.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/09/chapter_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/10/chapter_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/11/chapter_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/appendix/appendix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,19 +285,19 @@ window.Quarto = {
     <h2 id="toc-title">In this chapter</h2>
    
   <ul>
-  <li><a href="#sec-problem" id="toc-sec-problem" class="nav-link active" data-scroll-target="#sec-problem"><span class="header-section-number">8.1</span> The Problem with I(1) Variables in a VAR</a>
+  <li><a href="#sec-problem" id="toc-sec-problem" class="nav-link active" data-scroll-target="#sec-problem"><span class="header-section-number">9.1</span> The Problem with I(1) Variables in a VAR</a>
   <ul class="collapse">
   <li><a href="#differencing-restores-stationarity-but-discards-long-run-information" id="toc-differencing-restores-stationarity-but-discards-long-run-information" class="nav-link" data-scroll-target="#differencing-restores-stationarity-but-discards-long-run-information">Differencing Restores Stationarity but Discards Long-Run Information</a></li>
   <li><a href="#the-yield-curve-a-canonical-cointegration-example" id="toc-the-yield-curve-a-canonical-cointegration-example" class="nav-link" data-scroll-target="#the-yield-curve-a-canonical-cointegration-example">The Yield Curve: A Canonical Cointegration Example</a></li>
   </ul></li>
-  <li><a href="#sec-cointegration" id="toc-sec-cointegration" class="nav-link" data-scroll-target="#sec-cointegration"><span class="header-section-number">8.2</span> Cointegration: The Concept</a>
+  <li><a href="#sec-cointegration" id="toc-sec-cointegration" class="nav-link" data-scroll-target="#sec-cointegration"><span class="header-section-number">9.2</span> Cointegration: The Concept</a>
   <ul class="collapse">
   <li><a href="#a-shared-stochastic-trend" id="toc-a-shared-stochastic-trend" class="nav-link" data-scroll-target="#a-shared-stochastic-trend">A Shared Stochastic Trend</a></li>
   <li><a href="#the-cointegrating-vector-and-the-equilibrium-residual" id="toc-the-cointegrating-vector-and-the-equilibrium-residual" class="nav-link" data-scroll-target="#the-cointegrating-vector-and-the-equilibrium-residual">The Cointegrating Vector and the Equilibrium Residual</a></li>
   <li><a href="#the-expectations-hypothesis-as-an-identifying-restriction" id="toc-the-expectations-hypothesis-as-an-identifying-restriction" class="nav-link" data-scroll-target="#the-expectations-hypothesis-as-an-identifying-restriction">The Expectations Hypothesis as an Identifying Restriction</a></li>
   <li><a href="#cointegrating-rank-from-pairs-to-systems" id="toc-cointegrating-rank-from-pairs-to-systems" class="nav-link" data-scroll-target="#cointegrating-rank-from-pairs-to-systems">Cointegrating Rank: From Pairs to Systems</a></li>
   </ul></li>
-  <li><a href="#sec-johansen" id="toc-sec-johansen" class="nav-link" data-scroll-target="#sec-johansen"><span class="header-section-number">8.3</span> Testing for Cointegration: The Johansen Procedure</a>
+  <li><a href="#sec-johansen" id="toc-sec-johansen" class="nav-link" data-scroll-target="#sec-johansen"><span class="header-section-number">9.3</span> Testing for Cointegration: The Johansen Procedure</a>
   <ul class="collapse">
   <li><a href="#from-var-to-the-pi-matrix" id="toc-from-var-to-the-pi-matrix" class="nav-link" data-scroll-target="#from-var-to-the-pi-matrix">From VAR to the <span class="math inline">\(\Pi\)</span> Matrix</a></li>
   <li><a href="#eigenvalues-and-the-rank-of-pi-a-numerical-walkthrough" id="toc-eigenvalues-and-the-rank-of-pi-a-numerical-walkthrough" class="nav-link" data-scroll-target="#eigenvalues-and-the-rank-of-pi-a-numerical-walkthrough">Eigenvalues and the Rank of <span class="math inline">\(\Pi\)</span>: A Numerical Walkthrough</a></li>
@@ -302,7 +306,7 @@ window.Quarto = {
   <li><a href="#deterministic-components-in-the-cointegrating-space" id="toc-deterministic-components-in-the-cointegrating-space" class="nav-link" data-scroll-target="#deterministic-components-in-the-cointegrating-space">Deterministic Components in the Cointegrating Space</a></li>
   <li><a href="#empirical-application-the-us-yield-curve" id="toc-empirical-application-the-us-yield-curve" class="nav-link" data-scroll-target="#empirical-application-the-us-yield-curve">Empirical Application: The US Yield Curve</a></li>
   </ul></li>
-  <li><a href="#sec-vecm" id="toc-sec-vecm" class="nav-link" data-scroll-target="#sec-vecm"><span class="header-section-number">8.4</span> The Vector Error Correction Model</a>
+  <li><a href="#sec-vecm" id="toc-sec-vecm" class="nav-link" data-scroll-target="#sec-vecm"><span class="header-section-number">9.4</span> The Vector Error Correction Model</a>
   <ul class="collapse">
   <li><a href="#reparameterising-the-var-from-levels-to-the-vecm" id="toc-reparameterising-the-var-from-levels-to-the-vecm" class="nav-link" data-scroll-target="#reparameterising-the-var-from-levels-to-the-vecm">Reparameterising the VAR: From Levels to the VECM</a></li>
   <li><a href="#the-alpha-and-beta-matrices-speed-of-adjustment-and-the-cointegrating-vector" id="toc-the-alpha-and-beta-matrices-speed-of-adjustment-and-the-cointegrating-vector" class="nav-link" data-scroll-target="#the-alpha-and-beta-matrices-speed-of-adjustment-and-the-cointegrating-vector">The <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> Matrices: Speed of Adjustment and the Cointegrating Vector</a></li>
@@ -312,20 +316,20 @@ window.Quarto = {
   <li><a href="#interpreting-the-error-correction-term-economically" id="toc-interpreting-the-error-correction-term-economically" class="nav-link" data-scroll-target="#interpreting-the-error-correction-term-economically">Interpreting the Error Correction Term Economically</a></li>
   <li><a href="#empirical-application-estimating-the-vecm-for-the-yield-curve-short-run" id="toc-empirical-application-estimating-the-vecm-for-the-yield-curve-short-run" class="nav-link" data-scroll-target="#empirical-application-estimating-the-vecm-for-the-yield-curve-short-run">Empirical Application: Estimating the VECM for the Yield Curve (Short-Run)</a></li>
   </ul></li>
-  <li><a href="#sec-diagnostics" id="toc-sec-diagnostics" class="nav-link" data-scroll-target="#sec-diagnostics"><span class="header-section-number">8.5</span> Diagnostics and Model Evaluation</a>
+  <li><a href="#sec-diagnostics" id="toc-sec-diagnostics" class="nav-link" data-scroll-target="#sec-diagnostics"><span class="header-section-number">9.5</span> Diagnostics and Model Evaluation</a>
   <ul class="collapse">
   <li><a href="#residual-diagnostics" id="toc-residual-diagnostics" class="nav-link" data-scroll-target="#residual-diagnostics">Residual Diagnostics</a></li>
   <li><a href="#vecm-vs.-differenced-var-residuals-side-by-side" id="toc-vecm-vs.-differenced-var-residuals-side-by-side" class="nav-link" data-scroll-target="#vecm-vs.-differenced-var-residuals-side-by-side">VECM vs.&nbsp;Differenced-VAR Residuals Side by Side</a></li>
   <li><a href="#common-pitfalls-over-differencing-spurious-cointegration-rank-misspecification" id="toc-common-pitfalls-over-differencing-spurious-cointegration-rank-misspecification" class="nav-link" data-scroll-target="#common-pitfalls-over-differencing-spurious-cointegration-rank-misspecification">Common Pitfalls: Over-Differencing, Spurious Cointegration, Rank Misspecification</a></li>
   </ul></li>
-  <li><a href="#sec-irf" id="toc-sec-irf" class="nav-link" data-scroll-target="#sec-irf"><span class="header-section-number">8.6</span> Impulse Responses and Forecasting from the VECM</a>
+  <li><a href="#sec-irf" id="toc-sec-irf" class="nav-link" data-scroll-target="#sec-irf"><span class="header-section-number">9.6</span> Impulse Responses and Forecasting from the VECM</a>
   <ul class="collapse">
   <li><a href="#permanent-and-transitory-decomposition-of-shocks" id="toc-permanent-and-transitory-decomposition-of-shocks" class="nav-link" data-scroll-target="#permanent-and-transitory-decomposition-of-shocks">Permanent and Transitory Decomposition of Shocks</a></li>
   <li><a href="#forecast-comparison-vecm-vs.-differenced-var" id="toc-forecast-comparison-vecm-vs.-differenced-var" class="nav-link" data-scroll-target="#forecast-comparison-vecm-vs.-differenced-var">Forecast Comparison: VECM vs.&nbsp;Differenced VAR</a></li>
   <li><a href="#empirical-application-irfs-and-forecasts-for-the-yield-curve" id="toc-empirical-application-irfs-and-forecasts-for-the-yield-curve" class="nav-link" data-scroll-target="#empirical-application-irfs-and-forecasts-for-the-yield-curve">Empirical Application: IRFs and Forecasts for the Yield Curve</a></li>
   </ul></li>
-  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">8.7</span> Looking Ahead</a></li>
-  <li><a href="#sec-key-terms" id="toc-sec-key-terms" class="nav-link" data-scroll-target="#sec-key-terms"><span class="header-section-number">8.8</span> Key Terms</a></li>
+  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">9.7</span> Looking Ahead</a></li>
+  <li><a href="#sec-key-terms" id="toc-sec-key-terms" class="nav-link" data-scroll-target="#sec-key-terms"><span class="header-section-number">9.8</span> Key Terms</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ncachanosky/ECON-5371/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -334,7 +338,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -363,7 +367,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -381,8 +385,8 @@ Learning Objectives
 </div>
 </div>
 <p>This chapter takes up the question that Chapter 7 left open. We built the full VAR toolkit there — lag selection, Granger causality, structural identification, impulse responses — but maintained throughout that every variable in the system is stationary. Section 7.9 showed what happens when that assumption fails: the standard inference tools break down, and the two naive responses — estimating the VAR in levels anyway, or differencing everything before estimation — are both wrong in different ways. The cointegration framework is the principled resolution. Section 8.1 makes the problem precise and introduces the yield curve as the running example, showing why neither a levels VAR nor a differenced VAR captures the full picture. Section 8.2 develops the concept of cointegration itself: what a shared stochastic trend means, how it is formalised through the cointegrating vector, and how the expectations hypothesis of the term structure motivates the specific long-run restriction we impose. Section 8.3 develops the Johansen procedure for testing cointegrating rank. Section 8.4 builds the VECM, shows how it separates short-run dynamics from the long-run equilibrium, and estimates it on our running example. Section 8.5 covers diagnostics and the comparison between VECM and differenced-VAR residuals. Section 8.6 closes the chapter with impulse responses and forecasts.</p>
-<section id="sec-problem" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="sec-problem"><span class="header-section-number">8.1</span> The Problem with I(1) Variables in a VAR</h2>
+<section id="sec-problem" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-problem"><span class="header-section-number">9.1</span> The Problem with I(1) Variables in a VAR</h2>
 <p>Chapter 4 established that regressing one I(1) series on another produces spurious results unless the two series are cointegrated: <span class="math inline">\(t\)</span>-statistics are inflated, <span class="math inline">\(R^2\)</span> is high even when the series are independent, and the residuals exhibit strong serial correlation that invalidates standard inference. The same problem — and a related but distinct set of problems — arises in a multivariate setting when I(1) variables are included in a VAR estimated in levels.</p>
 <p>The immediate concern is inference. The OLS coefficient estimates in each VAR equation are still consistent when the variables are I(1) — unlike in a static regression, the dynamics of the VAR prevent the worst forms of spurious correlation — but the sampling distributions of those estimates are non-standard. The <span class="math inline">\(t\)</span>-statistics, <span class="math inline">\(F\)</span>-statistics, and information criteria we used throughout Chapter 7 for lag selection and Granger causality tests no longer have their usual asymptotic distributions under the null. Lag selection by AIC or BIC systematically over-selects. The block exclusion tests for Granger causality reject too often even when there is no true predictive relationship. The companion matrix may have eigenvalues close to the unit circle — not because the system is explosive, but because the unit roots in the data are being absorbed into the VAR dynamics.</p>
 <p>The subtler problem emerges in forecasting and impulse response analysis. A correctly specified stationary VAR has the property that shocks are transitory: impulse responses decay to zero as the horizon grows, and long-run forecasts revert to the unconditional mean. An I(1) system has no unconditional mean to revert to. Shocks to an integrated variable are permanent — they shift the level of the series indefinitely. A VAR in levels estimated on I(1) variables will produce impulse responses that do not converge to zero, reflecting the permanent effects of shocks. Depending on whether the variables are cointegrated or not, those permanent effects either make economic sense or represent a modelling artefact.</p>
@@ -392,7 +396,7 @@ Learning Objectives
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Do Not Estimate a VAR in Levels with I(1) Variables
+<span class="screen-reader-only">Warning</span>Do Not Estimate a VAR in Levels with I(1) Variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -417,7 +421,7 @@ Do Not Estimate a VAR in Levels with I(1) Variables
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What “Long-Run Information” Means
+<span class="screen-reader-only">Note</span>What “Long-Run Information” Means
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -432,7 +436,7 @@ What “Long-Run Information” Means
 <div id="cell-fig-yields" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ax.plot(yields.index, yields[<span class="st">"LongRate"</span>],</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_COPPER, lw<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">"10-Year Treasury Yield"</span>)</span>
@@ -446,7 +450,7 @@ What “Long-Run Information” Means
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US Treasury Yields, 1954Q1–2019Q4"</span>)</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-yields" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -455,7 +459,7 @@ What “Long-Run Information” Means
 <img src="chapter_08_files/figure-html/fig-yields-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.1: The 10-year Treasury yield (copper) and the 3-month Treasury bill rate (sky blue), 1954Q1–2019Q4. Both rates are I(1): they drift upward through the inflationary 1970s and downward through the post-Volcker decades without reverting to a fixed level. Yet they track each other closely throughout — driven by the same monetary policy and inflation expectations — motivating the hypothesis that they share a common stochastic trend. Recessions shaded in grey.
+Figure&nbsp;9.1: The 10-year Treasury yield (copper) and the 3-month Treasury bill rate (sky blue), 1954Q1–2019Q4. Both rates are I(1): they drift upward through the inflationary 1970s and downward through the post-Volcker decades without reverting to a fixed level. Yet they track each other closely throughout — driven by the same monetary policy and inflation expectations — motivating the hypothesis that they share a common stochastic trend. Recessions shaded in grey.
 </figcaption>
 </figure>
 </div>
@@ -465,7 +469,7 @@ Figure&nbsp;8.1: The 10-year Treasury yield (copper) and the 3-month Treasury bi
 <p>Formal unit root tests confirm the visual impression.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Unit Root Tests — 10-Year Yield and 3-Month T-Bill"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Intercept included; no deterministic trend."</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
@@ -489,12 +493,12 @@ Figure&nbsp;8.1: The 10-year Treasury yield (copper) and the 3-month Treasury bi
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Both series: ADF fails to reject unit root;"</span>)</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  KPSS rejects stationarity. Confirmed I(1)."</span>)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-unit-root-yields" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-unit-root-yields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.1
+Table&nbsp;9.1
 </figcaption>
 <div aria-describedby="tbl-unit-root-yields-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -533,7 +537,7 @@ Table&nbsp;8.1
 <div id="cell-fig-spread" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">5.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">5.5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Top panel: levels re-based to zero</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(yields.index,</span>
@@ -566,16 +570,16 @@ Table&nbsp;8.1
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"I(1) Yield Levels vs. Their Stationary Spread"</span>)</span>
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-spread" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spread-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-spread-output-1.png" width="893" height="845" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-spread-output-1.png" width="893" height="844" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spread-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.2: The 10-year/3-month term spread (bottom panel) alongside the two yield levels re-based to 1954Q1 (top panel). The individual rates drift without bound; the spread fluctuates around a positive mean and shows no long-run drift. Terracotta shading marks yield curve inversions — periods when the spread turns negative — which have preceded every recession in the sample. Grey shading marks NBER recessions.
+Figure&nbsp;9.2: The 10-year/3-month term spread (bottom panel) alongside the two yield levels re-based to 1954Q1 (top panel). The individual rates drift without bound; the spread fluctuates around a positive mean and shows no long-run drift. Terracotta shading marks yield curve inversions — periods when the spread turns negative — which have preceded every recession in the sample. Grey shading marks NBER recessions.
 </figcaption>
 </figure>
 </div>
@@ -586,8 +590,8 @@ Figure&nbsp;8.2: The 10-year/3-month term spread (bottom panel) alongside the tw
 <p>A natural question is why we use the Treasury yield pair rather than other well-known I(1) pairs in macroeconomics. The short answer is clarity. Some pairs that are theoretically cointegrated — log consumption and log income, for instance, as implied by the permanent income hypothesis — turn out to have equilibrium relationships that shift substantially over long samples. The US personal saving rate has trended downward since the 1970s, meaning the consumption-to-income ratio is not cleanly stationary over a postwar sample. A Chow test or Bai-Perron procedure of the kind developed in Chapter 6 would detect a structural break in that long-run relationship. The yield curve does not suffer from this problem: the term spread has fluctuated around a positive mean for the full postwar period without any comparable secular drift, making it the cleaner illustration of cointegration mechanics.</p>
 </section>
 </section>
-<section id="sec-cointegration" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="sec-cointegration"><span class="header-section-number">8.2</span> Cointegration: The Concept</h2>
+<section id="sec-cointegration" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-cointegration"><span class="header-section-number">9.2</span> Cointegration: The Concept</h2>
 <section id="a-shared-stochastic-trend" class="level3">
 <h3 class="anchored" data-anchor-id="a-shared-stochastic-trend">A Shared Stochastic Trend</h3>
 <p>How can two non-stationary series produce a stationary combination? The answer lies in the structure of integrated processes. Recall from Chapter 4 that a random walk <span class="math inline">\(y_t = y_{t-1} + \varepsilon_t\)</span> accumulates its shocks: we can write <span class="math inline">\(y_t = y_0 + \sum_{s=1}^{t} \varepsilon_s\)</span>, where the partial sum <span class="math inline">\(\sum_{s=1}^{t} \varepsilon_s\)</span> grows without bound as <span class="math inline">\(t\)</span> increases. This accumulated sum is the stochastic trend in <span class="math inline">\(y_t\)</span> — it is what makes the series non-stationary.</p>
@@ -606,7 +610,7 @@ x_t &amp;= \mu_x + \tau_t + u_t^x
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 8.1 — Cointegration
+<span class="screen-reader-only">Note</span>Definition 8.1 — Cointegration
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -636,7 +640,7 @@ Definition 8.1 — Cointegration
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Cointegration Does Not Imply Causality
+<span class="screen-reader-only">Warning</span>Cointegration Does Not Imply Causality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -663,7 +667,7 @@ r^{10}_t - \beta r^{3m}_t\)</span> is stationary. But this does not tell us whet
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Common Trends Representation
+<span class="screen-reader-only">Note</span>The Common Trends Representation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -677,8 +681,8 @@ The Common Trends Representation
 <p>We now develop the test.</p>
 </section>
 </section>
-<section id="sec-johansen" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="sec-johansen"><span class="header-section-number">8.3</span> Testing for Cointegration: The Johansen Procedure</h2>
+<section id="sec-johansen" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="sec-johansen"><span class="header-section-number">9.3</span> Testing for Cointegration: The Johansen Procedure</h2>
 <section id="from-var-to-the-pi-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="from-var-to-the-pi-matrix">From VAR to the <span class="math inline">\(\Pi\)</span> Matrix</h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Johansen_test">Johansen procedure</a> begins not with a new model but with the VAR in levels we were warned against estimating for inference — because despite its inferential problems, the levels VAR contains the information needed to test for cointegration. The key insight is that cointegrating relationships, if they exist, impose a specific algebraic restriction on the VAR coefficient matrices: the matrix that collects the long-run information has reduced rank. Testing for cointegration is therefore a test of the rank of a particular matrix, and rank can be determined from eigenvalues.</p>
@@ -709,7 +713,7 @@ The Common Trends Representation
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The <span class="math inline">\(\Pi\)</span> Matrix Is the Heart of the Johansen Test
+<span class="screen-reader-only">Note</span>The <span class="math inline">\(\Pi\)</span> Matrix Is the Heart of the Johansen Test
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -742,7 +746,7 @@ The <span class="math inline">\(\Pi\)</span> Matrix Is the Heart of the Johansen
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-How the Eigenvalues Are Computed
+<span class="screen-reader-only">Note</span>How the Eigenvalues Are Computed
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -769,7 +773,7 @@ How the Eigenvalues Are Computed
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Sequential Testing Inflates the Type I Error Rate
+<span class="screen-reader-only">Warning</span>Sequential Testing Inflates the Type I Error Rate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -790,7 +794,7 @@ Sequential Testing Inflates the Type I Error Rate
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The <code>det_order</code> Argument in <code>coint_johansen</code>
+<span class="screen-reader-only">Warning</span>The <code>det_order</code> Argument in <code>coint_johansen</code>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -809,7 +813,7 @@ The <code>det_order</code> Argument in <code>coint_johansen</code>
 <p>We now apply the Johansen procedure to the 10-year yield and the 3-month T-bill rate over the 1954Q1–2019Q4 sample. The first step is lag length selection for the underlying VAR in levels.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  VAR Lag Selection — 10-Year Yield and 3-Month T-Bill"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Sample: </span><span class="sc">{</span>SAMPLE_START<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>SAMPLE_END<span class="sc">}</span><span class="ss">  (n = </span><span class="sc">{</span><span class="bu">len</span>(yield_data)<span class="sc">}</span><span class="ss">)"</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
@@ -836,12 +840,12 @@ The <code>det_order</code> Argument in <code>coint_johansen</code>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">60</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>p_var  <span class="op">=</span> aic_best</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>p_vecm <span class="op">=</span> <span class="bu">max</span>(p_var <span class="op">-</span> <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>p_vecm <span class="op">=</span> <span class="bu">max</span>(p_var <span class="op">-</span> <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-var-lag-selection" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-var-lag-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.2
+Table&nbsp;9.2
 </figcaption>
 <div aria-describedby="tbl-var-lag-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -870,7 +874,7 @@ Table&nbsp;8.2
 <p><em>VAR lag selection for the 10-year yield and 3-month T-bill system. BIC selects <span class="math inline">\(p = 2\)</span>; AIC selects <span class="math inline">\(p = 8\)</span>, reflecting its preference for richer short-run dynamics over parsimony. We proceed with the AIC-selected order: the residual diagnostics in Section 8.5 show that <span class="math inline">\(p = 2\)</span> leaves significant autocorrelation in the short-rate equation, confirming that the BIC order is too parsimonious for this system. The lag order passed to <code>coint_johansen</code> is <span class="math inline">\(p - 1 = 7\)</span> because the VECM representation in equation (8.4) has <span class="math inline">\(p - 1\)</span> differenced lags. The rank conclusion does not change across lag orders.</em></p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>jres <span class="op">=</span> coint_johansen(yield_data, det_order<span class="op">=</span><span class="dv">0</span>, k_ar_diff<span class="op">=</span>p_vecm)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>jres <span class="op">=</span> coint_johansen(yield_data, det_order<span class="op">=</span><span class="dv">0</span>, k_ar_diff<span class="op">=</span>p_vecm)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>eig   <span class="op">=</span> jres.eig</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>trace <span class="op">=</span> jres.lr1</span>
@@ -905,12 +909,12 @@ Table&nbsp;8.2
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">68</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01"</span>)</span>
 <span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Estimated cointegrating rank: r̂ = </span><span class="sc">{</span>rank_hat<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">68</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">68</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-johansen" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="7">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-johansen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.3
+Table&nbsp;9.3
 </figcaption>
 <div aria-describedby="tbl-johansen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -925,8 +929,8 @@ Table&nbsp;8.3
 ────────────────────────────────────────────────────────────────────
       H₀: rank ≤    Eigenvalue     Trace    CV 90%    CV 95%        Decision
   ──────────────  ────────────  ────────  ────────  ────────  ──────────────
-               0  0.1120+0.0000j    31.852    13.429    15.494  Reject***
-               1  0.0056+0.0000j     1.433     2.705     3.841  Fail to reject
+               0        0.1120    31.852    13.429    15.494  Reject***
+               1        0.0056     1.433     2.705     3.841  Fail to reject
 ────────────────────────────────────────────────────────────────────
   * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01
   Estimated cointegrating rank: r̂ = 1
@@ -939,7 +943,7 @@ Table&nbsp;8.3
 <div id="cell-fig-eigenvalues" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="ss">f"r ≤ </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_vars)]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].bar(labels, eig, color<span class="op">=</span>[EO_COPPER, EO_SKYBLUE], width<span class="op">=</span><span class="fl">0.4</span>)</span>
@@ -960,16 +964,16 @@ Table&nbsp;8.3
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Johansen Test: Eigenvalues and Trace Statistics"</span>)</span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-eigenvalues" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-eigenvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-eigenvalues-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-eigenvalues-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eigenvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.3: Johansen eigenvalues (left) and trace statistics against 95% critical values (right) for the yield curve system. The first eigenvalue is 0.107 — substantially positive, indicating one stationary linear combination. The second is 0.014 — near zero, indicating one common stochastic trend. The trace statistic for <span class="math inline">\(r = 0\)</span> (33.33) towers above its critical value (15.49); the statistic for <span class="math inline">\(r = 1\)</span> (3.61) falls just below its critical value (3.84). The rank-1 conclusion is unambiguous.
+Figure&nbsp;9.3: Johansen eigenvalues (left) and trace statistics against 95% critical values (right) for the yield curve system. The first eigenvalue is 0.107 — substantially positive, indicating one stationary linear combination. The second is 0.014 — near zero, indicating one common stochastic trend. The trace statistic for <span class="math inline">\(r = 0\)</span> (33.33) towers above its critical value (15.49); the statistic for <span class="math inline">\(r = 1\)</span> (3.61) falls just below its critical value (3.84). The rank-1 conclusion is unambiguous.
 </figcaption>
 </figure>
 </div>
@@ -979,7 +983,7 @@ Figure&nbsp;8.3: Johansen eigenvalues (left) and trace statistics against 95% cr
 <p>With <span class="math inline">\(\hat{r} = 1\)</span> established, we extract the estimated cointegrating vector.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First eigenvector is the cointegrating vector; normalise on the long rate</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First eigenvector is the cointegrating vector; normalise on the long rate</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="op">=</span> jres.evec[:, <span class="dv">0</span>]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="op">=</span> beta_hat <span class="op">/</span> beta_hat[<span class="dv">0</span>]</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -998,12 +1002,12 @@ Figure&nbsp;8.3: Johansen eigenvalues (left) and trace statistics against 95% cr
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Equilibrium residual (error correction term)</span></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>eq_resid <span class="op">=</span> yield_data.values <span class="op">@</span> beta_hat</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>eq_resid_s <span class="op">=</span> pd.Series(eq_resid, index<span class="op">=</span>yield_data.index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>eq_resid_s <span class="op">=</span> pd.Series(eq_resid, index<span class="op">=</span>yield_data.index)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-coint-vector" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-coint-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.4
+Table&nbsp;9.4
 </figcaption>
 <div aria-describedby="tbl-coint-vector-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1012,13 +1016,13 @@ Table&nbsp;8.4
   Estimated Cointegrating Vector (normalised)
 ────────────────────────────────────────────────────
   10-Year Yield   :  1.000  (normalisation)
-  3-Month T-Bill  : -1.0281+0.0000j
+  3-Month T-Bill  : -1.0281
 ────────────────────────────────────────────────────
   Implied long-run relationship:
-  10Y + (-1.0281+0.0000j) × 3M = constant (term premium)
+  10Y + (-1.0281) × 3M = constant (term premium)
 ────────────────────────────────────────────────────
   EH restriction: coefficient on 3M = -1.000
-  Estimated coefficient: -1.0281+0.0000j
+  Estimated coefficient: -1.0281
 ────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
@@ -1029,7 +1033,7 @@ Table&nbsp;8.4
 <div id="cell-fig-ecterm" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ax.plot(eq_resid_s.index, eq_resid_s.values, color<span class="op">=</span>EO_SAGE, lw<span class="op">=</span><span class="fl">1.1</span>,</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"Equilibrium residual"</span>)</span>
@@ -1048,7 +1052,7 @@ Table&nbsp;8.4
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Johansen Equilibrium Residual — Yield Curve System"</span>)</span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ecterm" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1057,7 +1061,7 @@ Table&nbsp;8.4
 <img src="chapter_08_files/figure-html/fig-ecterm-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ecterm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.4: The Johansen equilibrium residual for the yield curve system, 1954Q1–2019Q4. The residual fluctuates around a sample mean of 1.37 percentage points — the estimated term premium — and is clearly mean-reverting throughout. Terracotta shading marks yield curve inversions (residual below zero); grey shading marks NBER recessions. Every inversion in the sample was followed by a recession, and every recession was preceded by an inversion — the alignment of terracotta and grey is near-perfect.
+Figure&nbsp;9.4: The Johansen equilibrium residual for the yield curve system, 1954Q1–2019Q4. The residual fluctuates around a sample mean of 1.37 percentage points — the estimated term premium — and is clearly mean-reverting throughout. Terracotta shading marks yield curve inversions (residual below zero); grey shading marks NBER recessions. Every inversion in the sample was followed by a recession, and every recession was preceded by an inversion — the alignment of terracotta and grey is near-perfect.
 </figcaption>
 </figure>
 </div>
@@ -1067,8 +1071,8 @@ Figure&nbsp;8.4: The Johansen equilibrium residual for the yield curve system, 1
 <p>This equilibrium residual is the series that the VECM will use as its error correction term. Section 8.4 now builds the VECM explicitly, showing how <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and the adjustment coefficients <span class="math inline">\(\hat{\boldsymbol{\alpha}}\)</span> are estimated and interpreted.</p>
 </section>
 </section>
-<section id="sec-vecm" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="sec-vecm"><span class="header-section-number">8.4</span> The Vector Error Correction Model</h2>
+<section id="sec-vecm" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="sec-vecm"><span class="header-section-number">9.4</span> The Vector Error Correction Model</h2>
 <section id="reparameterising-the-var-from-levels-to-the-vecm" class="level3">
 <h3 class="anchored" data-anchor-id="reparameterising-the-var-from-levels-to-the-vecm">Reparameterising the VAR: From Levels to the VECM</h3>
 <p>Section 8.3 showed that when <span class="math inline">\(\text{rank}(\boldsymbol{\Pi}) = r\)</span> with <span class="math inline">\(0 &lt; r &lt; n\)</span>, the <span class="math inline">\(\Pi\)</span> matrix can be factored as <span class="math inline">\(\boldsymbol{\Pi} = \boldsymbol{\alpha}\boldsymbol{\beta}'\)</span>. Substituting this factorisation into equation (8.4) gives the vector error correction model directly:</p>
@@ -1100,7 +1104,7 @@ Figure&nbsp;8.4: The Johansen equilibrium residual for the yield curve system, 1
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> Matrices
+<span class="screen-reader-only">Note</span>The <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> Matrices
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1141,7 +1145,7 @@ r^{3m}_{t-1} &gt; 0\)</span>), stability requires the spread to narrow: either t
 <h3 class="anchored" data-anchor-id="empirical-application-estimating-the-vecm-for-the-yield-curve">Empirical Application: Estimating the VECM for the Yield Curve</h3>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vecm_fit <span class="op">=</span> VECM(yield_data, k_ar_diff<span class="op">=</span>p_vecm, coint_rank<span class="op">=</span><span class="dv">1</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vecm_fit <span class="op">=</span> VECM(yield_data, k_ar_diff<span class="op">=</span>p_vecm, coint_rank<span class="op">=</span><span class="dv">1</span>,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                deterministic<span class="op">=</span><span class="st">"ci"</span>).fit()</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Extract key components ────────────────────────────────────────────────────</span></span>
@@ -1187,12 +1191,12 @@ r^{3m}_{t-1} &gt; 0\)</span>), stability requires the spread to narrow: either t
 <span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>t_alpha[i]<span class="sc">:&gt;8.3f}{</span>stars<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">50</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01  (two-tailed)"</span>)</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">50</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">50</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-vecm-estimation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="11">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-vecm-estimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.5
+Table&nbsp;9.5
 </figcaption>
 <div aria-describedby="tbl-vecm-estimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1230,7 +1234,7 @@ Table&nbsp;8.5
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Weak Exogeneity and the <span class="math inline">\(\alpha\)</span> Coefficients
+<span class="screen-reader-only">Warning</span>Weak Exogeneity and the <span class="math inline">\(\alpha\)</span> Coefficients
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1241,7 +1245,7 @@ Weak Exogeneity and the <span class="math inline">\(\alpha\)</span> Coefficients
 <div id="cell-fig-vecm-fit" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute fitted Δy and aligned arrays (used here and in diagnostics cell) ──</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute fitted Δy and aligned arrays (used here and in diagnostics cell) ──</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Δy_t = α·z_{t-1} + Γ₁·Δy_{t-1} + ... + Γ_{p-1}·Δy_{t-p+1}</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>dy_all  <span class="op">=</span> np.array(yield_data.diff().dropna())   <span class="co"># (T-1, 2)</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>T_dy    <span class="op">=</span> <span class="bu">len</span>(dy_all)</span>
@@ -1304,16 +1308,16 @@ Weak Exogeneity and the <span class="math inline">\(\alpha\)</span> Coefficients
 <span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"The Error Correction Mechanism — Yield Curve System"</span>)</span>
 <span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-vecm-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-fit-output-1.png" width="893" height="496" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-fit-output-1.png" width="891" height="494" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.5: Left: the lagged Johansen equilibrium residual <span class="math inline">\(z_{t-1}\)</span> over time, the series that drives the error correction mechanism. Terracotta shading marks inversions (<span class="math inline">\(z_{t-1} &lt; 0\)</span>); grey shading marks recessions. Right: scatter of <span class="math inline">\(z_{t-1}\)</span> against the subsequent quarterly change in the 3-month T-bill rate <span class="math inline">\(\Delta r^{3m}_t\)</span>, the equation where the ECT contributes most (<span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>). The positive slope — higher spread last period predicts a larger increase in the short rate this period — is the error correction mechanism made visual. The fitted OLS line (dashed) has slope <span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>.
+Figure&nbsp;9.5: Left: the lagged Johansen equilibrium residual <span class="math inline">\(z_{t-1}\)</span> over time, the series that drives the error correction mechanism. Terracotta shading marks inversions (<span class="math inline">\(z_{t-1} &lt; 0\)</span>); grey shading marks recessions. Right: scatter of <span class="math inline">\(z_{t-1}\)</span> against the subsequent quarterly change in the 3-month T-bill rate <span class="math inline">\(\Delta r^{3m}_t\)</span>, the equation where the ECT contributes most (<span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>). The positive slope — higher spread last period predicts a larger increase in the short rate this period — is the error correction mechanism made visual. The fitted OLS line (dashed) has slope <span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>.
 </figcaption>
 </figure>
 </div>
@@ -1333,7 +1337,7 @@ Figure&nbsp;8.5: Left: the lagged Johansen equilibrium residual <span class="mat
 <p>The full VECM output also includes the short-run coefficient matrices <span class="math inline">\(\hat{\boldsymbol{\Gamma}}_i\)</span>. With <span class="math inline">\(p - 1 = 1\)</span> lag of differences, there is a single <span class="math inline">\(2 \times 2\)</span> matrix <span class="math inline">\(\hat{\boldsymbol{\Gamma}}_1\)</span>.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="bu">min</span>(gamma_flat.shape[<span class="dv">1</span>], yield_data.shape[<span class="dv">1</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n_cols <span class="op">=</span> <span class="bu">min</span>(gamma_flat.shape[<span class="dv">1</span>], yield_data.shape[<span class="dv">1</span>])</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  VECM Short-Run Dynamics — Γ₁ Matrix"</span>)</span>
@@ -1360,12 +1364,12 @@ Figure&nbsp;8.5: Left: the lagged Johansen equilibrium residual <span class="mat
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01  Standard errors in parentheses."</span>)</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-vecm-shortrun" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-vecm-shortrun-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.6
+Table&nbsp;9.6
 </figcaption>
 <div aria-describedby="tbl-vecm-shortrun-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1394,8 +1398,8 @@ Table&nbsp;8.6
 <p>The VECM is now estimated and its components interpreted. Section 8.5 turns to diagnostics — checking that the model’s residuals support the specification choices made in Sections 8.3 and 8.4 — and comparing the VECM directly to the differenced VAR to see how much the error correction term contributes.</p>
 </section>
 </section>
-<section id="sec-diagnostics" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="sec-diagnostics"><span class="header-section-number">8.5</span> Diagnostics and Model Evaluation</h2>
+<section id="sec-diagnostics" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="sec-diagnostics"><span class="header-section-number">9.5</span> Diagnostics and Model Evaluation</h2>
 <section id="residual-diagnostics" class="level3">
 <h3 class="anchored" data-anchor-id="residual-diagnostics">Residual Diagnostics</h3>
 <p>A VECM is correctly specified only if its residuals are white noise — serially uncorrelated, homoskedastic, and approximately normally distributed. These are the same criteria applied to VAR residuals in Chapter 7, and the same tests apply here. We focus on three: the Portmanteau test for serial correlation, the Jarque-Bera test for normality, and a brief check for heteroskedasticity. The VECM residuals are the series <span class="math inline">\(\hat{\mathbf{u}}_t = \Delta\mathbf{y}_t -
@@ -1404,7 +1408,7 @@ Table&nbsp;8.6
 <div id="cell-fig-vecm-residuals" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.stattools <span class="im">import</span> jarque_bera</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.stattools <span class="im">import</span> jarque_bera</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.diagnostic <span class="im">import</span> acorr_ljungbox</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Residuals from manual fitted_dy ──────────────────────────────────────────</span></span>
@@ -1457,16 +1461,16 @@ Table&nbsp;8.6
 <span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"VECM Residual Diagnostics — Yield Curve System"</span>)</span>
 <span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-vecm-residuals" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-residuals-output-1.png" width="890" height="1072" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-residuals-output-1.png" width="893" height="1071" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.6: VECM residual diagnostics at the AIC-selected lag order <span class="math inline">\(p = 8\)</span>. Top row: residual time series — both equations are centred around zero with no systematic patterns; the Volcker episode (1980–82) generates sharp outliers in both series. Middle row: ACFs with 95% confidence bands — all bars lie within the bands for the long-rate equation; the short-rate equation has one bar near the boundary at lag 8, but no significant autocorrelation remains. Bottom row: histograms against the fitted normal — both distributions are fat-tailed due to the Volcker outliers, which drives the Jarque-Bera rejections in Table 8.7.
+Figure&nbsp;9.6: VECM residual diagnostics at the AIC-selected lag order <span class="math inline">\(p = 8\)</span>. Top row: residual time series — both equations are centred around zero with no systematic patterns; the Volcker episode (1980–82) generates sharp outliers in both series. Middle row: ACFs with 95% confidence bands — all bars lie within the bands for the long-rate equation; the short-rate equation has one bar near the boundary at lag 8, but no significant autocorrelation remains. Bottom row: histograms against the fitted normal — both distributions are fat-tailed due to the Volcker outliers, which drives the Jarque-Bera rejections in Table 8.7.
 </figcaption>
 </figure>
 </div>
@@ -1475,7 +1479,7 @@ Figure&nbsp;8.6: VECM residual diagnostics at the AIC-selected lag order <span c
 <p><em>VECM residual diagnostics at lag order <span class="math inline">\(p = 8\)</span>. The richer short-run parameterisation absorbs virtually all residual autocorrelation: the long-rate ACF shows no significant bars at any lag, and the short-rate ACF has one bar near the 95% boundary at lag 8 — well within the range expected by chance across twelve lags. The distributions are fat-tailed in both equations due to the Volcker episode (1980–82), which dominates the histograms. The Jarque-Bera rejection is entirely attributable to those outliers and does not invalidate the cointegration framework, which relies on asymptotic theory rather than normality.</em></p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  VECM Residual Diagnostics — Yield Curve System"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'Test'</span><span class="sc">:&lt;30}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Long Rate'</span><span class="sc">:&gt;12}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Short Rate'</span><span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
@@ -1507,12 +1511,12 @@ Figure&nbsp;8.6: VECM residual diagnostics at the AIC-selected lag order <span c
 <span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'Jarque-Bera p-value'</span><span class="sc">:&lt;34}</span><span class="ss">  </span><span class="sc">{</span>jb_l[<span class="dv">1</span>]<span class="sc">:&gt;12.3f}</span><span class="ss">  </span><span class="sc">{</span>jb_s[<span class="dv">1</span>]<span class="sc">:&gt;12.3f}</span><span class="ss">"</span>)</span>
 <span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  * Reject H₀ at 5% if p-value &lt; 0.05"</span>)</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">65</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-vecm-diagnostics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-vecm-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.7
+Table&nbsp;9.7
 </figcaption>
 <div aria-describedby="tbl-vecm-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1548,7 +1552,7 @@ Table&nbsp;8.7
 <div id="cell-fig-resid-comparison" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Estimate differenced VAR at same lag order ────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Estimate differenced VAR at same lag order ────────────────────────────────</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dvar_fit  <span class="op">=</span> VAR(yield_data.diff().dropna()).fit(maxlags<span class="op">=</span>p_vecm, ic<span class="op">=</span><span class="va">None</span>,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                                trend<span class="op">=</span><span class="st">'c'</span>)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>dvar_resid <span class="op">=</span> np.array(dvar_fit.resid)           <span class="co"># (T-1-p_vecm, 2)</span></span>
@@ -1592,16 +1596,16 @@ Table&nbsp;8.7
 <span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Residual ACFs: VECM vs. Differenced VAR"</span>)</span>
 <span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-resid-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-resid-comparison-output-1.png" width="891" height="769" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-resid-comparison-output-1.png" width="893" height="768" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.7: Residual ACFs for the VECM (top row) vs.&nbsp;the differenced VAR (bottom row) at lag order <span class="math inline">\(p = 8\)</span>, long-rate equation left and short-rate equation right. Both models produce well-behaved ACFs at this lag order — all bars fall within the 95% confidence bands — confirming that the short-run dynamics are fully parameterised. The VECM and differenced VAR produce nearly identical ACF patterns, indicating that the ECT’s contribution shows up in long-horizon forecast accuracy rather than in residual autocorrelation at the quarterly frequency.
+Figure&nbsp;9.7: Residual ACFs for the VECM (top row) vs.&nbsp;the differenced VAR (bottom row) at lag order <span class="math inline">\(p = 8\)</span>, long-rate equation left and short-rate equation right. Both models produce well-behaved ACFs at this lag order — all bars fall within the 95% confidence bands — confirming that the short-run dynamics are fully parameterised. The VECM and differenced VAR produce nearly identical ACF patterns, indicating that the ECT’s contribution shows up in long-horizon forecast accuracy rather than in residual autocorrelation at the quarterly frequency.
 </figcaption>
 </figure>
 </div>
@@ -1610,7 +1614,7 @@ Figure&nbsp;8.7: Residual ACFs for the VECM (top row) vs.&nbsp;the differenced V
 <p><em>Residual ACFs for the VECM (top) and differenced VAR (bottom) at lag order <span class="math inline">\(p = 8\)</span>. Both models produce essentially identical ACF patterns — all bars within the 95% confidence bands for the long-rate equation, and the short-rate equation well-behaved in both models. The VECM’s Ljung-Box Q(8) = 11.0 (p = 0.20) and the differenced VAR’s Q(8) = 9.7 (p = 0.29) are indistinguishable. The ECT’s contribution is real — it is what prevents the two series from drifting apart at long horizons — but at the quarterly frequency its increment to fit is modest relative to the seven lags of short-run dynamics. Section 8.6 shows where the difference is most visible: in long-horizon forecasts.</em></p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Ljung-Box Q(8) — VECM vs. Differenced VAR"</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  H₀: residuals are serially uncorrelated (reject if p &lt; 0.05)"</span>)</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
@@ -1627,12 +1631,12 @@ Figure&nbsp;8.7: Residual ACFs for the VECM (top row) vs.&nbsp;the differenced V
 <span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    ps   <span class="op">=</span> <span class="bu">float</span>(lb_s[<span class="st">"lb_pvalue"</span>].iloc[<span class="dv">0</span>])</span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>label<span class="sc">:&lt;22}</span><span class="ss">  </span><span class="sc">{</span>ql<span class="sc">:&gt;14.3f}</span><span class="ss">  </span><span class="sc">{</span>pl<span class="sc">:&gt;6.3f}</span><span class="ss">  </span><span class="sc">{</span>qs<span class="sc">:&gt;16.3f}</span><span class="ss">  </span><span class="sc">{</span>ps<span class="sc">:&gt;6.3f}</span><span class="ss">"</span>)</span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-resid-comparison" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.8
+Table&nbsp;9.8
 </figcaption>
 <div aria-describedby="tbl-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1666,7 +1670,7 @@ Table&nbsp;8.8
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Cointegration and Structural Breaks Do Not Mix Well
+<span class="screen-reader-only">Warning</span>Cointegration and Structural Breaks Do Not Mix Well
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1675,15 +1679,15 @@ Cointegration and Structural Breaks Do Not Mix Well
 </div>
 </section>
 </section>
-<section id="sec-irf" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="sec-irf"><span class="header-section-number">8.6</span> Impulse Responses and Forecasting from the VECM</h2>
+<section id="sec-irf" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="sec-irf"><span class="header-section-number">9.6</span> Impulse Responses and Forecasting from the VECM</h2>
 <p>The impulse response functions of a VECM are computed in exactly the same way as those of a VAR. Chapter 7 showed that to identify structural shocks from reduced-form residuals, we impose a recursive (Cholesky) ordering: the variable ordered first receives no contemporaneous influence from the variable ordered second. The VECM inherits this approach directly — we simply work with the VECM representation of the dynamics rather than the VAR in levels.</p>
 <p>The ordering here is <span class="math inline">\(r^{10}_t\)</span> first, <span class="math inline">\(r^{3m}_t\)</span> second. This reflects the institutional reality that the Federal Reserve sets the short rate in response to current macroeconomic conditions, which the long rate already reflects: the long rate can move contemporaneously with a shock without any response from the Fed in the same quarter, but a Fed shock to the short rate takes one period to affect the long rate. This is a standard ordering in the term structure literature and is consistent with the interpretation of <span class="math inline">\(\hat{\alpha}\)</span> that emerged in Section 8.4.</p>
 <p>What changes relative to the VAR in Chapter 7 is the long-run behaviour of the IRFs. In a stationary VAR, all impulse responses decay to zero at long horizons — shocks are transitory. In a VECM with cointegrating rank <span class="math inline">\(r = 1\)</span>, shocks decompose into a <strong>transitory component</strong> and a <strong>permanent component</strong>. The permanent component is the shock to the common stochastic trend — the monetary policy and inflation expectations innovation that shifts both rates permanently. The transitory component is the shock to the spread — a deviation from the long-run equilibrium that the error correction mechanism reverses over time. Both types of shocks generate impulse responses that do not converge to zero; instead, they converge to a non-zero permanent level, reflecting the lasting shift in the level of both rates that a permanent shock induces.</p>
 <div id="cell-fig-vecm-irf" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.vector_ar.vecm <span class="im">import</span> VECM</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.vector_ar.vecm <span class="im">import</span> VECM</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Point estimate IRFs ───────────────────────────────────────────────────────</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>n_periods <span class="op">=</span> <span class="dv">40</span></span>
@@ -1755,16 +1759,16 @@ Cointegration and Structural Breaks Do Not Mix Well
 <span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"VECM Impulse Responses — Yield Curve System"</span>)</span>
 <span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-vecm-irf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-irf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-irf-output-1.png" width="891" height="769" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-irf-output-1.png" width="893" height="768" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-irf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.8: Orthogonalised impulse responses from the VECM at lag order <span class="math inline">\(p = 8\)</span>, Cholesky ordering: 10-year yield first, 3-month rate second. Shaded bands are 95% residual bootstrap confidence intervals (200 replications). All four responses converge to non-zero permanent levels — the hallmark of a cointegrated system where shocks to the common stochastic trend shift both rates permanently. A one-standard-deviation shock to the long rate (left column) produces a permanent effect of approximately 0.33 pp in both rates, converging within about 20 quarters. A shock to the short rate (right column) produces a larger permanent effect of approximately 0.60 pp in both rates, converging within about 15 quarters. The Cholesky restriction is visible: the short rate’s response to a long-rate shock (bottom-left) is zero at horizon zero by construction, then rises gradually.
+Figure&nbsp;9.8: Orthogonalised impulse responses from the VECM at lag order <span class="math inline">\(p = 8\)</span>, Cholesky ordering: 10-year yield first, 3-month rate second. Shaded bands are 95% residual bootstrap confidence intervals (200 replications). All four responses converge to non-zero permanent levels — the hallmark of a cointegrated system where shocks to the common stochastic trend shift both rates permanently. A one-standard-deviation shock to the long rate (left column) produces a permanent effect of approximately 0.33 pp in both rates, converging within about 20 quarters. A shock to the short rate (right column) produces a larger permanent effect of approximately 0.60 pp in both rates, converging within about 15 quarters. The Cholesky restriction is visible: the short rate’s response to a long-rate shock (bottom-left) is zero at horizon zero by construction, then rises gradually.
 </figcaption>
 </figure>
 </div>
@@ -1784,7 +1788,7 @@ Figure&nbsp;8.8: Orthogonalised impulse responses from the VECM at lag order <sp
 <div id="cell-fig-forecast-comparison" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── VECM forecast ─────────────────────────────────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── VECM forecast ─────────────────────────────────────────────────────────────</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>n_ahead   <span class="op">=</span> <span class="dv">40</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>vecm_fc   <span class="op">=</span> vecm_fit.predict(steps<span class="op">=</span>n_ahead)          <span class="co"># (n_ahead, 2) levels</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>fc_index  <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">"2020-01-01"</span>, periods<span class="op">=</span>n_ahead, freq<span class="op">=</span><span class="st">"QS"</span>)</span>
@@ -1823,16 +1827,16 @@ Figure&nbsp;8.8: Orthogonalised impulse responses from the VECM at lag order <sp
 <span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Quarter"</span>)</span>
 <span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"VECM vs. Differenced VAR: 40-Quarter Forecasts"</span>)</span>
 <span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-forecast-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-forecast-comparison-output-1.png" width="892" height="845" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-forecast-comparison-output-1.png" width="893" height="844" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecast-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.9: 40-quarter-ahead forecasts from the VECM (solid) and differenced VAR (dashed) for the 10-year yield (top, copper) and 3-month T-bill rate (bottom, sky blue), starting from 2019Q4. The VECM forecasts converge to a long-run spread of approximately 1.37 pp (2.44% minus 1.07%), matching the estimated term premium. The differenced VAR forecasts imply a spread of only 0.35 pp (1.97% minus 1.62%) — far below any historically plausible term premium. The divergence is immediate and widens with the forecast horizon, illustrating the practical cost of ignoring cointegration for long-horizon yield forecasting.
+Figure&nbsp;9.9: 40-quarter-ahead forecasts from the VECM (solid) and differenced VAR (dashed) for the 10-year yield (top, copper) and 3-month T-bill rate (bottom, sky blue), starting from 2019Q4. The VECM forecasts converge to a long-run spread of approximately 1.37 pp (2.44% minus 1.07%), matching the estimated term premium. The differenced VAR forecasts imply a spread of only 0.35 pp (1.97% minus 1.62%) — far below any historically plausible term premium. The divergence is immediate and widens with the forecast horizon, illustrating the practical cost of ignoring cointegration for long-horizon yield forecasting.
 </figcaption>
 </figure>
 </div>
@@ -1848,14 +1852,14 @@ Figure&nbsp;8.9: 40-quarter-ahead forecasts from the VECM (solid) and difference
 <p>The chapter has now developed the full cointegration framework: from the theoretical motivation through the Johansen test, VECM estimation, diagnostics, and forecast comparison. The key takeaways are that the yield curve provides a clean illustration of cointegration — two I(1) series sharing one common stochastic trend, with a stationary spread and an ECT that encodes genuine mean-reversion — and that the VECM adds most of its value at long forecast horizons, where the common-trend restriction prevents the modelled series from drifting apart.</p>
 </section>
 </section>
-<section id="sec-looking-ahead" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">8.7</span> Looking Ahead</h2>
+<section id="sec-looking-ahead" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">9.7</span> Looking Ahead</h2>
 <p>The cointegration framework developed in this chapter assumes that the relationships governing the system — the number of cointegrating vectors, the long-run coefficients, the speed-of-adjustment parameters — are stable throughout the sample. This is a strong assumption. For the yield curve over 1954–2019, it is broadly defensible: the term spread has fluctuated around a positive mean throughout the sample with no evidence of a broken cointegrating relationship. But Chapter 9 will take up a class of models where parameter stability is not assumed but explicitly modelled — not in the mean of the process, as in Chapter 6, but in its variance.</p>
 <p>Financial and macroeconomic time series exhibit <strong>volatility clustering</strong>: large changes tend to cluster together, and calm periods alternate with turbulent ones. The Volcker episode that generated the extreme outliers in the VECM residuals of this chapter is the most visible example — but the pattern is pervasive. Quiet 1990s, turbulent 2008 financial crisis, compressed volatility in the post-crisis period: the conditional variance of yield changes is anything but constant. The assumption of homoskedastic errors embedded in both the VAR and the VECM is therefore systematically violated in financial data.</p>
 <p>Chapter 9 introduces the <strong>ARCH and GARCH family</strong> of models, which explicitly parameterise the time-varying conditional variance. The GARCH(1,1) model — arguably the most influential model in empirical finance — will show that the volatility of yield changes today depends on last period’s shock and last period’s volatility, producing the clustering we observe. Value-at-risk calculations, option pricing, and risk management all depend on accurate conditional variance estimates; the tools of Chapter 9 are what make those estimates possible.</p>
 </section>
-<section id="sec-key-terms" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="sec-key-terms"><span class="header-section-number">8.8</span> Key Terms</h2>
+<section id="sec-key-terms" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="sec-key-terms"><span class="header-section-number">9.8</span> Key Terms</h2>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1948,13 +1952,14 @@ r^{3m}_t\)</span>) turns negative. In the VECM framework, an inversion means the
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2350,16 +2355,16 @@ r^{3m}_t\)</span>) turns negative. In the VECM framework, an inversion means the
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../chapters/07/chapter_07.html" class="pagination-link" aria-label="Vector Autoregressions">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../chapters/09/chapter_09.html" class="pagination-link" aria-label="Volatility Models — ARCH, GARCH, and Extensions">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb26" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Cointegration and the Vector Error Correction Model"</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -4729,7 +4734,7 @@ r^{3m}_t\)</span>) turns negative. In the VECM framework, an inversion means the
 <span id="cb26-2406"><a href="#cb26-2406" aria-hidden="true" tabindex="-1"></a>positive spread. Yield curve inversions have preceded every US recession in the</span>
 <span id="cb26-2407"><a href="#cb26-2407" aria-hidden="true" tabindex="-1"></a>1954–2019 sample.</span>
 <span id="cb26-2408"><a href="#cb26-2408" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

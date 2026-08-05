@@ -2,15 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="">
 <meta name="description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
 
-<title>11&nbsp; State Space Models and the Kalman Filter – Time Series Analysis for Economists</title>
+<title>12&nbsp; State Space Models and the Kalman Filter – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/11/chapter_11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/11/chapter_11.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -196,79 +200,79 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/01/chapter_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/02/chapter_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/03/chapter_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/04/chapter_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/06/chapter_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/07/chapter_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/08/chapter_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/09/chapter_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/10/chapter_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/11/chapter_11.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/appendix/appendix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,20 +285,20 @@ window.Quarto = {
     <h2 id="toc-title">In this chapter</h2>
    
   <ul>
-  <li><a href="#sec-garch-ss" id="toc-sec-garch-ss" class="nav-link active" data-scroll-target="#sec-garch-ss"><span class="header-section-number">11.1</span> From GARCH to State Space: The Unifying Idea</a>
+  <li><a href="#sec-garch-ss" id="toc-sec-garch-ss" class="nav-link active" data-scroll-target="#sec-garch-ss"><span class="header-section-number">12.1</span> From GARCH to State Space: The Unifying Idea</a>
   <ul class="collapse">
   <li><a href="#a-recursion-you-already-know" id="toc-a-recursion-you-already-know" class="nav-link" data-scroll-target="#a-recursion-you-already-know">A Recursion You Already Know</a></li>
   <li><a href="#the-two-equation-structure" id="toc-the-two-equation-structure" class="nav-link" data-scroll-target="#the-two-equation-structure">The Two-Equation Structure</a></li>
   <li><a href="#what-garch-cannot-do-and-why-that-matters" id="toc-what-garch-cannot-do-and-why-that-matters" class="nav-link" data-scroll-target="#what-garch-cannot-do-and-why-that-matters">What GARCH Cannot Do — and Why That Matters</a></li>
   <li><a href="#a-first-glimpse-tracking-inflation-in-the-1970s" id="toc-a-first-glimpse-tracking-inflation-in-the-1970s" class="nav-link" data-scroll-target="#a-first-glimpse-tracking-inflation-in-the-1970s">A First Glimpse: Tracking Inflation in the 1970s</a></li>
   </ul></li>
-  <li><a href="#sec-llm" id="toc-sec-llm" class="nav-link" data-scroll-target="#sec-llm"><span class="header-section-number">11.2</span> The Local Level Model</a>
+  <li><a href="#sec-llm" id="toc-sec-llm" class="nav-link" data-scroll-target="#sec-llm"><span class="header-section-number">12.2</span> The Local Level Model</a>
   <ul class="collapse">
   <li><a href="#the-model" id="toc-the-model" class="nav-link" data-scroll-target="#the-model">The Model</a></li>
   <li><a href="#connecting-to-models-you-already-know" id="toc-connecting-to-models-you-already-know" class="nav-link" data-scroll-target="#connecting-to-models-you-already-know">Connecting to Models You Already Know</a></li>
   <li><a href="#what-we-need-to-estimate" id="toc-what-we-need-to-estimate" class="nav-link" data-scroll-target="#what-we-need-to-estimate">What We Need to Estimate</a></li>
   </ul></li>
-  <li><a href="#sec-kalman" id="toc-sec-kalman" class="nav-link" data-scroll-target="#sec-kalman"><span class="header-section-number">11.3</span> The Kalman Filter</a>
+  <li><a href="#sec-kalman" id="toc-sec-kalman" class="nav-link" data-scroll-target="#sec-kalman"><span class="header-section-number">12.3</span> The Kalman Filter</a>
   <ul class="collapse">
   <li><a href="#the-inference-problem" id="toc-the-inference-problem" class="nav-link" data-scroll-target="#the-inference-problem">The Inference Problem</a></li>
   <li><a href="#the-recursion-two-steps" id="toc-the-recursion-two-steps" class="nav-link" data-scroll-target="#the-recursion-two-steps">The Recursion: Two Steps</a></li>
@@ -302,13 +306,13 @@ window.Quarto = {
   <li><a href="#the-recursion-in-motion" id="toc-the-recursion-in-motion" class="nav-link" data-scroll-target="#the-recursion-in-motion">The Recursion in Motion</a></li>
   <li><a href="#what-makes-this-optimal" id="toc-what-makes-this-optimal" class="nav-link" data-scroll-target="#what-makes-this-optimal">What Makes This Optimal?</a></li>
   </ul></li>
-  <li><a href="#sec-snr" id="toc-sec-snr" class="nav-link" data-scroll-target="#sec-snr"><span class="header-section-number">11.4</span> Initialisation, the Signal-to-Noise Ratio, and Estimation</a>
+  <li><a href="#sec-snr" id="toc-sec-snr" class="nav-link" data-scroll-target="#sec-snr"><span class="header-section-number">12.4</span> Initialisation, the Signal-to-Noise Ratio, and Estimation</a>
   <ul class="collapse">
   <li><a href="#where-does-the-filter-start" id="toc-where-does-the-filter-start" class="nav-link" data-scroll-target="#where-does-the-filter-start">Where Does the Filter Start?</a></li>
   <li><a href="#the-signal-to-noise-ratio" id="toc-the-signal-to-noise-ratio" class="nav-link" data-scroll-target="#the-signal-to-noise-ratio">The Signal-to-Noise Ratio</a></li>
   <li><a href="#maximum-likelihood-estimation-via-the-prediction-error-decomposition" id="toc-maximum-likelihood-estimation-via-the-prediction-error-decomposition" class="nav-link" data-scroll-target="#maximum-likelihood-estimation-via-the-prediction-error-decomposition">Maximum Likelihood Estimation via the Prediction Error Decomposition</a></li>
   </ul></li>
-  <li><a href="#sec-smooth" id="toc-sec-smooth" class="nav-link" data-scroll-target="#sec-smooth"><span class="header-section-number">11.5</span> Smoothing, Filtering, and Forecasting</a>
+  <li><a href="#sec-smooth" id="toc-sec-smooth" class="nav-link" data-scroll-target="#sec-smooth"><span class="header-section-number">12.5</span> Smoothing, Filtering, and Forecasting</a>
   <ul class="collapse">
   <li><a href="#three-different-questions-about-the-hidden-state" id="toc-three-different-questions-about-the-hidden-state" class="nav-link" data-scroll-target="#three-different-questions-about-the-hidden-state">Three Different Questions About the Hidden State</a></li>
   <li><a href="#the-filtered-estimate" id="toc-the-filtered-estimate" class="nav-link" data-scroll-target="#the-filtered-estimate">The Filtered Estimate</a></li>
@@ -316,28 +320,28 @@ window.Quarto = {
   <li><a href="#forecast-uncertainty-grows-with-horizon" id="toc-forecast-uncertainty-grows-with-horizon" class="nav-link" data-scroll-target="#forecast-uncertainty-grows-with-horizon">Forecast Uncertainty Grows with Horizon</a></li>
   <li><a href="#the-filtered-vs.-smoothed-distinction-in-practice" id="toc-the-filtered-vs.-smoothed-distinction-in-practice" class="nav-link" data-scroll-target="#the-filtered-vs.-smoothed-distinction-in-practice">The Filtered vs.&nbsp;Smoothed Distinction in Practice</a></li>
   </ul></li>
-  <li><a href="#sec-general" id="toc-sec-general" class="nav-link" data-scroll-target="#sec-general"><span class="header-section-number">11.6</span> The General State Space Form</a>
+  <li><a href="#sec-general" id="toc-sec-general" class="nav-link" data-scroll-target="#sec-general"><span class="header-section-number">12.6</span> The General State Space Form</a>
   <ul class="collapse">
   <li><a href="#the-general-linear-state-space-model" id="toc-the-general-linear-state-space-model" class="nav-link" data-scroll-target="#the-general-linear-state-space-model">The General Linear State Space Model</a></li>
   <li><a href="#special-cases-a-taxonomy" id="toc-special-cases-a-taxonomy" class="nav-link" data-scroll-target="#special-cases-a-taxonomy">Special Cases: A Taxonomy</a></li>
   <li><a href="#what-the-general-form-buys" id="toc-what-the-general-form-buys" class="nav-link" data-scroll-target="#what-the-general-form-buys">What the General Form Buys</a></li>
   </ul></li>
-  <li><a href="#sec-application" id="toc-sec-application" class="nav-link" data-scroll-target="#sec-application"><span class="header-section-number">11.7</span> Application: Time-Varying Trend Inflation</a>
+  <li><a href="#sec-application" id="toc-sec-application" class="nav-link" data-scroll-target="#sec-application"><span class="header-section-number">12.7</span> Application: Time-Varying Trend Inflation</a>
   <ul class="collapse">
   <li><a href="#fitting-the-local-level-model" id="toc-fitting-the-local-level-model" class="nav-link" data-scroll-target="#fitting-the-local-level-model">Fitting the Local Level Model</a></li>
   <li><a href="#filtered-and-smoothed-trend-inflation" id="toc-filtered-and-smoothed-trend-inflation" class="nav-link" data-scroll-target="#filtered-and-smoothed-trend-inflation">Filtered and Smoothed Trend Inflation</a></li>
   <li><a href="#residual-diagnostics" id="toc-residual-diagnostics" class="nav-link" data-scroll-target="#residual-diagnostics">Residual Diagnostics</a></li>
   <li><a href="#a-fan-chart-forecast" id="toc-a-fan-chart-forecast" class="nav-link" data-scroll-target="#a-fan-chart-forecast">A Fan Chart Forecast</a></li>
   </ul></li>
-  <li><a href="#sec-nowcasting" id="toc-sec-nowcasting" class="nav-link" data-scroll-target="#sec-nowcasting"><span class="header-section-number">11.8</span> From Filtering to Nowcasting</a>
+  <li><a href="#sec-nowcasting" id="toc-sec-nowcasting" class="nav-link" data-scroll-target="#sec-nowcasting"><span class="header-section-number">12.8</span> From Filtering to Nowcasting</a>
   <ul class="collapse">
   <li><a href="#the-real-time-problem" id="toc-the-real-time-problem" class="nav-link" data-scroll-target="#the-real-time-problem">The Real-Time Problem</a></li>
   <li><a href="#the-mixed-frequency-problem" id="toc-the-mixed-frequency-problem" class="nav-link" data-scroll-target="#the-mixed-frequency-problem">The Mixed-Frequency Problem</a></li>
   <li><a href="#the-model-1" id="toc-the-model-1" class="nav-link" data-scroll-target="#the-model-1">The Model</a></li>
   <li><a href="#what-this-model-cannot-do-and-where-to-go-next" id="toc-what-this-model-cannot-do-and-where-to-go-next" class="nav-link" data-scroll-target="#what-this-model-cannot-do-and-where-to-go-next">What This Model Cannot Do — and Where to Go Next</a></li>
   </ul></li>
-  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">11.9</span> Looking Ahead</a></li>
-  <li><a href="#sec-key-terms" id="toc-sec-key-terms" class="nav-link" data-scroll-target="#sec-key-terms"><span class="header-section-number">11.10</span> Key Terms</a></li>
+  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">12.9</span> Looking Ahead</a></li>
+  <li><a href="#sec-key-terms" id="toc-sec-key-terms" class="nav-link" data-scroll-target="#sec-key-terms"><span class="header-section-number">12.10</span> Key Terms</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ncachanosky/ECON-5371/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -346,7 +350,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -375,7 +379,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -393,8 +397,8 @@ Learning Objectives
 </div>
 </div>
 <p>Chapter 9 closed with a question: what if the parameters of a volatility model are not constant across time? That question opens the door to the state space framework, the most general modelling architecture introduced in this book. Section 11.1 begins by honouring the bridge from Chapter 9: the GARCH(1,1) variance recursion, reread carefully, is already a state equation — the conditional variance is an unobserved state, and the squared return is a noisy observation of it. That reinterpretation motivates the general vocabulary of observation equations, state equations, and the signal-noise decomposition. Section 11.2 introduces the local level model: the simplest non-trivial state space model, and the one that does most of the pedagogical work in this chapter. Section 11.3 derives the Kalman filter from scratch in scalar form, walking through the prediction and update steps with enough algebra to make the recursion completely transparent. Section 11.4 addresses practical matters — initialisation, the signal-to-noise ratio, and how the filter is estimated from data. Section 11.5 sharpens the distinction between filtering, smoothing, and forecasting. Section 11.6 presents the general matrix form of the state space model and shows that ARIMA, exponential smoothing, and time-varying parameter regressions are all special cases. Section 11.7 applies the full apparatus to core PCE inflation, tracing the Great Inflation and the <a href="https://en.wikipedia.org/wiki/Great_Moderation">Great Moderation</a> through a smoothed trend estimate. Section 11.8 connects the Kalman filter to nowcasting. Throughout, the running example is monthly core PCE inflation from 1960 through 2019.</p>
-<section id="sec-garch-ss" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="sec-garch-ss"><span class="header-section-number">11.1</span> From GARCH to State Space: The Unifying Idea</h2>
+<section id="sec-garch-ss" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="sec-garch-ss"><span class="header-section-number">12.1</span> From GARCH to State Space: The Unifying Idea</h2>
 <section id="a-recursion-you-already-know" class="level3">
 <h3 class="anchored" data-anchor-id="a-recursion-you-already-know">A Recursion You Already Know</h3>
 <p>Chapter 9 left us with a model — the GARCH(1,1) — that is both powerful and somewhat mysterious. We can write it down, estimate it, and interpret its parameters, but the mechanism by which it tracks volatility over time still feels opaque. Why does the GARCH filter work? What principle is it implementing? And why does it do a good job of recovering an object — conditional variance — that we never directly observe?</p>
@@ -410,7 +414,7 @@ Learning Objectives
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 11.1 — State Variable and Observation
+<span class="screen-reader-only">Note</span>Definition 11.1 — State Variable and Observation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -440,7 +444,7 @@ z_t^2\)</span> — the state enters the observation multiplicatively, with noise
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Prediction-Correction Principle
+<span class="screen-reader-only">Note</span>The Prediction-Correction Principle
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -463,8 +467,8 @@ The Prediction-Correction Principle
 <p>This two-number summary — a state estimate and an uncertainty measure — is what flows forward into the next period’s prediction step. January’s posterior becomes February’s prior. The filter is a machine for converting a sequence of noisy observations into a sequence of progressively refined state estimates, each carrying its own measure of how confident we should be. Section 11.2 writes this down precisely for the simplest possible case.</p>
 </section>
 </section>
-<section id="sec-llm" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="sec-llm"><span class="header-section-number">11.2</span> The Local Level Model</h2>
+<section id="sec-llm" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="sec-llm"><span class="header-section-number">12.2</span> The Local Level Model</h2>
 <p>The inflation example in Section 11.1 had all the ingredients of a state space model: an unobserved trend, noisy monthly observations, and a question about how the trend evolves. The <strong>local level model</strong> is the minimal formal structure that captures exactly this. It has two equations and two parameters, and almost everything important about the Kalman filter can be seen in it before we ever write down a matrix.</p>
 <p>The economic premise is simple. Suppose the “true” level of some series — trend inflation, say — drifts over time in a way that is not fully predictable. Each period, it moves by a small random amount. What we observe is this drifting level plus measurement noise. Our task is to recover the hidden level from the noisy observations.</p>
 <section id="the-model" class="level3">
@@ -479,7 +483,7 @@ The Prediction-Correction Principle
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 11.2 — The Local Level Model
+<span class="screen-reader-only">Note</span>Definition 11.2 — The Local Level Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -508,7 +512,7 @@ Definition 11.2 — The Local Level Model
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Random Walk Trend Is Not the Same as Nonstationarity
+<span class="screen-reader-only">Warning</span>The Random Walk Trend Is Not the Same as Nonstationarity
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -524,8 +528,8 @@ The Random Walk Trend Is Not the Same as Nonstationarity
 \mu_T\)</span> are unobserved, so they must be integrated out. The Kalman filter solves this problem as a by-product of its state estimation: running the filter forward through the data produces the prediction errors (called <strong>innovations</strong>) that enter the likelihood, and those innovations can be evaluated at any candidate parameter values. Maximising the resulting <strong>prediction error decomposition</strong> of the likelihood over <span class="math inline">\((\sigma_\varepsilon^2, \sigma_\eta^2)\)</span> gives maximum likelihood estimates. We return to estimation in Section 11.4 after deriving the filter itself.</p>
 </section>
 </section>
-<section id="sec-kalman" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="sec-kalman"><span class="header-section-number">11.3</span> The Kalman Filter</h2>
+<section id="sec-kalman" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="sec-kalman"><span class="header-section-number">12.3</span> The Kalman Filter</h2>
 <section id="the-inference-problem" class="level3">
 <h3 class="anchored" data-anchor-id="the-inference-problem">The Inference Problem</h3>
 <p>We now have a model — the local level model — and a question: given observations <span class="math inline">\(y_1, \ldots, y_t\)</span>, what is the best estimate of the current state <span class="math inline">\(\mu_t\)</span>? “Best” here means minimum mean squared error: we want the estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> that minimises <span class="math inline">\(\mathbb{E}[(\mu_t -
@@ -568,7 +572,7 @@ The Random Walk Trend Is Not the Same as Nonstationarity
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Kalman Gain in Plain Language
+<span class="screen-reader-only">Note</span>The Kalman Gain in Plain Language
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -610,7 +614,7 @@ The Kalman Gain in Plain Language
 <div id="cell-fig-recursive-updating" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Self-contained fit to obtain parameters and Dec 1978 posterior ────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Self-contained fit to obtain parameters and Dec 1978 posterior ────────────</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Section 11.7 fits and interprets the full model; this cell fits it silently</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># here so Figure 11.5 does not depend on Section 11.7's execution order.</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Underscore-prefixed names avoid collision with Section 11.7 variables.</span></span>
@@ -674,16 +678,16 @@ The Kalman Gain in Plain Language
 <span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Figure 11.5 — Recursive state updating, calendar year 1979"</span>)</span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-recursive-updating" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-recursive-updating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-recursive-updating-output-1.png" width="891" height="496" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-recursive-updating-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recursive-updating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.1: <strong>The Kalman filter in motion: twelve consecutive updates through 1979.</strong> Copper dots: observed monthly core PCE inflation (annualised). Sky blue step line: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> after each successive monthly update. Dotted horizontal line: the December 1978 prior. Each step reflects one prediction-correction cycle; the cumulative effect of twelve updates shifts the trend estimate well above the prior as the filter accumulates evidence that the rise in inflation is persistent, not transitory.
+Figure&nbsp;12.1: <strong>The Kalman filter in motion: twelve consecutive updates through 1979.</strong> Copper dots: observed monthly core PCE inflation (annualised). Sky blue step line: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> after each successive monthly update. Dotted horizontal line: the December 1978 prior. Each step reflects one prediction-correction cycle; the cumulative effect of twelve updates shifts the trend estimate well above the prior as the filter accumulates evidence that the rise in inflation is persistent, not transitory.
 </figcaption>
 </figure>
 </div>
@@ -702,7 +706,7 @@ y_1, \ldots, y_t]\)</span>. With non-Gaussian innovations, it remains the best <
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Filter Requires Correct Parameter Values
+<span class="screen-reader-only">Warning</span>The Filter Requires Correct Parameter Values
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -711,8 +715,8 @@ The Filter Requires Correct Parameter Values
 </div>
 </section>
 </section>
-<section id="sec-snr" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="sec-snr"><span class="header-section-number">11.4</span> Initialisation, the Signal-to-Noise Ratio, and Estimation</h2>
+<section id="sec-snr" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="sec-snr"><span class="header-section-number">12.4</span> Initialisation, the Signal-to-Noise Ratio, and Estimation</h2>
 <section id="where-does-the-filter-start" class="level3">
 <h3 class="anchored" data-anchor-id="where-does-the-filter-start">Where Does the Filter Start?</h3>
 <p>The Kalman recursion (10.7)–(10.13) is a forward iteration: each period’s filtered estimate feeds into the next period’s prediction. But to start the machine, we need an initial state estimate <span class="math inline">\(\hat{\mu}_{0|0}\)</span> and an initial variance <span class="math inline">\(P_{0|0}\)</span> before any data have been observed.</p>
@@ -724,7 +728,7 @@ The Filter Requires Correct Parameter Values
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Burn the First Few Observations
+<span class="screen-reader-only">Warning</span>Burn the First Few Observations
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -750,7 +754,7 @@ Burn the First Few Observations
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 11.3 — Signal-to-Noise Ratio
+<span class="screen-reader-only">Note</span>Definition 11.3 — Signal-to-Noise Ratio
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -777,7 +781,7 @@ Definition 11.3 — Signal-to-Noise Ratio
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why the Prediction Error Decomposition Works
+<span class="screen-reader-only">Note</span>Why the Prediction Error Decomposition Works
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -786,8 +790,8 @@ Why the Prediction Error Decomposition Works
 </div>
 </section>
 </section>
-<section id="sec-smooth" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="sec-smooth"><span class="header-section-number">11.5</span> Smoothing, Filtering, and Forecasting</h2>
+<section id="sec-smooth" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="sec-smooth"><span class="header-section-number">12.5</span> Smoothing, Filtering, and Forecasting</h2>
 <section id="three-different-questions-about-the-hidden-state" class="level3">
 <h3 class="anchored" data-anchor-id="three-different-questions-about-the-hidden-state">Three Different Questions About the Hidden State</h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> of Section 11.3 answers one specific question: what is our best estimate of <span class="math inline">\(\mu_t\)</span> using data up to and including time <span class="math inline">\(t\)</span>? This is the right question for a policymaker or forecaster operating in real time — they can only use information available at <span class="math inline">\(t\)</span>.</p>
@@ -813,7 +817,7 @@ Why the Prediction Error Decomposition Works
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 11.4 — Filter, Smoother, and Forecast
+<span class="screen-reader-only">Note</span>Definition 11.4 — Filter, Smoother, and Forecast
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -843,7 +847,7 @@ Definition 11.4 — Filter, Smoother, and Forecast
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Do Not Report Smoothed States as Real-Time Estimates
+<span class="screen-reader-only">Warning</span>Do Not Report Smoothed States as Real-Time Estimates
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -852,8 +856,8 @@ Do Not Report Smoothed States as Real-Time Estimates
 </div>
 </section>
 </section>
-<section id="sec-general" class="level2" data-number="11.6">
-<h2 data-number="11.6" class="anchored" data-anchor-id="sec-general"><span class="header-section-number">11.6</span> The General State Space Form</h2>
+<section id="sec-general" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="sec-general"><span class="header-section-number">12.6</span> The General State Space Form</h2>
 <p>Everything we have done so far — the local level model, the <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> recursion, the prediction error likelihood — applies to a specific and simple model. The power of the state space framework is that the same machinery extends, without modification, to a vastly broader class of models. This section writes down the general form and shows that models you have already studied — ARIMA, exponential smoothing, time-varying parameter regressions — are all special cases. The goal is not to develop new tools but to provide a map: a single set of equations that encompasses most of what applied macroeconomists mean by “dynamic models.”</p>
 <section id="the-general-linear-state-space-model" class="level3">
 <h3 class="anchored" data-anchor-id="the-general-linear-state-space-model">The General Linear State Space Model</h3>
@@ -876,7 +880,7 @@ Do Not Report Smoothed States as Real-Time Estimates
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 11.5 — System Matrices
+<span class="screen-reader-only">Note</span>Definition 11.5 — System Matrices
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -907,7 +911,7 @@ Q = \sigma_\eta^2\]</span></p>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Time-Varying <span class="math inline">\(\mathbf{Z}_t\)</span> Requires Care
+<span class="screen-reader-only">Warning</span>Time-Varying <span class="math inline">\(\mathbf{Z}_t\)</span> Requires Care
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -922,15 +926,15 @@ Time-Varying <span class="math inline">\(\mathbf{Z}_t\)</span> Requires Care
 <p>Third, the state space form provides the natural language for nowcasting, which we take up in Section 11.8. When new data arrive at mixed frequencies — some monthly, some quarterly — the challenge is updating the state estimate as each observation becomes available. The <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> handles this natively: missing observations are simply periods in which <span class="math inline">\(y_t\)</span> is not observed, and the filter skips the update step and runs only the prediction step. No special treatment is required.</p>
 </section>
 </section>
-<section id="sec-application" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="sec-application"><span class="header-section-number">11.7</span> Application: Time-Varying Trend Inflation</h2>
+<section id="sec-application" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="sec-application"><span class="header-section-number">12.7</span> Application: Time-Varying Trend Inflation</h2>
 <p>What has the underlying trend of US core PCE inflation been since 1960? This sounds like a question with an obvious answer — plot inflation and look at it. But the monthly series is too noisy to answer the question directly. Any given month’s reading reflects genuine trend changes, transitory supply disruptions, seasonal residuals, and measurement noise in roughly equal measure. Distinguishing persistent trend shifts from transitory noise is exactly the signal-extraction problem the local level model was built to solve.</p>
 <p>The stakes are not merely academic. The Federal Reserve’s policy framework since the 1990s has been built around the concept of a long-run inflation anchor. Whether inflation was “well-anchored” in the 1970s, whether the Volcker disinflation produced a permanent shift in the trend or merely a temporary deviation, and whether the <a href="https://en.wikipedia.org/wiki/Great_Moderation">Great Moderation</a> represented a genuine regime change or a fortunate run of small shocks — all of these questions require separating trend from noise. The local level model gives us a disciplined, data-driven answer.</p>
 <p>We fit the model to monthly annualised core PCE inflation from January 1960 through December 2019 — 720 observations — and extract filtered states, smoothed states, and a 24-month ahead fan chart forecast.</p>
 <div id="cell-fig-pce-overview" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ax.plot(dates, inflation, color<span class="op">=</span>EO_COPPER, lw<span class="op">=</span><span class="fl">0.7</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span>EO_CHARCOAL, lw<span class="op">=</span><span class="fl">0.6</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
@@ -944,16 +948,16 @@ Time-Varying <span class="math inline">\(\mathbf{Z}_t\)</span> Requires Care
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Figure 11.1 — Core PCE inflation, 1960–2019"</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-pce-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pce-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-pce-overview-output-1.png" width="892" height="496" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-pce-overview-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pce-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annualised month-on-month log change in the Personal Consumption Expenditures price index excluding food and energy, in percent per year. The series captures three distinct regimes: the Great Inflation of the 1970s, the Volcker disinflation of the early 1980s, and the Great Moderation thereafter. The high month-to-month volatility motivates the signal-extraction approach: any single observation is a noisy proxy for the underlying inflation trend. NBER recessions shaded.
+Figure&nbsp;12.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annualised month-on-month log change in the Personal Consumption Expenditures price index excluding food and energy, in percent per year. The series captures three distinct regimes: the Great Inflation of the 1970s, the Volcker disinflation of the early 1980s, and the Great Moderation thereafter. The high month-to-month volatility motivates the signal-extraction approach: any single observation is a noisy proxy for the underlying inflation trend. NBER recessions shaded.
 </figcaption>
 </figure>
 </div>
@@ -966,7 +970,7 @@ Figure&nbsp;11.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annu
 <div id="fit-llm" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Fit local level model to core PCE inflation</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Fit the local level model ──────────────────────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Fit the local level model ──────────────────────────────────────────────────</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> UnobservedComponents(pce[<span class="st">"Inflation"</span>], level<span class="op">=</span><span class="st">"local level"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>llm_result <span class="op">=</span> llm.fit(disp<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1010,7 +1014,7 @@ Figure&nbsp;11.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annu
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Log-likelihood       </span><span class="sc">{:8.2f}</span><span class="st">"</span>.<span class="bu">format</span>(llm_result.llf))</span>
 <span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">52</span>)</span>
 <span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  * MLE via prediction error decomposition."</span>)</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  * Standard errors from observed information matrix."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  * Standard errors from observed information matrix."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>====================================================
@@ -1037,7 +1041,7 @@ Figure&nbsp;11.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annu
 <div id="cell-fig-filter-smooth" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.5</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw series</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ax.plot(dates, inflation, color<span class="op">=</span>EO_COPPER, lw<span class="op">=</span><span class="fl">0.55</span>, alpha<span class="op">=</span><span class="fl">0.45</span>,</span>
@@ -1065,16 +1069,16 @@ Figure&nbsp;11.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annu
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Figure 11.2 — Filtered and smoothed trend inflation, 1960–2019"</span>)</span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-filter-smooth" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-filter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-filter-smooth-output-1.png" width="892" height="542" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-filter-smooth-output-1.png" width="893" height="542" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-filter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.3: <strong>Filtered and smoothed estimates of trend inflation, 1960–2019.</strong> Copper: raw monthly core PCE inflation (annualised). Sky blue: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> — the real-time estimate using only data up to <span class="math inline">\(t\)</span>, with ±1 standard deviation band. Sage: smoothed trend estimate <span class="math inline">\(\hat{\mu}_{t|T}\)</span> — the full-sample retrospective estimate. The smoother produces a cleaner picture of the three regimes; the filter lags slightly at turning points. NBER recessions shaded.
+Figure&nbsp;12.3: <strong>Filtered and smoothed estimates of trend inflation, 1960–2019.</strong> Copper: raw monthly core PCE inflation (annualised). Sky blue: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> — the real-time estimate using only data up to <span class="math inline">\(t\)</span>, with ±1 standard deviation band. Sage: smoothed trend estimate <span class="math inline">\(\hat{\mu}_{t|T}\)</span> — the full-sample retrospective estimate. The smoother produces a cleaner picture of the three regimes; the filter lags slightly at turning points. NBER recessions shaded.
 </figcaption>
 </figure>
 </div>
@@ -1088,7 +1092,7 @@ Figure&nbsp;11.3: <strong>Filtered and smoothed estimates of trend inflation, 19
 <div id="cell-fig-diagnostics" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Burn first 12 observations (diffuse prior initialisation period)</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>std_innov_trimmed <span class="op">=</span> std_innov[<span class="dv">12</span>:]</span>
@@ -1130,16 +1134,16 @@ Figure&nbsp;11.3: <strong>Filtered and smoothed estimates of trend inflation, 19
 <span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  Lags 1–</span><span class="sc">{</span>lag<span class="sc">:2d}</span><span class="ss">:  Q = </span><span class="sc">{</span>row[<span class="st">'lb_stat'</span>]<span class="sc">:6.2f}</span><span class="ss">,  "</span></span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"p = </span><span class="sc">{</span>row[<span class="st">'lb_pvalue'</span>]<span class="sc">:.3f}</span><span class="ss">  </span><span class="sc">{</span>stars<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">50</span>)</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-diagnostics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-diagnostics-output-1.png" width="893" height="436" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-diagnostics-output-1.png" width="893" height="435" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.4: <strong>Innovation diagnostics for the local level model.</strong> Left: time series of standardised innovations <span class="math inline">\(v_t / \sqrt{F_t}\)</span>, which should resemble white noise if the model is correctly specified. Right: ACF of standardised innovations, lags 1–24. Bartlett bounds at ±1.96/√T shown as dashed blue lines. Ljung-Box <span class="math inline">\(p\)</span>-values reported in the text.
+Figure&nbsp;12.4: <strong>Innovation diagnostics for the local level model.</strong> Left: time series of standardised innovations <span class="math inline">\(v_t / \sqrt{F_t}\)</span>, which should resemble white noise if the model is correctly specified. Right: ACF of standardised innovations, lags 1–24. Bartlett bounds at ±1.96/√T shown as dashed blue lines. Ljung-Box <span class="math inline">\(p\)</span>-values reported in the text.
 </figcaption>
 </figure>
 </div>
@@ -1162,7 +1166,7 @@ Ljung-Box test — H₀: no autocorrelation in standardised innovations
 <div id="cell-fig-forecast" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> <span class="dv">24</span>   <span class="co"># forecast horizon in months</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>H <span class="op">=</span> <span class="dv">24</span>   <span class="co"># forecast horizon in months</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Forecast state: random walk, so mean stays flat</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fc_mean <span class="op">=</span> np.full(H, smoothed_state[<span class="op">-</span><span class="dv">1</span>])</span>
@@ -1218,7 +1222,7 @@ Ljung-Box test — H₀: no autocorrelation in standardised innovations
 <span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Figure 11.4 — Local level model fan chart, 2020–2021"</span>)</span>
 <span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-forecast" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1227,7 +1231,7 @@ Ljung-Box test — H₀: no autocorrelation in standardised innovations
 <img src="chapter_11_files/figure-html/fig-forecast-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.5: <strong>Local level model fan chart, 2020–2021.</strong> Point forecast (sky blue solid): the filtered trend at December 2019. Shaded bands: 50% (darkest), 75%, and 90% (lightest) forecast intervals, widening linearly as the unobserved trend drifts away from its end-of-sample estimate. The pre-COVID sample ends in December 2019; the fan chart illustrates the genuine uncertainty about trend inflation at the start of 2020, before the pandemic disruption.
+Figure&nbsp;12.5: <strong>Local level model fan chart, 2020–2021.</strong> Point forecast (sky blue solid): the filtered trend at December 2019. Shaded bands: 50% (darkest), 75%, and 90% (lightest) forecast intervals, widening linearly as the unobserved trend drifts away from its end-of-sample estimate. The pre-COVID sample ends in December 2019; the fan chart illustrates the genuine uncertainty about trend inflation at the start of 2020, before the pandemic disruption.
 </figcaption>
 </figure>
 </div>
@@ -1236,8 +1240,8 @@ Figure&nbsp;11.5: <strong>Local level model fan chart, 2020–2021.</strong> Poi
 <p><em>Figure 11.4 shows the 24-month ahead fan chart originating from December 2019. The point forecast is 1.62 percent – the smoothed trend estimate at the end of the sample – reflecting the model’s reading that US core PCE inflation had settled into a stable range just below 2 percent by the final months of the pre-COVID sample. The flat forecast line reflects the random walk nature of the local level state: with no mean reversion, the best estimate of trend inflation at any horizon is simply its current level, and the filter offers no prediction of where it will go. Forecast uncertainty grows linearly with horizon as the unobserved trend accumulates drift at rate <span class="math inline">\(\hat{\sigma}^2_\eta = 0.09\)</span> per month. The 90 percent forecast interval, which spans roughly ±0.9 percentage points at the 12-month horizon, widens to approximately ±1.2 percentage points at 24 months. These are honest intervals: they reflect genuine uncertainty about where a slowly-drifting, unobserved trend will be in one to two years, not the narrower intervals one would obtain by assuming the trend is fixed. Section 11.8 takes the state space framework to its natural limit, combining everything developed in this chapter — the prediction-correction recursion, the missing-observation logic, and the general matrix form — into a genuine mixed-frequency nowcasting model for real GDP.</em></p>
 </section>
 </section>
-<section id="sec-nowcasting" class="level2" data-number="11.8">
-<h2 data-number="11.8" class="anchored" data-anchor-id="sec-nowcasting"><span class="header-section-number">11.8</span> From Filtering to Nowcasting</h2>
+<section id="sec-nowcasting" class="level2" data-number="12.8">
+<h2 data-number="12.8" class="anchored" data-anchor-id="sec-nowcasting"><span class="header-section-number">12.8</span> From Filtering to Nowcasting</h2>
 <section id="the-real-time-problem" class="level3">
 <h3 class="anchored" data-anchor-id="the-real-time-problem">The Real-Time Problem</h3>
 <p>Most of the forecasting covered in this book has been prospective: we stand at the end of a sample and project forward. But there is a different and equally important problem that the <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> is uniquely suited to address — the problem of <strong>nowcasting</strong>.</p>
@@ -1259,7 +1263,7 @@ Figure&nbsp;11.5: <strong>Local level model fan chart, 2020–2021.</strong> Poi
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Nowcasting and the Kalman Filter: The Core Idea
+<span class="screen-reader-only">Note</span>Nowcasting and the Kalman Filter: The Core Idea
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1283,7 +1287,7 @@ Nowcasting and the Kalman Filter: The Core Idea
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What the Custom Model Class Does
+<span class="screen-reader-only">Note</span>What the Custom Model Class Does
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1300,7 +1304,7 @@ What the Custom Model Class Does
 <div id="nowcast-model" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Mixed-frequency dynamic factor model (Mariano-Murasawa)</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.statespace.mlemodel <span class="im">import</span> MLEModel</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.statespace.mlemodel <span class="im">import</span> MLEModel</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MixedFreqDFM(MLEModel):</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -1431,7 +1435,7 @@ What the Custom Model Class Does
 <span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">62</span>)</span>
 <span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  sigma2_eta        (fixed)     1.0000"</span>)</span>
 <span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Log-likelihood    </span><span class="sc">{</span>nw_result<span class="sc">.</span>llf<span class="sc">:10.2f}</span><span class="ss">"</span>)</span>
-<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">62</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">62</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>==============================================================
@@ -1455,7 +1459,7 @@ What the Custom Model Class Does
 <div id="cell-fig-nowcast" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Two-panel layout: top restricted to post-1984 for readability ───────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Two-panel layout: top restricted to post-1984 for readability ───────────────</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The full 1960–2019 sample is too dense for a single-column figure;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the pre-1985 era has much higher volatility that compresses the</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># post-Great Moderation variation. The top panel shows post-1984 where</span></span>
@@ -1505,16 +1509,16 @@ What the Custom Model Class Does
 <span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(h_pad<span class="op">=</span><span class="fl">1.5</span>)  <span class="co"># extra vertical padding since panels have different x ranges</span></span>
 <span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Figure 11.6 — Mixed-frequency GDP nowcasting"</span>)</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-nowcast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nowcast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-nowcast-output-1.png" width="892" height="845" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-nowcast-output-1.png" width="893" height="845" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nowcast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.6: <strong>Mixed-frequency GDP nowcasting.</strong> Top panel (1985–2019): annualised quarterly real GDP growth (copper bars, plotted at the quarterly release date) and the monthly GDP nowcast (sky blue line) constructed by Mariano-Murasawa temporal aggregation of the filtered activity factor. The nowcast tracks GDP growth and leads each recession by one to two months as the monthly indicators weaken before the quarterly release confirms the slowdown. Bottom panel (1960–2019, full sample): the latent economic activity factor <span class="math inline">\(\hat{\alpha}_{t|t}\)</span> with ±1 SD band; the factor dips sharply ahead of every NBER recession across six decades. NBER recessions shaded in both panels.
+Figure&nbsp;12.6: <strong>Mixed-frequency GDP nowcasting.</strong> Top panel (1985–2019): annualised quarterly real GDP growth (copper bars, plotted at the quarterly release date) and the monthly GDP nowcast (sky blue line) constructed by Mariano-Murasawa temporal aggregation of the filtered activity factor. The nowcast tracks GDP growth and leads each recession by one to two months as the monthly indicators weaken before the quarterly release confirms the slowdown. Bottom panel (1960–2019, full sample): the latent economic activity factor <span class="math inline">\(\hat{\alpha}_{t|t}\)</span> with ±1 SD band; the factor dips sharply ahead of every NBER recession across six decades. NBER recessions shaded in both panels.
 </figcaption>
 </figure>
 </div>
@@ -1528,21 +1532,21 @@ Figure&nbsp;11.6: <strong>Mixed-frequency GDP nowcasting.</strong> Top panel (19
 <p>The key point is that none of those extensions requires new principles. They use larger <span class="math inline">\(\mathbf{Z}\)</span> and <span class="math inline">\(\mathbf{T}\)</span> matrices, more free parameters, and more sophisticated initialisation — but the same prediction-correction recursion, the same prediction error likelihood, and the same missing-observation logic that drives the two-indicator model above. The <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> scales from the local level model of Section 11.2 to the most complex macroeconomic forecasting systems in use today.</p>
 </section>
 </section>
-<section id="sec-looking-ahead" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">11.9</span> Looking Ahead</h2>
+<section id="sec-looking-ahead" class="level2" data-number="12.9">
+<h2 data-number="12.9" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">12.9</span> Looking Ahead</h2>
 <p>This is the final chapter. It is worth pausing to take stock of how far the toolkit has come since Chapter 1.</p>
 <p>We began with the simplest possible question: is this series predictable from its own past? The ACF and PACF gave a visual answer; the white noise tests gave a formal one. Chapter 1’s stationarity assumption — that the mean, variance, and autocovariance structure of a series are constant over time — was the foundation on which everything else was built. Chapter 4 extended that foundation to integrated processes and the machinery of ARIMA and SARIMA modelling. Chapter 5 gave it operational discipline: the distinction between in-sample fit and out-of-sample forecast accuracy, the Diebold-Mariano test, and the question of when a more complex model genuinely improves predictions. Chapters 6 through 8 opened the framework to multivariate and non-stationary settings — structural breaks, vector autoregressions, cointegration — where the behaviour of a single series can only be understood through its relationships with others. Chapter 9 turned to the second moment: the discovery that while the mean of a financial return may be unforecastable, its variance is not, and GARCH gave us the tools to model and forecast that time-varying uncertainty. And in this chapter, the state space framework revealed that all of these models — ARIMA, GARCH, exponential smoothing, VAR — are special cases of a single architecture in which an unobserved state evolves according to its own dynamics and is observed through a noisy measurement equation.</p>
 <p>The road ahead is long and worth taking. The state space framework introduced in this chapter is the entry point to a vast literature: dynamic factor models and the principal-components approach to large panels, mixed-frequency VARs that combine monthly and quarterly data in a single system, time-varying parameter VARs that allow regression coefficients to drift as in Section 11.6, particle filters for nonlinear and non-Gaussian state equations that the <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> cannot handle. Structural DSGE models — the workhorse of modern macroeconomic policy analysis — are estimated by writing the model’s equilibrium conditions in state space form and running the <a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a> on the observable variables. Machine learning methods are increasingly combined with state space models to allow more flexible functional forms in the observation and state equations. Each of these extensions uses the prediction-correction logic of Section 11.3 as its foundation. The eleven chapters of this book are not the end of the subject. They are the point where the interesting questions begin.</p>
 </section>
-<section id="sec-key-terms" class="level2" data-number="11.10">
-<h2 data-number="11.10" class="anchored" data-anchor-id="sec-key-terms"><span class="header-section-number">11.10</span> Key Terms</h2>
+<section id="sec-key-terms" class="level2" data-number="12.10">
+<h2 data-number="12.10" class="anchored" data-anchor-id="sec-key-terms"><span class="header-section-number">12.10</span> Key Terms</h2>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key Terms — Chapter 11
+<span class="screen-reader-only">Note</span>Key Terms — Chapter 11
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1622,13 +1626,14 @@ Key Terms — Chapter 11
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2024,16 +2029,16 @@ Key Terms — Chapter 11
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../chapters/10/chapter_10.html" class="pagination-link" aria-label="Regime-Switching Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../chapters/appendix/appendix.html" class="pagination-link" aria-label="Appendix: A Primer on Matrix Algebra">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "State Space Models and the Kalman Filter"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -4296,7 +4301,7 @@ Key Terms — Chapter 11
 <span id="cb12-2283"><a href="#cb12-2283" aria-hidden="true" tabindex="-1"></a>from the panel of observables. The foundation of most operational</span>
 <span id="cb12-2284"><a href="#cb12-2284" aria-hidden="true" tabindex="-1"></a>nowcasting systems.</span>
 <span id="cb12-2285"><a href="#cb12-2285" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

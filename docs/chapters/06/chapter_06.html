@@ -2,15 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="">
 <meta name="description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
 
-<title>6&nbsp; Structural Breaks – Time Series Analysis for Economists</title>
+<title>7&nbsp; Structural Breaks – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/06/chapter_06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/06/chapter_06.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -196,79 +200,79 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/01/chapter_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/02/chapter_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/03/chapter_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/04/chapter_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/06/chapter_06.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/07/chapter_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/08/chapter_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/09/chapter_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/10/chapter_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/11/chapter_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/appendix/appendix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,19 +285,19 @@ window.Quarto = {
     <h2 id="toc-title">In this chapter</h2>
    
   <ul>
-  <li><a href="#sec-motivation" id="toc-sec-motivation" class="nav-link active" data-scroll-target="#sec-motivation"><span class="header-section-number">6.1</span> When the Rules Change</a>
+  <li><a href="#sec-motivation" id="toc-sec-motivation" class="nav-link active" data-scroll-target="#sec-motivation"><span class="header-section-number">7.1</span> When the Rules Change</a>
   <ul class="collapse">
   <li><a href="#the-great-moderation-as-a-running-example" id="toc-the-great-moderation-as-a-running-example" class="nav-link" data-scroll-target="#the-great-moderation-as-a-running-example">The Great Moderation as a Running Example</a></li>
   <li><a href="#what-structural-change-looks-like-statistically" id="toc-what-structural-change-looks-like-statistically" class="nav-link" data-scroll-target="#what-structural-change-looks-like-statistically">What Structural Change Looks Like Statistically</a></li>
   </ul></li>
-  <li><a href="#sec-chow" id="toc-sec-chow" class="nav-link" data-scroll-target="#sec-chow"><span class="header-section-number">6.2</span> The Chow Test: A Known Break Date</a>
+  <li><a href="#sec-chow" id="toc-sec-chow" class="nav-link" data-scroll-target="#sec-chow"><span class="header-section-number">7.2</span> The Chow Test: A Known Break Date</a>
   <ul class="collapse">
   <li><a href="#the-regression-setup" id="toc-the-regression-setup" class="nav-link" data-scroll-target="#the-regression-setup">The Regression Setup</a></li>
   <li><a href="#two-equivalent-formulations" id="toc-two-equivalent-formulations" class="nav-link" data-scroll-target="#two-equivalent-formulations">Two Equivalent Formulations</a></li>
   <li><a href="#what-the-chow-test-does-and-does-not-tell-us" id="toc-what-the-chow-test-does-and-does-not-tell-us" class="nav-link" data-scroll-target="#what-the-chow-test-does-and-does-not-tell-us">What the Chow Test Does and Does Not Tell Us</a></li>
   <li><a href="#python-chow-test-on-gdp-growth" id="toc-python-chow-test-on-gdp-growth" class="nav-link" data-scroll-target="#python-chow-test-on-gdp-growth">Python: Chow Test on GDP Growth</a></li>
   </ul></li>
-  <li><a href="#sec-qlr-bp" id="toc-sec-qlr-bp" class="nav-link" data-scroll-target="#sec-qlr-bp"><span class="header-section-number">6.3</span> Unknown Break Dates: From QLR to Bai-Perron</a>
+  <li><a href="#sec-qlr-bp" id="toc-sec-qlr-bp" class="nav-link" data-scroll-target="#sec-qlr-bp"><span class="header-section-number">7.3</span> Unknown Break Dates: From QLR to Bai-Perron</a>
   <ul class="collapse">
   <li><a href="#testing-for-a-variance-break" id="toc-testing-for-a-variance-break" class="nav-link" data-scroll-target="#testing-for-a-variance-break">Testing for a Variance Break</a></li>
   <li><a href="#sec-qlr" id="toc-sec-qlr" class="nav-link" data-scroll-target="#sec-qlr">The Quandt Likelihood Ratio Test</a></li>
@@ -304,14 +308,14 @@ window.Quarto = {
   <li><a href="#the-bai-perron-estimator" id="toc-the-bai-perron-estimator" class="nav-link" data-scroll-target="#the-bai-perron-estimator">The Bai-Perron Estimator</a></li>
   <li><a href="#python-bai-perron-with-ruptures" id="toc-python-bai-perron-with-ruptures" class="nav-link" data-scroll-target="#python-bai-perron-with-ruptures">Python: Bai-Perron with <code>ruptures</code></a></li>
   </ul></li>
-  <li><a href="#sec-za" id="toc-sec-za" class="nav-link" data-scroll-target="#sec-za"><span class="header-section-number">6.4</span> Unit Roots or Broken Trends? The Zivot-Andrews Test</a>
+  <li><a href="#sec-za" id="toc-sec-za" class="nav-link" data-scroll-target="#sec-za"><span class="header-section-number">7.4</span> Unit Roots or Broken Trends? The Zivot-Andrews Test</a>
   <ul class="collapse">
   <li><a href="#a-problem-we-left-unresolved" id="toc-a-problem-we-left-unresolved" class="nav-link" data-scroll-target="#a-problem-we-left-unresolved">A Problem We Left Unresolved</a></li>
   <li><a href="#a-new-running-example-cpi-inflation" id="toc-a-new-running-example-cpi-inflation" class="nav-link" data-scroll-target="#a-new-running-example-cpi-inflation">A New Running Example: CPI Inflation</a></li>
   <li><a href="#the-zivot-andrews-model" id="toc-the-zivot-andrews-model" class="nav-link" data-scroll-target="#the-zivot-andrews-model">The Zivot-Andrews Model</a></li>
   <li><a href="#python-zivot-andrews-on-inflation-and-gdp-growth" id="toc-python-zivot-andrews-on-inflation-and-gdp-growth" class="nav-link" data-scroll-target="#python-zivot-andrews-on-inflation-and-gdp-growth">Python: Zivot-Andrews on Inflation and GDP Growth</a></li>
   </ul></li>
-  <li><a href="#sec-response" id="toc-sec-response" class="nav-link" data-scroll-target="#sec-response"><span class="header-section-number">6.5</span> What to Do After Finding a Break</a>
+  <li><a href="#sec-response" id="toc-sec-response" class="nav-link" data-scroll-target="#sec-response"><span class="header-section-number">7.5</span> What to Do After Finding a Break</a>
   <ul class="collapse">
   <li><a href="#option-1-subperiod-estimation" id="toc-option-1-subperiod-estimation" class="nav-link" data-scroll-target="#option-1-subperiod-estimation">Option 1: Subperiod Estimation</a></li>
   <li><a href="#option-2-dummy-variables" id="toc-option-2-dummy-variables" class="nav-link" data-scroll-target="#option-2-dummy-variables">Option 2: Dummy Variables</a></li>
@@ -319,8 +323,8 @@ window.Quarto = {
   <li><a href="#option-4-regime-switching-models" id="toc-option-4-regime-switching-models" class="nav-link" data-scroll-target="#option-4-regime-switching-models">Option 4: Regime-Switching Models</a></li>
   <li><a href="#python-split-sample-forecasting-on-gdp-growth" id="toc-python-split-sample-forecasting-on-gdp-growth" class="nav-link" data-scroll-target="#python-split-sample-forecasting-on-gdp-growth">Python: Split-Sample Forecasting on GDP Growth</a></li>
   </ul></li>
-  <li><a href="#sec-lookahead6" id="toc-sec-lookahead6" class="nav-link" data-scroll-target="#sec-lookahead6"><span class="header-section-number">6.6</span> Looking Ahead</a></li>
-  <li><a href="#sec-keyterms6" id="toc-sec-keyterms6" class="nav-link" data-scroll-target="#sec-keyterms6"><span class="header-section-number">6.7</span> Key Terms</a></li>
+  <li><a href="#sec-lookahead6" id="toc-sec-lookahead6" class="nav-link" data-scroll-target="#sec-lookahead6"><span class="header-section-number">7.6</span> Looking Ahead</a></li>
+  <li><a href="#sec-keyterms6" id="toc-sec-keyterms6" class="nav-link" data-scroll-target="#sec-keyterms6"><span class="header-section-number">7.7</span> Key Terms</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ncachanosky/ECON-5371/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -329,7 +333,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -358,7 +362,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -375,8 +379,8 @@ Learning Objectives
 </div>
 <p>Chapter 5 ended with a residual puzzle. The rolling evaluation of GDP growth showed forecast errors clustering around recessions in a way that looked structural — not random variation around a stable process, but systematic deterioration in specific subperiods. The ARIMA’s advantage over the random walk with drift shrank and disappeared at longer horizons, exactly the pattern we would expect if the model’s estimated drift and persistence were averages over two regimes that were genuinely different from each other. We named the problem but did not solve it. This chapter provides the solution.</p>
 <p>We begin in Section 6.1 by building the economic intuition for why structural change is so consequential for time series modelling — not just as a statistical nuisance but as the empirical signature of genuine shifts in policy regimes, technology, and institutions. The Chow test in Section 6.2 handles the case where we have a strong prior about when the break occurred. Sections 6.3.1 and 6.3.2 relax that assumption progressively: the Quandt likelihood ratio test searches over all candidate dates; the Bai-Perron procedure allows the number of breaks to be unknown as well. Section 6.4 introduces CPI inflation as a second running example and uses it to motivate the Zivot-Andrews test, which asks whether what looks like a unit root might instead be a broken deterministic trend. Section 6.5 turns from detection to response: how to handle a break once one has been found.</p>
-<section id="sec-motivation" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="sec-motivation"><span class="header-section-number">6.1</span> When the Rules Change</h2>
+<section id="sec-motivation" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-motivation"><span class="header-section-number">7.1</span> When the Rules Change</h2>
 <p>Every regression, every ARMA, every ARIMA we have estimated carries an implicit assumption: that the coefficients we estimate on the first half of the data are the same coefficients that govern the second half. This is the assumption of <strong>parameter stability</strong> — and it is the assumption this chapter teaches us to test.</p>
 <p>Why might it fail? Not because of measurement error or sampling noise, but because economic relationships are not physical laws. They emerge from the behaviour of agents operating under specific institutions, technologies, and policy regimes. When those background conditions change — durably, not transiently — the relationships change with them. A model estimated before the change carries parameter values calibrated to a world that no longer exists.</p>
 <p>Consider what the GDP growth series asks of our models. A single ARIMA estimated over the full 1947–2019 sample pools data from the Korean War boom, the postwar productivity miracle, the stagflation of the 1970s, the Great Moderation of 1984–2007, and the slow recovery from the Global Financial Crisis. The mean growth rate, the persistence of fluctuations, and the variance of shocks all differ across these sub-epochs. Averaging them into a single vector of parameters is not a synthesis — it is a fiction that represents none of these periods well.</p>
@@ -387,7 +391,7 @@ Learning Objectives
 <div id="cell-fig-gdp-motivation" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — GDP growth with Great Moderation marker</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>BREAK_DATE <span class="op">=</span> pd.Timestamp(<span class="st">"1984-01-01"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>BREAK_DATE <span class="op">=</span> pd.Timestamp(<span class="st">"1984-01-01"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -431,16 +435,16 @@ Learning Objectives
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US Real GDP Growth: The Great Moderation"</span>)</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-motivation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-motivation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_06_files/figure-html/fig-gdp-motivation-output-1.png" width="892" height="618" class="figure-img">
+<img src="chapter_06_files/figure-html/fig-gdp-motivation-output-1.png" width="893" height="617" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-motivation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The vertical dashed line marks 1984 Q1, the date associated with the onset of the Great Moderation. The rolling standard deviation (eight-quarter window, right panel) makes the volatility reduction visible: post-1984 volatility is roughly half the pre-1984 level, with the exception of the 2008–09 recession. NBER recessions are shaded.
+Figure&nbsp;7.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The vertical dashed line marks 1984 Q1, the date associated with the onset of the Great Moderation. The rolling standard deviation (eight-quarter window, right panel) makes the volatility reduction visible: post-1984 volatility is roughly half the pre-1984 level, with the exception of the 2008–09 recession. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -456,8 +460,8 @@ Figure&nbsp;6.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The
 <p>All of the tests we develop share a common statistical structure. Each amounts to asking: does a model that allows parameters to differ across two (or more) subsamples fit the data significantly better than a model constrained to use the same parameters throughout? If yes, at what date or dates does the improvement concentrate? The tests differ in how much they assume about the break date and the number of breaks — and therefore in how they handle the statistical complications that arise when those quantities are unknown.</p>
 </section>
 </section>
-<section id="sec-chow" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="sec-chow"><span class="header-section-number">6.2</span> The Chow Test: A Known Break Date</h2>
+<section id="sec-chow" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-chow"><span class="header-section-number">7.2</span> The Chow Test: A Known Break Date</h2>
 <p>Suppose we have a strong prior about when a break occurred. For GDP growth and the Great Moderation, that prior is 1984 Q1 — the date that appears repeatedly in the literature, is consistent with the visual evidence in Figure 6.1, and has the economic interpretation of the post-Volcker monetary policy stabilisation beginning to propagate through the real economy. Given that prior, the simplest possible question is: do the coefficients of our regression model differ across the two subsamples that the break defines?</p>
 <p>The <strong><a href="https://en.wikipedia.org/wiki/Chow_test">Chow test</a></strong>, proposed by Gregory Chow in 1960, is the <span class="math inline">\(F\)</span>-test version of that question. It is one of the oldest procedures in applied econometrics and remains the natural starting point for structural break analysis precisely because it is transparent: it makes no attempt to be clever about what it does not know, so when the break date is known, it delivers the clearest possible answer.</p>
 <section id="the-regression-setup" class="level3">
@@ -488,7 +492,7 @@ Figure&nbsp;6.1: Annualised quarterly US real GDP growth, 1947 Q2–2019 Q4. The
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Two Chow Formulations Are Identical
+<span class="screen-reader-only">Note</span>The Two Chow Formulations Are Identical
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -505,7 +509,7 @@ The Two Chow Formulations Are Identical
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Chow Test Requires a Pre-Specified Break Date
+<span class="screen-reader-only">Warning</span>The Chow Test Requires a Pre-Specified Break Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -519,7 +523,7 @@ The Chow Test Requires a Pre-Specified Break Date
 <p>We apply the Chow test to a simple AR(2) model for annualised GDP growth. The choice of AR(2) as the base regression is deliberate: it is parsimonious, captures the main serial dependence, and gives us a coefficient vector of length <span class="math inline">\(k = 3\)</span> (intercept plus two lags) — enough to make the test substantive without overcomplicating the illustration.</p>
 <details class="code-fold">
 <summary>Show code — Chow test (both formulations)</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Data preparation ──────────────────────────────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Data preparation ──────────────────────────────────────────────────────────</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> gdp[<span class="st">"GDP Growth"</span>].copy()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(2) design matrix: constant + two lags</span></span>
@@ -615,12 +619,12 @@ The Chow Test Requires a Pre-Specified Break Date
 <span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Residual std dev'</span><span class="sc">:20}</span><span class="ss">  </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(res_pre.mse_resid)<span class="sc">:&gt;14.3f}</span><span class="ss">"</span></span>
 <span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"  </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(res_post.mse_resid)<span class="sc">:&gt;14.3f}</span><span class="ss">"</span>)</span>
 <span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">56</span>)</span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Standard errors in parentheses."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Standard errors in parentheses."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-chow" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-chow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6.1
+Table&nbsp;7.1
 </figcaption>
 <div aria-describedby="tbl-chow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -658,7 +662,7 @@ Standard errors in parentheses.</code></pre>
 <div id="cell-fig-chow-subperiods" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code — subperiod fit plot</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitted values from each subsample regression</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitted values from each subsample regression</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fitted_pre  <span class="op">=</span> res_pre.fittedvalues</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fitted_post <span class="op">=</span> res_post.fittedvalues</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -692,16 +696,16 @@ Standard errors in parentheses.</code></pre>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Chow Break at 1984 Q1 — Subperiod AR(2) Fit"</span>)</span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-chow-subperiods" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-chow-subperiods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_06_files/figure-html/fig-chow-subperiods-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_06_files/figure-html/fig-chow-subperiods-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chow-subperiods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.2: GDP growth with fitted subperiod means and one-standard-deviation bands from the AR(2) model estimated separately on each regime. The post-1984 band is visibly narrower, reflecting the reduced shock variance of the Great Moderation. The vertical dashed line marks the Chow break date.
+Figure&nbsp;7.2: GDP growth with fitted subperiod means and one-standard-deviation bands from the AR(2) model estimated separately on each regime. The post-1984 band is visibly narrower, reflecting the reduced shock variance of the Great Moderation. The vertical dashed line marks the Chow break date.
 </figcaption>
 </figure>
 </div>
@@ -709,8 +713,8 @@ Figure&nbsp;6.2: GDP growth with fitted subperiod means and one-standard-deviati
 </div>
 </section>
 </section>
-<section id="sec-qlr-bp" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="sec-qlr-bp"><span class="header-section-number">6.3</span> Unknown Break Dates: From QLR to Bai-Perron</h2>
+<section id="sec-qlr-bp" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-qlr-bp"><span class="header-section-number">7.3</span> Unknown Break Dates: From QLR to Bai-Perron</h2>
 <section id="testing-for-a-variance-break" class="level3">
 <h3 class="anchored" data-anchor-id="testing-for-a-variance-break">Testing for a Variance Break</h3>
 <p>The Chow test checks whether the <em>coefficients</em> of the regression shifted. It does not test whether the <em>variance</em> of the innovations shifted. Yet for GDP growth and the Great Moderation, the variance break is the dominant feature: the residual standard deviation falls from 4.44 to 2.04 percentage points across the 1984 Q1 partition — a ratio of roughly 2.2 to 1, implying that the innovation variance was about 4.7 times larger in the pre-break period.</p>
@@ -723,7 +727,7 @@ Figure&nbsp;6.2: GDP growth with fitted subperiod means and one-standard-deviati
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Variance Ratio Test Requires a Pre-Specified Break Date
+<span class="screen-reader-only">Warning</span>The Variance Ratio Test Requires a Pre-Specified Break Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -732,7 +736,7 @@ The Variance Ratio Test Requires a Pre-Specified Break Date
 </div>
 <details class="code-fold">
 <summary>Show code — variance ratio F-test</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> f <span class="im">as</span> f_dist, levene</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> f <span class="im">as</span> f_dist, levene</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Residuals from the AR(2) fit, split at 1984 Q1</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>resid_pre  <span class="op">=</span> res_pre.resid</span>
@@ -759,12 +763,12 @@ The Variance Ratio Test Requires a Pre-Specified Break Date
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pre-break std dev:   </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(s2_pre)<span class="sc">:.3f}</span><span class="ss"> pp (n = </span><span class="sc">{</span>n_pre<span class="sc">}</span><span class="ss">)"</span>)</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Post-break std dev:  </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(s2_post)<span class="sc">:.3f}</span><span class="ss"> pp (n = </span><span class="sc">{</span>n_post<span class="sc">}</span><span class="ss">)"</span>)</span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variance ratio:      </span><span class="sc">{</span>F_var<span class="sc">:.2f}</span><span class="ss">x (std dev ratio: </span><span class="sc">{</span>np<span class="sc">.</span>sqrt(F_var)<span class="sc">:.2f}</span><span class="ss">x)"</span>)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"*** p&lt;0.01"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"*** p&lt;0.01"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-vartest" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-vartest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6.2
+Table&nbsp;7.2
 </figcaption>
 <div aria-describedby="tbl-vartest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -808,7 +812,7 @@ Variance ratio:      4.73x (std dev ratio: 2.18x)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Davies Problem
+<span class="screen-reader-only">Warning</span>The Davies Problem
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -822,7 +826,7 @@ The Davies Problem
 <div id="cell-fig-qlr" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code — QLR statistic</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fmt_quarter(ts):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fmt_quarter(ts):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Format a Timestamp as 'YYYY QN' (strftime has no %q directive)."""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>ts<span class="sc">.</span>year<span class="sc">}</span><span class="ss"> Q</span><span class="sc">{</span>(ts.month <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -917,7 +921,7 @@ The Davies Problem
 <span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Quandt Likelihood Ratio Test -- Break Date Search"</span>)</span>
 <span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>QLR Test -- AR(2) for Annualised GDP Growth
@@ -937,7 +941,7 @@ Intercept argmax date:  2000 Q3</code></pre>
 <img src="chapter_06_files/figure-html/fig-qlr-output-2.png" width="892" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qlr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.3: Chow <span class="math inline">\(F\)</span>-statistic sequence for two QLR specifications: the full AR(2) model (charcoal, testing all coefficients jointly) and the intercept-only model (sky blue, testing the mean alone). Dashed horizontal lines are Andrews (1993) 5 percent critical values for <span class="math inline">\(k = 3\)</span> (8.85) and <span class="math inline">\(k = 1\)</span> (7.17) respectively. The mean-shift QLR identifies a break in the early 1970s; the AR coefficient QLR does not reject — consistent with the Great Moderation being primarily a variance break. NBER recessions are shaded.
+Figure&nbsp;7.3: Chow <span class="math inline">\(F\)</span>-statistic sequence for two QLR specifications: the full AR(2) model (charcoal, testing all coefficients jointly) and the intercept-only model (sky blue, testing the mean alone). Dashed horizontal lines are Andrews (1993) 5 percent critical values for <span class="math inline">\(k = 3\)</span> (8.85) and <span class="math inline">\(k = 1\)</span> (7.17) respectively. The mean-shift QLR identifies a break in the early 1970s; the AR coefficient QLR does not reject — consistent with the Great Moderation being primarily a variance break. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -965,7 +969,7 @@ Figure&nbsp;6.3: Chow <span class="math inline">\(F\)</span>-statistic sequence 
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-UDmax and WDmax: Testing for at Least One Break
+<span class="screen-reader-only">Note</span>UDmax and WDmax: Testing for at Least One Break
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -987,7 +991,7 @@ UDmax and WDmax: Testing for at Least One Break
 <div id="cell-fig-baiperron" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code — Bai-Perron via ruptures</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> ruptures <span class="im">as</span> rpt</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> subprocess, sys</span>
@@ -1065,7 +1069,7 @@ UDmax and WDmax: Testing for at Least One Break
 <span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>seg_data<span class="sc">.</span>std()<span class="sc">:&gt;8.2f}</span><span class="ss">  "</span></span>
 <span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(seg_data)<span class="sc">:&gt;5}</span><span class="ss">"</span>)</span>
 <span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
-<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Mean and std dev in annualised percentage points."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Mean and std dev in annualised percentage points."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Bai-Perron (ruptures/Pelt) estimated break dates:
@@ -1076,10 +1080,10 @@ Number of breaks detected: 1</code></pre>
 <div id="fig-baiperron" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-baiperron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_06_files/figure-html/fig-baiperron-output-2.png" width="892" height="420" class="figure-img">
+<img src="chapter_06_files/figure-html/fig-baiperron-output-2.png" width="893" height="421" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-baiperron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.4: Bai-Perron multiple break detection on GDP growth. Detected break dates are marked with dashed vertical lines; segment means are shown as coloured horizontal lines within each regime. The segment statistics table printed below the figure reports each segment’s mean and standard deviation. NBER recessions are shaded.
+Figure&nbsp;7.4: Bai-Perron multiple break detection on GDP growth. Detected break dates are marked with dashed vertical lines; segment means are shown as coloured horizontal lines within each regime. The segment statistics table printed below the figure reports each segment’s mean and standard deviation. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -1099,8 +1103,8 @@ Mean and std dev in annualised percentage points.</code></pre>
 <p><em>The Bai-Perron procedure detects the structural features visible in the data: a volatility reduction in the mid-1980s (the Great Moderation), and shifts in the mean growth rate across the sample. The break dates recovered by the algorithm should be compared with the 1984 Q1 prior from the Chow and QLR tests — alignment across methods strengthens the case that the detected break is a genuine feature of the process rather than a statistical artefact. Where the detected dates differ across methods, the differences are themselves informative: they indicate that the break is gradual or multi-dimensional rather than a clean single-date event.</em></p>
 </section>
 </section>
-<section id="sec-za" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="sec-za"><span class="header-section-number">6.4</span> Unit Roots or Broken Trends? The Zivot-Andrews Test</h2>
+<section id="sec-za" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-za"><span class="header-section-number">7.4</span> Unit Roots or Broken Trends? The Zivot-Andrews Test</h2>
 <section id="a-problem-we-left-unresolved" class="level3">
 <h3 class="anchored" data-anchor-id="a-problem-we-left-unresolved">A Problem We Left Unresolved</h3>
 <p>Chapter 4 built a unit root testing workflow and embedded a specific caution in it: when the ADF and KPSS tests give conflicting signals for a series, one recommended diagnostic was to suspect a structural break and investigate subsamples. That advice was sound but incomplete. It told us what to do after finding a conflict — split the sample and re-examine — but it did not give us a formal test for whether a break was actually present, or when it occurred. The Zivot-Andrews test is the formal version of that advice.</p>
@@ -1115,7 +1119,7 @@ Mean and std dev in annualised percentage points.</code></pre>
 <div id="cell-fig-inflation-series" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code — CPI inflation series</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>VOLCKER_START <span class="op">=</span> pd.Timestamp(<span class="st">"1979-07-01"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>VOLCKER_START <span class="op">=</span> pd.Timestamp(<span class="st">"1979-07-01"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>VOLCKER_END   <span class="op">=</span> pd.Timestamp(<span class="st">"1983-12-01"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
@@ -1141,16 +1145,16 @@ Mean and std dev in annualised percentage points.</code></pre>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US CPI Inflation, 1948–2019"</span>)</span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-inflation-series" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-inflation-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_06_files/figure-html/fig-inflation-series-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_06_files/figure-html/fig-inflation-series-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inflation-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.5: US CPI inflation (year-on-year, percent), 1948–2019. The Volcker disinflation of 1979–83 is visible as the sharp peak-and-trough. Pre- and post-Volcker inflation behave very differently: the pre-1984 period shows high and rising inflation with substantial persistence; the post-1984 period shows low, stable, mean-reverting inflation. The shaded band marks the 1979–1983 Volcker disinflation episode. NBER recessions are shaded.
+Figure&nbsp;7.5: US CPI inflation (year-on-year, percent), 1948–2019. The Volcker disinflation of 1979–83 is visible as the sharp peak-and-trough. Pre- and post-Volcker inflation behave very differently: the pre-1984 period shows high and rising inflation with substantial persistence; the post-1984 period shows low, stable, mean-reverting inflation. The shaded band marks the 1979–1983 Volcker disinflation episode. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -1174,7 +1178,7 @@ Figure&nbsp;6.5: US CPI inflation (year-on-year, percent), 1948–2019. The Volc
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Berkowitz Test for Calibration
+<span class="screen-reader-only">Note</span>The Berkowitz Test for Calibration
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1187,7 +1191,7 @@ The Berkowitz Test for Calibration
 <p>The correct series for the ZA test is the <strong>inflation rate</strong> (year-on-year CPI growth, already computed as <code>cpi_m["Inflation"]</code>), not the log price level. The unit root question is about inflation persistence — whether inflation is <span class="math inline">\(I(1)\)</span> or stationary with a broken mean — and that question is posed at the level of the inflation rate. Similarly for GDP, the interesting ZA question is about GDP growth, not the log level: we already know log GDP has a unit root, but the question of whether GDP growth itself is stationary with a broken mean is open. We use the quarterly-averaged inflation series and GDP growth, both in percent, with Model C (break in intercept and trend).</p>
 <details class="code-fold">
 <summary>Show code — Zivot-Andrews test</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> zivot_andrews</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> zivot_andrews</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Quarterly inflation series (year-on-year, percent) ───────────────────────</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cpi_m["Inflation"] is monthly; resample to quarterly average</span></span>
@@ -1241,12 +1245,12 @@ The Berkowitz Test for Calibration
 <span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"* p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01"</span>)</span>
 <span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ZA 5</span><span class="sc">% c</span><span class="st">ritical value for Model C (Zivot-Andrews 1992)."</span>)</span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ADF critical values from MacKinnon (1994)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ADF critical values from MacKinnon (1994)."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-za" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-za-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6.3
+Table&nbsp;7.3
 </figcaption>
 <div aria-describedby="tbl-za-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1274,7 +1278,7 @@ ADF critical values from MacKinnon (1994).</code></pre>
 <div id="cell-fig-za-cpi" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code — inflation subperiod means figure</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the known Volcker break date for the figure rather than the ZA-estimated</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the known Volcker break date for the figure rather than the ZA-estimated</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># date. The ZA test on a persistent inflation series tends to place its break</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># at the trimming boundary — a known limitation. The Volcker disinflation</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># at 1983 Q1 is the economically correct break for illustration.</span></span>
@@ -1316,7 +1320,7 @@ ADF critical values from MacKinnon (1994).</code></pre>
 <span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"The Volcker Break in CPI Inflation"</span>)</span>
 <span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-za-cpi" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1325,7 +1329,7 @@ ADF critical values from MacKinnon (1994).</code></pre>
 <img src="chapter_06_files/figure-html/fig-za-cpi-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-za-cpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.6: CPI inflation (year-on-year percent, 1960-2019) with subperiod means before and after the Volcker disinflation (1983 Q1). The full-sample mean (copper dashed) misrepresents both regimes: it sits above the post-Volcker inflation rate for the entire post-1983 period. The two subperiod means (sky blue) capture the regime shift directly. This is the break the ZA test is designed to detect. NBER recessions are shaded.
+Figure&nbsp;7.6: CPI inflation (year-on-year percent, 1960-2019) with subperiod means before and after the Volcker disinflation (1983 Q1). The full-sample mean (copper dashed) misrepresents both regimes: it sits above the post-Volcker inflation rate for the entire post-1983 period. The two subperiod means (sky blue) capture the regime shift directly. This is the break the ZA test is designed to detect. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -1333,8 +1337,8 @@ Figure&nbsp;6.6: CPI inflation (year-on-year percent, 1960-2019) with subperiod 
 </div>
 </section>
 </section>
-<section id="sec-response" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="sec-response"><span class="header-section-number">6.5</span> What to Do After Finding a Break</h2>
+<section id="sec-response" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-response"><span class="header-section-number">7.5</span> What to Do After Finding a Break</h2>
 <p>Finding a structural break is the beginning of the analysis, not the end. The tests in Sections 6.2 through 6.4 tell us that the data-generating process shifted — but they do not tell us how to respond. A significant Chow statistic or a Bai-Perron-detected break date is diagnostic information; the econometric decisions about what to do with that information belong to the researcher. This section covers the main options, ordered from simplest to most flexible.</p>
 <section id="option-1-subperiod-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="option-1-subperiod-estimation">Option 1: Subperiod Estimation</h3>
@@ -1362,7 +1366,7 @@ Figure&nbsp;6.6: CPI inflation (year-on-year percent, 1960-2019) with subperiod 
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Dummy Variables Require a Known Break Date
+<span class="screen-reader-only">Warning</span>Dummy Variables Require a Known Break Date
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1385,7 +1389,7 @@ Dummy Variables Require a Known Break Date
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Transition Matrix
+<span class="screen-reader-only">Note</span>The Transition Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1403,7 +1407,7 @@ p_{12} = 1\)</span> and <span class="math inline">\(p_{21} + p_{22} = 1\)</span>
 <p>To make these options concrete, we implement the two most practically useful responses: subperiod estimation and dummy-variable correction. We compare their rolling evaluation performance against the full-sample ARIMA from Chapter 5, using the same 40-quarter rolling window and the same <span class="math inline">\(h = 1\)</span> horizon.</p>
 <details class="code-fold">
 <summary>Show code — forecast comparison: break response strategies</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We compare three strategies at h=1:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We compare three strategies at h=1:</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   1. Full-sample ARIMA(1,1,1) — baseline from Chapter 5</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   2. Post-break ARIMA(1,1,1) — estimated only on post-1984 data</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   3. Full-sample ARIMA with level-shift dummy at 1984 Q1</span></span>
@@ -1533,12 +1537,12 @@ p_{12} = 1\)</span> and <span class="math inline">\(p_{21} + p_{22} = 1\)</span>
 <span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">60</span>)</span>
 <span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE in annualised percentage points."</span>)</span>
 <span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ratio: RMSE of strategy / RMSE of full-sample baseline."</span>)</span>
-<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ratio &lt; 1 → strategy beats the full-sample baseline."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ratio &lt; 1 → strategy beats the full-sample baseline."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-break-response" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="12">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-break-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6.4
+Table&nbsp;7.4
 </figcaption>
 <div aria-describedby="tbl-break-response-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1563,7 +1567,7 @@ Ratio &lt; 1 → strategy beats the full-sample baseline.</code></pre>
 <div id="cell-fig-break-forecasts" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="13">
 <details class="code-fold">
 <summary>Show code — forecast path comparison</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forecast paths stored directly during the evaluation loop</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forecast paths stored directly during the evaluation loop</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the full-sample index as the evaluation window baseline;</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># each strategy is plotted only where it has non-NaN forecasts</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>eval_idx   <span class="op">=</span> fc_full_s.dropna().index   <span class="co"># full-sample always has the widest coverage</span></span>
@@ -1642,7 +1646,7 @@ Ratio &lt; 1 → strategy beats the full-sample baseline.</code></pre>
 <span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Break-Aware Forecasting — GDP Growth"</span>)</span>
 <span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-break-forecasts" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1651,7 +1655,7 @@ Ratio &lt; 1 → strategy beats the full-sample baseline.</code></pre>
 <img src="chapter_06_files/figure-html/fig-break-forecasts-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-break-forecasts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response strategies, 1994–2019. All three strategies produce similar paths in normal periods — the lines are nearly indistinguishable outside recessions. The largest divergence occurs during the 2008-09 recession, where the full-sample ARIMA (copper) is slower to revise its forecast downward relative to the break-aware strategies. In the post-2010 recovery, all three models systematically overpredict growth, a pattern consistent with the secular slowdown in potential output that none of the models explicitly accounts for. NBER recessions are shaded.
+Figure&nbsp;7.7: One-step-ahead forecast paths for the three break response strategies, 1994–2019. All three strategies produce similar paths in normal periods — the lines are nearly indistinguishable outside recessions. The largest divergence occurs during the 2008-09 recession, where the full-sample ARIMA (copper) is slower to revise its forecast downward relative to the break-aware strategies. In the post-2010 recovery, all three models systematically overpredict growth, a pattern consistent with the secular slowdown in potential output that none of the models explicitly accounts for. NBER recessions are shaded.
 </figcaption>
 </figure>
 </div>
@@ -1659,21 +1663,21 @@ Figure&nbsp;6.7: One-step-ahead forecast paths for the three break response stra
 </div>
 </section>
 </section>
-<section id="sec-lookahead6" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="sec-lookahead6"><span class="header-section-number">6.6</span> Looking Ahead</h2>
+<section id="sec-lookahead6" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="sec-lookahead6"><span class="header-section-number">7.6</span> Looking Ahead</h2>
 <p>Consider what this chapter’s two running series — GDP growth and CPI inflation — look like when placed side by side. GDP growth is stationary, mean-reverting, and characterised by a large variance break around 1984 Q1. CPI inflation is persistent, slow-moving, and characterised by a mean break linked to the Volcker disinflation. Each series has its own instability, at its own date, of its own type. But the two series are not independent: inflation and output growth are connected through the same aggregate demand and supply mechanisms that monetary policy operates on. When the Fed tightened aggressively in 1979–82, it drove both variables simultaneously — GDP growth into a deep recession, and inflation downward toward its post-Volcker equilibrium. The structural breaks we detected separately in each series may be two manifestations of a single, joint regime change in the relationship between the two variables.</p>
 <p>This observation exposes the fundamental limitation of everything in Chapters 3 through 6: every model we have built is a single-equation model. We forecast one variable, evaluate those forecasts, and test whether that one variable’s parameters were stable. We have no way to ask whether the <em>relationship</em> between GDP growth and inflation was stable, or how a shock to one variable propagates to the other, or how much of the variance in GDP growth is explained by inflation shocks versus own shocks. These are multivariate questions and they require a multivariate framework.</p>
 <p>Chapter 7 builds that framework. The <strong>reduced-form VAR</strong> lets GDP growth and inflation — and any other variables we choose — depend on lags of each other, replacing the single equation with a system. <strong>Granger causality</strong> asks whether inflation helps predict GDP growth beyond what GDP growth’s own history already contains — the operational time series definition of predictive precedence. The structural VAR adds identifying restrictions that allow us to say something about <em>causal</em> mechanisms, not just predictive ones: the Cholesky decomposition and sign restrictions each impose different economic priors about how shocks propagate. <strong>Impulse response functions</strong> then trace the dynamic path of both variables after a shock to one of them, making the propagation mechanism visible in a way that single-equation forecasting models never can.</p>
 </section>
-<section id="sec-keyterms6" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="sec-keyterms6"><span class="header-section-number">6.7</span> Key Terms</h2>
+<section id="sec-keyterms6" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="sec-keyterms6"><span class="header-section-number">7.7</span> Key Terms</h2>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Glossary
+<span class="screen-reader-only">Note</span>Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1751,13 +1755,14 @@ Glossary
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2153,16 +2158,16 @@ Glossary
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../chapters/05/chapter_05.html" class="pagination-link" aria-label="Forecast Evaluation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../chapters/07/chapter_07.html" class="pagination-link" aria-label="Vector Autoregressions">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb19" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Structural Breaks"</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -4199,7 +4204,7 @@ Glossary
 <span id="cb19-2061"><a href="#cb19-2061" aria-hidden="true" tabindex="-1"></a>smaller effective sample sizes. Appropriate when the break is large, the</span>
 <span id="cb19-2062"><a href="#cb19-2062" aria-hidden="true" tabindex="-1"></a>post-break subsample is long, and forecasts are needed for the current regime.</span>
 <span id="cb19-2063"><a href="#cb19-2063" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

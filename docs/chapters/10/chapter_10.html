@@ -2,15 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="">
 <meta name="description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
 
-<title>10&nbsp; Regime-Switching Models – Time Series Analysis for Economists</title>
+<title>11&nbsp; Regime-Switching Models – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10/chapter_10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10/chapter_10.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -196,79 +200,79 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/01/chapter_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Foundations of Time Series Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/02/chapter_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Decomposition, Smoothing, and Business Cycle Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/03/chapter_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stationary Time Series Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/04/chapter_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/05/chapter_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Forecast Evaluation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/06/chapter_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Structural Breaks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/07/chapter_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Vector Autoregressions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/08/chapter_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Cointegration and the Vector Error Correction Model</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/09/chapter_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/10/chapter_10.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/11/chapter_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../chapters/appendix/appendix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Appendix: A Primer on Matrix Algebra</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,12 +285,12 @@ window.Quarto = {
     <h2 id="toc-title">In this chapter</h2>
    
   <ul>
-  <li><a href="#sec-motivation" id="toc-sec-motivation" class="nav-link active" data-scroll-target="#sec-motivation"><span class="header-section-number">10.1</span> Why Parameters Might Switch</a>
+  <li><a href="#sec-motivation" id="toc-sec-motivation" class="nav-link active" data-scroll-target="#sec-motivation"><span class="header-section-number">11.1</span> Why Parameters Might Switch</a>
   <ul class="collapse">
   <li><a href="#the-distribution-of-growth-is-not-a-single-bell-curve" id="toc-the-distribution-of-growth-is-not-a-single-bell-curve" class="nav-link" data-scroll-target="#the-distribution-of-growth-is-not-a-single-bell-curve">The Distribution of Growth Is Not a Single Bell Curve</a></li>
   <li><a href="#what-a-regime-switching-model-does-differently" id="toc-what-a-regime-switching-model-does-differently" class="nav-link" data-scroll-target="#what-a-regime-switching-model-does-differently">What a Regime-Switching Model Does Differently</a></li>
   </ul></li>
-  <li><a href="#sec-msmodel" id="toc-sec-msmodel" class="nav-link" data-scroll-target="#sec-msmodel"><span class="header-section-number">10.2</span> The Two-State Markov-Switching Model</a>
+  <li><a href="#sec-msmodel" id="toc-sec-msmodel" class="nav-link" data-scroll-target="#sec-msmodel"><span class="header-section-number">11.2</span> The Two-State Markov-Switching Model</a>
   <ul class="collapse">
   <li><a href="#the-hidden-state" id="toc-the-hidden-state" class="nav-link" data-scroll-target="#the-hidden-state">The Hidden State</a></li>
   <li><a href="#the-transition-probability-matrix" id="toc-the-transition-probability-matrix" class="nav-link" data-scroll-target="#the-transition-probability-matrix">The Transition Probability Matrix</a></li>
@@ -295,7 +299,7 @@ window.Quarto = {
   <li><a href="#the-ms-ar-mean-equation" id="toc-the-ms-ar-mean-equation" class="nav-link" data-scroll-target="#the-ms-ar-mean-equation">The MS-AR Mean Equation</a></li>
   <li><a href="#mean-switching-vs.-variance-switching-vs.-both" id="toc-mean-switching-vs.-variance-switching-vs.-both" class="nav-link" data-scroll-target="#mean-switching-vs.-variance-switching-vs.-both">Mean-Switching vs.&nbsp;Variance-Switching vs.&nbsp;Both</a></li>
   </ul></li>
-  <li><a href="#sec-hamilton" id="toc-sec-hamilton" class="nav-link" data-scroll-target="#sec-hamilton"><span class="header-section-number">10.3</span> The Hamilton Filter</a>
+  <li><a href="#sec-hamilton" id="toc-sec-hamilton" class="nav-link" data-scroll-target="#sec-hamilton"><span class="header-section-number">11.3</span> The Hamilton Filter</a>
   <ul class="collapse">
   <li><a href="#the-inference-problem" id="toc-the-inference-problem" class="nav-link" data-scroll-target="#the-inference-problem">The Inference Problem</a></li>
   <li><a href="#the-filter-recursion" id="toc-the-filter-recursion" class="nav-link" data-scroll-target="#the-filter-recursion">The Filter Recursion</a></li>
@@ -303,7 +307,7 @@ window.Quarto = {
   <li><a href="#filtered-vs.-smoothed-probabilities" id="toc-filtered-vs.-smoothed-probabilities" class="nav-link" data-scroll-target="#filtered-vs.-smoothed-probabilities">Filtered vs.&nbsp;Smoothed Probabilities</a></li>
   <li><a href="#connection-to-the-kalman-filter" id="toc-connection-to-the-kalman-filter" class="nav-link" data-scroll-target="#connection-to-the-kalman-filter">Connection to the Kalman Filter</a></li>
   </ul></li>
-  <li><a href="#sec-estimation" id="toc-sec-estimation" class="nav-link" data-scroll-target="#sec-estimation"><span class="header-section-number">10.4</span> Estimation and Empirical Results</a>
+  <li><a href="#sec-estimation" id="toc-sec-estimation" class="nav-link" data-scroll-target="#sec-estimation"><span class="header-section-number">11.4</span> Estimation and Empirical Results</a>
   <ul class="collapse">
   <li><a href="#maximum-likelihood-via-the-hamilton-filter" id="toc-maximum-likelihood-via-the-hamilton-filter" class="nav-link" data-scroll-target="#maximum-likelihood-via-the-hamilton-filter">Maximum Likelihood via the Hamilton Filter</a></li>
   <li><a href="#fitting-the-ms-ar2-to-gdp-growth" id="toc-fitting-the-ms-ar2-to-gdp-growth" class="nav-link" data-scroll-target="#fitting-the-ms-ar2-to-gdp-growth">Fitting the MS-AR(2) to GDP Growth</a></li>
@@ -311,19 +315,19 @@ window.Quarto = {
   <li><a href="#regime-conditional-distributions" id="toc-regime-conditional-distributions" class="nav-link" data-scroll-target="#regime-conditional-distributions">Regime-Conditional Distributions</a></li>
   <li><a href="#comparison-with-the-chapter-4-arima-benchmark" id="toc-comparison-with-the-chapter-4-arima-benchmark" class="nav-link" data-scroll-target="#comparison-with-the-chapter-4-arima-benchmark">Comparison with the Chapter 4 ARIMA Benchmark</a></li>
   </ul></li>
-  <li><a href="#sec-threshold" id="toc-sec-threshold" class="nav-link" data-scroll-target="#sec-threshold"><span class="header-section-number">10.5</span> Threshold Models: A Brief Tour</a>
+  <li><a href="#sec-threshold" id="toc-sec-threshold" class="nav-link" data-scroll-target="#sec-threshold"><span class="header-section-number">11.5</span> Threshold Models: A Brief Tour</a>
   <ul class="collapse">
   <li><a href="#the-self-exciting-threshold-autoregression-setar" id="toc-the-self-exciting-threshold-autoregression-setar" class="nav-link" data-scroll-target="#the-self-exciting-threshold-autoregression-setar">The Self-Exciting Threshold Autoregression (SETAR)</a></li>
   <li><a href="#smooth-transition-star-models" id="toc-smooth-transition-star-models" class="nav-link" data-scroll-target="#smooth-transition-star-models">Smooth Transition: STAR Models</a></li>
   <li><a href="#an-illustration-unemployment-dynamics-and-the-okun-asymmetry" id="toc-an-illustration-unemployment-dynamics-and-the-okun-asymmetry" class="nav-link" data-scroll-target="#an-illustration-unemployment-dynamics-and-the-okun-asymmetry">An Illustration: Unemployment Dynamics and the Okun Asymmetry</a></li>
   </ul></li>
-  <li><a href="#sec-msvar" id="toc-sec-msvar" class="nav-link" data-scroll-target="#sec-msvar"><span class="header-section-number">10.6</span> MS-VAR: A Signpost</a>
+  <li><a href="#sec-msvar" id="toc-sec-msvar" class="nav-link" data-scroll-target="#sec-msvar"><span class="header-section-number">11.6</span> MS-VAR: A Signpost</a>
   <ul class="collapse">
   <li><a href="#extending-regime-switching-to-a-multivariate-system" id="toc-extending-regime-switching-to-a-multivariate-system" class="nav-link" data-scroll-target="#extending-regime-switching-to-a-multivariate-system">Extending Regime Switching to a Multivariate System</a></li>
   <li><a href="#why-ms-var-matters-regime-dependent-impulse-responses" id="toc-why-ms-var-matters-regime-dependent-impulse-responses" class="nav-link" data-scroll-target="#why-ms-var-matters-regime-dependent-impulse-responses">Why MS-VAR Matters: Regime-Dependent Impulse Responses</a></li>
   <li><a href="#a-note-on-practical-implementation" id="toc-a-note-on-practical-implementation" class="nav-link" data-scroll-target="#a-note-on-practical-implementation">A Note on Practical Implementation</a></li>
   </ul></li>
-  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">10.7</span> Looking Ahead</a></li>
+  <li><a href="#sec-looking-ahead" id="toc-sec-looking-ahead" class="nav-link" data-scroll-target="#sec-looking-ahead"><span class="header-section-number">11.7</span> Looking Ahead</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ncachanosky/ECON-5371/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -332,7 +336,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regime-Switching Models</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 </div>
 
 
@@ -361,7 +365,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -380,14 +384,14 @@ Learning Objectives
 </div>
 </div>
 <p>The previous nine chapters all shared a common assumption: whatever model we estimated, its parameters were fixed. The ARMA coefficients from Chapter 3, the GARCH dynamics from Chapter 9, the VAR coefficients from Chapter 7 — all were estimated once and applied uniformly across the full sample. This chapter relaxes that assumption in the most disciplined way available: instead of letting parameters drift continuously, we allow them to take one of a small number of discrete values, with the economy switching between those values according to a hidden Markov chain. Section 10.1 builds the motivating case with US GDP growth data, showing that the distribution of quarterly growth looks nothing like a single bell curve and that the deviations from normality cluster precisely around NBER recessions. Section 10.2 develops the two-state Markov-switching model from first principles: the transition probability matrix, the ergodic distribution, and the MS-AR mean equation. Section 10.3 derives the Hamilton filter, the recursive algorithm that extracts regime probabilities from the data, and connects it explicitly to the Kalman filter of Chapter 11. Section 10.4 estimates the model on GDP growth and evaluates its performance. Section 10.5 introduces threshold models as the complementary family in which the switching variable is observed. Section 10.6 provides a brief map of MS-VAR models.</p>
-<section id="sec-motivation" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="sec-motivation"><span class="header-section-number">10.1</span> Why Parameters Might Switch</h2>
+<section id="sec-motivation" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="sec-motivation"><span class="header-section-number">11.1</span> Why Parameters Might Switch</h2>
 <p>Every ARIMA model in Chapter 4 asked: given the history of GDP growth up to today, what is our best prediction for next quarter? The answer came from a single estimated equation whose coefficients were fixed for the entire postwar sample — the same mean, the same persistence, the same variance in 1955Q1 as in 2009Q1. That is a convenient assumption. It is not obviously a true one.</p>
 <p>The <a href="https://www.nber.org/">National Bureau of Economic Research (NBER)</a> designates business cycle turning points based on a broad reading of macroeconomic data. Recessions, by its definition, are periods of significant decline in economic activity. What Figure 10.1 makes immediately visible is that the quarterly real GDP growth rate — the annualised log difference of <a href="https://fred.stlouisfed.org/series/GDPC1/"><code>GDPC1</code></a> — looks qualitatively different during those shaded periods than outside them. Outside recessions, growth is positive, moderately persistent, and clustered around a stable trend. During recessions, growth turns sharply negative, the volatility increases, and the series behaves like a different data-generating process altogether.</p>
 <div id="cell-fig-gdp-growth" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ax.plot(growth_index, growth, color<span class="op">=</span>EO_COPPER, lw<span class="op">=</span><span class="fl">0.9</span>, zorder<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span>EO_CHARCOAL, lw<span class="op">=</span><span class="fl">0.6</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
@@ -399,16 +403,16 @@ Learning Objectives
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Annualised Real GDP Growth, 1947Q2–2019Q4"</span>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-growth" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_10_files/figure-html/fig-gdp-growth-output-1.png" width="892" height="496" class="figure-img">
+<img src="chapter_10_files/figure-html/fig-gdp-growth-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.1: Annualised quarterly real GDP growth (log difference × 400), 1947Q2–2019Q4. NBER recessions shaded in grey. The series clusters around a positive mean during expansions and turns sharply negative during recessions. A single linear model treats all observations as draws from the same distribution — a restriction the data clearly challenge.
+Figure&nbsp;11.1: Annualised quarterly real GDP growth (log difference × 400), 1947Q2–2019Q4. NBER recessions shaded in grey. The series clusters around a positive mean during expansions and turns sharply negative during recessions. A single linear model treats all observations as draws from the same distribution — a restriction the data clearly challenge.
 </figcaption>
 </figure>
 </div>
@@ -421,7 +425,7 @@ Figure&nbsp;10.1: Annualised quarterly real GDP growth (log difference × 400), 
 <div id="cell-fig-growth-hist" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify recession quarters</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify recession quarters</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>recession_mask <span class="op">=</span> np.zeros(<span class="bu">len</span>(gdp), dtype<span class="op">=</span><span class="bu">bool</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> rec_start, rec_end <span class="kw">in</span> RECESSIONS:</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    s, e <span class="op">=</span> pd.Timestamp(rec_start), pd.Timestamp(rec_end)</span>
@@ -458,16 +462,16 @@ Figure&nbsp;10.1: Annualised quarterly real GDP growth (log difference × 400), 
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Distribution of Quarterly GDP Growth by Regime"</span>)</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-growth-hist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-growth-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_10_files/figure-html/fig-growth-hist-output-1.png" width="892" height="527" class="figure-img">
+<img src="chapter_10_files/figure-html/fig-growth-hist-output-1.png" width="893" height="526" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-growth-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.2: Histogram of annualised quarterly GDP growth, 1947Q2–2019Q4, with a fitted normal distribution (dashed) and separate normal fits for recession quarters (terracotta) and expansion quarters (sky blue). The pooled distribution is left-skewed and poorly centred — the single normal is pulled between two subpopulations with means 5 pp apart. The regime-specific normals fit their respective subsamples well, motivating a two-component mixture.
+Figure&nbsp;11.2: Histogram of annualised quarterly GDP growth, 1947Q2–2019Q4, with a fitted normal distribution (dashed) and separate normal fits for recession quarters (terracotta) and expansion quarters (sky blue). The pooled distribution is left-skewed and poorly centred — the single normal is pulled between two subpopulations with means 5 pp apart. The regime-specific normals fit their respective subsamples well, motivating a two-component mixture.
 </figcaption>
 </figure>
 </div>
@@ -477,7 +481,7 @@ Figure&nbsp;10.2: Histogram of annualised quarterly GDP growth, 1947Q2–2019Q4,
 <p>The visual case is reinforced by a simple numerical summary. Using NBER dates to classify each quarter:</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_rec <span class="op">=</span> recession_mask.<span class="bu">sum</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_rec <span class="op">=</span> recession_mask.<span class="bu">sum</span>()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n_exp <span class="op">=</span> (<span class="op">~</span>recession_mask).<span class="bu">sum</span>()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pct_rec <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> n_rec <span class="op">/</span> <span class="bu">len</span>(gdp)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -497,12 +501,12 @@ Figure&nbsp;10.2: Histogram of annualised quarterly GDP growth, 1947Q2–2019Q4,
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Note: recession classification from NBER Business Cycle Dating"</span>)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Committee. Recession quarters are those falling within an"</span>)</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  official contraction as defined by NBER peak-to-trough dates."</span>)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">58</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">58</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-regime-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-regime-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10.1
+Table&nbsp;11.1
 </figcaption>
 <div aria-describedby="tbl-regime-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -541,7 +545,7 @@ Table&nbsp;10.1
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Testing for the Number of Regimes
+<span class="screen-reader-only">Warning</span>Testing for the Number of Regimes
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -551,8 +555,8 @@ Testing for the Number of Regimes
 <p>These costs are real but manageable. <a href="https://doi.org/10.2307/1912559">Hamilton’s (1989)</a> two-state model has been applied to US GDP growth for more than three decades, and its ability to identify recessions without using NBER dates has made it one of the most influential papers in macroeconometrics. We build it from scratch in the next section.</p>
 </section>
 </section>
-<section id="sec-msmodel" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="sec-msmodel"><span class="header-section-number">10.2</span> The Two-State Markov-Switching Model</h2>
+<section id="sec-msmodel" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-msmodel"><span class="header-section-number">11.2</span> The Two-State Markov-Switching Model</h2>
 <section id="the-hidden-state" class="level3">
 <h3 class="anchored" data-anchor-id="the-hidden-state">The Hidden State</h3>
 <p>At the heart of every Markov-switching model is a simple idea: there exists an unobserved state variable <span class="math inline">\(s_t\)</span> that determines which regime the economy is in at time <span class="math inline">\(t\)</span>. In the two-state model, this variable takes only two values:</p>
@@ -590,7 +594,7 @@ P = \begin{pmatrix} p_{00} &amp; p_{10} \\ p_{01} &amp; p_{11} \end{pmatrix}
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 10.1 — First-Order Markov Chain
+<span class="screen-reader-only">Note</span>Definition 10.1 — First-Order Markov Chain
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -646,7 +650,7 @@ Definition 10.1 — First-Order Markov Chain
 <div id="ergodic-example" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical illustration of ergodic distribution</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerical illustration of ergodic distribution</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p00_ex <span class="op">=</span> <span class="fl">0.94</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>p11_ex <span class="op">=</span> <span class="fl">0.75</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>p10_ex <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> p00_ex   <span class="co"># prob of leaving expansion</span></span>
@@ -672,7 +676,7 @@ Definition 10.1 — First-Order Markov Chain
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Implied average durations:"</span>)</span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Expansion: 1/(1−p₀₀) = </span><span class="sc">{</span>dur_exp<span class="sc">:.1f}</span><span class="ss"> quarters ≈ </span><span class="sc">{</span>dur_exp<span class="op">/</span><span class="dv">4</span><span class="sc">:.1f}</span><span class="ss"> years"</span>)</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Recession: 1/(1−p₁₁) = </span><span class="sc">{</span>dur_rec<span class="sc">:.1f}</span><span class="ss"> quarters ≈ </span><span class="sc">{</span>dur_rec<span class="op">/</span><span class="dv">4</span><span class="sc">:.1f}</span><span class="ss"> years"</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">52</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">52</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>────────────────────────────────────────────────────
@@ -718,7 +722,7 @@ y_t = \mu_{s_t} + \phi_1(y_{t-1} - \mu_{s_{t-1}}) + \phi_2(y_{t-2} - \mu_{s_{t-2
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 10.2 — MS-AR(<span class="math inline">\(k\)</span>) Model
+<span class="screen-reader-only">Note</span>Definition 10.2 — MS-AR(<span class="math inline">\(k\)</span>) Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -738,7 +742,7 @@ y_t = \mu_{s_t} + \sum_{j=1}^{k} \phi_j (y_{t-j} - \mu_{s_{t-j}}) + \varepsilon_
 <p>The MS framework is flexible enough to separate mean switching from variance switching. Table 10.1 summarises the main specifications.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Table 10.1 — Markov-Switching Specifications"</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'Specification'</span><span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Mean switches'</span><span class="sc">:&lt;16}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Variance switches'</span><span class="sc">:&lt;18}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Parameters'</span><span class="sc">}</span><span class="ss">"</span>)</span>
@@ -752,12 +756,12 @@ y_t = \mu_{s_t} + \sum_{j=1}^{k} \phi_j (y_{t-j} - \mu_{s_{t-j}}) + \varepsilon_
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Note: AR coefficients are constrained equal across regimes in all"</span>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  specifications above. Allowing φ to switch multiplies the AR"</span>)</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  parameter count by the number of regimes M."</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">70</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-ms-specs" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-ms-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10.2
+Table&nbsp;11.2
 </figcaption>
 <div aria-describedby="tbl-ms-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -784,8 +788,8 @@ Table&nbsp;10.2
 <p>For our GDP growth application, the case for mean switching is clear and strong: the 5.1 pp gap between the expansion mean (3.71%) and the recession mean (−1.41%) is the dominant feature of the data. The standard deviations are nearly identical across the two NBER-classified phases, so variance switching adds little signal but creates an estimation problem — the likelihood surface has a variance-only local optimum that is numerically easier to find than the mean-switching solution. The working model for this chapter is therefore mean-switching with a common variance, following <a href="https://doi.org/10.2307/1912559">Hamilton (1989)</a> exactly. We return to variance switching as a modelling choice in Section 10.4.</p>
 </section>
 </section>
-<section id="sec-hamilton" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="sec-hamilton"><span class="header-section-number">10.3</span> The Hamilton Filter</h2>
+<section id="sec-hamilton" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="sec-hamilton"><span class="header-section-number">11.3</span> The Hamilton Filter</h2>
 <section id="the-inference-problem" class="level3">
 <h3 class="anchored" data-anchor-id="the-inference-problem">The Inference Problem</h3>
 <p>We now have a model: GDP growth <span class="math inline">\(y_t\)</span> is generated by a regime-specific mean and variance, with the regime <span class="math inline">\(s_t\)</span> evolving as a hidden Markov chain. The estimation and forecasting questions both require us to answer the same underlying question: given what we have observed up to time <span class="math inline">\(t\)</span>, what is the probability that the economy is currently in each regime? More precisely, we want to compute:</p>
@@ -840,7 +844,7 @@ f(y_t \mid s_t = j,\, \mathcal{F}_{t-1}) = \frac{1}{\sqrt{2\pi\sigma_j^2}}
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 10.3 — The Hamilton Filter
+<span class="screen-reader-only">Note</span>Definition 10.3 — The Hamilton Filter
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -900,7 +904,7 @@ f(y_2 \mid s_2 = 1) &amp;= \phi\!\left(\frac{-3.8 - (-2)}{2}\right) = \phi(-0.90
 <div id="hamilton-numerical" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Numerical Hamilton filter example ─────────────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Numerical Hamilton filter example ─────────────────────────────────────────</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mu0, mu1 <span class="op">=</span> <span class="fl">3.0</span>, <span class="op">-</span><span class="fl">2.0</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>sigma2    <span class="op">=</span> <span class="fl">4.0</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>p00_n, p11_n <span class="op">=</span> <span class="fl">0.90</span>, <span class="fl">0.70</span></span>
@@ -945,7 +949,7 @@ f(y_2 \mid s_2 = 1) &amp;= \phi\!\left(\frac{-3.8 - (-2)}{2}\right) = \phi(-0.90
 <span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict forward for next period</span></span>
 <span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    xi_pred <span class="op">=</span> P_n.T <span class="op">@</span> xi_filt</span>
 <span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">58</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">58</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>──────────────────────────────────────────────────────────
@@ -986,7 +990,7 @@ f(y_2 \mid s_2 = 1) &amp;= \phi\!\left(\frac{-3.8 - (-2)}{2}\right) = \phi(-0.90
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Filtered vs.&nbsp;Smoothed: Which to Use
+<span class="screen-reader-only">Warning</span>Filtered vs.&nbsp;Smoothed: Which to Use
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1001,8 +1005,8 @@ Filtered vs.&nbsp;Smoothed: Which to Use
 <p>The critical difference is the state space. In the Hamilton filter, the state <span class="math inline">\(s_t\)</span> is discrete — it takes two values — so the prior and posterior are probability vectors of dimension <span class="math inline">\(M\)</span> and the “densities” are Gaussian mixtures. In the Kalman filter, the state <span class="math inline">\(\alpha_t\)</span> is continuous and Gaussian, so the prior and posterior are fully described by a mean vector and a covariance matrix, and the update equations are linear. The Kalman filter is, in a precise sense, the Gaussian-state analogue of the Hamilton filter. Recognising this parallel will make Chapter 11 immediately navigable: the predict step, the update step, and the smoother all have direct counterparts.</p>
 </section>
 </section>
-<section id="sec-estimation" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="sec-estimation"><span class="header-section-number">10.4</span> Estimation and Empirical Results</h2>
+<section id="sec-estimation" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="sec-estimation"><span class="header-section-number">11.4</span> Estimation and Empirical Results</h2>
 <section id="maximum-likelihood-via-the-hamilton-filter" class="level3">
 <h3 class="anchored" data-anchor-id="maximum-likelihood-via-the-hamilton-filter">Maximum Likelihood via the Hamilton Filter</h3>
 <p>The Hamilton filter delivers more than regime probabilities — it also delivers the log-likelihood of the observed data under any parameter vector <span class="math inline">\(\theta\)</span>. At each step <span class="math inline">\(t\)</span>, the normalising constant in the update equation (10.14) is the marginal density of <span class="math inline">\(y_t\)</span> given past data:</p>
@@ -1025,7 +1029,7 @@ f(y_t \mid \mathcal{F}_{t-1};\, \theta) = \sum_{j=0}^{1}
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Identification and Labelling
+<span class="screen-reader-only">Warning</span>Identification and Labelling
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1039,7 +1043,7 @@ Identification and Labelling
 <div id="ms-estimation" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.regime_switching.markov_autoregression <span class="im">import</span> MarkovAutoregression</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.regime_switching.markov_autoregression <span class="im">import</span> MarkovAutoregression</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Estimate MS-AR(2): mean-switching only, common variance ──────────────────</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameter order: [p[0-&gt;0], p[1-&gt;0], const[0], const[1], sigma2, ar.L1, ar.L2]</span></span>
@@ -1136,7 +1140,7 @@ Identification and Labelling
 <span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'BIC'</span><span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>ms_result<span class="sc">.</span>bic<span class="sc">:&gt;16.3f}</span><span class="ss">"</span>)</span>
 <span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">62</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Standard errors in parentheses."</span>)</span>
-<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">62</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">62</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>──────────────────────────────────────────────────────────────
@@ -1189,7 +1193,7 @@ Identification and Labelling
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why Is the Estimated Recession Duration So Short?
+<span class="screen-reader-only">Warning</span>Why Is the Estimated Recession Duration So Short?
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1204,7 +1208,7 @@ Why Is the Estimated Recession Duration So Short?
 <div id="cell-fig-smoothed-probs" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Smoothed probabilities: shape (T-2, 2); column 1 = recession regime</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Smoothed probabilities: shape (T-2, 2); column 1 = recession regime</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>smoothed <span class="op">=</span> ms_result.smoothed_marginal_probabilities</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MS-AR(2) loses 2 presample observations; align index accordingly</span></span>
@@ -1225,16 +1229,16 @@ Why Is the Estimated Recession Duration So Short?
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"MS-AR(2) Smoothed Recession Probability, 1947Q2–2019Q4"</span>)</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-smoothed-probs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-smoothed-probs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_10_files/figure-html/fig-smoothed-probs-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_10_files/figure-html/fig-smoothed-probs-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smoothed-probs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.3: Smoothed probability of the recession regime (state 1) from the MS-AR(2) model, 1947Q2–2019Q4. NBER recession dates shaded in grey. The model was estimated without access to NBER dates; its ability to align high recession probabilities with shaded periods validates the two-state structure.
+Figure&nbsp;11.3: Smoothed probability of the recession regime (state 1) from the MS-AR(2) model, 1947Q2–2019Q4. NBER recession dates shaded in grey. The model was estimated without access to NBER dates; its ability to align high recession probabilities with shaded periods validates the two-state structure.
 </figcaption>
 </figure>
 </div>
@@ -1248,7 +1252,7 @@ Figure&nbsp;10.3: Smoothed probability of the recession regime (state 1) from th
 <div id="cell-fig-regime-densities" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.2</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>ax.hist(growth, bins<span class="op">=</span><span class="dv">30</span>, density<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_CHARCOAL, alpha<span class="op">=</span><span class="fl">0.15</span>, label<span class="op">=</span><span class="st">"All quarters"</span>)</span>
@@ -1268,16 +1272,16 @@ Figure&nbsp;10.3: Smoothed probability of the recession regime (state 1) from th
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Estimated Regime Distributions — MS-AR(2)"</span>)</span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-regime-densities" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-regime-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_10_files/figure-html/fig-regime-densities-output-1.png" width="892" height="496" class="figure-img">
+<img src="chapter_10_files/figure-html/fig-regime-densities-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regime-densities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.4: Estimated regime-conditional distributions from the MS-AR(2) overlaid on the GDP growth histogram. The expansion distribution (sky blue) and recession distribution (terracotta) are centred at the estimated regime means; their widths reflect the estimated common standard deviation (the model is mean-switching only).
+Figure&nbsp;11.4: Estimated regime-conditional distributions from the MS-AR(2) overlaid on the GDP growth histogram. The expansion distribution (sky blue) and recession distribution (terracotta) are centred at the estimated regime means; their widths reflect the estimated common standard deviation (the model is mean-switching only).
 </figcaption>
 </figure>
 </div>
@@ -1290,7 +1294,7 @@ Figure&nbsp;10.4: Estimated regime-conditional distributions from the MS-AR(2) o
 <p>Does the regime-switching model forecast GDP growth better than the ARIMA estimated in Chapter 4? We answer this with a rolling out-of-sample exercise using the same design as Chapter 5: an estimation window, a fixed evaluation period, and MSFE as the loss function.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Rolling MSFE comparison: MS-AR(2) vs ARIMA(2,0,0) ────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Rolling MSFE comparison: MS-AR(2) vs ARIMA(2,0,0) ────────────────────────</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluation period: 1985Q1 onwards (allows long estimation window)</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: re-estimating MS-AR(2) at each step is computationally intensive;</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this cell may take several minutes to execute.</span></span>
@@ -1374,12 +1378,12 @@ Figure&nbsp;10.4: Estimated regime-conditional distributions from the MS-AR(2) o
 <span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span><span class="st">'MS-AR(2)'</span><span class="sc">:&lt;22}</span><span class="ss"> </span><span class="sc">{</span>msfe_ms<span class="sc">:&gt;10.3f}</span><span class="ss"> </span><span class="sc">{</span>mae_ms<span class="sc">:&gt;10.3f}</span><span class="ss"> </span><span class="sc">{</span>msfe_ms<span class="op">/</span>msfe_arima<span class="sc">:&gt;10.3f}</span><span class="ss">"</span>)</span>
 <span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">54</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  MSFE ratio &lt; 1.0 favours the MS-AR(2)."</span>)</span>
-<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">54</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'─'</span><span class="op">*</span><span class="dv">54</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-msfe-comparison" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-msfe-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10.3
+Table&nbsp;11.3
 </figcaption>
 <div aria-describedby="tbl-msfe-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1401,8 +1405,8 @@ Table&nbsp;10.3
 <p><em>One-step-ahead MSFE and MAE for the ARIMA(2,0,0) benchmark and the MS-AR(2), evaluated over the rolling window 1985Q1–2019Q4. The ARIMA(2,0,0) produces lower MSFE (4.383 vs.&nbsp;4.422) and lower MAE (1.542 vs.&nbsp;1.547): the regime-switching model does not outperform the linear benchmark out of sample over this period. This result is instructive rather than discouraging. The evaluation window (1985–2019) covers the Great Moderation — an era of unusually stable growth with only two mild recessions (1990–91 and 2001), both of which the model largely misses. The MS-AR’s comparative advantage is in detecting sharp contractions, precisely the type that the evaluation window contains too few of to overcome the ARIMA’s parsimony advantage. A window that included the 1970s and early 1980s would almost certainly reverse this ranking.</em></p>
 </section>
 </section>
-<section id="sec-threshold" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="sec-threshold"><span class="header-section-number">10.5</span> Threshold Models: A Brief Tour</h2>
+<section id="sec-threshold" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="sec-threshold"><span class="header-section-number">11.5</span> Threshold Models: A Brief Tour</h2>
 <p>The Markov-switching models of the previous sections assume the regime is driven by a <strong>hidden</strong> state variable — something unobserved that must be inferred probabilistically from the data. The Hamilton filter exists precisely because we cannot see <span class="math inline">\(s_t\)</span> directly. But there is a parallel class of regime-switching models in which the switch is triggered by a variable we <em>can</em> observe. These are <strong><a href="https://en.wikipedia.org/wiki/Threshold_model">threshold models</a></strong>, and the key distinction is worth stating clearly before the notation:</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1410,7 +1414,7 @@ Table&nbsp;10.3
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Hidden vs.&nbsp;Observable Threshold
+<span class="screen-reader-only">Note</span>Hidden vs.&nbsp;Observable Threshold
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1466,7 +1470,7 @@ y_t = \bigl(1 - G_t\bigr)\bigl(\phi_{1,0} + \boldsymbol{\phi}_1' \mathbf{y}_{t-1
 <div id="cell-fig-threshold-scatter" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pos_mask <span class="op">=</span> du_lag <span class="op">&gt;</span> <span class="dv">0</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pos_mask <span class="op">=</span> du_lag <span class="op">&gt;</span> <span class="dv">0</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>neg_mask <span class="op">=</span> <span class="op">~</span>pos_mask</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">3.4</span>))</span>
@@ -1504,16 +1508,16 @@ y_t = \bigl(1 - G_t\bigr)\bigl(\phi_{1,0} + \boldsymbol{\phi}_1' \mathbf{y}_{t-1
 <span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Threshold Asymmetry in Unemployment Dynamics (Okun)"</span>)</span>
 <span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-threshold-scatter" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-threshold-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_10_files/figure-html/fig-threshold-scatter-output-1.png" width="891" height="526" class="figure-img">
+<img src="chapter_10_files/figure-html/fig-threshold-scatter-output-1.png" width="892" height="525" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-threshold-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10.5: One-quarter change in unemployment rate against its own lag, 1948Q3–2019Q4. Observations where lagged unemployment was rising (Δu_{t-1} &gt; 0, terracotta) versus falling or flat (sky blue). Separate OLS lines are fitted to each group. The steeper slope in the rising regime reflects stronger AR(1) persistence: once unemployment starts rising, it tends to keep rising with high momentum.
+Figure&nbsp;11.5: One-quarter change in unemployment rate against its own lag, 1948Q3–2019Q4. Observations where lagged unemployment was rising (Δu_{t-1} &gt; 0, terracotta) versus falling or flat (sky blue). Separate OLS lines are fitted to each group. The steeper slope in the rising regime reflects stronger AR(1) persistence: once unemployment starts rising, it tends to keep rising with high momentum.
 </figcaption>
 </figure>
 </div>
@@ -1523,7 +1527,7 @@ Figure&nbsp;10.5: One-quarter change in unemployment rate against its own lag, 1
 <p>The split-sample AR(2) regression makes the asymmetry concrete.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.regression.linear_model <span class="im">import</span> OLS</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.regression.linear_model <span class="im">import</span> OLS</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools <span class="im">import</span> add_constant</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>du_t  <span class="op">=</span> du[<span class="dv">2</span>:]</span>
@@ -1563,12 +1567,12 @@ Figure&nbsp;10.5: One-quarter change in unemployment rate against its own lag, 1
 <span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
 <span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Standard errors in parentheses. Threshold fixed at Δu_{t-1} = 0."</span>)</span>
 <span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Rising regime: lagged unemployment change &gt; 0. No grid search."</span>)</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-setar" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-setar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10.4
+Table&nbsp;11.4
 </figcaption>
 <div aria-describedby="tbl-setar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1600,8 +1604,8 @@ Table&nbsp;10.4
 <p>The key takeaway from comparing Sections 10.2–10.4 with this section is the identification strategy. In the Markov-switching model, we never observe the regime — we infer it probabilistically through the Hamilton filter. In the SETAR, we know the regime as soon as we observe <span class="math inline">\(\Delta u_{t-1}\)</span>: no filtering is required. Both frameworks allow different dynamics in different states of the world; they differ in whether the switching mechanism is hidden or observable. The choice between them is ultimately substantive: Markov-switching models are appropriate when the driving force is genuinely latent — animal spirits, financial stress, monetary policy intentions — while threshold models are more natural when a specific observable variable is the plausible trigger and can be observed in real time.</p>
 </section>
 </section>
-<section id="sec-msvar" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="sec-msvar"><span class="header-section-number">10.6</span> MS-VAR: A Signpost</h2>
+<section id="sec-msvar" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="sec-msvar"><span class="header-section-number">11.6</span> MS-VAR: A Signpost</h2>
 <section id="extending-regime-switching-to-a-multivariate-system" class="level3">
 <h3 class="anchored" data-anchor-id="extending-regime-switching-to-a-multivariate-system">Extending Regime Switching to a Multivariate System</h3>
 <p>The Markov-switching framework extends naturally to the VAR models of Chapter 7. An <strong>MS-VAR</strong> replaces the fixed coefficient matrices <span class="math inline">\(A_1, \ldots, A_p\)</span> of the VAR with regime-dependent versions <span class="math inline">\(A_1^{(s_t)}, \ldots, A_p^{(s_t)}\)</span>, where the hidden state <span class="math inline">\(s_t\)</span> evolves as a Markov chain. Throughout this section, bold notation signals multivariate objects: <span class="math inline">\(\mathbf{y}_t\)</span> is the <span class="math inline">\(n\times 1\)</span> column vector of variables — the direct analogue of the scalar <span class="math inline">\(y_t\)</span> used throughout the rest of the chapter. The model takes the form:</p>
@@ -1626,8 +1630,8 @@ Table&nbsp;10.4
 <p>For applications involving multivariate systems with potential structural breaks or time-varying dynamics, the MS-VAR is a natural next step beyond the linear VAR of Chapter 7. The intuition from the univariate Hamilton model carries over directly — the same prediction-correction logic, the same smoothed probability output, the same challenge of identifying the regime labels — with the added richness of regime-dependent cross-variable dynamics.</p>
 </section>
 </section>
-<section id="sec-looking-ahead" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">10.7</span> Looking Ahead</h2>
+<section id="sec-looking-ahead" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="sec-looking-ahead"><span class="header-section-number">11.7</span> Looking Ahead</h2>
 <p>The Hamilton filter developed in this chapter solves a discrete inference problem: given a sequence of observations, recover the probabilities of belonging to one of <span class="math inline">\(M\)</span> discrete hidden states. The prediction step projects the current state distribution through a finite transition matrix; the update step applies <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a> using a Gaussian likelihood evaluated at the current observation. Every element of this algorithm — the prior, the likelihood, the posterior, the forward projection — has a direct counterpart in the Kalman filter of Chapter 11.</p>
 <p>The Kalman filter solves the same problem for a continuous hidden state. Instead of a probability vector over <span class="math inline">\(M\)</span> regimes, the state is a real-valued vector <span class="math inline">\(\boldsymbol{\alpha}_t\)</span> that evolves according to a linear Gaussian state equation. Instead of a finite transition matrix, there is a state transition matrix <span class="math inline">\(T\)</span> and a Gaussian process noise. Instead of evaluating a mixture of <span class="math inline">\(M\)</span> Gaussians at each step, there is a single multivariate Gaussian prediction that is updated by the observation equation. The prediction step produces a predicted mean and variance for <span class="math inline">\(\boldsymbol{\alpha}_t\)</span>; the update step revises these using the new observation and the Kalman gain — the multivariate analogue of the weight that <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem">Bayes’ rule</a> assigns to the new data relative to the prior.</p>
 <p>Chapter 11 builds this framework from scratch, starting with the local level model — the simplest state space system, in which the only state is a slowly drifting level — and working up to multivariate systems capable of extracting unobserved components such as the output gap, trend inflation, and the natural rate of interest. The connection to the Hamilton filter ensures that nothing in Chapter 11 will feel unfamiliar: the architecture is the same, the notation changes, and the state space becomes richer. Together, the tools developed across these eleven chapters — from the ACF of a stationary process to Markov-switching dynamics and state-space filtering — form a complete vocabulary for empirical time series work. The methods that appeared exotic at the outset are, by now, a natural part of the toolkit.</p>
@@ -1637,7 +1641,7 @@ Table&nbsp;10.4
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key Terms
+<span class="screen-reader-only">Note</span>Key Terms
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1715,13 +1719,14 @@ Key Terms
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2117,16 +2122,16 @@ Key Terms
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../chapters/09/chapter_09.html" class="pagination-link" aria-label="Volatility Models — ARCH, GARCH, and Extensions">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Volatility Models — ARCH, GARCH, and Extensions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../chapters/11/chapter_11.html" class="pagination-link" aria-label="State Space Models and the Kalman Filter">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">State Space Models and the Kalman Filter</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Regime-Switching Models"</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -4078,7 +4083,7 @@ Key Terms
 <span id="cb20-1980"><a href="#cb20-1980" aria-hidden="true" tabindex="-1"></a>which the coefficient matrices and covariance matrix of a VAR switch across</span>
 <span id="cb20-1981"><a href="#cb20-1981" aria-hidden="true" tabindex="-1"></a>regimes; yields regime-dependent impulse response functions.</span>
 <span id="cb20-1982"><a href="#cb20-1982" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
