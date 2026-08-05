@@ -1,17 +1,30 @@
 ---
 title: "Preface"
 author: ""
+jupyter: python3
 format:
   html:
     toc: false
+    toc-depth: 3
+    toc-title: "In this chapter"
     number-sections: false
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
     theme: cosmo
     css: styles.css
+    highlight-style: github
+    fig-align: center
+    fig-cap-location: bottom
+    fig-responsive: true
     html-math-method: mathjax
     embed-resources: false
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
 ---
-
-## Preface
 
 Economic and financial data arrive in sequence. That sequence is not incidental — it is the most important thing about the data. Knowing what inflation was last month tells you something about what it will be this month. Knowing how a market moved yesterday tells you something about how it might move tomorrow. The discipline of time series analysis is the systematic study of that temporal dependence: how to measure it, model it, and use it to form credible statements about the future.
 
@@ -19,7 +32,7 @@ This book develops that discipline from the ground up. We begin with the simples
 
 The methods in this book are not academic exercises. They appear — sometimes under different names, often without explicit attribution — in the daily work of economists and analysts across a wide range of settings. A central bank economist trying to determine whether the inflation process broke in 1979 — whether the data are consistent with a single stable model or with two different regimes — is applying the tools of Chapter 6. A risk manager computing Value-at-Risk for a portfolio of fixed-income securities is relying on the conditional volatility estimates that Chapter 9 produces. A development economist trying to estimate GDP growth for a country that publishes quarterly figures with a three-month lag, using monthly survey indicators as proxies, is doing nowcasting — the real-time signal-extraction problem of Chapter 11. These are not stylized examples invented for pedagogical purposes. They are the actual questions that appear in policy memos, research papers, and trading desk risk reports.
 
-This book assumes you are comfortable with matrix algebra, basic probability, and the mechanics of OLS regression. If the matrix algebra is rusty, the appendix is the right starting point — it covers everything the book uses, and working through it will pay dividends throughout. It does not assume any prior exposure to time series. What it does assume is a willingness to take the mathematics seriously: not as an end in itself, but as the language that makes precise statements possible. Every formal result in this book is followed by an economic interpretation, because a result that cannot be interpreted has not been fully understood.
+This book assumes you are comfortable with matrix algebra, basic probability, and the mechanics of OLS regression. If the matrix algebra is rusty, the appendix is the right starting point — it covers everything the book uses, and working through it before Chapter 1 will pay dividends throughout. It does not assume any prior exposure to time series. What it does assume is a willingness to take the mathematics seriously: not as an end in itself, but as the language that makes precise statements possible. Every formal result in this book is followed by an economic interpretation, because a result that cannot be interpreted has not been fully understood.
 
 The chapters are designed to be read in sequence. Each one closes with a Looking Ahead section that plants the question motivating the next chapter, and the empirical examples are chosen so that the same series — US real GDP growth, CPI inflation, initial jobless claims, equity returns, Treasury yields — recur across chapters, allowing the methods to be compared on common ground. All data are drawn from publicly available sources (FRED, Yahoo Finance), all code is included, and all results are reproducible. The goal throughout is not to present time series analysis as a collection of tests and procedures to be applied mechanically, but as a way of thinking about data that, once learned, becomes difficult to set aside.
 
