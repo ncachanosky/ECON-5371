@@ -31,6 +31,10 @@ Today we close all three loops.
 
 ## The Matrix Inverse {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 1
+:::
+
 ---
 
 ## What the Inverse *Is*
@@ -196,6 +200,10 @@ Only square, full-rank matrices have an inverse. A non-square matrix is never in
 
 ## Solving a Linear System {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 2
+:::
+
 ---
 
 ## From Equations to $\mathbf{Ax} = \mathbf{b}$
@@ -295,6 +303,10 @@ This is also why software never triangularizes "by hand" the way we just did. A 
 ---
 
 ## Eigenvalues and Eigenvectors {.section-divider background-color="#B87333" footer=false}
+
+::: {.eo-section-label}
+Section 3
+:::
 
 ---
 
@@ -435,6 +447,10 @@ We are not proving stability conditions today — just building the vocabulary s
 ---
 
 ## Deriving and Computing OLS {.section-divider background-color="#B87333" footer=false}
+
+::: {.eo-section-label}
+Section 4
+:::
 
 ---
 

@@ -52,6 +52,10 @@ Not universal — other references may use arrows, or no bolding at all.
 
 ## Scalars → Vectors → Matrices {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 1
+:::
+
 ---
 
 ## From Scalar to Vector
@@ -108,6 +112,10 @@ A vector is just a special case — $n\times 1$ or $1 \times n$ — so the same 
 
 ## Special Matrix Types {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 2
+:::
+
 ---
 
 ## Square, Diagonal, Identity
@@ -162,6 +170,10 @@ we prove it properly when we reach the transpose. Don't dwell.
 ---
 
 ## The Basic Operations {.section-divider background-color="#B87333" footer=false}
+
+::: {.eo-section-label}
+Section 3
+:::
 
 ---
 
@@ -289,6 +301,10 @@ conformability. Mention only if a student asks — easy to conflate.
 
 ## Transpose and Adjugate {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 4
+:::
+
 ---
 
 ## The Transpose
@@ -330,6 +346,10 @@ Not useful on its own — it's the numerator in the classical inverse formula, w
 ---
 
 ## The Determinant {.section-divider background-color="#B87333" footer=false}
+
+::: {.eo-section-label}
+Section 5
+:::
 
 ---
 
@@ -415,6 +435,10 @@ $\det(\mathbf{A}) = 3 \neq 0 \Rightarrow \mathbf{A}$ is **nonsingular**, full ra
 
 ## Rank and Linear Independence — and Why Regressions Fail {.section-divider background-color="#B87333" footer=false}
 
+::: {.eo-section-label}
+Section 6
+:::
+
 ---
 
 ## Linear Independence
@@ -471,7 +495,7 @@ Rank is not bookkeeping — it is the reason a regression can fail to run.
 
 ---
 
-## Recap {.recap-slide footer=false}
+## Recap {.recap-slide background-color="#87A96B" footer=false}
 
 We built matrices from scalars up, classified the types that make later work tractable, defined the operations — especially the non-obvious rule for multiplication — and connected the determinant to rank and multicollinearity.
 
