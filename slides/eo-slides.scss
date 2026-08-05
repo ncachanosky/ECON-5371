@@ -28,6 +28,10 @@ $presentation-line-height: 1.4;
   font-family: $font-family-serif;
   color: $eo-charcoal;
 
+  .slides {
+    bottom: 40px; // reserve room so content never overlaps the footer bar
+  }
+
   h1, h2, h3, h4 {
     font-family: $font-family-sans;
     font-weight: bold;
@@ -43,83 +47,151 @@ $presentation-line-height: 1.4;
     margin-bottom: 0.5em;
   }
 
-  // ── Title slide ──────────────────────────────────────────────────────
+  // ── Cover / title slide — full-bleed charcoal via reveal's own background layer ──
+  // Quarto paints the title slide background automatically when
+  // `title-slide-attributes: data-background-color: "..."` is set in the .qmd YAML.
   .title-slide,
   .reveal .slides section.title-slide {
-    text-align: left;
+    color: $page-bg;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 
     h1.title {
-      color: $eo-charcoal;
-      font-size: 1.9em;
+      color: $page-bg;
+      font-size: 2.2em;
+      font-weight: bold;
       border-bottom: none;
+      text-align: center;
     }
     p.subtitle {
       color: $eo-copper;
       font-family: $font-family-sans;
       font-weight: bold;
-      font-size: 1.1em;
+      font-size: 1.15em;
+      margin-top: 0.4em;
+      text-align: center;
     }
     p.author, p.date, .quarto-title-affiliation {
-      color: $eo-charcoal;
+      color: $page-bg;
       font-family: $font-family-sans;
-      font-size: 0.75em;
-      opacity: 0.85;
+      font-size: 0.8em;
+      opacity: 0.7;
+      text-align: center;
     }
   }
 
-  // ── Section-divider slides (chapter section breaks) ────────────────────
-  // Usage in .qmd:
-  //   ## Section Title {.section-divider background-color="#B87333" footer=false}
-  // "Section N" label is auto-numbered and auto-inserted via ::before —
-  // no manual text needed in the .qmd source. Numbering resets each time
-  // the deck restarts (i.e., per rendered file / per chapter).
-  .slides {
-    counter-reset: section-counter;
-  }
-
-  section.section-divider {
-    counter-increment: section-counter;
-    text-align: center;
-
-    display: flex !important;
+  // ── Section-divider slides — full-bleed color via [data-background-color] ──
+  // Applied per-slide in the .qmd with: ## Heading {background-color="#B87333"}
+  // This targets reveal's own <section> background layer, not a painted div,
+  // so there is no risk of a "box on top of a box" look.
+  //
+  // Section numbering is written directly in the .qmd (not auto-counted):
+  // CSS counters proved unreliable against reveal.js's runtime DOM handling
+  // for backgrounded slides. Add a small label line using the
+  // .eo-section-label class right after the heading, e.g.:
+  //
+  //   ## Difference Equations — The Mathematical Core {background-color="#B87333" footer=false}
+  //
+  //   ::: {.eo-section-label}
+  //   Section 3
+  //   :::
+  //
+  section[data-background-color]:not(.recap-slide) {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    text-align: center;
 
     h2 {
       color: $page-bg;
-      border-bottom: 3px solid $eo-copper;
-      display: inline-block;
+      font-size: 2em;
+      font-weight: bold;
+      border-bottom: none;
       text-align: center;
+      width: 100%;
+      order: 1;   // title always second, regardless of source order
     }
 
-    &::after {
-      content: "Section " counter(section-counter);
-      display: block;
+    .eo-section-label {
+      order: 0;   // label always first, regardless of source order
       font-family: $font-family-sans;
-      font-size: 1.1em;
-      font-weight: 500;
-      color: rgba($page-bg, 0.75);
-      margin-top: 0.3em;
+      font-size: 0.9em;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: $page-bg;
+      opacity: 0.7;
+      margin-bottom: 0.6em;
+    }
+
+    p {
+      color: $page-bg;
+      font-size: 0.85em;
+      opacity: 0.9;
+      max-width: 70%;
       text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      order: 2;   // any body text after the title
     }
   }
 
-  // ── Recap slide (chapter wrap-up) ───────────────────────────────────────
-  // Usage in .qmd:
-  //   ## Recap {.recap-slide background-color="#87A96B" footer=false}
-  section.recap-slide,
-  section[data-background-color="#87A96B"] {
+  // ── Recap slide — sage green via reveal's native background layer,
+  //    no section number, closes the deck ──
+  section.recap-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;   // heading stays centered
+
     h2 {
       color: $page-bg;
-      border-bottom: 3px solid $page-bg;
+      font-size: 2em;
+      font-weight: bold;
+      border-bottom: none;
+      text-align: center;
+      width: 100%;
     }
-    p, li, strong {
+    p, li, strong, em {
       color: $page-bg;
     }
-    strong {
-      color: $page-bg;
-      opacity: 1;
+    p {
+      max-width: 75%;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 0.9em;
+      text-align: justify;       // body paragraphs justified, not centered
+      text-align-last: left;     // avoid an awkwardly stretched final line
+    }
+  }
+
+  // ── Outline / roadmap slide — quiet variant, light bg, numbered list only ──
+  section.outline-slide {
+    h2 {
+      text-align: center;
+      border-bottom: none;
+    }
+    ol {
+      max-width: 640px;
+      margin: 1.5em auto 0;
+      text-align: left;
+      font-size: 1.05em;
+      li {
+        margin-bottom: 0.55em;
+        padding-left: 0.3em;
+      }
+      li::marker {
+        color: $eo-copper;
+        font-weight: bold;
+      }
     }
   }
 
@@ -128,7 +200,7 @@ $presentation-line-height: 1.4;
     border-radius: 4px;
     padding: 0.5em 0.9em;
     font-size: 0.85em;
-    margin: 0.4em 0;
+    margin: 0.4em 0 1.4em 0;
   }
   .eo-definition {
     background-color: rgba($eo-skyblue, 0.10);
@@ -166,8 +238,19 @@ $presentation-line-height: 1.4;
 
   // ── Figures: consistent framing for imported PNGs ──────────────────────
   figure, .reveal figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
     img {
       border-radius: 2px;
+      max-height: 55vh;   // keeps tall multi-panel figures within the slide
+      width: auto;
+      display: block;
+      margin: 0 auto;
     }
     figcaption {
       font-size: 0.55em;
@@ -175,7 +258,16 @@ $presentation-line-height: 1.4;
       color: $eo-charcoal;
       opacity: 0.8;
       margin-top: 0.3em;
+      text-align: center;
     }
+  }
+
+  // Bare images (not wrapped in a <figure>, e.g. no caption given) also center
+  p > img, .reveal p > img {
+    display: block;
+    margin: 0 auto;
+    max-height: 55vh;
+    width: auto;
   }
 
   // ── Tables (journal-style, consistent with textbook) ───────────────────

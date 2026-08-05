@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,9 +11,6 @@
 
 <title>8&nbsp; Vector Autoregressions – Time Series Analysis for Economists</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -79,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -114,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -127,7 +124,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+      if (mathElements[i].tagName == "SPAN") {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -147,11 +144,11 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Book title">
 <meta property="og:description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
-<meta property="og:image" content="https://ncachanosky.github.io/XQMB-5311/chapters/07/assets/logo.png">
+<meta property="og:image" content="https://ncachanosky.github.io/ECON-5311/chapters/07/assets/logo.png">
 <meta property="og:site_name" content="Time Series Analysis for Economists">
 <meta name="twitter:title" content="Book title">
 <meta name="twitter:description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
-<meta name="twitter:image" content="https://ncachanosky.github.io/XQMB-5311/chapters/07/assets/logo.png">
+<meta name="twitter:image" content="https://ncachanosky.github.io/ECON-5311/chapters/07/assets/logo.png">
 <meta name="twitter:creator" content="@n_cachanosky">
 <meta name="twitter:card" content="summary">
 </head>
@@ -180,8 +177,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -384,7 +380,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Learning Objectives
+Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -441,7 +437,7 @@ g_t   &amp;= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Reduced-Form Coefficients Are Not Structural Parameters
+Reduced-Form Coefficients Are Not Structural Parameters
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -455,7 +451,7 @@ g_t   &amp;= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
 <div id="cell-fig-three-series" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>series <span class="op">=</span> [</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"GDP Growth"</span>,    EO_COPPER,     <span class="st">"GDP Growth (ann. %)"</span>),</span>
@@ -474,13 +470,13 @@ g_t   &amp;= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="op">-</span><span class="dv">1</span>].set_xlabel(<span class="st">"Quarter"</span>)</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Three-Variable VAR System: GDP Growth, Inflation, and the Funds Rate"</span>)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-three-series" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-three-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-three-series-output-1.png" width="897" height="920" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-three-series-output-1.png" width="896" height="921" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3–2019Q4. GDP growth and CPI inflation reject the unit root null comfortably; the FFR does not, but the lag polynomial roots confirm the estimated VAR is stable (Section 7.2). The co-movement during recessions and the joint Volcker-era spike in inflation and rates illustrate why a univariate model for any one series gives an incomplete picture of the system.
@@ -523,7 +519,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Why OLS Works Equation by Equation
+Why OLS Works Equation by Equation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -548,7 +544,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The Companion Matrix
+The Companion Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -572,7 +568,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 7.1 — VAR Stability
+Definition 7.1 — VAR Stability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -588,7 +584,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>VAR Estimation Requires Stationary Variables
+VAR Estimation Requires Stationary Variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -598,7 +594,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 </div>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>header <span class="op">=</span> (<span class="ss">f"</span><span class="sc">{</span><span class="st">'Series'</span><span class="sc">:&lt;18}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'ADF stat'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'p-value'</span><span class="sc">:&gt;10}</span><span class="ss"> "</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>header <span class="op">=</span> (<span class="ss">f"</span><span class="sc">{</span><span class="st">'Series'</span><span class="sc">:&lt;18}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'ADF stat'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'p-value'</span><span class="sc">:&gt;10}</span><span class="ss"> "</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span><span class="st">'Crit. (5%)'</span><span class="sc">:&gt;12}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Decision'</span><span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sep    <span class="op">=</span> <span class="st">"─"</span> <span class="op">*</span> <span class="bu">len</span>(header)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
@@ -609,7 +605,7 @@ Figure&nbsp;8.1: GDP growth, CPI inflation, and the federal funds rate, 1954Q3�
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">:&lt;18}</span><span class="ss"> </span><span class="sc">{</span>res[<span class="st">'stat'</span>]<span class="sc">:&gt;10.3f}</span><span class="ss"> </span><span class="sc">{</span>res[<span class="st">'pval'</span>]<span class="sc">:&gt;10.4f}</span><span class="ss"> "</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>res[<span class="st">'crit_5'</span>]<span class="sc">:&gt;12.3f}</span><span class="ss"> </span><span class="sc">{</span>decision<span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Note: ADF with intercept, lag length by AIC. H</span><span class="ch">\u2080</span><span class="st">: unit root."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Note: ADF with intercept, lag length by AIC. H</span><span class="ch">\u2080</span><span class="st">: unit root."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-adf" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -659,7 +655,7 @@ Note: ADF with intercept, lag length by AIC. H₀: unit root.</code></pre>
 <div id="lag-selection" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit VAR at each lag order up to p_max = 6 and collect criteria</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit VAR at each lag order up to p_max = 6 and collect criteria</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p_max    <span class="op">=</span> <span class="dv">6</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>var_data <span class="op">=</span> data[[<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]]</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -714,7 +710,7 @@ Note: ADF with intercept, lag length by AIC. H₀: unit root.</code></pre>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    reject <span class="op">=</span> <span class="st">"Yes"</span> <span class="cf">if</span> pval <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="cf">else</span> <span class="st">"No"</span></span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>p0<span class="sc">:&gt;8}</span><span class="ss">  </span><span class="sc">{</span>p1<span class="sc">:&gt;8}</span><span class="ss">  </span><span class="sc">{</span>lrstat<span class="sc">:&gt;10.3f}</span><span class="ss">  </span><span class="sc">{</span>df<span class="sc">:&gt;6}</span><span class="ss">  </span><span class="sc">{</span>pval<span class="sc">:&gt;10.4f}</span><span class="ss">  </span><span class="sc">{</span>reject<span class="sc">:&gt;8}</span><span class="ss">"</span>)</span>
 <span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ls)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df = n² = 9 per step. Reject H₀ → retain the unrestricted model."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"df = n² = 9 per step. Reject H₀ → retain the unrestricted model."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>───────────────────────────────────────
@@ -751,8 +747,8 @@ df = n² = 9 per step. Reject H₀ → retain the unrestricted model.</code></pr
 <p>The <code>statsmodels</code> summary produces one block per equation — each variable’s own lags and the cross-variable lags, along with standard errors, <span class="math inline">\(t\)</span>-statistics, and equation-level fit statistics. This is the multivariate analogue of the ARMA summary in Chapter 3: a separate regression table for each endogenous variable, sharing the same right-hand side structure.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the complete VAR(1) summary — one block per equation.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_fit.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the complete VAR(1) summary — one block per equation.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_fit.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-var-full" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -765,8 +761,8 @@ Table&nbsp;8.2
 ==================================
 Model:                         VAR
 Method:                        OLS
-Date:           Tue, 04, Aug, 2026
-Time:                     18:49:42
+Date:           Wed, 05, Aug, 2026
+Time:                     09:11:07
 --------------------------------------------------------------------
 No. of Equations:         3.00000    BIC:                    1.98538
 Nobs:                     261.000    HQIC:                   1.88737
@@ -826,7 +822,7 @@ FFR                0.239334       0.249412  1.000000
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Roots vs Eigenvalues: A Convention to Watch
+Roots vs Eigenvalues: A Convention to Watch
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -836,7 +832,7 @@ FFR                0.239334       0.249412  1.000000
 </div>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p_sel   <span class="op">=</span> <span class="bu">int</span>(ic_df[<span class="st">"BIC"</span>].idxmin())</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p_sel   <span class="op">=</span> <span class="bu">int</span>(ic_df[<span class="st">"BIC"</span>].idxmin())</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>var_fit <span class="op">=</span> VAR(var_data).fit(p_sel)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>roots      <span class="op">=</span> var_fit.roots</span>
@@ -857,7 +853,7 @@ FFR                0.239334       0.249412  1.000000
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span><span class="bu">abs</span>(e)<span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="fl">.4</span><span class="er">f</span><span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>outside<span class="sc">:&gt;16}</span><span class="ss">"</span>)</span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"VAR(</span><span class="sc">{</span>p_sel<span class="sc">}</span><span class="ss">), n=3: </span><span class="sc">{</span><span class="bu">len</span>(roots)<span class="sc">}</span><span class="ss"> roots. Stable: </span><span class="sc">{</span><span class="st">'Yes'</span> <span class="cf">if</span> stable <span class="cf">else</span> <span class="st">'No'</span><span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stability: |root| &gt; 1  ↔  |companion eigenvalue| &lt; 1."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stability: |root| &gt; 1  ↔  |companion eigenvalue| &lt; 1."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-eigenvalues" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="9">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -883,7 +879,7 @@ Stability: |root| &gt; 1  ↔  |companion eigenvalue| &lt; 1.</code></pre>
 <div id="cell-fig-unit-circle" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>theta   <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, <span class="dv">300</span>)</span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>theta   <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, <span class="dv">300</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.plot(np.cos(theta), np.sin(theta),</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_CHARCOAL, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Unit circle"</span>)</span>
@@ -911,13 +907,13 @@ Stability: |root| &gt; 1  ↔  |companion eigenvalue| &lt; 1.</code></pre>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"VAR(1) Stability"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-unit-circle" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unit-circle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-unit-circle-output-1.png" width="579" height="593" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-unit-circle-output-1.png" width="580" height="594" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unit-circle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.2: Companion matrix eigenvalues for the VAR(1) plotted against the unit circle. All three eigenvalues are real (no complex pairs at p=1) and lie strictly inside the circle, confirming stability.
@@ -936,7 +932,7 @@ Figure&nbsp;8.2: Companion matrix eigenvalues for the VAR(1) plotted against the
 <p>Under the null the test statistic is asymptotically <span class="math inline">\(\chi^2\)</span>; rejection means residual autocorrelation is present and the lag order should be increased.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Multivariate portmanteau test — VAR(1) residuals (h=12, adjusted)"</span>)</span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Multivariate portmanteau test — VAR(1) residuals (h=12, adjusted)"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Statistic : </span><span class="sc">{</span>port_1<span class="sc">.</span>test_statistic<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  df        : </span><span class="sc">{</span>port_1<span class="sc">.</span>df<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  p-value   : </span><span class="sc">{</span>port_1<span class="sc">.</span>pvalue<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
@@ -954,7 +950,7 @@ Figure&nbsp;8.2: Companion matrix eigenvalues for the VAR(1) plotted against the
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'eq'</span>]<span class="sc">:&lt;20}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'DW'</span>]<span class="sc">:&gt;8.3f}</span><span class="ss">  "</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'JB stat'</span>]<span class="sc">:&gt;10.3f}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'JB p'</span>]<span class="sc">:&gt;10.4f}</span><span class="ss">  </span><span class="sc">{</span>normal<span class="sc">:&gt;10}</span><span class="ss">"</span>)</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"DW ≈ 2: no first-order autocorrelation. JB H</span><span class="ch">\u2080</span><span class="st">: residuals normal."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"DW ≈ 2: no first-order autocorrelation. JB H</span><span class="ch">\u2080</span><span class="st">: residuals normal."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-diagnostics-var1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="12">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -985,7 +981,7 @@ DW ≈ 2: no first-order autocorrelation. JB H₀: residuals normal.</code></pre
 <div id="cell-fig-resid-acf-var1" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_lags_acf <span class="op">=</span> <span class="dv">16</span></span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_lags_acf <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig, axes  <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">2.5</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>colors     <span class="op">=</span> [EO_COPPER, EO_SKYBLUE, EO_TERRACOTTA]</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>conf_bound <span class="op">=</span> <span class="fl">1.96</span> <span class="op">/</span> np.sqrt(<span class="bu">len</span>(resids_1))</span>
@@ -1005,13 +1001,13 @@ DW ≈ 2: no first-order autocorrelation. JB H₀: residuals normal.</code></pre
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"ACF"</span>, fontsize<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Residual ACF — VAR(1) Equations"</span>)</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-resid-acf-var1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resid-acf-var1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-resid-acf-var1-output-1.png" width="893" height="390" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-resid-acf-var1-output-1.png" width="892" height="390" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resid-acf-var1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.3: Residual ACF — VAR(1). Bars outside the dashed 95 percent confidence bands indicate significant autocorrelation. CPI inflation shows a cluster of bars at lags 3–6; the FFR has a large spike at lag 7; GDP growth is borderline at lags 1 and 5. The VAR(1) leaves substantial systematic dynamics in the residuals.
@@ -1043,7 +1039,7 @@ Figure&nbsp;8.3: Residual ACF — VAR(1). Bars outside the dashed 95 percent con
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Why VAR(6)? No Information Criterion Selected It
+Why VAR(6)? No Information Criterion Selected It
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1059,7 +1055,7 @@ Figure&nbsp;8.3: Residual ACF — VAR(1). Bars outside the dashed 95 percent con
 <h3 class="anchored" data-anchor-id="the-working-model-var6">The Working Model: VAR(6)</h3>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_fit_d.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_fit_d.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-var-final" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1072,8 +1068,8 @@ Table&nbsp;8.5
 ==================================
 Model:                         VAR
 Method:                        OLS
-Date:           Tue, 04, Aug, 2026
-Time:                     18:49:42
+Date:           Wed, 05, Aug, 2026
+Time:                     09:11:08
 --------------------------------------------------------------------
 No. of Equations:         3.00000    BIC:                    2.40602
 Nobs:                     256.000    HQIC:                   1.93414
@@ -1171,7 +1167,7 @@ FFR                0.255012       0.174553  1.000000
 <p>With <span class="math inline">\(n = 3\)</span> and <span class="math inline">\(p = 6\)</span>, the companion matrix is <span class="math inline">\(18 \times 18\)</span> with 18 eigenvalues to check. All are real and all fall inside the unit circle — the VAR(6) is stable.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>col_w <span class="op">=</span> <span class="dv">14</span></span>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>col_w <span class="op">=</span> <span class="dv">14</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>header <span class="op">=</span> (<span class="ss">f"</span><span class="sc">{</span><span class="st">'Root'</span><span class="sc">:&gt;6}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'|Root|'</span><span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="sc">}</span><span class="ss">  "</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span><span class="st">'|Comp. eig.|'</span><span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Outside circle?'</span><span class="sc">:&gt;16}</span><span class="ss">"</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sep    <span class="op">=</span> <span class="st">"─"</span> <span class="op">*</span> <span class="bu">len</span>(header)</span>
@@ -1184,7 +1180,7 @@ FFR                0.255012       0.174553  1.000000
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">:&gt;6}</span><span class="ss">  </span><span class="sc">{</span><span class="bu">abs</span>(r)<span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="fl">.4</span><span class="er">f</span><span class="sc">}</span><span class="ss">  "</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span><span class="bu">abs</span>(e)<span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="fl">.4</span><span class="er">f</span><span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>outside<span class="sc">:&gt;16}</span><span class="ss">"</span>)</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"VAR(6), n=3: </span><span class="sc">{</span><span class="bu">len</span>(roots6)<span class="sc">}</span><span class="ss"> roots. Stable: </span><span class="sc">{</span><span class="st">'Yes'</span> <span class="cf">if</span> stable6 <span class="cf">else</span> <span class="st">'No'</span><span class="sc">}</span><span class="ss">."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"VAR(6), n=3: </span><span class="sc">{</span><span class="bu">len</span>(roots6)<span class="sc">}</span><span class="ss"> roots. Stable: </span><span class="sc">{</span><span class="st">'Yes'</span> <span class="cf">if</span> stable6 <span class="cf">else</span> <span class="st">'No'</span><span class="sc">}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-roots-var6" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1224,7 +1220,7 @@ VAR(6), n=3: 18 roots. Stable: No.</code></pre>
 <div id="cell-fig-unit-circle-var6" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>theta   <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, <span class="dv">300</span>)</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>theta   <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, <span class="dv">300</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>))</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ax.plot(np.cos(theta), np.sin(theta),</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_CHARCOAL, lw<span class="op">=</span><span class="fl">0.8</span>, ls<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"Unit circle"</span>)</span>
@@ -1251,13 +1247,13 @@ VAR(6), n=3: 18 roots. Stable: No.</code></pre>
 <span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"VAR(6) Stability"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-unit-circle-var6" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unit-circle-var6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-unit-circle-var6-output-1.png" width="579" height="593" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-unit-circle-var6-output-1.png" width="580" height="594" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unit-circle-var6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.4: Companion matrix eigenvalues for the VAR(6) plotted against the unit circle. All 18 eigenvalues are real and lie strictly inside the circle. Compare with the VAR(1) unit circle figure: the eigenvalues are more numerous and spread differently, but all remain well inside the stability boundary.
@@ -1273,7 +1269,7 @@ Figure&nbsp;8.4: Companion matrix eigenvalues for the VAR(6) plotted against the
 <p>The VAR(6) was selected by exhausting the candidate range — no lag order up to <span class="math inline">\(p = 6\)</span> passed the portmanteau test. The table below shows the full search record, followed by the equation-level diagnostics at VAR(6).</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Portmanteau search record (h=12, adjusted Ljung-Box):"</span>)</span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Portmanteau search record (h=12, adjusted Ljung-Box):"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ph <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="st">'p'</span><span class="sc">:&gt;4}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Statistic'</span><span class="sc">:&gt;12}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'df'</span><span class="sc">:&gt;6}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'p-value'</span><span class="sc">:&gt;10}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Pass?'</span><span class="sc">:&gt;8}</span><span class="ss">"</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ps <span class="op">=</span> <span class="st">"─"</span> <span class="op">*</span> <span class="bu">len</span>(ph)</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ps)</span>
@@ -1296,7 +1292,7 @@ Figure&nbsp;8.4: Companion matrix eigenvalues for the VAR(6) plotted against the
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'eq'</span>]<span class="sc">:&lt;20}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'DW'</span>]<span class="sc">:&gt;8.3f}</span><span class="ss">  "</span></span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'JB stat'</span>]<span class="sc">:&gt;10.3f}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="st">'JB p'</span>]<span class="sc">:&gt;10.4f}</span><span class="ss">  </span><span class="sc">{</span>normal<span class="sc">:&gt;10}</span><span class="ss">"</span>)</span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"DW ≈ 2: no first-order autocorrelation. JB H</span><span class="ch">\u2080</span><span class="st">: residuals normal."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"DW ≈ 2: no first-order autocorrelation. JB H</span><span class="ch">\u2080</span><span class="st">: residuals normal."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-diagnostics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="19">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1334,7 +1330,7 @@ DW ≈ 2: no first-order autocorrelation. JB H₀: residuals normal.</code></pre
 <div id="cell-fig-resid-acf" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>n_lags_acf <span class="op">=</span> <span class="dv">16</span></span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>n_lags_acf <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>fig, axes  <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">2.5</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>colors     <span class="op">=</span> [EO_COPPER, EO_SKYBLUE, EO_TERRACOTTA]</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>conf_bound <span class="op">=</span> <span class="fl">1.96</span> <span class="op">/</span> np.sqrt(<span class="bu">len</span>(resids_d))</span>
@@ -1354,13 +1350,13 @@ DW ≈ 2: no first-order autocorrelation. JB H₀: residuals normal.</code></pre
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"ACF"</span>, fontsize<span class="op">=</span><span class="dv">7</span>)</span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Residual ACF — VAR(6) Equations"</span>)</span>
 <span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-resid-acf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resid-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-resid-acf-output-1.png" width="893" height="390" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-resid-acf-output-1.png" width="891" height="390" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resid-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent confidence bands indicate no significant autocorrelation. Compare with the VAR(1) ACF: the systematic clusters and spikes have been largely eliminated. Isolated bars outside the bands remain but are consistent with the non-Gaussian residuals rather than dynamic misspecification.
@@ -1387,7 +1383,7 @@ Figure&nbsp;8.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent conf
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 7.2 — Granger Causality
+Definition 7.2 — Granger Causality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1410,7 +1406,7 @@ Figure&nbsp;8.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent conf
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Granger Causality Is Not Structural Causality
+Granger Causality Is Not Structural Causality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1422,7 +1418,7 @@ Figure&nbsp;8.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent conf
 <h3 class="anchored" data-anchor-id="empirical-results">Empirical Results</h3>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>var_labels <span class="op">=</span> {<span class="st">"GDP Growth"</span>: <span class="st">"GDP Growth"</span>,</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>var_labels <span class="op">=</span> {<span class="st">"GDP Growth"</span>: <span class="st">"GDP Growth"</span>,</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"CPI Inflation"</span>: <span class="st">"CPI Inflation"</span>,</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"FFR"</span>: <span class="st">"FFR"</span>}</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1455,7 +1451,7 @@ Figure&nbsp;8.5: Residual ACF — VAR(6). Bars inside the dashed 95 percent conf
 <span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
 <span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"H₀: row cause does not Granger-cause column effect."</span>)</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"*** p&lt;0.01  ** p&lt;0.05  * p&lt;0.10"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"*** p&lt;0.01  ** p&lt;0.05  * p&lt;0.10"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-granger" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="22">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1521,7 +1517,7 @@ H₀: row cause does not Granger-cause column effect.
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The Cholesky Decomposition
+The Cholesky Decomposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1553,7 +1549,7 @@ H₀: row cause does not Granger-cause column effect.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>The Ordering Assumption Is Substantive
+The Ordering Assumption Is Substantive
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1603,7 +1599,7 @@ H₀: row cause does not Granger-cause column effect.
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The VMA Representation and IRF Formula
+The VMA Representation and IRF Formula
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1629,7 +1625,7 @@ H₀: row cause does not Granger-cause column effect.
 <div id="cell-fig-irfs" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>labels       <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>labels       <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>colors       <span class="op">=</span> [EO_COPPER, EO_SKYBLUE, EO_TERRACOTTA]</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>shock_labels <span class="op">=</span> [<span class="st">"Output shock"</span>, <span class="st">"Inflation shock"</span>, <span class="st">"Policy shock"</span>]</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>horizons     <span class="op">=</span> np.arange(periods <span class="op">+</span> <span class="dv">1</span>)</span>
@@ -1660,13 +1656,13 @@ H₀: row cause does not Granger-cause column effect.
 <span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Impulse Response Functions — Three-Variable VAR"</span>)</span>
 <span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-irfs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-irfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-irfs-output-1.png" width="893" height="920" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-irfs-output-1.png" width="890" height="921" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-irfs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.6: Orthogonalised impulse responses for the three-variable VAR, 1954Q3–2019Q4. Each column corresponds to one structural shock (Cholesky-identified, ordering: GDP growth → CPI inflation → FFR); each row shows the response of one variable. Shaded bands are 16th–84th percentile bootstrap confidence intervals (500 draws). By construction, diagonal panels equal 1 at horizon 0 — each variable’s response to its own unit structural shock. Horizons are in quarters.
@@ -1709,7 +1705,7 @@ Figure&nbsp;8.6: Orthogonalised impulse responses for the three-variable VAR, 19
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 7.3 — Forecast Error Variance Decomposition
+Definition 7.3 — Forecast Error Variance Decomposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1725,7 +1721,7 @@ Figure&nbsp;8.6: Orthogonalised impulse responses for the three-variable VAR, 19
 <h3 class="anchored" data-anchor-id="empirical-fevd">Empirical FEVD</h3>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>labels      <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>labels      <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>shock_names <span class="op">=</span> [<span class="st">"Output"</span>, <span class="st">"Inflation"</span>, <span class="st">"Policy"</span>]</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>horizons_tbl <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">20</span>]</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1747,7 +1743,7 @@ Figure&nbsp;8.6: Orthogonalised impulse responses for the three-variable VAR, 19
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>            row  <span class="op">+=</span> <span class="ss">f"</span><span class="sc">{</span>share<span class="sc">:</span><span class="op">&gt;</span>{col_w}<span class="fl">.1</span><span class="er">f</span><span class="sc">}</span><span class="ss">"</span></span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row)</span>
 <span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sep)</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Shares in percent; rows sum to 100."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Shares in percent; rows sum to 100."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-fevd" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="26">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1800,7 +1796,7 @@ Shares in percent; rows sum to 100.</code></pre>
 <div id="cell-fig-fevd" class="cell" data-execution_count="27">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>var_labels  <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>var_labels  <span class="op">=</span> [<span class="st">"GDP Growth"</span>, <span class="st">"CPI Inflation"</span>, <span class="st">"FFR"</span>]</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>shock_names <span class="op">=</span> [<span class="st">"Output shock"</span>, <span class="st">"Inflation shock"</span>, <span class="st">"Policy shock"</span>]</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>colors      <span class="op">=</span> [EO_COPPER, EO_SKYBLUE, EO_TERRACOTTA]</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>horizons_p  <span class="op">=</span> np.arange(<span class="dv">1</span>, periods <span class="op">+</span> <span class="dv">1</span>)</span>
@@ -1830,13 +1826,13 @@ Shares in percent; rows sum to 100.</code></pre>
 <span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>           bbox_to_anchor<span class="op">=</span>(<span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.12</span>), frameon<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Forecast Error Variance Decomposition"</span>)</span>
 <span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-fevd" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fevd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_07_files/figure-html/fig-fevd-output-1.png" width="893" height="532" class="figure-img">
+<img src="chapter_07_files/figure-html/fig-fevd-output-1.png" width="892" height="532" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fevd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.7: Forecast error variance decompositions for the three-variable VAR, 1954Q3–2019Q4. Each panel shows the fraction of forecast error variance in one variable attributable to each structural shock (Cholesky ordering: output → inflation → policy rate) as the horizon grows from 1 to 20 quarters. Stacked areas sum to 100 percent at every horizon.
@@ -1872,7 +1868,7 @@ Figure&nbsp;8.7: Forecast error variance decompositions for the three-variable V
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>What Changes — and What Does Not
+What Changes — and What Does Not
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1898,7 +1894,7 @@ Figure&nbsp;8.7: Forecast error variance decompositions for the three-variable V
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Stationarity Rules for Exogenous Variables
+Stationarity Rules for Exogenous Variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1917,11 +1913,11 @@ Figure&nbsp;8.7: Forecast error variance decompositions for the three-variable V
 <p>Oil price growth is <span class="math inline">\(I(0)\)</span> (oil prices in levels are <span class="math inline">\(I(1)\)</span>, but their log growth rate is stationary), so no transformation beyond the log-differencing is required. We include contemporaneous oil price growth only (<span class="math inline">\(s = 0\)</span>) as a first pass, consistent with the interpretation that oil prices affect the domestic economy within the quarter.</p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ADF test — WTI oil price growth (annualised %, quarterly)"</span>)</span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ADF test — WTI oil price growth (annualised %, quarterly)"</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Statistic : </span><span class="sc">{</span>oil_adf[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  p-value   : </span><span class="sc">{</span>oil_adf[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Crit (5%) : </span><span class="sc">{</span>oil_adf[<span class="dv">4</span>][<span class="st">'5%'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Decision  : </span><span class="sc">{</span><span class="st">'Stationary — include in levels'</span> <span class="cf">if</span> oil_adf[<span class="dv">1</span>] <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="cf">else</span> <span class="st">'Unit root?'</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Decision  : </span><span class="sc">{</span><span class="st">'Stationary — include in levels'</span> <span class="cf">if</span> oil_adf[<span class="dv">1</span>] <span class="op">&lt;</span> <span class="fl">0.05</span> <span class="cf">else</span> <span class="st">'Unit root?'</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-varx-adf" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="29">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1942,7 +1938,7 @@ Table&nbsp;8.10
 <p><em>ADF pre-check for WTI oil price growth, the exogenous variable added to the VARX. The test statistic of −11.567 (p = 0.000) rejects the unit root null decisively — oil price growth is stationary and suitable for direct inclusion as a contemporaneous exogenous regressor without further transformation.</em></p>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model comparison: VAR vs VARX (oil price growth as exogenous)"</span>)</span>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Model comparison: VAR vs VARX (oil price growth as exogenous)"</span>)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>header <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="st">'Model'</span><span class="sc">:&lt;20}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'BIC'</span><span class="sc">:&gt;12}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'ΔBIC'</span><span class="sc">:&gt;10}</span><span class="ss">"</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sep    <span class="op">=</span> <span class="st">"─"</span> <span class="op">*</span> <span class="bu">len</span>(header)</span>
@@ -1955,7 +1951,7 @@ Table&nbsp;8.10
 <span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'VARX('</span> <span class="op">+</span> <span class="bu">str</span>(p_final) <span class="op">+</span> <span class="st">',0)'</span><span class="sc">:&lt;20}</span><span class="ss">  </span><span class="sc">{</span>varx_bic<span class="sc">:&gt;12.3f}</span><span class="ss">  </span><span class="sc">{</span>delta<span class="sc">:&gt;10.3f}</span><span class="ss">"</span>)</span>
 <span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sep)</span>
 <span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Δ BIC = VARX − VAR. Negative favours VARX. </span><span class="sc">{</span>better<span class="sc">}</span><span class="ss">."</span>)</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Note: BIC reported per observation by statsmodels."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Note: BIC reported per observation by statsmodels."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="tbl-varx-compare" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="31">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1999,7 +1995,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Do Not Estimate a VAR in Levels with I(1) Variables
+Do Not Estimate a VAR in Levels with I(1) Variables
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2029,7 +2025,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Glossary
+Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2107,14 +2103,13 @@ Note: BIC reported per observation by statsmodels.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2180,7 +2175,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/ncachanosky\.github\.io\/XQMB-5311");
+        var filterRegex = new RegExp("https:\/\/ncachanosky\.github\.io\/ECON-5311");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -2519,7 +2514,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="sourceCode" id="cb32" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Vector Autoregressions"</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -5165,7 +5160,7 @@ Note: BIC reported per observation by statsmodels.</code></pre>
 <span id="cb32-2706"><a href="#cb32-2706" aria-hidden="true" tabindex="-1"></a>of a state space model: the cointegrating residual is an unobserved state</span>
 <span id="cb32-2707"><a href="#cb32-2707" aria-hidden="true" tabindex="-1"></a>estimated optimally by the Kalman filter. Full treatment in Chapter 11.</span>
 <span id="cb32-2708"><a href="#cb32-2708" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,9 +11,6 @@
 
 <title>2&nbsp; Foundations of Time Series Analysis – Time Series Analysis for Economists</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -79,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -114,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -127,7 +124,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+      if (mathElements[i].tagName == "SPAN") {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -147,11 +144,11 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Book title">
 <meta property="og:description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
-<meta property="og:image" content="https://ncachanosky.github.io/XQMB-5311/chapters/01/assets/logo.png">
+<meta property="og:image" content="https://ncachanosky.github.io/ECON-5311/chapters/01/assets/logo.png">
 <meta property="og:site_name" content="Time Series Analysis for Economists">
 <meta name="twitter:title" content="Book title">
 <meta name="twitter:description" content="Course readings for ECON-5371 – Forecasting – The University of Texas at El Paso.">
-<meta name="twitter:image" content="https://ncachanosky.github.io/XQMB-5311/chapters/01/assets/logo.png">
+<meta name="twitter:image" content="https://ncachanosky.github.io/ECON-5311/chapters/01/assets/logo.png">
 <meta name="twitter:creator" content="@n_cachanosky">
 <meta name="twitter:card" content="summary">
 </head>
@@ -180,8 +177,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -371,7 +367,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Learning Objectives
+Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -411,7 +407,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.1 — Time Series
+Definition 1.1 — Time Series
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -425,7 +421,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.2 — Panel Data
+Definition 1.2 — Panel Data
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -464,7 +460,7 @@ window.Quarto = {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>A Common Mistake
+A Common Mistake
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -503,7 +499,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Why Squared Loss Gives the Mean and Absolute Loss Gives the Median
+Why Squared Loss Gives the Mean and Absolute Loss Gives the Median
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -623,7 +619,7 @@ Table&nbsp;2.1: Common time series frequencies in economics and finance
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.3 — White Noise
+Definition 1.3 — White Noise
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -651,7 +647,7 @@ Figure&nbsp;2.1: Spatial white noise. Each pixel is an independent random draw f
 <div id="cell-fig-wn-series" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — White noise time series</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>T   <span class="op">=</span> <span class="dv">200</span></span>
@@ -683,13 +679,13 @@ Figure&nbsp;2.1: Spatial white noise. Each pixel is an independent random draw f
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"White Noise: Time Series and Sample ACF"</span>)</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-wn-series" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wn-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-wn-series-output-1.png" width="893" height="768" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-wn-series-output-1.png" width="891" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wn-series-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.2: A simulated Gaussian white noise series (<span class="math inline">\(T=200\)</span>) and its sample ACF. The time plot shows erratic fluctuations around zero with no discernible structure. The ACF confirms this: all autocorrelations lie within the 95% confidence bands (terracotta dashed lines), indicating no statistically significant linear dependence at any lag. This is what a well-specified model’s residuals should look like.
@@ -708,7 +704,7 @@ Figure&nbsp;2.2: A simulated Gaussian white noise series (<span class="math inli
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Hierarchy of White Noise
+Hierarchy of White Noise
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -756,7 +752,7 @@ Figure&nbsp;2.2: A simulated Gaussian white noise series (<span class="math inli
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.4 — Stability of a First-Order Difference Equation
+Definition 1.4 — Stability of a First-Order Difference Equation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -791,7 +787,7 @@ Figure&nbsp;2.2: A simulated Gaussian white noise series (<span class="math inli
 <div id="cell-fig-diffeq-paths" class="cell" data-fig-height="14" data-fig-width="6" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code — Figure 1.1</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>T    <span class="op">=</span> <span class="dv">40</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>T    <span class="op">=</span> <span class="dv">40</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y0   <span class="op">=</span> <span class="fl">3.0</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ybar <span class="op">=</span> <span class="fl">1.67</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -844,13 +840,13 @@ Figure&nbsp;2.2: A simulated Gaussian white noise series (<span class="math inli
 <span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Dynamic Regimes of the First-Order Difference Equation"</span>)</span>
 <span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-diffeq-paths" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-diffeq-paths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-diffeq-paths-output-1.png" width="893" height="2131" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-diffeq-paths-output-1.png" width="892" height="2132" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diffeq-paths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.3: Solution paths of the first-order difference equation <span class="math inline">\(y_t = \phi y_{t-1} + c\)</span> for eight characteristic roots, all starting at <span class="math inline">\(y_0 = 3\)</span>. Stable panels (a–c) show convergence to <span class="math inline">\(\bar{y} = 1.67\)</span> (dotted line). Positive roots produce monotone paths; negative roots produce oscillation. Unit root paths (d) with <span class="math inline">\(c=0\)</span> wander without returning to any level; with <span class="math inline">\(c=0.5\)</span> (e) they trend linearly. Explosive paths (f–g) diverge rapidly; the negative explosive root produces amplifying oscillation.
@@ -868,7 +864,7 @@ Figure&nbsp;2.3: Solution paths of the first-order difference equation <span cla
 <div id="cell-fig-random-walk" class="cell" data-fig-height="3.5" data-fig-width="6" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code — Figure 1.2</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>T   <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>N   <span class="op">=</span> <span class="dv">20</span>    <span class="co"># number of paths</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -895,13 +891,13 @@ Figure&nbsp;2.3: Solution paths of the first-order difference equation <span cla
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">6</span>)</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-random-walk" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-random-walk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-random-walk-output-1.png" width="893" height="517" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-random-walk-output-1.png" width="892" height="519" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-random-walk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value <span class="math inline">\(y_0 = 0\)</span>. Each path is a single realization of <span class="math inline">\(y_t = y_{t-1} + \varepsilon_t\)</span> with <span class="math inline">\(\varepsilon_t \sim N(0,1)\)</span>. Unlike a stable process, the paths do not return to any fixed level — they spread out indefinitely. The grey band shows the theoretical <span class="math inline">\(\pm 2\sqrt{t}\)</span> envelope, confirming that the standard deviation grows as <span class="math inline">\(\sqrt{t}\)</span>.
@@ -949,7 +945,7 @@ Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Proposition 1.1 — Eigenvalues of the Companion Matrix
+Proposition 1.1 — Eigenvalues of the Companion Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -968,7 +964,7 @@ Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.5 — Stability of a <span class="math inline">\(p\)</span>-th Order Difference Equation
+Definition 1.5 — Stability of a <span class="math inline">\(p\)</span>-th Order Difference Equation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -986,7 +982,7 @@ Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Two Equivalent Stationarity Conventions
+Two Equivalent Stationarity Conventions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1010,7 +1006,7 @@ Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value
 <div id="cell-fig-complex-roots" class="cell" data-fig-height="7" data-fig-width="6" data-execution_count="6">
 <details class="code-fold">
 <summary>Show code — Figure 1.3</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ar2_from_complex_roots(r, omega, T<span class="op">=</span><span class="dv">60</span>, y0<span class="op">=</span><span class="fl">2.0</span>, y1<span class="op">=</span><span class="fl">1.5</span>):</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ar2_from_complex_roots(r, omega, T<span class="op">=</span><span class="dv">60</span>, y0<span class="op">=</span><span class="fl">2.0</span>, y1<span class="op">=</span><span class="fl">1.5</span>):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    phi1 <span class="op">=</span>  <span class="dv">2</span> <span class="op">*</span> r <span class="op">*</span> np.cos(omega)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    phi2 <span class="op">=</span> <span class="op">-</span>r <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    y    <span class="op">=</span> np.zeros(T)</span>
@@ -1039,13 +1035,13 @@ Figure&nbsp;2.4: Twenty simulated random walk paths from the same starting value
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Oscillatory Behavior of Complex Eigenvalues"</span>)</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-complex-roots" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-complex-roots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-complex-roots-output-1.png" width="893" height="1070" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-complex-roots-output-1.png" width="892" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-complex-roots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.5: AR(2) solution paths for complex eigenvalues with the same argument <span class="math inline">\(\omega = \pi/6\)</span> (twelve-period cycle, three years of quarterly data) but different moduli. The damped case (<span class="math inline">\(r=0.85\)</span>, copper) oscillates and converges. The unit-modulus case (<span class="math inline">\(r=1.0\)</span>, blue) sustains the oscillation indefinitely. The explosive case (<span class="math inline">\(r=1.1\)</span>, terracotta) shows growing oscillations. Note the smooth sinusoidal shape — quite different from the period-2 alternation produced by negative real eigenvalues.
@@ -1061,7 +1057,7 @@ Figure&nbsp;2.5: AR(2) solution paths for complex eigenvalues with the same argu
 <div id="cell-fig-root-diagrams" class="cell" data-fig-height="2.8" data-fig-width="6" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code — Figure 1.4</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> char_roots_ar2(phi1, phi2):</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> char_roots_ar2(phi1, phi2):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.roots([<span class="dv">1</span>, <span class="op">-</span>phi1, <span class="op">-</span>phi2])</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>specs_rd <span class="op">=</span> [</span>
@@ -1093,13 +1089,13 @@ Figure&nbsp;2.5: AR(2) solution paths for complex eigenvalues with the same argu
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Eigenvalues and the Unit Circle"</span>)</span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-root-diagrams" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-root-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-root-diagrams-output-1.png" width="893" height="405" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-root-diagrams-output-1.png" width="892" height="407" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-root-diagrams-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.6: Eigenvalue diagrams for three AR(2) specifications. Left: both roots inside the unit circle — stable, stationary process (<span class="math inline">\(\phi_1=0.5\)</span>, <span class="math inline">\(\phi_2=0.3\)</span>; roots at <span class="math inline">\(0.85\)</span> and <span class="math inline">\(-0.35\)</span>). Center: one root exactly on the circle — unit root (<span class="math inline">\(\phi_1=1.0\)</span>, <span class="math inline">\(\phi_2=0.0\)</span>; roots at <span class="math inline">\(1.0\)</span> and <span class="math inline">\(0.0\)</span>). Right: both complex roots outside the unit circle — explosive process (<span class="math inline">\(\phi_1=0.3\)</span>, <span class="math inline">\(\phi_2=-1.1\)</span>; complex conjugate pair with modulus <span class="math inline">\(1.05\)</span>).
@@ -1144,7 +1140,7 @@ Figure&nbsp;2.6: Eigenvalue diagrams for three AR(2) specifications. Left: both 
 <div id="cell-fig-acfpacf-gdp" class="cell" data-fig-height="9" data-fig-width="6" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code — Figure 1.5</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plot_acf(gdp[<span class="st">"Log Real GDP"</span>].dropna(), lags<span class="op">=</span><span class="dv">20</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>],</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span>EO_COPPER, vlines_kwargs<span class="op">=</span>{<span class="st">"colors"</span>: EO_COPPER},</span>
@@ -1175,13 +1171,13 @@ Figure&nbsp;2.6: Eigenvalue diagrams for three AR(2) specifications. Left: both 
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"ACF and PACF: US Real GDP"</span>)</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-acfpacf-gdp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-acfpacf-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-acfpacf-gdp-output-1.png" width="893" height="1374" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-acfpacf-gdp-output-1.png" width="892" height="1375" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acfpacf-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.7: ACF and PACF for US real GDP. Top two panels: log level. Bottom two panels: QoQ growth rate. The log-level ACF decays extremely slowly — barely moving from 1.0 across twenty lags — the visual fingerprint of an integrated <span class="math inline">\(I(1)\)</span> process. After log-differencing, the ACF drops sharply and the PACF shows one dominant spike at lag 1. The interpretation of these patterns in terms of specific AR, MA, and ARMA models is developed in Chapter 3.
@@ -1193,7 +1189,7 @@ Figure&nbsp;2.7: ACF and PACF for US real GDP. Top two panels: log level. Bottom
 <div id="cell-fig-acfpacf-cpi" class="cell" data-fig-height="9" data-fig-width="6" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code — Figure 1.6</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plot_acf(cpi[<span class="st">"Log CPI"</span>].dropna(), lags<span class="op">=</span><span class="dv">24</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>],</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span>EO_SKYBLUE, vlines_kwargs<span class="op">=</span>{<span class="st">"colors"</span>: EO_SKYBLUE},</span>
@@ -1224,13 +1220,13 @@ Figure&nbsp;2.7: ACF and PACF for US real GDP. Top two panels: log level. Bottom
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"ACF and PACF: US CPI"</span>)</span>
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-acfpacf-cpi" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-acfpacf-cpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-acfpacf-cpi-output-1.png" width="893" height="1374" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-acfpacf-cpi-output-1.png" width="892" height="1375" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acfpacf-cpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.8: ACF and PACF for US CPI. Top two panels: log level. Bottom two panels: year-on-year inflation. The log-level CPI has a near-unit ACF — clearly nonstationary. The inflation series shows richer autocorrelation structure than GDP growth: the ACF decays slowly and remains significant at many lags, while the PACF drops after a few lags. This persistence reflects, in part, the regime-dependence of inflation dynamics discussed below.
@@ -1254,7 +1250,7 @@ Figure&nbsp;2.8: ACF and PACF for US CPI. Top two panels: log level. Bottom two 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.6 — Strict Stationarity
+Definition 1.6 — Strict Stationarity
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1268,7 +1264,7 @@ Figure&nbsp;2.8: ACF and PACF for US CPI. Top two panels: log level. Bottom two 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition 1.7 — Weak (Covariance) Stationarity
+Definition 1.7 — Weak (Covariance) Stationarity
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1311,7 +1307,7 @@ Figure&nbsp;2.8: ACF and PACF for US CPI. Top two panels: log level. Bottom two 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Summary: Types of Non-Stationarity
+Summary: Types of Non-Stationarity
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1443,7 +1439,7 @@ Table&nbsp;2.3: ADF specification choices
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Two Common Mistakes
+Two Common Mistakes
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1574,7 +1570,7 @@ Table&nbsp;2.5: Joint interpretation of ADF and KPSS results
 <div id="cell-fig-transformations" class="cell" data-fig-height="9" data-fig-width="6" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code — Figure 1.7</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">9</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ax.plot(gdp.index, gdp[<span class="st">"Log Real GDP"</span>], color<span class="op">=</span>EO_COPPER, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
@@ -1616,13 +1612,13 @@ Table&nbsp;2.5: Joint interpretation of ADF and KPSS results
 <span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US Real GDP and CPI: Levels and Transformations, 1960–2024"</span>)</span>
 <span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-transformations" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_01_files/figure-html/fig-transformations-output-1.png" width="894" height="1375" class="figure-img">
+<img src="chapter_01_files/figure-html/fig-transformations-output-1.png" width="891" height="1375" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transformations. The level series (top panels) show persistent upward trends with growing variance — the visual signature of integrated processes. The transformed series (bottom panels) fluctuate around stable means. The COVID-19 contraction and recovery (2020) is the most extreme episode in the GDP growth series; the post-2021 inflation surge is clearly visible in the CPI panel.
@@ -1634,7 +1630,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
 <div id="stationarity-tests" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code — ADF and KPSS tests</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_tests(series, name, adf_reg<span class="op">=</span><span class="st">"ct"</span>, kpss_reg<span class="op">=</span><span class="st">"ct"</span>):</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_tests(series, name, adf_reg<span class="op">=</span><span class="st">"ct"</span>, kpss_reg<span class="op">=</span><span class="st">"ct"</span>):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    clean <span class="op">=</span> series.dropna()</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    adf   <span class="op">=</span> adfuller(clean, regression<span class="op">=</span>adf_reg, autolag<span class="op">=</span><span class="st">"AIC"</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    kps   <span class="op">=</span> kpss(clean, regression<span class="op">=</span>kpss_reg, nlags<span class="op">=</span><span class="st">"auto"</span>)</span>
@@ -1674,7 +1670,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>run_tests(cpi[<span class="st">"Log CPI"</span>],           <span class="st">"Log CPI (Level)"</span>,</span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>          adf_reg<span class="op">=</span><span class="st">"ct"</span>, kpss_reg<span class="op">=</span><span class="st">"ct"</span>)</span>
 <span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>run_tests(cpi[<span class="st">"Inflation (YoY)"</span>],   <span class="st">"Year-on-Year Inflation"</span>,</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>          adf_reg<span class="op">=</span><span class="st">"c"</span>,  kpss_reg<span class="op">=</span><span class="st">"c"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>          adf_reg<span class="op">=</span><span class="st">"c"</span>,  kpss_reg<span class="op">=</span><span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1802,7 +1798,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Glossary
+Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1893,14 +1889,13 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1966,7 +1961,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/ncachanosky\.github\.io\/XQMB-5311");
+        var filterRegex = new RegExp("https:\/\/ncachanosky\.github\.io\/ECON-5311");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -2305,7 +2300,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Foundations of Time Series Analysis"</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -3657,7 +3652,7 @@ Figure&nbsp;2.9: US real GDP and CPI: log levels and their stationary transforma
 <span id="cb11-1372"><a href="#cb11-1372" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-1373"><a href="#cb11-1373" aria-hidden="true" tabindex="-1"></a>**Cointegration** — Two $I(1)$ series are cointegrated if a linear combination of them is $I(0)$; they share a common stochastic trend. Covered in Chapter 8.</span>
 <span id="cb11-1374"><a href="#cb11-1374" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

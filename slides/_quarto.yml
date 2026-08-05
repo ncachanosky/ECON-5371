@@ -2,7 +2,9 @@
 project:
   type: default
   output-dir: ../docs/slides
-
+  resources:
+    - "**/figures/**"
+    
 format:
   revealjs:
     theme: [default, eo-slides.scss]
