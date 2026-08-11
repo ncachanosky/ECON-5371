@@ -300,3 +300,37 @@ $presentation-line-height: 1.4;
     opacity: 0.9;
   }
 }
+
+.eo-figure-pair {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1.2em;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.eo-figure-pair p {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1.2em;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+}
+
+.eo-figure-pair img,
+.eo-figure-pair figure {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+.eo-figure-pair img {
+  max-height: 50vh;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}

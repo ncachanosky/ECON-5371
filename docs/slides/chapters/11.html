@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="11_files/libs/clipboard/clipboard.min.js"></script>
+<script src="11_files/libs/quarto-html/tabby.min.js"></script>
+<script src="11_files/libs/quarto-html/popper.min.js"></script>
+<script src="11_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="11_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="11_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="11_files/libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.33">
+
+  <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
+  <meta name="dcterms.date" content="2026-08-11">
+  <title>State Space Models and the Kalman Filter</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="11_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="11_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="11_files/libs/revealjs/dist/theme/quarto-4b2829084194baac1d2f93a314e745fa.css">
+  <link rel="stylesheet" href="../slides-extra.css">
+  <link href="11_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="11_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="11_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="11_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#36454F" data-footer="" class="quarto-title-block">
+  <h1 class="title">State Space Models and the Kalman Filter</h1>
+  <p class="subtitle">Chapter 11</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Nicolas Cachanosky, Department of Economics and Finance 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-08-11</p>
+</section>
+<section id="the-question-that-closes-the-course" class="slide level2">
+<h2>The Question That Closes the Course</h2>
+<blockquote>
+<p>Chapter 9 ended by asking: what if the parameters of a volatility model aren’t fixed — what if they drift? This chapter’s answer turns out to unify almost everything built across the entire course.</p>
+</blockquote>
+<ul>
+<li>Every model since Chapter 1 estimated its parameters <strong>once</strong> and applied them uniformly</li>
+<li>The state space framework relaxes that assumption in the most general way available</li>
+<li>The “state” of the world — trend inflation, a time-varying coefficient, an unobserved component — is a <strong>latent variable evolving on its own</strong>, observed only through a noisy signal</li>
+</ul>
+<div class="eo-recap">
+<p>The Kalman filter recovers the best estimate of that hidden state from noisy observations, updating in real time as new data arrive. By the end of this chapter, ARIMA, exponential smoothing, and GARCH itself will all turn out to be special cases of one architecture.</p>
+</div>
+<aside class="notes">
+<p>Open here. This is the final chapter — the framing should feel like a genuine synthesis, not just another new topic. ~2 min.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-this-chapter-matters" class="slide level2">
+<h2>Why This Chapter Matters</h2>
+<p>One framework, one algorithm, one capstone application:</p>
+<ol type="1">
+<li><strong>The local level model</strong> — the simplest genuine state space model, doing most of the pedagogical work</li>
+<li><strong>The Kalman filter</strong> — derived from scratch, in scalar form, with a full numerical example</li>
+<li><strong>The general matrix form</strong> — revealing ARMA, exponential smoothing, and TVP regression as special cases of one structure</li>
+<li><strong>Nowcasting</strong> — the capstone application, extracting a real-time GDP estimate from monthly indicators before the quarterly release ever arrives</li>
+</ol>
+<div class="eo-recap">
+<p>Running example: <strong>monthly core PCE inflation, 1960–2019</strong> — a series whose journey through the Great Inflation, the Volcker disinflation, and the Great Moderation makes the idea of a slowly drifting, unobserved trend immediately concrete.</p>
+</div>
+</section>
+<section id="todays-roadmap" class="slide level2 outline-slide">
+<h2>Today’s Roadmap</h2>
+<ol type="1">
+<li>The state space idea</li>
+<li>The local level model</li>
+<li>The Kalman filter</li>
+<li>Initialization, signal-to-noise, and estimation</li>
+<li>Filtered vs.&nbsp;smoothed, and forecasting</li>
+<li>The general state space form and special cases</li>
+<li>Nowcasting</li>
+</ol>
+</section>
+<section id="the-state-space-idea" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>The State Space Idea</h2>
+<div class="eo-section-label">
+<p>Section 1</p>
+</div>
+</section>
+<section id="a-recursion-you-already-know" class="slide level2">
+<h2>A Recursion You Already Know</h2>
+<blockquote>
+<p>Chapter 9’s GARCH(1,1) is powerful but feels mysterious — why does it work? What principle is it actually implementing?</p>
+</blockquote>
+<p><span class="math display">\[
+\sigma_t^2 = \omega+\alpha\varepsilon_{t-1}^2+\beta\sigma_{t-1}^2
+\]</span></p>
+<p>Look at what each object actually <em>is</em>: <span class="math inline">\(\sigma_t^2\)</span> is never observed — it’s inferred. <span class="math inline">\(\varepsilon_{t-1}^2\)</span> is observed, but it’s a <strong>noisy proxy</strong> for <span class="math inline">\(\sigma_{t-1}^2\)</span> — even knowing the true variance exactly, the realized squared return would still deviate from it.</p>
+<div class="eo-recap">
+<p><strong>The GARCH recursion predicts today’s hidden variance using yesterday’s hidden variance, corrected by yesterday’s noisy signal.</strong> That is exactly the structure this entire chapter formalizes.</p>
+</div>
+</section>
+<section id="making-the-signal-noise-structure-precise" class="slide level2">
+<h2>Making the Signal-Noise Structure Precise</h2>
+<p><span class="math display">\[
+\varepsilon_t^2 = \sigma_t^2\cdot z_t^2, \qquad z_t\sim\text{i.i.d.}(0,1)
+\]</span></p>
+<p>Taking expectations: <span class="math inline">\(\mathbb{E}[\varepsilon_t^2\mid\mathcal{F}_{t-1}]=\sigma_t^2\)</span>.</p>
+<div class="eo-definition">
+<p><strong>State variable.</strong> An unobserved quantity summarizing all past-relevant information about the system at time <span class="math inline">\(t\)</span> — here, <span class="math inline">\(\sigma_t^2\)</span>.</p>
+<p><strong>Observation.</strong> A measured quantity depending on the current state plus noise — here, <span class="math inline">\(\varepsilon_t^2=\sigma_t^2z_t^2\)</span>.</p>
+</div>
+<p><span class="math inline">\(\varepsilon_t^2\)</span> is an <strong>unbiased but noisy</strong> observation of the latent variance — with multiplicative noise <span class="math inline">\(z_t^2\)</span>, mean one. Equation (10.1) isn’t just a variance model; it’s an algorithm for extracting a signal from a noisy measurement.</p>
+</section>
+<section id="the-two-equation-structure-generalized" class="slide level2">
+<h2>The Two-Equation Structure, Generalized</h2>
+<p><span class="math display">\[
+y_t = f(\alpha_t)+\text{observation noise} \qquad\qquad \alpha_t=g(\alpha_{t-1})+\text{state noise}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>The observation equation</strong> links what’s measured to the underlying state. <strong>The state equation</strong> governs how the unobserved state itself evolves. Every state space model in this chapter is built from exactly these two pieces.</p>
+</div>
+<p>For GARCH specifically: the observation equation is <span class="math inline">\(\varepsilon_t^2=\sigma_t^2z_t^2\)</span>; the state equation is the GARCH recursion itself — with <strong>no separate additive noise term</strong> on the state side.</p>
+</section>
+<section id="what-garch-cannot-do" class="slide level2">
+<h2>What GARCH Cannot Do</h2>
+<blockquote>
+<p>GARCH is a state space model with two real restrictions. What are they, and what do they cost?</p>
+</blockquote>
+<div class="eo-hazard">
+<p><strong>First: the state equation is deterministic</strong> — <span class="math inline">\(\sigma_t^2\)</span> is a fixed function of past data, no random shock of its own. <strong>Second: the parameters <span class="math inline">\(\omega,\alpha,\beta\)</span> are constants</strong> — the volatility mechanism operates identically in every period, the 1970s exactly like the Great Moderation.</p>
+</div>
+<div class="eo-recap">
+<p><strong>Adding genuine state noise is the entire generalization this chapter makes.</strong> When the state can move randomly — not just as a fixed function of the past — the model lets the underlying structure itself evolve, and the Kalman filter estimates both the current state <em>and</em> its uncertainty. GARCH is a state space model without state noise. The local level model, next, is the simplest example of what happens once that noise is added back in.</p>
+</div>
+</section>
+<section id="the-prediction-correction-principle" class="slide level2">
+<h2>The Prediction-Correction Principle</h2>
+<div class="eo-recap">
+<p><strong>Both the GARCH filter and the Kalman filter implement the same two-step logic, every period.</strong> Predict: use the state equation to project the hidden state one period forward, with its uncertainty. Correct: observe new data, compute how far it deviates from the prediction, update by weighting prediction against signal.</p>
+</div>
+<p>The weight given to new information depends on relative noise: very noisy observations <span class="math inline">\(\to\)</span> trust the prediction, update little. Precise observations relative to prior uncertainty <span class="math inline">\(\to\)</span> update aggressively.</p>
+<div class="eo-hazard">
+<p><strong>GARCH’s gain parameter <span class="math inline">\(\alpha\)</span> is a <em>fixed</em> version of this weight.</strong> The Kalman gain, derived in Section 3, is the <strong>time-varying, optimal</strong> version — computed fresh at every step from the actual state of uncertainty, not fixed once and applied forever.</p>
+</div>
+</section>
+<section id="a-first-glimpse-tracking-inflation-in-real-time" class="slide level2">
+<h2>A First Glimpse: Tracking Inflation in Real Time</h2>
+<blockquote>
+<p>Early 1975. The Fed is trying to assess underlying inflation after the first oil shock. Each new monthly reading is noisy — a single data point tells you little on its own. How should a sequence of such readings update a running estimate of the <em>true</em> underlying trend?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>This is the concrete question the rest of the chapter answers precisely.</strong> Not “what is inflation today” — that’s directly observed, if noisily — but “what is the underlying trend generating these noisy monthly readings, and how confident should we be in our current estimate of it?” Section 2 builds the minimal model that captures exactly this.</p>
+</div>
+</section>
+<section id="the-local-level-model" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>The Local Level Model</h2>
+<div class="eo-section-label">
+<p>Section 2</p>
+</div>
+</section>
+<section id="the-minimal-state-space-model" class="slide level2">
+<h2>The Minimal State Space Model</h2>
+<blockquote>
+<p>Trend inflation drifts over time, not fully predictably. What we actually observe is that drifting level plus measurement noise. What’s the simplest formal structure capturing exactly this?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>The local level model.</strong></p>
+<p><span class="math display">\[
+y_t = \mu_t+\varepsilon_t, \qquad \varepsilon_t\sim\text{i.i.d.}(0,\sigma_\varepsilon^2)
+\]</span></p>
+<p><span class="math display">\[
+\mu_t = \mu_{t-1}+\eta_t, \qquad \eta_t\sim\text{i.i.d.}(0,\sigma_\eta^2)
+\]</span></p>
+<p><span class="math inline">\(\varepsilon_t,\eta_t\)</span> independent of each other and of all past values.</p>
+</div>
+<p><strong>Observation equation</strong>: observed inflation equals the latent trend plus measurement noise. <strong>State equation</strong>: the trend itself evolves as a random walk, drifting by a shock <span class="math inline">\(\eta_t\)</span> each period.</p>
+</section>
+<section id="sanity-check-1-the-stationary-mean-boundary" class="slide level2">
+<h2>Sanity Check 1: The Stationary-Mean Boundary</h2>
+<blockquote>
+<p>Set <span class="math inline">\(\sigma_\eta^2=0\)</span> — no state noise at all. What model does the local level model collapse to?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>The trend stops moving entirely: <span class="math inline">\(\mu_t=\mu\)</span>, a fixed constant.</strong> The model reduces to <span class="math inline">\(y_t=\mu+\varepsilon_t\)</span> — a plain constant-mean-plus-noise model, exactly what every chapter before this one implicitly assumed when treating a series’ mean as fixed.</p>
+</div>
+</section>
+<section id="sanity-check-2-the-random-walk-boundary" class="slide level2">
+<h2>Sanity Check 2: The Random Walk Boundary</h2>
+<blockquote>
+<p>Now the opposite extreme: <span class="math inline">\(\sigma_\varepsilon^2=0\)</span> — no observation noise at all. What happens?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong><span class="math inline">\(y_t=\mu_t\)</span> exactly, and the state equation says <span class="math inline">\(y_t=y_{t-1}+\eta_t\)</span> — a pure random walk.</strong> Exactly Chapter 4’s canonical <span class="math inline">\(I(1)\)</span> process. The local level model <strong>nests both boundary cases</strong> — the fixed-mean model and the pure random walk — as special cases of one general structure.</p>
+</div>
+</section>
+<section id="sanity-check-3-exponential-smoothing-rigorously-derived" class="slide level2">
+<h2>Sanity Check 3: Exponential Smoothing, Rigorously Derived</h2>
+<blockquote>
+<p>Chapter 2 introduced exponential smoothing as a useful heuristic: <span class="math inline">\(\hat\mu_t=(1-\lambda)\hat\mu_{t-1}+\lambda y_t\)</span>, with <span class="math inline">\(\lambda\)</span> chosen by cross-validation. Is there a principled reason this particular update rule works?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>This rule is exactly the Kalman filter applied to the local level model, once the filter has converged to its steady state.</strong> <span class="math inline">\(\lambda\)</span> is not an arbitrary tuning knob — it’s the <strong>steady-state Kalman gain</strong>, determined by the signal-to-noise ratio <span class="math inline">\(q=\sigma_\eta^2/\sigma_\varepsilon^2\)</span>. The state space framework gives Chapter 2’s heuristic a rigorous derivation and a genuine statistical interpretation, developed fully in Section 4.</p>
+</div>
+</section>
+<section id="a-genuine-subtlety-random-walk-neq-simple-nonstationarity" class="slide level2">
+<h2>A Genuine Subtlety: Random Walk <span class="math inline">\(\neq\)</span> Simple Nonstationarity</h2>
+<blockquote>
+<p>The state equation <span class="math inline">\(\mu_t=\mu_{t-1}+\eta_t\)</span> looks like a unit root process. Is the <em>observed</em> series <span class="math inline">\(y_t\)</span> simply <span class="math inline">\(I(1)\)</span>?</p>
+</blockquote>
+<div class="eo-hazard">
+<p><strong>No — <span class="math inline">\(y_t=\mu_t+\varepsilon_t\)</span> is the sum of an <span class="math inline">\(I(1)\)</span> component and an <span class="math inline">\(I(0)\)</span> component</strong>, which makes it an <strong>ARIMA(0,1,1)</strong> process specifically, not a pure random walk. Not a contradiction — the local level model imposes structure on <em>how</em> the unit root enters the data, structure a bare unit-root test can’t see.</p>
+</div>
+<div class="eo-recap">
+<p><strong>ADF and KPSS applied to <span class="math inline">\(y_t\)</span> will typically fail to reject a unit root</strong> — consistent with the model, but uninformative about the deeper question. The local level decomposition tells us something Chapter 4’s tools cannot: how much of the apparent nonstationarity is <strong>permanent trend drift</strong> versus <strong>transitory observation noise</strong>. That decomposition is the entire value this chapter adds.</p>
+</div>
+</section>
+<section id="what-we-actually-need-to-estimate" class="slide level2">
+<h2>What We Actually Need to Estimate</h2>
+<p>Two unknown parameters: <span class="math inline">\(\sigma_\varepsilon^2\)</span> and <span class="math inline">\(\sigma_\eta^2\)</span>.</p>
+<div class="eo-hazard">
+<p><strong>The likelihood has no simple closed form.</strong> The latent states <span class="math inline">\(\mu_1,\ldots,\mu_T\)</span> are unobserved and must be integrated out — genuinely more involved than an ordinary regression likelihood.</p>
+</div>
+<div class="eo-recap">
+<p><strong>The Kalman filter solves this as a byproduct of state estimation itself.</strong> Running the filter forward through the data produces prediction errors — <strong>innovations</strong> — evaluable at any candidate parameter values. Maximizing the resulting likelihood over <span class="math inline">\((\sigma_\varepsilon^2,\sigma_\eta^2)\)</span> gives MLE. Section 4 returns to this after the filter itself is built.</p>
+</div>
+</section>
+<section id="the-kalman-filter" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>The Kalman Filter</h2>
+<div class="eo-section-label">
+<p>Section 3</p>
+</div>
+</section>
+<section id="the-inference-problem-precisely" class="slide level2">
+<h2>The Inference Problem, Precisely</h2>
+<blockquote>
+<p>Given observations <span class="math inline">\(y_1,\ldots,y_t\)</span>, what’s the best estimate of the current state <span class="math inline">\(\mu_t\)</span>? “Best” means minimum mean squared error.</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Four objects, precise notation.</strong> <span class="math inline">\(\hat\mu_{t|t-1}\)</span>: <strong>predicted state</strong> — best estimate of <span class="math inline">\(\mu_t\)</span> using data only through <span class="math inline">\(t-1\)</span>, before seeing <span class="math inline">\(y_t\)</span>. <span class="math inline">\(\hat\mu_{t|t}\)</span>: <strong>filtered state</strong> — best estimate after incorporating <span class="math inline">\(y_t\)</span>. <span class="math inline">\(P_{t|t-1}\)</span>, <span class="math inline">\(P_{t|t}\)</span>: the corresponding mean squared errors.</p>
+</div>
+<p>The Kalman filter computes all four, period by period, starting from an initial condition and updating as observations arrive.</p>
+</section>
+<section id="step-1-prediction" class="slide level2">
+<h2>Step 1: Prediction</h2>
+<p>The state equation says <span class="math inline">\(\mu_t=\mu_{t-1}+\eta_t\)</span>, <span class="math inline">\(\eta_t\sim(0,\sigma_\eta^2)\)</span>. Taking expectations:</p>
+<p><span class="math display">\[
+\hat\mu_{t|t-1} = \hat\mu_{t-1|t-1}, \qquad P_{t|t-1}=P_{t-1|t-1}+\sigma_\eta^2
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Best prediction of today’s trend is where it was yesterday</strong> — <span class="math inline">\(\eta_t\)</span> has mean zero and isn’t yet observable. Uncertainty grows by exactly <span class="math inline">\(\sigma_\eta^2\)</span>: only the <strong>state</strong> noise appears here, since observation noise hasn’t entered yet — we’re projecting forward using only the state equation.</p>
+</div>
+</section>
+<section id="step-2-update" class="slide level2">
+<h2>Step 2: Update</h2>
+<p><span class="math inline">\(y_t\)</span> arrives. The <strong>innovation</strong> — the surprise — is <span class="math inline">\(v_t=y_t-\hat\mu_{t|t-1}\)</span>. Its variance combines both noise sources:</p>
+<p><span class="math display">\[
+F_t = P_{t|t-1}+\sigma_\varepsilon^2
+\]</span></p>
+<p><span class="math display">\[
+K_t = \frac{P_{t|t-1}}{F_t} = \frac{P_{t|t-1}}{P_{t|t-1}+\sigma_\varepsilon^2}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>The Kalman gain</strong> <span class="math inline">\(K_t\in(0,1)\)</span>: how much weight the new observation gets relative to the prior.</p>
+<p><span class="math display">\[
+\hat\mu_{t|t} = \hat\mu_{t|t-1}+K_t v_t, \qquad P_{t|t}=(1-K_t)P_{t|t-1}
+\]</span></p>
+<p>The filtered estimate is the prediction plus a fraction <span class="math inline">\(K_t\)</span> of the surprise. <strong>Incorporating any observation, however noisy, always reduces uncertainty</strong>: <span class="math inline">\(P_{t|t}&lt;P_{t|t-1}\)</span> whenever <span class="math inline">\(K_t&gt;0\)</span>.</p>
+</div>
+</section>
+<section id="reading-the-kalman-gain" class="slide level2">
+<h2>Reading the Kalman Gain</h2>
+<div class="eo-hazard">
+<p><strong>Two informative extremes.</strong> <span class="math inline">\(\sigma_\varepsilon^2\to\infty\)</span> (observations are pure noise): <span class="math inline">\(K_t\to0\)</span> — ignore the new data entirely, keep the prior. <span class="math inline">\(\sigma_\varepsilon^2\to0\)</span> (observations are perfect): <span class="math inline">\(K_t\to1\)</span> — set <span class="math inline">\(\hat\mu_{t|t}=y_t\)</span>, trust the observation completely.</p>
+</div>
+<p><span class="math inline">\(K_t=P_{t|t-1}/(P_{t|t-1}+\sigma_\varepsilon^2)\)</span>: the ratio of prediction uncertainty to total uncertainty. Its value encodes a precise, quantitative answer to “how much should this single new data point revise my beliefs?”</p>
+</section>
+<section id="a-numerical-example-january-1975" class="slide level2">
+<h2>A Numerical Example: January 1975</h2>
+<p><span class="math inline">\(\sigma_\varepsilon^2=4.0\)</span>, <span class="math inline">\(\sigma_\eta^2=0.5\)</span>. December 1974: <span class="math inline">\(\hat\mu_{t-1|t-1}=7.5\)</span>, <span class="math inline">\(P_{t-1|t-1}=1.44\)</span> (std. dev. 1.2). January observation: <span class="math inline">\(y_t=11.4\)</span>.</p>
+<p><strong>Predict</strong>: <span class="math inline">\(\hat\mu_{t|t-1}=7.5\)</span>, <span class="math inline">\(\;P_{t|t-1}=1.44+0.5=1.94\)</span></p>
+<p><strong>Innovation</strong>: <span class="math inline">\(v_t=11.4-7.5=3.9\)</span> — a large surprise</p>
+<p><strong>Gain</strong>: <span class="math inline">\(F_t=1.94+4.0=5.94\)</span>, <span class="math inline">\(\;K_t=1.94/5.94\approx0.327\)</span></p>
+<div class="eo-recap">
+<p><strong>The filter assigns roughly one-third weight to the new observation, two-thirds to the prior</strong> — appropriately skeptical, since <span class="math inline">\(\sigma_\varepsilon^2=4.0\)</span> is large relative to <span class="math inline">\(P_{t|t-1}=1.94\)</span>.</p>
+</div>
+</section>
+<section id="completing-the-update" class="slide level2">
+<h2>Completing the Update</h2>
+<p><span class="math display">\[
+\hat\mu_{t|t} = 7.5+0.327(3.9) = 7.5+1.28 = 8.78, \qquad P_{t|t}=(1-0.327)(1.94)=1.31
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Trend inflation revised upward from 7.5% to 8.78%</strong> — meaningful, but well short of the noisy 11.4% reading. Uncertainty falls from <span class="math inline">\(\sqrt{1.94}\approx1.39\)</span> to <span class="math inline">\(\sqrt{1.31}\approx1.14\)</span>: even a noisy observation reduced our uncertainty. In February, <span class="math inline">\(\hat\mu_{t|t}=8.78\)</span> and <span class="math inline">\(P_{t|t}=1.31\)</span> become the new prior — the recursion repeats, period after period.</p>
+</div>
+</section>
+<section id="watching-twelve-consecutive-updates" class="slide level2">
+<h2>Watching Twelve Consecutive Updates</h2>
+
+<img data-src="../../chapters/11/chapter_11_files/figure-html/fig-recursive-updating-output-1.png" class="img-fluid r-stretch" alt="Kalman filter monthly updates through 1979, showing observed core PCE inflation, the filtered trend estimate after each update, and a plus-or-minus one standard deviation band narrowing over the year"><p><em>December 1978 prior: ~6.5%. January produces only a modest revision; February’s reading falls sharply, pulling the estimate briefly down. From March onward, observations run consistently above the predicted trend — each update pushes the estimate higher. By December: ~8%, a cumulative 1.5pp revision. The ±1 SD band narrows across the year as twelve observations progressively reduce uncertainty.</em></p>
+<div class="eo-recap">
+<p><strong>No single observation is decisive — the <em>weight of consistent evidence</em> gradually overrides the prior.</strong> This is the prediction-correction logic in motion, not just algebra on a single slide.</p>
+</div>
+</section>
+<section id="what-makes-this-optimal-not-just-plausible" class="slide level2">
+<h2>What Makes This Optimal, Not Just Plausible</h2>
+<div class="eo-recap">
+<p><strong>Under Gaussian innovations, the Kalman filter is the exact conditional expectation</strong>: <span class="math inline">\(\hat\mu_{t|t}=\mathbb{E}[\mu_t\mid y_1,\ldots,y_t]\)</span> — not merely a reasonable updating heuristic, the genuinely optimal one. With non-Gaussian innovations, it remains the best <strong>linear</strong> estimator — the linear minimum variance result.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>Correct parameter values matter — not a technical formality.</strong> Everything above assumed known <span class="math inline">\(\sigma_\varepsilon^2,\sigma_\eta^2\)</span>. A misspecified signal-to-noise ratio produces a suboptimal gain: the filter either over-reacts to noise or under-reacts to genuine state changes. Section 4 addresses how these parameters get estimated from data in the first place.</p>
+</div>
+</section>
+<section id="initialization-signal-to-noise-and-estimation" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Initialization, Signal-to-Noise, and Estimation</h2>
+<div class="eo-section-label">
+<p>Section 4</p>
+</div>
+</section>
+<section id="where-does-the-filter-start" class="slide level2">
+<h2>Where Does the Filter Start?</h2>
+<blockquote>
+<p>The recursion is forward-only — each period’s filtered estimate feeds the next period’s prediction. Before period 1, there’s no previous period. What starts the machine?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Diffuse prior.</strong> Set <span class="math inline">\(P_{0|0}=\kappa\)</span> for a very large constant (effectively infinite) — no prior information about the initial level. The first-period Kalman gain is then approximately 1; filtered variance falls rapidly over the first handful of periods as evidence accumulates.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>Why not a stationary initialization instead?</strong> Unavailable here — <span class="math inline">\(\mu_t=\mu_{t-1}+\eta_t\)</span> is a random walk with no unconditional mean to initialize from. The diffuse prior is the standard choice for the local level model specifically, and <code>statsmodels</code>’ default.</p>
+</div>
+<p>After roughly 5-10 periods, the initial condition has essentially no influence — the filter has “forgotten” where it started. <strong>Burn the first few observations</strong> for short series where this convergence window matters proportionally more.</p>
+</section>
+<section id="the-single-number-that-governs-everything" class="slide level2">
+<h2>The Single Number That Governs Everything</h2>
+<blockquote>
+<p>Every behavior of the local level model — how fast it updates, how smooth its trend looks — traces back to one dimensionless ratio. What is it?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Signal-to-noise ratio.</strong> <span class="math inline">\(q=\sigma_\eta^2/\sigma_\varepsilon^2\)</span> — how much the hidden state moves each period, relative to how noisy each observation is.</p>
+</div>
+<p><span class="math inline">\(q\)</span> small (e.g.&nbsp;0.01): trend barely moves, observations comparatively noisy — filter should barely react, the prior is more reliable than any single reading. <span class="math inline">\(q\)</span> large (e.g.&nbsp;1.0): trend is volatile, observations relatively precise — filter should follow the data closely.</p>
+</section>
+<section id="the-steady-state-kalman-gain" class="slide level2">
+<h2>The Steady-State Kalman Gain</h2>
+<p>As <span class="math inline">\(t\to\infty\)</span>, the prediction variance <span class="math inline">\(P_{t|t-1}\)</span> converges to a fixed <span class="math inline">\(\bar P\)</span>. Imposing <span class="math inline">\(P_{t|t-1}=P_{t-1|t-1}\equiv\bar P\)</span> in the two-step recursion and solving the resulting quadratic:</p>
+<p><span class="math display">\[
+\bar K = \frac{-q+\sqrt{q^2+4q}}{2}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>A balance condition, made geometric.</strong> <span class="math inline">\(\bar P\)</span> grows by <span class="math inline">\(\sigma_\eta^2\)</span> each period as the trend drifts; it shrinks by fraction <span class="math inline">\(\bar K\)</span> each period when a new observation updates it. Steady state is exactly the gain where these two forces cancel. <span class="math inline">\(\bar K\)</span> is increasing in <span class="math inline">\(q\)</span>, exactly as the intuition requires — large <span class="math inline">\(q\)</span> needs a larger gain to keep up with faster drift.</p>
+</div>
+</section>
+<section id="the-exponential-smoothing-connection-completed" class="slide level2">
+<h2>The Exponential Smoothing Connection, Completed</h2>
+<p>In steady state, the Kalman update collapses to:</p>
+<p><span class="math display">\[
+\hat\mu_{t|t} = (1-\bar K)\hat\mu_{t-1|t-1}+\bar K\,y_t
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Exactly Chapter 2’s exponential smoothing recursion, with <span class="math inline">\(\lambda=\bar K\)</span>.</strong> Chapter 2’s heuristic — “choose <span class="math inline">\(\lambda\)</span> by cross-validation” — now has a structural interpretation: the optimal <span class="math inline">\(\lambda\)</span> <strong>is</strong> the steady-state Kalman gain, determined entirely by the signal-to-noise ratio. Estimating <span class="math inline">\(q\)</span> by MLE and computing <span class="math inline">\(\bar K\)</span> gives the identical answer to optimizing <span class="math inline">\(\lambda\)</span> directly — with the added benefit of a genuine confidence interval on <span class="math inline">\(q\)</span> itself.</p>
+</div>
+</section>
+<section id="maximum-likelihood-via-the-prediction-error-decomposition" class="slide level2">
+<h2>Maximum Likelihood via the Prediction Error Decomposition</h2>
+<p>At each <span class="math inline">\(t\)</span>, the filter computes the innovation <span class="math inline">\(v_t\)</span> and its variance <span class="math inline">\(F_t=P_{t|t-1}+\sigma_\varepsilon^2\)</span>. Under Gaussian assumptions: <span class="math inline">\(v_t\mid y_1,\ldots,y_{t-1}\sim N(0,F_t)\)</span>.</p>
+<p><span class="math display">\[
+\log\mathcal{L}(\sigma_\varepsilon^2,\sigma_\eta^2) = -\frac{T}{2}\log(2\pi)-\frac{1}{2}\sum_{t=1}^T\left[\log F_t+\frac{v_t^2}{F_t}\right]
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Serially uncorrelated innovations let the joint likelihood factor into a product of univariate Gaussians — the prediction error decomposition.</strong> This is exactly the form of the GARCH log-likelihood from Chapter 9, with <span class="math inline">\(F_t\)</span> playing the role of <span class="math inline">\(\sigma_t^2\)</span> and <span class="math inline">\(v_t\)</span> playing the role of <span class="math inline">\(\varepsilon_t\)</span>. Same underlying trick, different filter producing the ingredients.</p>
+</div>
+</section>
+<section id="applied-fitting-the-local-level-model-to-core-pce-inflation" class="slide level2">
+<h2>Applied: Fitting the Local Level Model to Core PCE Inflation</h2>
+<div class="eo-recap">
+<p><strong><span class="math inline">\(\hat\sigma_\varepsilon^2=1.27\)</span>, <span class="math inline">\(\hat\sigma_\eta^2=0.09\)</span> — signal-to-noise <span class="math inline">\(\hat q=0.072\)</span>, steady-state gain <span class="math inline">\(\bar K=0.235\)</span>.</strong> Both parameters estimated precisely, standard errors an order of magnitude smaller than the point estimates. The <strong>low</strong> signal-to-noise ratio tells an economically coherent story: month-to-month noise in the PCE index is large relative to genuine drift in the underlying trend.</p>
+</div>
+<p>In steady state, the filter assigns roughly <strong>23% weight to each new monthly observation, 77% to the prior trend estimate</strong>. Equivalently: the local level model implies an optimal exponential smoother with <span class="math inline">\(\lambda=0.235\)</span> — updating meaningfully, but never chasing a single month’s fluctuation.</p>
+</section>
+<section id="filtered-vs.-smoothed-and-forecasting" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Filtered vs.&nbsp;Smoothed, and Forecasting</h2>
+<div class="eo-section-label">
+<p>Section 5</p>
+</div>
+</section>
+<section id="three-genuinely-different-questions" class="slide level2">
+<h2>Three Genuinely Different Questions</h2>
+<blockquote>
+<p>“What’s the best estimate of the state at <span class="math inline">\(t\)</span>” has more than one honest answer, depending on what information is allowed to inform it.</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Filtered estimate</strong> <span class="math inline">\(\hat\mu_{t|t}\)</span>: uses only <span class="math inline">\(\{y_1,\ldots,y_t\}\)</span> — real-time, causal.</p>
+<p><strong>Smoothed estimate</strong> <span class="math inline">\(\hat\mu_{t|T}\)</span>: uses the <strong>entire</strong> sample — a backward pass after the forward filter completes (the Kalman/Rauch-Tung-Striebel smoother).</p>
+<p><strong>Forecast</strong> <span class="math inline">\(\hat\mu_{T+h|T}\)</span>: projects <span class="math inline">\(h\)</span> steps beyond the sample.</p>
+</div>
+<p>All three come out of <code>statsmodels</code> after fitting the same model — choosing the right one for the task at hand is the analyst’s job, not the software’s.</p>
+</section>
+<section id="why-the-filter-lags-at-turning-points" class="slide level2">
+<h2>Why the Filter Lags at Turning Points</h2>
+<blockquote>
+<p>If inflation shifts permanently upward, will the filtered estimate notice immediately?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>No — and that lag is a feature, not a bug, for real-time analysis.</strong> The filtered estimate can’t see the future; it takes a few periods of accumulating evidence before the Kalman gain fully revises the trend upward. A policy rule responding to the filtered estimate uses no information unavailable at the time — an honest real-time assessment, lag included.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>The smoothed estimate is always at least as precise</strong>: <span class="math inline">\(P_{t|T}\leq P_{t|t}\)</span> for every <span class="math inline">\(t\)</span>. Future observations genuinely inform where the trend must have been — incorporating them can only reduce uncertainty, never increase it. The improvement is largest mid-sample; near the end, filtered and smoothed converge, since there’s little future data left to draw on.</p>
+</div>
+</section>
+<section id="choosing-the-right-one-matters-for-the-question-being-asked" class="slide level2">
+<h2>Choosing the Right One Matters for the Question Being Asked</h2>
+<blockquote>
+<p>“Should the Fed have tightened sooner in the 1970s?” Which estimate answers this honestly?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>The filtered estimate — what the Fed could actually have known at the time.</strong> The smoothed estimate incorporates the Volcker disinflation as retrospective evidence that inflation had truly shifted — information genuinely unavailable in real time. Using the smoothed trend to judge a real-time policy decision is exactly Chapter 5’s look-ahead bias, one more time, in a new setting.</p>
+</div>
+</section>
+<section id="applied-filtered-and-smoothed-trend-inflation" class="slide level2">
+<h2>Applied: Filtered and Smoothed Trend Inflation</h2>
+
+<img data-src="../../chapters/11/chapter_11_files/figure-html/fig-filter-smooth-output-1.png" class="img-fluid r-stretch" alt="Filtered and smoothed estimates of trend core PCE inflation, 1960-2019, with filtered estimate lagging at turning points and smoothed estimate producing a cleaner picture of the Great Inflation, Volcker disinflation, and Great Moderation"><p><em>Copper: raw monthly inflation. Sky blue: filtered <span class="math inline">\(\hat\mu_{t|t}\)</span>, real-time, with its ±1 SD band. Sage: smoothed <span class="math inline">\(\hat\mu_{t|T}\)</span>, full-sample retrospective. The smoother traces a cleaner picture of all three historical regimes; the filter visibly lags at each turning point — precisely the real-time cost of not seeing the future.</em></p>
+</section>
+<section id="an-honest-diagnostic-result" class="slide level2">
+<h2>An Honest Diagnostic Result</h2>
+<blockquote>
+<p>Does this simple model actually pass its own residual checks?</p>
+</blockquote>
+<div class="eo-hazard">
+<p><strong>Ljung-Box rejects at both horizons</strong>: <span class="math inline">\(Q(12)=21.14\)</span> (<span class="math inline">\(p=0.048\)</span>), <span class="math inline">\(Q(24)=37.91\)</span> (<span class="math inline">\(p=0.035\)</span>) — statistically detectable residual autocorrelation remains. No single dominant lag; a diffuse pattern of small positive autocorrelations, not a clean AR(1) structure.</p>
+</div>
+<div class="eo-recap">
+<p><strong>The likely cause: the pure random-walk trend has no momentum of its own.</strong> A <strong>local linear trend</strong> model — adding a stochastic slope to the state vector — gives the filter an extra degree of freedom to track more persistent regime changes, and eliminates the rejection on this data. The simpler model still tells the correct <em>qualitative</em> story here; the rejection is a genuine reminder that model adequacy is always provisional, exactly Chapter 3’s diagnostic discipline, applied one more time.</p>
+</div>
+</section>
+<section id="forecast-uncertainty-grows-with-horizon" class="slide level2">
+<h2>Forecast Uncertainty Grows With Horizon</h2>
+<p><span class="math display">\[
+P_{T+h|T} = P_{T|T}+h\cdot\sigma_\eta^2
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Two sources of uncertainty, additive.</strong> <span class="math inline">\(P_{T|T}\)</span>: where the trend sits at sample’s end. <span class="math inline">\(h\cdot\sigma_\eta^2\)</span>: additional uncertainty accumulating as the trend keeps drifting for <span class="math inline">\(h\)</span> more periods. Intervals widen <strong>linearly</strong> — like a random walk’s fan chart — rather than saturating, as a stationary ARIMA forecast (Chapter 3) would. Economically correct: there’s no reason trend inflation should revert to a fixed mean, so long-horizon uncertainty genuinely has no ceiling.</p>
+</div>
+</section>
+<section id="applied-the-fan-chart-forecast" class="slide level2">
+<h2>Applied: The Fan Chart Forecast</h2>
+
+<img data-src="../../chapters/11/chapter_11_files/figure-html/fig-forecast-output-1.png" class="img-fluid r-stretch" alt="Local level model fan chart for trend core PCE inflation, 2020-2021, with 50, 75, and 90 percent forecast intervals widening linearly from the December 2019 filtered level"><p><em>Point forecast: 1.62% — the filtered trend at December 2019, reflecting a reading that core inflation had settled just below 2% by the end of the pre-COVID sample. The forecast line stays flat — the random-walk state has no mean reversion, so the best guess at any horizon is simply the current level. The 90% interval spans roughly ±0.9pp at 12 months, widening to ±1.2pp at 24 — honest intervals for a genuinely drifting, unobserved trend, not the artificially narrow ones a fixed-trend assumption would produce.</em></p>
+</section>
+<section id="never-report-smoothed-states-as-real-time" class="slide level2">
+<h2>Never Report Smoothed States as Real-Time</h2>
+<div class="eo-hazard">
+<p><strong>A common, genuinely costly mistake: fit over the full sample, extract smoothed states, present them as “what the model would have produced in real time.”</strong> Incorrect — the smoother uses future data, so it is not a real-time estimator by construction. For any application where timing matters — policy evaluation, trading signals, live forecasting — report <strong>filtered</strong> states. Reserve the smoother for historical decompositions where the full sample is legitimately in scope.</p>
+</div>
+</section>
+<section id="the-general-state-space-form-and-special-cases" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>The General State Space Form and Special Cases</h2>
+<div class="eo-section-label">
+<p>Section 6</p>
+</div>
+</section>
+<section id="the-general-linear-state-space-model" class="slide level2">
+<h2>The General Linear State Space Model</h2>
+<p>Everything so far applied to one specific, simple model. The same machinery extends, unmodified, to a vastly broader class.</p>
+<p><span class="math display">\[
+\mathbf{y}_t = \mathbf{Z}_t\boldsymbol\alpha_t+\mathbf{d}_t+\boldsymbol\varepsilon_t, \qquad \boldsymbol\varepsilon_t\sim N(\mathbf{0},\mathbf{H}_t)
+\]</span></p>
+<p><span class="math display">\[
+\boldsymbol\alpha_t = \mathbf{T}_t\boldsymbol\alpha_{t-1}+\mathbf{c}_t+\mathbf{R}_t\boldsymbol\eta_t, \qquad \boldsymbol\eta_t\sim N(\mathbf{0},\mathbf{Q}_t)
+\]</span></p>
+<div class="eo-definition">
+<p><span class="math inline">\(\mathbf{Z}\)</span>: <strong>observation matrix</strong> — maps the state to what’s observable. <span class="math inline">\(\mathbf{T}\)</span>: <strong>transition matrix</strong> — governs state evolution; its eigenvalues determine stationary/unit-root/explosive, exactly Chapter 1’s companion-matrix logic. <span class="math inline">\(\mathbf{R}\)</span>: <strong>selection matrix</strong> — which state elements get shocked. <span class="math inline">\(\mathbf{H}\)</span>: observation noise covariance. <span class="math inline">\(\mathbf{Q}\)</span>: state noise covariance.</p>
+</div>
+</section>
+<section id="what-the-offset-vectors-actually-do" class="slide level2">
+<h2>What the Offset Vectors Actually Do</h2>
+<blockquote>
+<p><span class="math inline">\(\mathbf{d}_t\)</span>, <span class="math inline">\(\mathbf{c}_t\)</span> look like bookkeeping. What do they mean economically?</p>
+</blockquote>
+<p><span class="math inline">\(\mathbf{d}_t\)</span>: an intercept in the observation equation — shifts the observed series without touching state dynamics. <span class="math inline">\(\mathbf{c}_t\)</span>: an intercept in the state equation — introduces deterministic drift into the state itself.</p>
+<div class="eo-recap">
+<p><strong>Concretely, for core PCE inflation averaging 3%.</strong> Without an offset, the model must explain that entire non-zero mean through the initial state estimate. Setting <span class="math inline">\(d=3.0\)</span> centers the series before it enters the filter, so <span class="math inline">\(\mu_t\)</span> tracks <em>deviations</em> from 3%. Setting <span class="math inline">\(c=0.05\)</span> per month introduces a genuine linear trend on top of the stochastic drift — the state space representation of a time trend in the mean. In most applications: demean first, set both offsets to zero.</p>
+</div>
+</section>
+<section id="the-local-level-model-recognized-as-a-special-case" class="slide level2">
+<h2>The Local Level Model, Recognized as a Special Case</h2>
+<p><span class="math display">\[
+p=m=1: \qquad Z=1,\quad T=1,\quad R=1,\quad H=\sigma_\varepsilon^2,\quad Q=\sigma_\eta^2
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Scalar state, unit loading, both noise variances free.</strong> Everything from Sections 2-5 is exactly this parameterization of the general form — no new machinery, just the simplest possible instance of it.</p>
+</div>
+</section>
+<section id="armapq-as-a-special-case" class="slide level2">
+<h2>ARMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(q\)</span>) as a Special Case</h2>
+<div class="eo-recap">
+<p><strong>The companion-matrix representation from Chapter 3, reread.</strong> Stack current and lagged <span class="math inline">\(y_t\)</span> into the state vector; <span class="math inline">\(\mathbf{T}\)</span> is exactly the companion matrix from Chapter 1, top row carrying the AR coefficients; <span class="math inline">\(\mathbf{Z}\)</span> picks off the first element; <span class="math inline">\(H=0\)</span>, since the observed series has no separate measurement error beyond the model’s own innovations.</p>
+</div>
+<p>The Kalman filter applied here recovers <strong>exactly</strong> the linear projections Chapter 3 computed directly. State space form adds nothing new for pure ARMA — it places ARMA on the same footing as models with genuinely latent states.</p>
+</section>
+<section id="exponential-smoothing-and-tvp-regression-both-recognized" class="slide level2">
+<h2>Exponential Smoothing and TVP Regression, Both Recognized</h2>
+<div class="eo-recap">
+<p><strong>Simple exponential smoothing (Chapter 2)</strong> is the local level model with <span class="math inline">\(Q=0\)</span> — no state noise — evaluated at the steady-state gain. <span class="math inline">\(\lambda=\bar K\)</span>, exactly Section 4’s result. Exponential smoothing is a <strong>degenerate</strong> local level model: the trend is non-stochastic, and <span class="math inline">\(\sigma_\varepsilon^2\)</span> is the only free parameter.</p>
+</div>
+<div class="eo-definition">
+<p><strong>Time-varying parameter (TVP) regression.</strong> <span class="math inline">\(y_t=\beta_tx_t+\varepsilon_t\)</span>, with <span class="math inline">\(\beta_t=\beta_{t-1}+\eta_t\)</span> — the slope itself is a random walk. The Kalman filter estimates a <strong>coefficient path</strong>, not a fixed number. The natural tool for asking whether the Phillips curve slope, or a monetary transmission coefficient, has genuinely drifted over decades.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>A time-varying <span class="math inline">\(\mathbf{Z}_t=x_t\)</span> requires care.</strong> The likelihood and recursion remain valid, but the interpretation shifts — the state is no longer a pure latent variable, it’s a coefficient estimated from data entering both the observation matrix and the dependent variable simultaneously.</p>
+</div>
+</section>
+<section id="what-the-general-form-actually-buys" class="slide level2">
+<h2>What the General Form Actually Buys</h2>
+<p>Three concrete payoffs, not just theoretical tidiness:</p>
+<div class="eo-recap">
+<p><strong>One estimation routine for everything.</strong> Kalman filter plus prediction-error MLE estimates all of these — <code>statsmodels</code>’ <code>MLEModel</code> base class, from which <code>UnobservedComponents</code>, <code>SARIMAX</code>, and <code>DynamicFactor</code> all inherit. Fitting an ARIMA vs.&nbsp;a local level model isn’t a different algorithm — only different system matrices, same underlying filter.</p>
+<p><strong>Unobserved components become genuinely estimated, not assumed.</strong> Chapter 2’s trend/cycle/seasonal decomposition gets formalized: each component is its own state equation with its own noise variance, and the Kalman smoother extracts each one directly from the data — not imposed by construction.</p>
+<p><strong>The natural language for mixed-frequency data.</strong> Missing observations are just periods where <span class="math inline">\(y_t\)</span> isn’t observed — the filter skips the update, runs only the prediction step. No special treatment required. Section 7’s entire nowcasting application rests on exactly this property.</p>
+</div>
+</section>
+<section id="nowcasting" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Nowcasting</h2>
+<div class="eo-section-label">
+<p>Section 7</p>
+</div>
+</section>
+<section id="the-real-time-problem" class="slide level2">
+<h2>The Real-Time Problem</h2>
+<blockquote>
+<p>Real GDP is published quarterly; the first estimate arrives four to six weeks after the quarter ends. A finance ministry assessing the economy in October has, at best, second-quarter GDP — already four months stale. Monthly indicators arrive far sooner. How should they be combined?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Nowcasting.</strong> Estimating the current value of a variable observed only with a lag or at low frequency, using higher-frequency indicators observed sooner.</p>
+</div>
+<div class="eo-recap">
+<p><strong>This is a signal-extraction problem, precisely.</strong> GDP growth is the latent state; monthly indicators are noisy observations of it. The Kalman filter is the natural tool — exactly the machinery this entire chapter has built.</p>
+</div>
+</section>
+<section id="the-mixed-frequency-problem" class="slide level2">
+<h2>The Mixed-Frequency Problem</h2>
+<blockquote>
+<p>Monthly indicators arrive twelve times a year; GDP arrives four. The two clocks don’t align. How does the filter handle a variable that’s simply absent most months?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>Natively, through missing-observation logic.</strong> Run the filter at the <strong>monthly</strong> frequency — the higher clock. Months 1 and 2 of each quarter: only monthly indicators observed, GDP’s row treated as missing, its update step skipped. Month 3: the quarterly release arrives, full update using everything. The prediction step runs every month regardless, projecting forward and accumulating uncertainty between releases.</p>
+</div>
+</section>
+<section id="one-more-complication-temporal-aggregation" class="slide level2">
+<h2>One More Complication: Temporal Aggregation</h2>
+<blockquote>
+<p>Quarterly GDP growth isn’t the monthly state at one instant — it’s the accumulation of activity over three months. How does the model link a genuinely monthly state to a genuinely quarterly observation?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Mariano and Murasawa (2003).</strong> Quarterly GDP growth is approximately the sum of three monthly growth rates:</p>
+<p><span class="math display">\[
+y_t^{(GDP)} \approx \frac{1}{3}(\alpha_t+\alpha_{t-1}+\alpha_{t-2})+\varepsilon_t^{(GDP)}
+\]</span></p>
+</div>
+<div class="eo-recap">
+<p><strong>In practice, the filter carries a 5-dimensional state</strong> <span class="math inline">\((\alpha_t,\alpha_{t-1},\ldots,\alpha_{t-4})'\)</span> — even though the underlying activity factor is one-dimensional — purely so the quarterly observation can be expressed as a linear combination of state elements. <span class="math inline">\(\mathbf{T}\)</span> shifts the lags forward each period exactly like an AR companion matrix. No new machinery beyond Section 3’s recursion, applied to a larger system.</p>
+</div>
+</section>
+<section id="the-model" class="slide level2">
+<h2>The Model</h2>
+<p>Three FRED series: <code>GDPC1</code> (quarterly, month 3 only), <code>INDPRO</code> and <code>UNRATE</code> (both monthly, every month). The latent state <span class="math inline">\(\alpha_t\)</span>: a monthly economic activity factor both monthly indicators load onto.</p>
+<div class="eo-hazard">
+<p><strong>One identification constraint is required.</strong> The factor loading and the state variance aren’t separately identified without normalization — any rescaling of the factor can be offset by rescaling the loadings. Fix <span class="math inline">\(\sigma_\eta^2=1\)</span>: the factor has unit-variance innovations, loadings become interpretable as each indicator’s standard-deviation response to a one-unit factor shock. Five free parameters, not six.</p>
+</div>
+<p>Implemented as a custom <code>statsmodels.tsa.statespace.MLEModel</code> subclass — genuinely more advanced than <code>UnobservedComponents</code>, but running on exactly the same underlying filter.</p>
+</section>
+<section id="applied-nowcasting-gdp-growth" class="slide level2">
+<h2>Applied: Nowcasting GDP Growth</h2>
+
+<img data-src="../../chapters/11/chapter_11_files/figure-html/fig-nowcast-output-1.png" class="img-fluid r-stretch" alt="Top panel: monthly GDP nowcast overlaid on quarterly GDP releases, 1985-2019, tracking growth and leading each recession by one to two months. Bottom panel: extracted monthly economic activity factor, 1960-2019, dipping sharply ahead of every NBER recession"><p><em>Top: the monthly nowcast tracks GDP growth’s broad contours and <strong>deteriorates ahead of each NBER recession</strong> — weakening industrial production and rising unemployment feed through before the quarterly release confirms the slowdown. Bottom: the extracted activity factor, behaving much like a coincident business-cycle indicator, dipping sharply into negative territory ahead of every recession across six decades and recovering promptly during expansions.</em></p>
+<div class="eo-recap">
+<p><strong>The estimated loadings carry the right signs</strong>: <span class="math inline">\(\hat\lambda_{IP}&gt;0\)</span> (stronger industrial production signals higher activity), <span class="math inline">\(\hat\lambda_{UR}&lt;0\)</span> (rising unemployment signals weaker activity) — the model recovered economically sensible structure from data alone, no signs imposed.</p>
+</div>
+</section>
+<section id="what-this-small-model-cannot-do-honestly" class="slide level2">
+<h2>What This Small Model Cannot Do — Honestly</h2>
+<div class="eo-hazard">
+<p><strong>The tracking is imperfect — particularly the volatile early-1980s Volcker-era swings, where the model lags.</strong> Deliberately small: two monthly indicators and one quarterly target illustrate the mixed-frequency mechanics; an operational system uses many more series. The NY Fed’s Weekly Economic Index and the Giannone-Reichlin-Small (2008) model — the academic foundation of most central bank nowcasting systems — use dozens of monthly indicators, all linked through the identical temporal-aggregation equation.</p>
+</div>
+<div class="eo-recap">
+<p><strong>None of those extensions requires new principles.</strong> Larger <span class="math inline">\(\mathbf{Z}\)</span> and <span class="math inline">\(\mathbf{T}\)</span> matrices, more free parameters, more sophisticated initialization — but the same prediction-correction recursion, the same prediction-error likelihood, the same missing-observation logic that drives the two-indicator model above. The Kalman filter scales from Section 2’s single-parameter local level model to the most complex macroeconomic forecasting systems currently in operational use.</p>
+</div>
+</section>
+<section id="recap" class="slide level2 recap-slide" data-background-color="#87A96B" data-footer="false">
+<h2>Recap</h2>
+<p>We closed the course by generalizing everything in it. Chapter 9’s GARCH recursion, reread carefully, was already a state equation in disguise — the pivot that motivated treating “unobserved state, noisy observation” as the organizing idea rather than a special trick. The local level model gave that idea its simplest concrete form, nesting the fixed-mean model and the pure random walk as boundary cases, and giving Chapter 2’s exponential smoothing heuristic a genuine statistical derivation. The Kalman filter formalized prediction and correction into an exact, optimal recursion — derived by hand, on real numbers, watched updating through a full year of real inflation data. Filtered and smoothed estimates turned out to answer genuinely different questions, each with its own honest use. And the general matrix form revealed that ARMA, exponential smoothing, and time-varying regressions were never separate tools — they were always this one architecture, dressed differently. Nowcasting closed the chapter as the capstone: extracting a real-time read on the economy before the official number ever arrives.</p>
+<div class="eo-recap">
+<p>This is also where the course itself closes.</p>
+</div>
+</section>
+<section id="looking-ahead" class="slide level2">
+<h2>Looking Ahead</h2>
+<p>This is the final chapter — worth pausing to take stock of how far the toolkit has come since Chapter 1.</p>
+<p>We began with the simplest possible question: is this series predictable from its own past? The ACF and PACF gave a visual answer; white noise tests gave a formal one. Chapter 1’s stationarity assumption — that the mean, variance, and autocovariance structure of a series stay constant over time — was the foundation everything else was built on. Chapter 4 extended that foundation to integrated processes and the machinery of ARIMA and SARIMA. Chapter 5 gave the whole enterprise operational discipline: in-sample fit versus out-of-sample accuracy, the Diebold-Mariano test, and the honest question of when added complexity actually earns its keep. Chapters 6 through 8 opened the framework to multivariate and nonstationary settings — structural breaks, vector autoregressions, cointegration — where a single series can only be understood through its relationships with others. Chapter 9 turned to the second moment: the discovery that a return’s mean may be unforecastable while its variance is not, and GARCH gave us the tools to model that time-varying uncertainty directly. Chapter 10 let entire parameter vectors switch between hidden regimes. And this chapter revealed that ARIMA, GARCH, exponential smoothing, and VAR are all special cases of one architecture — an unobserved state evolving on its own, observed only through a noisy measurement.</p>
+<div class="eo-recap">
+<p>The road ahead is long and worth taking. Dynamic factor models and large panels, mixed-frequency VARs, time-varying parameter VARs, particle filters for nonlinear and non-Gaussian states the Kalman filter cannot handle, structural DSGE models estimated by writing their equilibrium conditions in exactly this state space form — every one of these extensions uses the prediction-correction logic built in this chapter as its foundation. These eleven chapters are not the end of the subject. They are the point where the interesting questions begin.</p>
+</div>
+</section>
+<section id="key-terms" class="slide level2">
+<h2>Key Terms</h2>
+<div class="eo-keyterms">
+<dl>
+<dt>State variable / Observation</dt>
+<dd>
+An unobserved quantity summarizing all past-relevant information at time <span class="math inline">\(t\)</span>; a measured quantity depending on the current state plus noise.
+</dd>
+<dt>Observation equation / State equation</dt>
+<dd>
+<span class="math inline">\(y_t=Z\alpha_t+\varepsilon_t\)</span> linking data to the latent state; <span class="math inline">\(\alpha_t=T\alpha_{t-1}+R\eta_t\)</span> governing the state’s own evolution.
+</dd>
+<dt>Local level model</dt>
+<dd>
+<span class="math inline">\(y_t=\mu_t+\varepsilon_t\)</span>, <span class="math inline">\(\mu_t=\mu_{t-1}+\eta_t\)</span> — a random-walk trend plus i.i.d. observation noise, parametrized by <span class="math inline">\(\sigma_\varepsilon^2,\sigma_\eta^2\)</span>.
+</dd>
+<dt>Kalman filter / Innovation</dt>
+<dd>
+The recursive algorithm computing minimum-MSE state estimates via predict-then-update; <span class="math inline">\(v_t=y_t-\hat y_{t|t-1}\)</span>, the unpredictable, serially uncorrelated component of <span class="math inline">\(y_t\)</span>.
+</dd>
+<dt>Kalman gain <span class="math inline">\(K_t\)</span></dt>
+<dd>
+<span class="math inline">\(P_{t|t-1}/(P_{t|t-1}+\sigma_\varepsilon^2)\)</span> — the weight on the current innovation; ratio of prediction to total uncertainty, between 0 (trust the prior) and 1 (trust the observation).
+</dd>
+<dt>Signal-to-noise ratio <span class="math inline">\(q\)</span></dt>
+<dd>
+<span class="math inline">\(\sigma_\eta^2/\sigma_\varepsilon^2\)</span>; governs the steady-state filter’s responsiveness. High <span class="math inline">\(q\)</span>: volatile, data-tracking trend. Low <span class="math inline">\(q\)</span>: smooth, slow-adapting trend.
+</dd>
+<dt>Prediction error decomposition</dt>
+<dd>
+The likelihood factored into one-period-ahead Gaussian innovation densities, each standardized by <span class="math inline">\(F_t\)</span> — enables MLE via the filter itself.
+</dd>
+<dt>Filtered estimate / Smoothed estimate</dt>
+<dd>
+<span class="math inline">\(\hat\alpha_{t|t}\)</span> (data through <span class="math inline">\(t\)</span>, real-time, appropriate for policy and live forecasting) vs.&nbsp;<span class="math inline">\(\hat\alpha_{t|T}\)</span> (full sample, always at least as precise, appropriate only for retrospective analysis).
+</dd>
+<dt>Diffuse prior</dt>
+<dd>
+Initialization with very large <span class="math inline">\(P_{0|0}\)</span>, signaling no prior information — standard for nonstationary state equations like the local level model’s random walk.
+</dd>
+<dt>Structural time series model</dt>
+<dd>
+A state space model decomposing the series into separately specified trend, cycle, seasonal, and irregular components, each with its own state equation.
+</dd>
+<dt>Nowcasting / Dynamic factor model</dt>
+<dd>
+Real-time estimation of a low-frequency variable using higher-frequency indicators, via missing-observation filtering; a multivariate state space model in which several series share a common latent factor extracted by the Kalman filter.
+</dd>
+</dl>
+</div>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ECON-5371 · Time Series Analysis and Forecasting</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="11_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="11_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="11_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="11_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="11_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="11_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="11_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="11_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="11_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="11_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 8.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

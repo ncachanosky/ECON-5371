@@ -1,21 +1,22 @@
 """
 Rebuild slide-only figure variants from already-rendered book PNGs.
-Does NOT touch chapter_01.qmd or the book's rendered output — reads the
+Does NOT touch any chapter_XX.qmd or the book's rendered output — reads
 existing PNGs under docs/chapters/... and writes new PNGs into
 slides/chapters/figures/, for slide use only.
 
 Two supported operations, driven by the JOBS list below:
 
   "split"   — crop a stacked figure into N separate output files
-              (used for Dynamic Regimes: 7 panels -> 3 files, one per
-              regime group, each shown on its own slide)
+              (e.g. Dynamic Regimes: 7 panels -> 3 files; or a single
+              panel pulled out of a 2-panel figure, one file)
 
   "compose" — crop a stacked figure into its individual panels, then
-              recompose them into a grid (used for GDP ACF/PACF:
+              recompose them into a grid (e.g. GDP ACF/PACF:
               4 stacked panels -> one 2x2 grid file)
 
 Place this script at: slides/chapters/build_slide_figures.py
-  (same folder as 01.qmd, so figures/ output sits right next to it)
+  (same folder as 01.qmd, 02.qmd, etc., so figures/ output sits right
+  next to it)
 
 Run any time the book's source figures change, or you need to
 regenerate slide crops.
@@ -25,7 +26,7 @@ Usage (from repo root):
 
     # Or run a single job by name:
     python slides/chapters/build_slide_figures.py --job diffeq_paths
-    python slides/chapters/build_slide_figures.py --job acfpacf_gdp
+    python slides/chapters/build_slide_figures.py --job arma_fanchart_only
 """
 
 import argparse
@@ -35,11 +36,21 @@ from PIL import Image
 # ── Paths ────────────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent           # .../slides/chapters
 REPO_ROOT  = SCRIPT_DIR.parents[1]                      # .../ECON-5371
-BOOK_FIGS  = REPO_ROOT / "docs" / "chapters" / "01" / "chapter_01_files" / "figure-html"
 OUT_DIR    = SCRIPT_DIR / "figures"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 BORDER_PX = 0   # spacing between panels in a composed grid (0 = flush, no border)
+
+
+def book_figs(chapter: str) -> Path:
+    """Path to a given chapter's rendered figure-html folder, e.g.
+    book_figs("01") -> docs/chapters/01/chapter_01_files/figure-html
+    book_figs("04") -> docs/chapters/04/chapter_04_files/figure-html"""
+    return (REPO_ROOT / "docs" / "chapters" / chapter /
+            f"chapter_{chapter}_files" / "figure-html")
+
+# Kept for backward compatibility with existing Chapter 1 job definitions below.
+BOOK_FIGS = book_figs("01")
 
 
 # ── Shared crop utility ─────────────────────────────────────────────────
@@ -148,6 +159,44 @@ JOBS = {
         "n_cols": 2,   # [0,1] top row (GDP level, GDP growth),
                        # [2,3] bottom row (CPI level, CPI inflation)
         "output": "fig-transformations_grid.png",
+    },
+
+    "hp_hamilton": {
+        "op": "compose",
+        "source": book_figs("02") / "fig-hp-hamilton-output-1.png",
+        "n_panels": 4,
+        "top_margin_frac": 0.02,
+        "pad_frac": 0.0,
+        "n_cols": 2,   # [0,1] top row (HP filter, Hamilton filter),
+                       # [2,3] bottom row (linear detrend, STL irregular)
+        "output": "fig-hp-hamilton_grid.png",
+    },
+
+    # ── Side-by-side forecast comparison (Chapter 4, Section 4 closing slide) ──
+    # Each source figure is a 2-panel stack: [0] point-forecast-only panel,
+    # [1] fan chart panel. The comparison slide only needs the fan chart —
+    # showing both full figures side by side was too crowded. "split" with
+    # a single-entry group keeps just panel index 1.
+    "arma_fanchart_only": {
+        "op": "split",
+        "source": book_figs("03") / "fig-forecast-output-1.png",
+        "n_panels": 2,
+        "top_margin_frac": 0.04,
+        "pad_frac": 0.01,
+        "groups": [
+            (1, 1, "fig-forecast_fanchart-only.png"),  # keep only panel 1 (bottom = fan chart)
+        ],
+    },
+
+    "arima_fanchart_only": {
+        "op": "split",
+        "source": book_figs("04") / "fig-arima-forecast-output-1.png",
+        "n_panels": 2,
+        "top_margin_frac": 0.04,
+        "pad_frac": 0.01,
+        "groups": [
+            (1, 1, "fig-arima-forecast_fanchart-only.png"),
+        ],
     },
 
 }

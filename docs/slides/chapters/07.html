@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="07_files/libs/clipboard/clipboard.min.js"></script>
+<script src="07_files/libs/quarto-html/tabby.min.js"></script>
+<script src="07_files/libs/quarto-html/popper.min.js"></script>
+<script src="07_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="07_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="07_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="07_files/libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
+
+  <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
+  <meta name="dcterms.date" content="2026-08-09">
+  <title>Vector Autoregressions and Structural VARs</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="07_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="07_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="07_files/libs/revealjs/dist/theme/quarto-fb3667d7f27c9f062d1a2c31c3674bef.css">
+  <link rel="stylesheet" href="../slides-extra.css">
+  <link href="07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="07_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="07_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-color="#36454F" data-footer="" class="quarto-title-block">
+  <h1 class="title">Vector Autoregressions and Structural VARs</h1>
+  <p class="subtitle">Chapter 7</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Nicolas Cachanosky, Department of Economics and Finance 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-08-09</p>
+</section>
+<section id="from-one-variable-to-many" class="slide level2">
+<h2>From One Variable to Many</h2>
+<blockquote>
+<p>Chapter 6 gave us a complete toolkit for a single series — model it, test its parameters for stability, forecast it honestly. What can this toolkit never ask?</p>
+</blockquote>
+<ul>
+<li>How does a shock to one variable propagate to another?</li>
+<li>Did a policy change shift two series <em>simultaneously</em> — and if so, which one moved first?</li>
+<li>Is the predictive relationship between two series genuinely two-directional?</li>
+</ul>
+<div class="eo-recap">
+<p>Every question above requires modeling variables <strong>jointly</strong>, not one at a time. This chapter builds that framework from the ground up — starting from a warning Chapter 3 already gave us, and following it to its logical conclusion.</p>
+</div>
+<aside class="notes">
+<p>Open here. The framing is a direct continuation of Chapter 6’s closing line — single-equation tools have nothing to say about joint dynamics. ~2 min.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-this-chapter-matters" class="slide level2">
+<h2>Why This Chapter Matters</h2>
+<p>One model, four analytical outputs, built in sequence:</p>
+<ol type="1">
+<li><strong>The reduced-form VAR</strong> — every variable depends on lags of every variable, itself included</li>
+<li><strong>Granger causality</strong> — does one variable’s past help predict another, beyond what its own past already tells us?</li>
+<li><strong>The structural VAR (Cholesky)</strong> — turning correlated statistical residuals into economically interpretable shocks</li>
+<li><strong>Impulse responses and variance decomposition</strong> — tracing a shock’s full dynamic path, and asking how much of each variable’s uncertainty traces back to each shock</li>
+</ol>
+<div class="eo-recap">
+<p>Running example: <strong>GDP growth, CPI inflation, and the federal funds rate</strong> — the minimal system needed to ask how monetary policy actually propagates through the real economy.</p>
+</div>
+</section>
+<section id="todays-roadmap" class="slide level2 outline-slide">
+<h2>Today’s Roadmap</h2>
+<ol type="1">
+<li>Why univariate models are not enough</li>
+<li>The reduced-form VAR</li>
+<li>Lag selection</li>
+<li>Granger causality</li>
+<li>SVAR identification and the Cholesky decomposition</li>
+<li>Impulse response functions</li>
+<li>Forecast error variance decomposition</li>
+<li>VARX and when variables are <span class="math inline">\(I(1)\)</span></li>
+</ol>
+</section>
+<section id="why-univariate-models-are-not-enough" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Why Univariate Models Are Not Enough</h2>
+<div class="eo-section-label">
+<p>Section 1</p>
+</div>
+</section>
+<section id="a-warning-we-already-received" class="slide level2">
+<h2>A Warning We Already Received</h2>
+<blockquote>
+<p>Chapter 3 added the federal funds rate to an ARMAX model for jobless claims — and flagged immediately that if the funds rate itself responds to labor market conditions, the estimated coefficient is contaminated. We called that estimate a reduced-form mixture, not a causal parameter.</p>
+</blockquote>
+<div class="eo-recap">
+<p>That warning has a natural follow-up we never answered: <strong>if we can’t safely treat one variable as exogenous when it isn’t, what do we do instead?</strong> Give up the single equation entirely, and model every variable jointly.</p>
+</div>
+</section>
+<section id="a-structural-system-that-ols-cannot-estimate" class="slide level2">
+<h2>A Structural System That OLS Cannot Estimate</h2>
+<p>Output growth <span class="math inline">\(g_t\)</span> and inflation <span class="math inline">\(\pi_t\)</span>, with genuine two-way dependence — the Phillips curve, in its simplest form:</p>
+<p><span class="math display">\[
+\begin{aligned}
+g_t &amp;= \alpha_{10}-\alpha_{12}\pi_t+\gamma_{11}g_{t-1}+\gamma_{12}\pi_{t-1}+\varepsilon^g_t \\
+\pi_t &amp;= \alpha_{20}-\alpha_{21}g_t+\gamma_{21}g_{t-1}+\gamma_{22}\pi_{t-1}+\varepsilon^\pi_t
+\end{aligned}
+\]</span></p>
+<div class="eo-hazard">
+<p><strong>Each equation has a contemporaneous term on the right-hand side of the other.</strong> <span class="math inline">\(\pi_t\)</span> appears directly in the growth equation; <span class="math inline">\(g_t\)</span> appears directly in the inflation equation. Neither equation can be estimated by OLS — <span class="math inline">\(\pi_t\)</span> is correlated with <span class="math inline">\(\varepsilon^g_t\)</span> through the second equation, and symmetrically for <span class="math inline">\(g_t\)</span> in the first. This is simultaneity bias, the multivariate cousin of the endogeneity problem Chapter 3 flagged.</p>
+</div>
+</section>
+<section id="the-way-out-solve-for-the-reduced-form" class="slide level2">
+<h2>The Way Out: Solve for the Reduced Form</h2>
+<blockquote>
+<p>If the structural system can’t be estimated directly, is there a version of it that can?</p>
+</blockquote>
+<p>Solve the two-equation system for <span class="math inline">\(g_t\)</span> and <span class="math inline">\(\pi_t\)</span> in terms of <strong>only</strong> lagged variables and composite error terms — algebra, not new assumptions.</p>
+<div class="eo-recap">
+<p><strong>What emerges is a system where every right-hand side variable is predetermined</strong> — no contemporaneous terms, nothing correlated with the current-period disturbance. This reduced form is estimable by OLS, equation by equation. It’s also exactly what a <strong>VAR</strong> is: not a new object, but the natural destination of solving out a simultaneous structural system.</p>
+</div>
+<p>The cost: reduced-form coefficients are mixtures of the structural parameters <span class="math inline">\(\alpha,\gamma\)</span> — not directly interpretable until Section 5 undoes that mixing.</p>
+</section>
+<section id="what-the-system-actually-looks-like" class="slide level2">
+<h2>What the System Actually Looks Like</h2>
+<p>The reduced form of the two-equation structural system from the previous slide — output growth <span class="math inline">\(g_t\)</span> and inflation <span class="math inline">\(\pi_t\)</span> — written as a VAR(1):</p>
+<p><span class="math display">\[
+\begin{aligned}
+g_t &amp;= c_1+a_{11}g_{t-1}+a_{12}\pi_{t-1}+u_{1,t} \\
+\pi_t &amp;= c_2+a_{21}g_{t-1}+a_{22}\pi_{t-1}+u_{2,t}
+\end{aligned}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Both equations share the same two lagged regressors on the right — only the coefficients differ.</strong> <span class="math inline">\(g_t\)</span>’s equation includes lagged <span class="math inline">\(\pi\)</span>, not just its own past; <span class="math inline">\(\pi_t\)</span>’s equation includes lagged <span class="math inline">\(g\)</span>. No contemporaneous terms remain — this is exactly the reduced form the previous slide promised, now estimable by OLS. Section 2 develops the general <span class="math inline">\(n\)</span>-variable case; the running example this chapter actually works with adds a third variable, the funds rate, once that machinery is in place.</p>
+</div>
+</section>
+<section id="the-reduced-form-var" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>The Reduced-Form VAR</h2>
+<div class="eo-section-label">
+<p>Section 2</p>
+</div>
+</section>
+<section id="the-varp-equation-by-equation" class="slide level2">
+<h2>The VAR(<span class="math inline">\(p\)</span>): Equation by Equation</h2>
+<p>For <span class="math inline">\(n\)</span> variables stacked in <span class="math inline">\(\mathbf{y}_t\)</span>, each equation regresses one variable on <span class="math inline">\(p\)</span> lags of <strong>every</strong> variable in the system, itself included:</p>
+<p><span class="math display">\[
+y_{i,t} = c_i+\sum_{j=1}^n\sum_{\ell=1}^p a_{ij,\ell}\,y_{j,t-\ell}+u_{i,t}, \qquad i=1,\ldots,n
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Every variable is both dependent and explanatory, simultaneously.</strong> GDP growth’s equation includes lags of GDP growth, inflation, <em>and</em> the funds rate. Inflation’s equation does the same. The whole point: no variable is privileged as purely “exogenous” — everything feeds back on everything.</p>
+</div>
+</section>
+<section id="the-varp-compact-matrix-form" class="slide level2">
+<h2>The VAR(<span class="math inline">\(p\)</span>): Compact Matrix Form</h2>
+<p><span class="math display">\[
+\mathbf{y}_t = \mathbf{c}+\mathbf{A}_1\mathbf{y}_{t-1}+\mathbf{A}_2\mathbf{y}_{t-2}+\cdots+\mathbf{A}_p\mathbf{y}_{t-p}+\mathbf{u}_t
+\]</span></p>
+<div class="eo-definition">
+<p>Each <span class="math inline">\(\mathbf{A}_\ell\)</span> is <span class="math inline">\(n\times n\)</span>: entry <span class="math inline">\((i,j)\)</span> is the effect of variable <span class="math inline">\(j\)</span>’s <span class="math inline">\(\ell\)</span>-th lag on variable <span class="math inline">\(i\)</span>. <span class="math inline">\(\mathbf{u}_t\sim WN(\mathbf{0},\boldsymbol\Sigma_u)\)</span> — a <strong>vector</strong> white noise, with <span class="math inline">\(\boldsymbol\Sigma_u\)</span> typically <strong>not diagonal</strong>: the reduced-form residuals across equations are correlated, exactly what Section 5’s identification problem confronts.</p>
+</div>
+<p>For <span class="math inline">\(n=3\)</span>, <span class="math inline">\(p=2\)</span>: each equation has <span class="math inline">\(np+1=7\)</span> parameters, <span class="math inline">\(n(np+1)=21\)</span> total — the parameter count that makes lag selection (Section 3) genuinely consequential.</p>
+</section>
+<section id="why-ols-still-works-equation-by-equation" class="slide level2">
+<h2>Why OLS Still Works, Equation by Equation</h2>
+<blockquote>
+<p>Every right-hand side variable is a lag — nothing contemporaneous. Why does that matter for estimation?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>Every regressor is predetermined and uncorrelated with the current innovation <span class="math inline">\(\mathbf{u}_t\)</span>.</strong> OLS applied to each equation separately is consistent — and under Gaussian innovations, equivalent to maximum likelihood. <code>statsmodels</code> estimates the whole system at once internally, but the equation-by-equation OLS intuition is exact and is the right mental model for what the estimator is actually doing.</p>
+</div>
+</section>
+<section id="the-companion-matrix-generalized" class="slide level2">
+<h2>The Companion Matrix, Generalized</h2>
+<blockquote>
+<p>Chapter 1 wrote an AR(<span class="math inline">\(p\)</span>) as a first-order system via the companion matrix, with <span class="math inline">\(p\)</span> characteristic roots. What changes when there are <span class="math inline">\(n\)</span> variables instead of one?</p>
+</blockquote>
+<p><span class="math display">\[
+\boldsymbol\xi_t = \mathbf{F}\boldsymbol\xi_{t-1}+\tilde{\mathbf{u}}_t
+\]</span></p>
+<div class="eo-definition">
+<p><span class="math inline">\(\mathbf{F}\)</span> is <span class="math inline">\(np\times np\)</span> — stacking <span class="math inline">\(p\)</span> lags of <span class="math inline">\(n\)</span> variables into one first-order vector system. Its eigenvalues are the VAR’s <span class="math inline">\(np\)</span> characteristic roots. <strong>Stability</strong> requires every one of them inside the unit circle, exactly Chapter 1’s condition, now <span class="math inline">\(np\)</span> conditions instead of <span class="math inline">\(p\)</span>.</p>
+</div>
+</section>
+<section id="counting-roots" class="slide level2">
+<h2>Counting Roots</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Order</th>
+<th style="text-align: center;"><span class="math inline">\(\mathbf{A}_\ell\)</span> shape</th>
+<th style="text-align: center;">Companion <span class="math inline">\(\mathbf{F}\)</span></th>
+<th style="text-align: center;">Roots to check</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">VAR(1)</td>
+<td style="text-align: center;"><span class="math inline">\(3\times3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(3\times3\)</span></td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">VAR(2)</td>
+<td style="text-align: center;">two <span class="math inline">\(3\times3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(6\times6\)</span></td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">VAR(6)</td>
+<td style="text-align: center;">six <span class="math inline">\(3\times3\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(18\times18\)</span></td>
+<td style="text-align: center;">18</td>
+</tr>
+</tbody>
+</table>
+<div class="eo-recap">
+<p><strong>Adding one lag doesn’t add one root — it adds <span class="math inline">\(n\)</span> roots simultaneously</strong>, one per variable in the system. At the VAR(6) this chapter eventually settles on, 18 separate roots all need to sit strictly inside the unit circle. Stability checking in a VAR is a genuinely bigger job than in the univariate case, in direct proportion to <span class="math inline">\(n\)</span>.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>The convention flip, restated.</strong> Companion-matrix eigenvalues: stable means <strong>inside</strong> the unit circle. Lag-polynomial roots: stable means <strong>outside</strong>. Same fact, reciprocal quantities — exactly Chapter 1’s warning, now with <span class="math inline">\(n\)</span> times as many roots to keep straight.</p>
+</div>
+</section>
+<section id="lag-selection" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Lag Selection</h2>
+<div class="eo-section-label">
+<p>Section 3</p>
+</div>
+</section>
+<section id="why-lag-length-matters-more-in-a-var" class="slide level2">
+<h2>Why Lag Length Matters More in a VAR</h2>
+<blockquote>
+<p>In an AR(<span class="math inline">\(p\)</span>), adding one lag costs one parameter. What does adding one lag cost in a VAR(<span class="math inline">\(p\)</span>) with <span class="math inline">\(n=3\)</span> variables?</p>
+</blockquote>
+<div class="eo-hazard">
+<p><strong><span class="math inline">\(n^2=9\)</span> parameters at once</strong> — one new <span class="math inline">\(3\times3\)</span> coefficient matrix entering <strong>every</strong> equation simultaneously. Moving from <span class="math inline">\(p=1\)</span> to <span class="math inline">\(p=2\)</span> adds nine parameters in one step; a five-variable system would add 25 per lag, a ten-variable system 100. This is exactly why practitioners favor small, tightly-parameterized systems over adding every variable that seems potentially relevant.</p>
+</div>
+<p>Same underlying tradeoff as Chapter 3: too few lags leaves serial correlation in <span class="math inline">\(\mathbf{u}_t\)</span>, contaminating everything downstream — Granger causality, IRFs, FEVDs. Too many wastes degrees of freedom and can destabilize estimates. We want the smallest <span class="math inline">\(p\)</span> consistent with white noise residuals.</p>
+</section>
+<section id="information-criteria-extended-to-vars" class="slide level2">
+<h2>Information Criteria, Extended to VARs</h2>
+<p><span class="math display">\[
+\text{IC}(p) = \ln|\hat{\boldsymbol\Sigma}_u(p)| + \text{penalty}(n,p,T)
+\]</span></p>
+<div class="eo-definition">
+<p><strong>Two changes from the univariate case.</strong> The fit term becomes <span class="math inline">\(\ln|\hat{\boldsymbol\Sigma}_u(p)|\)</span> — the log-determinant of the residual covariance matrix, summarizing joint fit across all <span class="math inline">\(n\)</span> equations in one number. Each additional lag costs <span class="math inline">\(n^2\)</span> parameters, not 1 — for our three-variable system, nine per lag.</p>
+</div>
+<div class="eo-recap">
+<p>Same relative behavior as Chapters 3–4: <strong>BIC</strong> penalizes hardest, favors short lags, consistent asymptotically. <strong>AIC</strong> tolerates more lags, captures richer dynamics. <strong>HQC</strong> sits between. Report all three; treat disagreement as informative, not as noise to average away.</p>
+</div>
+</section>
+<section id="the-likelihood-ratio-test" class="slide level2">
+<h2>The Likelihood Ratio Test</h2>
+<p>A direct complement: compare two <em>nested</em> lag orders, <span class="math inline">\(p_0&lt;p_1\)</span>, directly.</p>
+<p><span class="math display">\[
+\text{LR} = (T-p_1n)\left[\ln|\hat{\boldsymbol\Sigma}_u(p_0)|-\ln|\hat{\boldsymbol\Sigma}_u(p_1)|\right] \sim \chi^2(n^2(p_1-p_0)) \text{ under } H_0:p=p_0
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Applied sequentially</strong>: start at <span class="math inline">\(p_{\max}\)</span>, test down against <span class="math inline">\(p_{\max}-1\)</span>, continue until the null is first rejected. Degrees of freedom equal parameters removed — <span class="math inline">\(n^2\)</span> per lag dropped. When LR and information criteria agree, confidence is higher; when they disagree, the disagreement defines a set of candidates worth checking with residual diagnostics.</p>
+</div>
+</section>
+<section id="applied-a-genuine-three-way-disagreement" class="slide level2">
+<h2>Applied: A Genuine Three-Way Disagreement</h2>
+<p>Fitting the three-variable VAR (GDP growth, CPI inflation, FFR) at every <span class="math inline">\(p=1,\ldots,6\)</span>:</p>
+<div class="eo-hazard">
+<p><strong>BIC selects <span class="math inline">\(p=1\)</span>. HQC selects <span class="math inline">\(p=3\)</span>. AIC selects <span class="math inline">\(p=5\)</span>.</strong> Not a close call resolved by one criterion nudging slightly ahead of another — a genuine three-way spread, exactly the “criteria disagree, that disagreement is informative” pattern from Chapter 4’s ICSA identification. No single number settles this; residual diagnostics have to.</p>
+</div>
+</section>
+<section id="starting-point-the-bic-preferred-var1" class="slide level2">
+<h2>Starting Point: The BIC-Preferred VAR(1)</h2>
+<p>Following the same iterative logic as Chapter 3’s Box-Jenkins workflow: start with the most parsimonious candidate, estimate it, check whether the diagnostics actually support stopping there.</p>
+<div class="eo-recap">
+<p>The <code>statsmodels</code> VAR summary produces one regression block per equation — the multivariate analogue of Chapter 3’s ARMA output. Each block: constant, own lag, cross-variable lags, standard errors, equation-level fit. These reduced-form coefficients are not yet structurally interpretable — that’s Section 5’s job.</p>
+</div>
+<p>Stability check passes — all 3 companion-matrix roots (Section 2) sit inside the unit circle. But stability alone doesn’t mean the model is <em>adequate</em>.</p>
+</section>
+<section id="the-var1-residuals-tell-a-familiar-story" class="slide level2">
+<h2>The VAR(1) Residuals Tell a Familiar Story</h2>
+<div class="eo-hazard">
+<p><strong>Residual diagnostics reveal the BIC-preferred VAR(1) is misspecified.</strong> Just as Chapter 3’s AR(1) baseline on ICSA left predictable structure in its residuals, the VAR(1)’s residuals show remaining serial correlation the model hasn’t absorbed. BIC’s heavy penalty pushed it toward a model too parsimonious for what the data actually contain.</p>
+</div>
+<div class="eo-recap">
+<p><strong>Same lesson, multivariate scale.</strong> An information criterion is a starting point, not a final answer — the iterative identify-estimate-diagnose-revise loop from Chapter 3 applies here unchanged, just with more equations to check simultaneously.</p>
+</div>
+</section>
+<section id="the-working-model-var6" class="slide level2">
+<h2>The Working Model: VAR(6)</h2>
+<div class="eo-recap">
+<p><strong>Revising upward, checking residuals at each step, settling on VAR(6)</strong> — closer to AIC’s preference than BIC’s, consistent with the residual evidence that shorter lags left real structure unaccounted for. Every result for the remainder of this chapter — Granger causality, Cholesky IRFs, FEVDs — traces back to this specific working model, reported explicitly so results remain traceable to the choice that produced them.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>If AIC and BIC disagree substantially</strong>, as they did here, carrying both candidate orders forward as a robustness check is good practice whenever downstream results turn out to be sensitive to lag length.</p>
+</div>
+</section>
+<section id="granger-causality" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Granger Causality</h2>
+<div class="eo-section-label">
+<p>Section 4</p>
+</div>
+</section>
+<section id="a-question-the-var-can-answer-directly" class="slide level2">
+<h2>A Question the VAR Can Answer Directly</h2>
+<blockquote>
+<p>With the working VAR(6) in hand — before any structural identification — is there already something useful we can say about how these three variables relate?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Granger causality.</strong> Variable <span class="math inline">\(x\)</span> Granger-causes variable <span class="math inline">\(y\)</span> if past values of <span class="math inline">\(x\)</span> contain information that helps predict <span class="math inline">\(y\)</span>, beyond what past values of <span class="math inline">\(y\)</span> itself — and every other variable in the system — already provide.</p>
+<p><span class="math display">\[
+x\not\to_G y \iff \alpha_{ij,\ell}=0 \text{ for all lags } \ell=1,\ldots,p
+\]</span></p>
+</div>
+<p>A statement about <strong>predictive precedence</strong> — whether <span class="math inline">\(x\)</span>’s history sharpens a forecast of <span class="math inline">\(y\)</span> — nothing more.</p>
+</section>
+<section id="the-block-exclusion-f-test" class="slide level2">
+<h2>The Block Exclusion <span class="math inline">\(F\)</span>-Test</h2>
+<p>Testing whether <span class="math inline">\(j\)</span> Granger-causes <span class="math inline">\(i\)</span> is testing a block of zero restrictions in equation <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[
+H_0: A_{ij,1}=A_{ij,2}=\cdots=A_{ij,p}=0
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Estimate the unrestricted equation (all <span class="math inline">\(p\)</span> lags of <span class="math inline">\(j\)</span> included) and the restricted one (those lags excluded); compare residual sums of squares.</strong> Under <span class="math inline">\(H_0\)</span>: <span class="math inline">\(F(p,T-np-1)\)</span> in finite samples, asymptotically <span class="math inline">\(\chi^2(p)/p\)</span>. In a three-variable system: <span class="math inline">\(3\times2=6\)</span> directional hypotheses — every ordered pair, tested and reported together.</p>
+</div>
+</section>
+<section id="granger-causality-is-not-structural-causality" class="slide level2">
+<h2>Granger Causality Is Not Structural Causality</h2>
+<div class="eo-hazard">
+<p><strong>A finding that <span class="math inline">\(x\)</span> Granger-causes <span class="math inline">\(y\)</span> does not mean <span class="math inline">\(x\)</span> structurally drives <span class="math inline">\(y\)</span></strong>, that the relationship is stable across regimes, or that intervening on <span class="math inline">\(x\)</span> changes <span class="math inline">\(y\)</span>. Granger causality can even run from effect to cause, if agents <strong>anticipate</strong> future movements in the causal variable — the funds rate may Granger-cause output not because policy drives production, but because markets and firms react in advance to policy changes they see coming.</p>
+</div>
+<div class="eo-recap">
+<p>Moving from predictive precedence to genuine causal interpretation requires structural identification — Section 5’s job.</p>
+</div>
+</section>
+<section id="applied-the-six-directional-tests" class="slide level2">
+<h2>Applied: The Six Directional Tests</h2>
+<p>Testing all six pairs at the working VAR(6), GDP growth / CPI inflation / FFR, 1954 Q3–2019 Q4. <span class="math inline">\(H_0\)</span>: the row variable does <strong>not</strong> Granger-cause the column variable.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Cause <span class="math inline">\(\to\)</span> Effect</th>
+<th style="text-align: center;"><span class="math inline">\(p\)</span>-value</th>
+<th style="text-align: center;">Granger-causes at 5%?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">GDP growth <span class="math inline">\(\to\)</span> FFR</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CPI inflation <span class="math inline">\(\to\)</span> FFR</td>
+<td style="text-align: center;">0.049</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FFR <span class="math inline">\(\to\)</span> GDP growth</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FFR <span class="math inline">\(\to\)</span> CPI inflation</td>
+<td style="text-align: center;">0.001</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GDP growth <span class="math inline">\(\to\)</span> CPI inflation</td>
+<td style="text-align: center;">0.396</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CPI inflation <span class="math inline">\(\to\)</span> GDP growth</td>
+<td style="text-align: center;">0.459</td>
+<td style="text-align: center;">No</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reading-the-result-a-monetary-transmission-story" class="slide level2">
+<h2>Reading the Result: A Monetary Transmission Story</h2>
+<div class="eo-recap">
+<p><strong>Four relationships significant, two absent.</strong> GDP growth strongly Granger-causes the FFR — the Fed responds to real activity, stronger growth predicting tightening. CPI inflation also Granger-causes the FFR, confirming a price-stability channel — though at the shorter VAR(1) this relationship was <strong>not</strong> significant (<span class="math inline">\(p=0.739\)</span>); the additional lags at VAR(6) reveal a delayed inflation-response channel the parsimonious model missed entirely. The FFR Granger-causes both growth and inflation — the monetary transmission channel, both directions, working with a lag.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>Two absences matter as much as the four findings.</strong> GDP growth does not Granger-cause inflation (<span class="math inline">\(p=0.396\)</span>); inflation does not Granger-cause growth (<span class="math inline">\(p=0.459\)</span>) — the reduced-form Phillips curve non-finding. This doesn’t contradict the Phillips curve; the <em>contemporaneous</em> relationship is better seen in the IRFs (Section 6). It does mean the reduced-form feedback runs primarily <strong>through the policy rate</strong>, not directly between growth and inflation.</p>
+</div>
+</section>
+<section id="what-this-result-still-cant-tell-us" class="slide level2">
+<h2>What This Result Still Can’t Tell Us</h2>
+<div class="eo-recap">
+<p><strong>Whether the FFR <em>structurally</em> drives output and inflation remains open.</strong> Finding that the funds rate Granger-causes GDP growth means past rates carry predictive information about future growth beyond growth’s own history — not that policy mechanically drives output. Separating genuine policy transmission from the Fed’s own response to anticipated conditions is exactly the identification question Section 5 takes up next.</p>
+</div>
+</section>
+<section id="svar-identification-and-the-cholesky-decomposition" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>SVAR Identification and the Cholesky Decomposition</h2>
+<div class="eo-section-label">
+<p>Section 5</p>
+</div>
+</section>
+<section id="the-identification-problem" class="slide level2">
+<h2>The Identification Problem</h2>
+<blockquote>
+<p>Reduced-form residuals <span class="math inline">\(\mathbf{u}_t\)</span> are useful for forecasting and Granger causality. What are they <em>not</em> useful for?</p>
+</blockquote>
+<p>Recall Section 1: <span class="math inline">\(\mathbf{u}_t=\mathbf{A}_0^{-1}\boldsymbol\varepsilon_t\)</span>, where <span class="math inline">\(\boldsymbol\varepsilon_t=(\varepsilon^g_t,\varepsilon^\pi_t,\varepsilon^r_t)'\)</span> are the genuine independent structural shocks.</p>
+<div class="eo-hazard">
+<p><strong>The reduced-form residual <span class="math inline">\(u^r_t\)</span> in the funds-rate equation is not a pure monetary policy shock.</strong> It’s a mixture of all three structural shocks, in proportions set by the unknown entries of <span class="math inline">\(\mathbf{A}_0^{-1}\)</span>. To ask “how does a monetary policy shock affect GDP growth” — the central question of applied monetary economics — we must first disentangle the three structural shocks from the three composite residuals.</p>
+</div>
+</section>
+<section id="counting-equations-counting-unknowns" class="slide level2">
+<h2>Counting Equations, Counting Unknowns</h2>
+<p><span class="math inline">\(n=3\)</span>: <span class="math inline">\(\mathbf{A}_0\)</span> has <span class="math inline">\(n^2=9\)</span> elements. Normalize the diagonal to 1 (each shock has unit contemporaneous effect on its own variable): <span class="math inline">\(n^2-n=6\)</span> unknowns remain.</p>
+<p><span class="math display">\[
+\boldsymbol\Sigma_u = \mathbf{A}_0^{-1}\boldsymbol\Omega(\mathbf{A}_0^{-1})'
+\]</span></p>
+<div class="eo-recap">
+<p><strong><span class="math inline">\(\boldsymbol\Sigma_u\)</span> supplies exactly <span class="math inline">\(n(n+1)/2=6\)</span> unique equations</strong> — the distinct entries of a symmetric <span class="math inline">\(3\times3\)</span> matrix. Six equations, six unknowns: the system is <strong>just-identified</strong>. Nonlinear in general — but a triangular restriction on <span class="math inline">\(\mathbf{A}_0\)</span> makes it solvable sequentially, one entry at a time. That restriction is Cholesky identification.</p>
+</div>
+</section>
+<section id="cholesky-a-recursive-structure" class="slide level2">
+<h2>Cholesky: A Recursive Structure</h2>
+<p>Order variables from most to least exogenous; assume variable <span class="math inline">\(i\)</span> doesn’t respond <strong>contemporaneously</strong> to shocks in variables <span class="math inline">\(j&gt;i\)</span>. For GDP growth, inflation, funds rate — in that order:</p>
+<p><span class="math display">\[
+\mathbf{A}_0 = \begin{pmatrix}1&amp;0&amp;0\\a_{21}&amp;1&amp;0\\a_{31}&amp;a_{32}&amp;1\end{pmatrix}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>The economic story behind the zeros.</strong> Output and prices move on slow production/pricing decisions; the Fed observes them and sets rates in response. A policy shock affects growth and inflation only with a lag — rates move <strong>last</strong> within the quarter. An inflation shock can hit rates contemporaneously (the Fed reacts within the quarter) but not output. An output shock can hit both inflation and rates contemporaneously.</p>
+</div>
+</section>
+<section id="the-cholesky-decomposition" class="slide level2">
+<h2>The Cholesky Decomposition</h2>
+<div class="eo-definition">
+<p><strong>Cholesky factorization.</strong> <span class="math inline">\(\boldsymbol\Sigma_u=\mathbf{P}\mathbf{P}'\)</span>, <span class="math inline">\(\mathbf{P}\)</span> lower-triangular with positive diagonal — exactly <span class="math inline">\(\mathbf{A}_0^{-1}\boldsymbol\Omega^{1/2}\)</span> under the recursive restriction. Orthogonalized shocks: <span class="math inline">\(\hat{\boldsymbol\varepsilon}_t=\mathbf{P}^{-1}\mathbf{u}_t\)</span>, uncorrelated by construction, unit variance.</p>
+</div>
+<p>These orthogonalized shocks are what feed directly into Sections 6 and 7’s impulse responses and variance decompositions.</p>
+</section>
+<section id="solving-it-by-hand-the-2times2-case" class="slide level2">
+<h2>Solving It by Hand: The <span class="math inline">\(2\times2\)</span> Case</h2>
+<p>Reduced-form residual covariance for growth and inflation alone:</p>
+<p><span class="math display">\[
+\boldsymbol\Sigma_u = \begin{pmatrix}4.0&amp;1.2\\1.2&amp;9.0\end{pmatrix}
+\]</span></p>
+<p>Solve <span class="math inline">\(\mathbf{P}\mathbf{P}'=\boldsymbol\Sigma_u\)</span> for lower-triangular <span class="math inline">\(\mathbf{P}=\begin{pmatrix}p_{11}&amp;0\\p_{21}&amp;p_{22}\end{pmatrix}\)</span>, row by row:</p>
+<p><span class="math display">\[
+\begin{aligned}
+p_{11}^2&amp;=4.0 &amp;&amp;\Rightarrow\; p_{11}=2.0 \\
+p_{11}p_{21}&amp;=1.2 &amp;&amp;\Rightarrow\; p_{21}=1.2/2.0=0.6 \\
+p_{21}^2+p_{22}^2&amp;=9.0 &amp;&amp;\Rightarrow\; p_{22}=\sqrt{9.0-0.36}\approx2.94
+\end{aligned}
+\]</span></p>
+</section>
+<section id="reading-the-solved-matrix" class="slide level2">
+<h2>Reading the Solved Matrix</h2>
+<p><span class="math display">\[
+\mathbf{P} = \begin{pmatrix}2.0&amp;0\\0.6&amp;2.94\end{pmatrix}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Each step has a direct interpretation.</strong> <span class="math inline">\(p_{11}=2.0\)</span>: the standard deviation of the output structural shock. <span class="math inline">\(p_{21}=0.6\)</span>: how much of the <em>inflation</em> residual is explained by the <em>output</em> shock — permitted, since the ordering lets output affect inflation contemporaneously. <span class="math inline">\(p_{22}\approx2.94\)</span>: the standard deviation of the inflation shock, net of what the output shock already explains. The three-variable case is the same logic, one more row — solve diagonal, then off-diagonals in order, each depending only on entries already found above it.</p>
+</div>
+</section>
+<section id="the-ordering-assumption-is-substantive" class="slide level2">
+<h2>The Ordering Assumption Is Substantive</h2>
+<div class="eo-hazard">
+<p><strong>Not a technical choice — an economic one.</strong> A different variable ordering produces different structural shocks and different impulse responses, full stop. Reversing to put the funds rate first — as if policy were set <em>before</em> output and prices adjust within the quarter — yields a completely different <span class="math inline">\(\mathbf{P}\)</span>. No ordering is obviously correct in every application; robustness checks across orderings are standard practice.</p>
+</div>
+<div class="eo-recap">
+<p><strong>The ordering used here — growth, inflation, policy rate — follows Christiano, Eichenbaum, and Evans (1999)</strong>, the standard in the monetary VAR literature. Its rationale: quarterly GDP and prices are predetermined relative to the policy instrument within the period.</p>
+</div>
+</section>
+<section id="an-alternative-sign-restrictions" class="slide level2">
+<h2>An Alternative: Sign Restrictions</h2>
+<blockquote>
+<p>Cholesky achieves identification through exact zeros — strong, specific claims about what doesn’t respond contemporaneously. Is there a way to identify shocks with a weaker commitment?</p>
+</blockquote>
+<div class="eo-definition">
+<p><strong>Sign restrictions.</strong> Specify only the <em>direction</em> of a shock’s contemporaneous impact — a contractionary policy shock raises the rate and reduces inflation, output left agnostic. Any <span class="math inline">\(\mathbf{A}_0\)</span> consistent with the sign pattern counts as a valid identification; the admissible set is typically large, and IRFs are reported as <strong>ranges</strong>, not point estimates.</p>
+</div>
+<div class="eo-recap">
+<p>Attractive precisely because it requires fewer strong assumptions than exact zeros — and can encode economic theory more directly, without committing to a specific contemporaneous timing structure.</p>
+</div>
+</section>
+<section id="impulse-response-functions" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Impulse Response Functions</h2>
+<div class="eo-section-label">
+<p>Section 6</p>
+</div>
+</section>
+<section id="the-question-irfs-actually-answer" class="slide level2">
+<h2>The Question IRFs Actually Answer</h2>
+<blockquote>
+<p>The reduced-form VAR describes how each variable evolves given its own and every other variable’s past. What it doesn’t directly show: if an unexpected shock hits <em>today</em>, how does each variable respond over the next several quarters?</p>
+</blockquote>
+<div class="eo-recap">
+<p>This is the central object of structural macroeconomics — not “what explains the past,” but “what happens next, after a specific, identified disturbance.”</p>
+</div>
+</section>
+<section id="warmup-the-scalar-case-revisited" class="slide level2">
+<h2>Warmup: The Scalar Case, Revisited</h2>
+<p>AR(1), <span class="math inline">\(y_t=\phi y_{t-1}+u_t\)</span>, <span class="math inline">\(\phi=0.7\)</span>, unit shock <span class="math inline">\(u_0=1\)</span> at time 0:</p>
+<p><span class="math display">\[
+y_0=1,\quad y_1=0.7,\quad y_2=0.49,\quad y_3=0.343,\ldots
+\]</span></p>
+<div class="eo-recap">
+<p><strong>The IRF at horizon <span class="math inline">\(h\)</span> is exactly <span class="math inline">\(\phi^h\)</span></strong> — precisely Chapter 3’s MA(<span class="math inline">\(\infty\)</span>) representation, <span class="math inline">\(y_t=\sum_h\phi^hu_{t-h}\)</span>, read as a statement about the shock’s own decay path rather than the series’ full history. Everything that follows is this same idea, generalized to a matrix.</p>
+</div>
+</section>
+<section id="the-bivariate-case-setting-up" class="slide level2">
+<h2>The Bivariate Case: Setting Up</h2>
+<p>GDP growth <span class="math inline">\(g_t\)</span>, inflation <span class="math inline">\(\pi_t\)</span> — illustrative (not estimated) but plausible values:</p>
+<p><span class="math display">\[
+\mathbf{A}_1=\begin{pmatrix}0.6&amp;0.2\\0.1&amp;0.5\end{pmatrix}, \qquad \mathbf{P}=\begin{pmatrix}1.0&amp;0\\0.3&amp;0.8\end{pmatrix}
+\]</span></p>
+<p>A unit output shock: <span class="math inline">\(\varepsilon^g=1,\varepsilon^\pi=0\)</span>, or <span class="math inline">\(\mathbf{e}_1=(1,0)'\)</span>. At <span class="math inline">\(h=0\)</span>, the response to shock <span class="math inline">\(j\)</span> is <strong>column <span class="math inline">\(j\)</span></strong> of <span class="math inline">\(\mathbf{P}\)</span>:</p>
+<p><span class="math display">\[
+\boldsymbol\Theta_0\mathbf{e}_1=\mathbf{P}\mathbf{e}_1=\begin{pmatrix}1.0\\0.3\end{pmatrix}
+\]</span></p>
+<div class="eo-recap">
+<p><strong>Why the column, not the diagonal alone.</strong> <span class="math inline">\(\mathbf{P}\)</span>’s full column <span class="math inline">\(j\)</span> gives the contemporaneous effect of shock <span class="math inline">\(j\)</span> on <em>every</em> variable — the diagonal alone only shows each shock’s effect on its own variable, missing exactly the cross-variable spillover (<span class="math inline">\(p_{21}=0.3\)</span>) that the Cholesky ordering permits.</p>
+</div>
+</section>
+<section id="propagating-the-shock-forward" class="slide level2">
+<h2>Propagating the Shock Forward</h2>
+<p>GDP jumps by 1.0 on impact (the unit normalization); inflation jumps by 0.3 — the cross-variable contemporaneous effect the ordering allows. Then each horizon multiplies by <span class="math inline">\(\mathbf{A}_1\)</span> again:</p>
+<p><span class="math display">\[
+\boldsymbol\Theta_1\mathbf{e}_1=\mathbf{A}_1\mathbf{P}\mathbf{e}_1=\begin{pmatrix}0.66\\0.25\end{pmatrix}, \qquad \boldsymbol\Theta_2\mathbf{e}_1=\mathbf{A}_1^2\mathbf{P}\mathbf{e}_1=\begin{pmatrix}0.446\\0.191\end{pmatrix}
+\]</span></p>
+<div class="eo-recap">
+<p><strong><span class="math inline">\(\boldsymbol\Theta_h=\mathbf{A}_1^h\mathbf{P}\)</span> for a VAR(1)</strong> — repeatedly powering the coefficient matrix, exactly the multivariate analogue of <span class="math inline">\(\phi^h\)</span> from the scalar warmup. With <span class="math inline">\(p&gt;1\)</span> lags, the companion matrix <span class="math inline">\(\mathbf{F}\)</span> steps in for <span class="math inline">\(\mathbf{A}_1\)</span>, next.</p>
+</div>
+</section>
+<section id="the-general-formula" class="slide level2">
+<h2>The General Formula</h2>
+<div class="eo-definition">
+<p><strong>VMA(<span class="math inline">\(\infty\)</span>) and the orthogonalized IRF.</strong> Backward substitution on the companion-form VAR gives <span class="math inline">\(\mathbf{y}_t=\boldsymbol\mu+\sum_{h=0}^\infty\boldsymbol\Theta_h\boldsymbol\varepsilon_{t-h}\)</span>, with</p>
+<p><span class="math display">\[
+\boldsymbol\Theta_h = \mathbf{J}\mathbf{F}^h\mathbf{J}'\mathbf{P}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{J}=[\mathbf{I}_n\;\mathbf{0}\cdots\mathbf{0}]\)</span> selects the first <span class="math inline">\(n\)</span> rows of the <span class="math inline">\(np\)</span>-dimensional companion system. <span class="math inline">\((i,j)\)</span> entry <span class="math inline">\(\theta_{ij,h}\)</span>: response of variable <span class="math inline">\(i\)</span> to a unit structural shock <span class="math inline">\(j\)</span>, <span class="math inline">\(h\)</span> periods later, all other shocks held at zero.</p>
+</div>
+<div class="eo-recap">
+<p>In a stable VAR, <span class="math inline">\(\mathbf{F}^h\to\mathbf{0}\)</span>, so every IRF decays to zero — shocks are transitory, exactly as stability requires. Diagonal panels start at 1.0 by the unit-variance normalization.</p>
+</div>
+</section>
+<section id="orthogonalization-and-where-confidence-bands-come-from" class="slide level2">
+<h2>Orthogonalization, and Where Confidence Bands Come From</h2>
+<blockquote>
+<p>Reduced-form residuals <span class="math inline">\(\mathbf{u}_t\)</span> are correlated — <span class="math inline">\(\boldsymbol\Sigma_u\)</span> isn’t diagonal. Why does that make “a unit shock to <span class="math inline">\(u^r_t\)</span>” not even a well-defined experiment?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>Because <span class="math inline">\(u^g_t,u^\pi_t,u^r_t\)</span> move together — hitting one in isolation isn’t physically possible.</strong> The Cholesky factor <span class="math inline">\(\mathbf{P}\)</span> converts them to genuinely orthogonal shocks <span class="math inline">\(\boldsymbol\varepsilon_t=\mathbf{P}^{-1}\mathbf{u}_t\)</span>. Substituting gives <span class="math inline">\(\boldsymbol\Theta_h=\boldsymbol\Phi_h\mathbf{P}\)</span> — these orthogonalized matrices are what produce structurally interpretable IRFs.</p>
+</div>
+<p><strong>Confidence bands</strong>: bootstrap the VAR residuals — redraw with replacement, re-estimate the VAR and Cholesky factor, recompute <span class="math inline">\(\boldsymbol\Theta_h\)</span>, repeat (500 draws); report the 16th–84th percentile band.</p>
+</section>
+<section id="applied-the-full-3times3-irf-grid" class="slide level2">
+<h2>Applied: The Full <span class="math inline">\(3\times3\)</span> IRF Grid</h2>
+
+<img data-src="../../chapters/07/chapter_07_files/figure-html/fig-irf-output-1.png" class="img-fluid r-stretch" alt="3x3 grid of orthogonalized impulse response functions for GDP growth, CPI inflation, and FFR, Cholesky ordering output-inflation-policy, with bootstrap confidence bands"><p><em>Rows: the responding variable. Columns: the shock. Reading across a row traces how one variable responds to all three shocks; reading down a column traces how one shock propagates across the whole system. Diagonal panels start at 1.0 by construction.</em></p>
+</section>
+<section id="reading-the-grid-transmission-and-the-price-puzzle" class="slide level2">
+<h2>Reading the Grid: Transmission and the Price Puzzle</h2>
+<div class="eo-recap">
+<p><strong>GDP growth to a policy shock</strong>: falls sharply, trough near <span class="math inline">\(-1.5\)</span>pp within two quarters, recovers gradually — the textbook transmission channel, precisely and negatively estimated, band well below zero for 4–5 quarters.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>CPI inflation to a policy shock</strong>: rises on impact, peaking near <span class="math inline">\(+0.3\)</span>pp at <span class="math inline">\(h=1\)</span> — the opposite of theory’s prediction. This is the <strong>price puzzle</strong>, a known finding in monetary VARs lacking a forward-looking inflation indicator. Our three-variable system can’t fully separate a genuine policy shock from the Fed raising rates <em>in anticipation</em> of inflation not yet visible in this quarter’s CPI — Section 8’s VARX extension (adding oil prices) would likely reduce it.</p>
+</div>
+<div class="eo-recap">
+<p><strong>FFR to an output shock</strong>: hump-shaped, peaking near <span class="math inline">\(+0.25\)</span>pp around <span class="math inline">\(h=5\)</span> then decaying — the <em>systematic</em> component of policy, the Fed responding to growth with a roughly five-quarter delay rather than instantly.</p>
+</div>
+</section>
+<section id="forecast-error-variance-decomposition" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>Forecast Error Variance Decomposition</h2>
+<div class="eo-section-label">
+<p>Section 7</p>
+</div>
+</section>
+<section id="a-path-question-vs.-an-attribution-question" class="slide level2">
+<h2>A Path Question vs.&nbsp;an Attribution Question</h2>
+<blockquote>
+<p>IRFs trace: given a shock today, how does each variable move over the next <span class="math inline">\(h\)</span> periods? What’s the different question FEVD asks?</p>
+</blockquote>
+<p>A single policy shock at <span class="math inline">\(h=0\)</span> hits the funds-rate equation directly — then ripples: higher rates dampen growth, weaker growth reduces inflationary pressure, lower inflation feeds back into the funds rate. By <span class="math inline">\(h=8\)</span>, one shock has generated forecast errors in <strong>all three</strong> variables.</p>
+<div class="eo-recap">
+<p><strong>FEVD asks: of the total forecast uncertainty in variable <span class="math inline">\(i\)</span> at horizon <span class="math inline">\(h\)</span>, what share traces back to each structural shock?</strong> Not the path a shock takes — how much of the <em>total uncertainty pie</em> each shock accounts for.</p>
+</div>
+</section>
+<section id="deriving-the-decomposition" class="slide level2">
+<h2>Deriving the Decomposition</h2>
+<p>The <span class="math inline">\(h\)</span>-step forecast error for variable <span class="math inline">\(i\)</span>, from Section 6’s VMA representation:</p>
+<p><span class="math display">\[
+y_{i,t+h}-\hat y_{i,t+h|t} = \sum_{s=0}^{h-1}\sum_{j=1}^n\theta_{ij,s}\varepsilon_{j,t+h-s}
+\]</span></p>
+<p>Since structural shocks are orthogonal, cross-terms vanish and the variance splits additively:</p>
+<p><span class="math display">\[
+\text{MSE}_i(h) = \sum_{s=0}^{h-1}\sum_{j=1}^n\theta_{ij,s}^2 = \sum_{j=1}^n\underbrace{\sum_{s=0}^{h-1}\theta_{ij,s}^2}_{\text{contribution of shock }j}
+\]</span></p>
+</section>
+<section id="the-fevd-share" class="slide level2">
+<h2>The FEVD Share</h2>
+<div class="eo-definition">
+<p><strong>Forecast error variance decomposition.</strong></p>
+<p><span class="math display">\[
+\omega_{ij}(h) = \frac{\sum_{s=0}^{h-1}\theta_{ij,s}^2}{\sum_{k=1}^n\sum_{s=0}^{h-1}\theta_{ik,s}^2}, \qquad \sum_{j=1}^n\omega_{ij}(h)=1
+\]</span></p>
+</div>
+<div class="eo-recap">
+<p><strong>At <span class="math inline">\(h=1\)</span>: only the <span class="math inline">\(h=0\)</span> IRF coefficient matters — the decomposition reflects the Cholesky ordering directly.</strong> At longer horizons, the <em>cumulative squared</em> IRF path determines the shares, and the ordering assumption matters progressively less as later dynamics take over. Shares are <strong>horizon-dependent by construction</strong> — a shock dominant short-run can fade long-run, or the reverse.</p>
+</div>
+</section>
+<section id="applied-the-stacked-area-fevd" class="slide level2">
+<h2>Applied: The Stacked-Area FEVD</h2>
+
+<img data-src="../../chapters/07/chapter_07_files/figure-html/fig-fevd-output-1.png" class="img-fluid r-stretch" alt="Stacked area forecast error variance decomposition for GDP growth, CPI inflation, and FFR across horizons 1 to 20 quarters, three-variable VAR"><p><em>Each panel: one variable’s forecast variance, split by structural shock, stacked to 100% at every horizon. Left: GDP growth. Center: CPI inflation. Right: FFR.</em></p>
+</section>
+<section id="reading-it-gdp-growth-and-inflation" class="slide level2">
+<h2>Reading It: GDP Growth and Inflation</h2>
+<div class="eo-recap">
+<p><strong>GDP growth</strong>: output shock 100% at <span class="math inline">\(h=1\)</span> (Cholesky construction) <span class="math inline">\(\to\)</span> 92% at <span class="math inline">\(h=4\)</span> <span class="math inline">\(\to\)</span> ~87% at <span class="math inline">\(h=20\)</span>. Policy shocks claim 7–9% from <span class="math inline">\(h=4\)</span> onward — small, but larger than the 1–2% a VAR(1) would have shown. <strong>Autonomous output shocks dominate the business cycle, but monetary policy’s unexpected component isn’t negligible at medium horizons.</strong></p>
+</div>
+<div class="eo-hazard">
+<p><strong>CPI inflation</strong>: own-shock 100% at <span class="math inline">\(h=1\)</span> <span class="math inline">\(\to\)</span> 92% at <span class="math inline">\(h=4\)</span> <span class="math inline">\(\to\)</span> 84% at <span class="math inline">\(h=20\)</span>, output and policy each claiming under 10% even at long horizons. <strong>The modest policy share, despite Granger causality finding FFR predicts inflation, is consistent with the price puzzle</strong> — what Granger causality picked up as predictive content is partly the Fed anticipating inflation, not driving it structurally.</p>
+</div>
+</section>
+<section id="reading-it-the-ffrs-dramatic-redistribution" class="slide level2">
+<h2>Reading It: The FFR’s Dramatic Redistribution</h2>
+<div class="eo-recap">
+<p><strong>The most striking result in this section.</strong> At <span class="math inline">\(h=1\)</span>: 91% of FFR variance is policy’s own shock — largely discretionary. By <span class="math inline">\(h=4\)</span>: output’s share surges to 36%. By <span class="math inline">\(h=12\)</span>: output reaches 52%, stabilizing there. By <span class="math inline">\(h=20\)</span>: only <strong>24%</strong> of FFR variance remains attributable to autonomous policy innovations — the majority reflects endogenous response to real and nominal conditions.</p>
+</div>
+<div class="eo-hazard">
+<p><strong>A quantitative statement about the Fed’s own systematic behavior.</strong> At business-cycle frequencies, most interest-rate variation is <em>predictable</em> from output and inflation dynamics — not discretionary surprise. This is the FEVD’s version of exactly what the Granger causality results (Section 4) and the hump-shaped IRF (Section 6) already suggested, now expressed as a precise, horizon-by-horizon percentage.</p>
+</div>
+</section>
+<section id="varx-and-when-variables-are-i1" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
+<h2>VARX and When Variables Are <span class="math inline">\(I(1)\)</span></h2>
+<div class="eo-section-label">
+<p>Section 8</p>
+</div>
+</section>
+<section id="conditioning-without-modeling" class="slide level2">
+<h2>Conditioning Without Modeling</h2>
+<blockquote>
+<p>Every variable in a VAR is treated symmetrically — its own equation, its own structural shock. What if we want to condition on a variable without going that far?</p>
+</blockquote>
+<p>Three cases: a variable <strong>genuinely exogenous</strong> to the system (oil prices — US output can’t plausibly move world crude prices); a variable whose <strong>own dynamics we don’t care about</strong> (a control, not an object of study); or a <strong>policy instrument or external shock</strong> used purely for identification.</p>
+<div class="eo-recap">
+<p>The single-equation ARMAX (Chapter 3) handled this for one variable. The <strong>VARX</strong> is its direct multivariate extension.</p>
+</div>
+</section>
+<section id="the-varxps-model" class="slide level2">
+<h2>The VARX(<span class="math inline">\(p\)</span>,<span class="math inline">\(s\)</span>) Model</h2>
+<p><span class="math display">\[
+\mathbf{y}_t = \mathbf{c}+\sum_{\ell=1}^p\mathbf{A}_\ell\mathbf{y}_{t-\ell}+\sum_{j=0}^s\mathbf{B}_j\mathbf{x}_{t-j}+\mathbf{u}_t
+\]</span></p>
+<div class="eo-definition">
+<p><span class="math inline">\(\mathbf{x}_t\)</span>: <span class="math inline">\(k\times1\)</span> exogenous vector. <span class="math inline">\(\mathbf{B}_j\)</span>: <span class="math inline">\(n\times k\)</span>, coefficients on the <span class="math inline">\(j\)</span>-th lag of <span class="math inline">\(\mathbf{x}\)</span>. <span class="math inline">\(s=0\)</span>: contemporaneous only. <strong>Every equation shares the same exogenous regressors</strong> — what distinguishes a genuine VARX from a set of unrelated ARMAX equations run side by side.</p>
+</div>
+<p><strong>Unchanged</strong>: OLS estimation equation-by-equation; endogenous-block IRFs and FEVDs computed exactly as before. <strong>Different</strong>: baseline forecasts shift with <span class="math inline">\(\mathbf{x}_t\)</span>’s own path; <span class="math inline">\(\mathbf{x}_t\)</span> never receives a structural shock and never enters the endogenous FEVD.</p>
+</section>
+<section id="why-lagged-x_t-matters-more-here-than-in-armax" class="slide level2">
+<h2>Why Lagged <span class="math inline">\(x_t\)</span> Matters More Here Than in ARMAX</h2>
+<blockquote>
+<p>Chapter 3’s ARMAX rarely needed lagged <span class="math inline">\(x_{t-1}\)</span> explicitly — the AR terms already absorbed most of its information. Why does a VARX need <span class="math inline">\(s\)</span> chosen deliberately, not defaulted to zero?</p>
+</blockquote>
+<div class="eo-recap">
+<p><strong>Two genuine differences.</strong> <span class="math inline">\(\mathbf{x}_t\)</span> is <em>by assumption</em> outside the endogenous system — if it has dynamics partly orthogonal to <span class="math inline">\(\mathbf{y}_t\)</span>, past <span class="math inline">\(\mathbf{y}\)</span> doesn’t fully reconstruct past <span class="math inline">\(\mathbf{x}\)</span>, so <span class="math inline">\(\mathbf{x}_{t-1}\)</span> carries real, non-redundant information. And the transmission from <span class="math inline">\(\mathbf{x}_t\)</span> to <span class="math inline">\(\mathbf{y}_t\)</span> may be <strong>delayed</strong> — in an ARMAX, the AR lags absorb this indirectly through <span class="math inline">\(y_t\)</span>’s own correlation structure; in a VARX, with <span class="math inline">\(\mathbf{x}_t\)</span> orthogonal to <span class="math inline">\(\mathbf{u}_t\)</span> by construction, only <em>explicit</em> lags of <span class="math inline">\(\mathbf{x}\)</span> can capture it.</p>
+</div>
+<p><span class="math inline">\(s\)</span> should be chosen by information criteria alongside <span class="math inline">\(p\)</span>, not fixed at zero by default.</p>
+</section>
+<section id="stationarity-rules-for-the-exogenous-block" class="slide level2">
+<h2>Stationarity Rules for the Exogenous Block</h2>
+<div class="eo-hazard">
+<p><strong><span class="math inline">\(\mathbf{x}_t\)</span> is <span class="math inline">\(I(0)\)</span></strong>: include in levels, no adjustment. <strong><span class="math inline">\(\mathbf{x}_t\)</span> is <span class="math inline">\(I(1)\)</span>, not cointegrated with <span class="math inline">\(\mathbf{y}_t\)</span></strong>: include in first differences — the level would inject a stochastic trend into every equation’s error, exactly the spurious-regression failure from Chapter 4. <strong><span class="math inline">\(\mathbf{x}_t\)</span> is <span class="math inline">\(I(1)\)</span>, cointegrated with <span class="math inline">\(\mathbf{y}_t\)</span></strong>: neither fix is correct — treat it as endogenous and move to a VECMX (Chapter 8).</p>
+</div>
+<div class="eo-recap">
+<p><strong>When in doubt, first-difference.</strong> The cost of over-differencing (losing some level information) is smaller than the cost of a spurious regression.</p>
+</div>
+</section>
+<section id="applied-oil-prices-as-an-exogenous-driver" class="slide level2">
+<h2>Applied: Oil Prices as an Exogenous Driver</h2>
+<p>ADF on WTI oil price growth: <span class="math inline">\(-11.567\)</span> (<span class="math inline">\(p=0.000\)</span>) — decisively stationary, includable directly with no transformation.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: center;">BIC</th>
+<th style="text-align: center;"><span class="math inline">\(\Delta\)</span>BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">VAR(6)</td>
+<td style="text-align: center;">2.406</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">VARX(6,0) + oil</td>
+<td style="text-align: center;">2.226</td>
+<td style="text-align: center;"><span class="math inline">\(-0.180\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="eo-recap">
+<p><strong>The VARX is preferred</strong> — contemporaneous oil growth improves fit enough to justify the three extra parameters. Economically: domestic output, inflation, and the funds rate have a systematic contemporaneous link to oil movements that six lags of the endogenous variables alone can’t capture, consistent with a supply-shock story. Conditioning on oil tightens the VAR residuals and sharpens identification of the <em>domestic</em> monetary policy shock — directly relevant to Section 6’s price puzzle.</p>
+</div>
+</section>
+<section id="when-variables-are-i1" class="slide level2">
+<h2>When Variables Are <span class="math inline">\(I(1)\)</span></h2>
+<blockquote>
+<p>Every result this chapter has assumed all three variables are stationary. The ADF tests confirmed this for growth and inflation; the FFR’s ADF didn’t reject, but the estimated VAR’s stability (Section 2) was the definitive check. What if that check had failed?</p>
+</blockquote>
+<div class="eo-hazard">
+<p><strong>Estimating a VAR in levels with <span class="math inline">\(I(1)\)</span> variables breaks nearly everything downstream.</strong> OLS coefficients stay consistent, but <span class="math inline">\(t\)</span>-, <span class="math inline">\(F\)</span>-, and IC distributions no longer apply — lag selection is unreliable, Granger <span class="math inline">\(F\)</span>-tests have non-standard distributions, and IRFs don’t converge to zero as <span class="math inline">\(h\to\infty\)</span>; they approach a nonzero constant, reflecting permanent shock effects. The companion matrix’s unit-eigenvalue structure — exactly what stationarity rules out — is present by construction.</p>
+</div>
+</section>
+<section id="the-naive-fix-and-its-cost" class="slide level2">
+<h2>The Naive Fix, and Its Cost</h2>
+<p>The obvious fix: difference every <span class="math inline">\(I(1)\)</span> variable first. A VAR in <span class="math inline">\(\Delta\mathbf{y}_t\)</span> restores stationarity and makes every tool in this chapter valid again.</p>
+<div class="eo-hazard">
+<p><strong>But differencing discards all long-run level information.</strong> If GDP and consumption share a common stochastic trend — if they’re <strong>cointegrated</strong> — a differenced VAR simply cannot see that relationship. The error correction mechanism describing how deviations from the long-run equilibrium get corrected over time is invisible to a model that only ever looks at changes.</p>
+</div>
+</section>
+<section id="recap" class="slide level2 recap-slide" data-background-color="#87A96B" data-footer="false">
+<h2>Recap</h2>
+<p>We built the complete multivariate toolkit. The reduced-form VAR emerged not as a new invention but as the natural destination of solving out a simultaneous structural system — Chapter 3’s endogeneity warning, followed to its conclusion. Lag selection scaled the Chapter 3-4 machinery to <span class="math inline">\(n^2\)</span>-parameter costs, with a genuine three-way disagreement resolved only by iterative diagnosis. Granger causality gave a first, purely predictive picture of the system before any structural claims. The Cholesky decomposition then earned that structural interpretation — a just-identified, sequentially solvable system, with the variable ordering itself standing as an economic assumption, not a statistical one. Impulse responses traced each shock’s full dynamic path, surfacing both a clean transmission channel and a genuine price puzzle; forecast error variance decomposition quantified how much of each variable’s uncertainty traces to each source, culminating in the striking finding that most FFR variance is itself predictable, not discretionary. The VARX extended the framework to condition on genuinely external drivers.</p>
+<div class="eo-recap">
+<p>And throughout, a boundary held: every tool here assumed stationarity. The moment that assumption fails — genuinely common in interest rate and price-level data — differencing throws away exactly the long-run information that mattered.</p>
+</div>
+</section>
+<section id="looking-ahead" class="slide level2">
+<h2>Looking Ahead</h2>
+<p>This chapter’s boundary is precise: VARs work cleanly on stationary variables, and differencing “fixes” an integrated VAR only by discarding its long-run structure. Chapter 8 resolves this properly.</p>
+<p>The <strong>Johansen test</strong> determines the <strong>cointegrating rank</strong> of a system — how many stationary linear combinations exist among a set of <span class="math inline">\(I(1)\)</span> variables — replacing the informal “does ADF reject” check with a formal, multivariate procedure. Where cointegration is found, the <strong>vector error correction model (VECM)</strong> reparameterizes the VAR to separate short-run dynamics from the long-run equilibrium relationship directly, with an explicit error-correction term describing how deviations get pulled back over time. The yield curve — the spread between long and short interest rates — becomes the chapter’s running example: two genuinely <span class="math inline">\(I(1)\)</span> series that cannot drift arbitrarily far apart, precisely the case a differenced VAR would handle badly and a VECM handles by design.</p>
+</section>
+<section id="key-terms" class="slide level2">
+<h2>Key Terms</h2>
+<div class="eo-keyterms">
+<dl>
+<dt>Simultaneity bias</dt>
+<dd>
+Contemporaneous terms on both sides of a structural system make OLS inconsistent; solving for the reduced form removes them.
+</dd>
+<dt>VAR(<span class="math inline">\(p\)</span>)</dt>
+<dd>
+<span class="math inline">\(\mathbf{y}_t=\mathbf{c}+\sum_\ell\mathbf{A}_\ell\mathbf{y}_{t-\ell}+\mathbf{u}_t\)</span>; every variable regressed on lags of every variable including itself; estimable equation-by-equation by OLS.
+</dd>
+<dt>Companion matrix / <span class="math inline">\(np\)</span> characteristic roots</dt>
+<dd>
+Generalizes Chapter 1’s companion form to <span class="math inline">\(n\)</span> variables; stability requires all <span class="math inline">\(np\)</span> eigenvalues inside the unit circle.
+</dd>
+<dt>Lag selection (VAR)</dt>
+<dd>
+IC and LR-test extensions of Chapters 3-4, with each lag costing <span class="math inline">\(n^2\)</span> parameters instead of 1.
+</dd>
+<dt>Granger causality</dt>
+<dd>
+<span class="math inline">\(x\)</span> Granger-causes <span class="math inline">\(y\)</span> if lagged <span class="math inline">\(x\)</span> has marginal predictive content for <span class="math inline">\(y\)</span> beyond <span class="math inline">\(y\)</span>’s own past and the rest of the system; tested by the block-exclusion <span class="math inline">\(F\)</span>-test. Predictive precedence, not structural causality.
+</dd>
+<dt>Structural VAR (SVAR) / Identification problem</dt>
+<dd>
+Recovering interpretable structural shocks <span class="math inline">\(\boldsymbol\varepsilon_t\)</span> from correlated reduced-form residuals <span class="math inline">\(\mathbf{u}_t=\mathbf{A}_0^{-1}\boldsymbol\varepsilon_t\)</span> requires <span class="math inline">\(n(n-1)/2\)</span> restrictions beyond diagonal normalization.
+</dd>
+<dt>Cholesky identification</dt>
+<dd>
+Recursive triangular restriction on <span class="math inline">\(\mathbf{A}_0\)</span>; equivalent to <span class="math inline">\(\boldsymbol\Sigma_u=\mathbf{P}\mathbf{P}'\)</span>. The variable ordering is an economic assumption, not a statistical one.
+</dd>
+<dt>Impulse response function (IRF)</dt>
+<dd>
+<span class="math inline">\(\theta_{ij,h}\)</span>, the response of variable <span class="math inline">\(i\)</span> to a unit structural shock <span class="math inline">\(j\)</span> at horizon <span class="math inline">\(h\)</span>; computed via <span class="math inline">\(\boldsymbol\Theta_h=\mathbf{J}\mathbf{F}^h\mathbf{J}'\mathbf{P}\)</span>.
+</dd>
+<dt>Price puzzle</dt>
+<dd>
+A contractionary policy shock followed by rising, not falling, inflation — typically reflecting imperfect identification of the policy shock from the Fed’s own anticipatory response.
+</dd>
+<dt>Forecast error variance decomposition (FEVD)</dt>
+<dd>
+<span class="math inline">\(\omega_{ij}(h)\)</span>, the share of variable <span class="math inline">\(i\)</span>’s <span class="math inline">\(h\)</span>-step forecast variance attributable to shock <span class="math inline">\(j\)</span>; horizon-dependent, sums to 100% at every <span class="math inline">\(h\)</span>.
+</dd>
+<dt>VARX(<span class="math inline">\(p\)</span>,<span class="math inline">\(s\)</span>)</dt>
+<dd>
+A VAR augmented with <span class="math inline">\(s+1\)</span> lags of exogenous variables <span class="math inline">\(\mathbf{x}_t\)</span>, which never receive structural shocks and never enter the endogenous FEVD.
+</dd>
+<dt>Cointegration</dt>
+<dd>
+Two or more <span class="math inline">\(I(1)\)</span> series with a stationary linear combination; a differenced VAR is misspecified for cointegrated series, since it omits the error correction mechanism entirely.
+</dd>
+</dl>
+</div>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>ECON-5371 · Time Series Analysis and Forecasting</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="07_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="07_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="07_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="07_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="07_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="07_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="07_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="07_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 8.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
