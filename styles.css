@@ -15,11 +15,14 @@
      Charcoal-dark   #243039   sidebar dark mode
      Warm-white      #FAFAF8   page background (light mode)
      Muted-text      #8a9ba8   captions, secondary text
+
+   Typography
+     Body        Source Serif 4  (Google Fonts) — falls back to Georgia/serif
+     Headings/UI Source Sans 3   (Google Fonts) — falls back to sans-serif
 ============================================================================= */
 
 /* ── Google Fonts ─────────────────────────────────────────────────────────── */
-/* @import url('https://fonts.googleapis.com/css2?family=Calibri:wght@300;400;700&display=swap');
-*/
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Source+Sans+3:wght@400;600;700&display=swap');
 
 
 /* =============================================================================
@@ -29,11 +32,12 @@
 body {
   color: #36454F;
   background-color: #FAFAF8;
+  font-size: 1.125rem; /* larger base size for easier reading */
 }
 
 .content, .chapter, p, li, td {
-  font-family: 'Palatino Linotype', "Times New Roman", serif;
-  line-height: 1.78;
+  font-family: 'Source Serif 4', Georgia, "Times New Roman", serif;
+  line-height: 1.68;
 }
 
 
@@ -43,7 +47,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #36454F;
-  font-family: 'Calibri', serif;
+  font-family: 'Source Sans 3', sans-serif;
 }
 
 h2 {
@@ -72,8 +76,7 @@ main a {
 .content a:hover,
 .chapter-content a:hover,
 main a:hover {
-  color: #8a5626;
-  text-decoration: underline;
+  color: #D4745E;
 }
 
 
@@ -91,7 +94,7 @@ main a:hover {
 #quarto-sidebar .sidebar-title a,
 .sidebar-title {
   color: #FFFFFF !important;
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.98rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -103,7 +106,7 @@ main a:hover {
 #quarto-sidebar .book-subtitle,
 #quarto-sidebar .sidebar-subtitle {
   color: #b0bec5 !important;
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.82rem;
 }
 
@@ -111,7 +114,7 @@ main a:hover {
 .sidebar-navigation a,
 .sidebar-item-text {
   color: #d6dde2 !important;
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.88rem;
   text-decoration: none !important;
   transition: color 0.15s ease;
@@ -170,7 +173,7 @@ main a:hover {
 .navbar {
   background-color: #36454F !important;
   border-bottom: 2px solid #B87333;
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
 }
 
 .navbar a,
@@ -200,7 +203,7 @@ main a:hover {
 #TOC,
 #quarto-margin-sidebar .toc,
 nav[role="doc-toc"] {
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.84rem;
 }
 
@@ -251,10 +254,10 @@ nav[role="doc-toc"] .active > a,
   background-color: rgba(184, 115, 51, 0.06);
 }
 
-.callout-note     .callout-title { color: #5B9BD5; font-family: Calibri, sans-serif; }
-.callout-tip      .callout-title { color: #87A96B; font-family: Calibri, sans-serif; }
-.callout-warning  .callout-title { color: #D4745E; font-family: Calibri, sans-serif; }
-.callout-important .callout-title { color: #B87333; font-family: Calibri, sans-serif; }
+.callout-note     .callout-title { color: #5B9BD5; font-family: 'Source Sans 3', sans-serif; }
+.callout-tip      .callout-title { color: #87A96B; font-family: 'Source Sans 3', sans-serif; }
+.callout-warning  .callout-title { color: #D4745E; font-family: 'Source Sans 3', sans-serif; }
+.callout-important .callout-title { color: #B87333; font-family: 'Source Sans 3', sans-serif; }
 
 
 /* =============================================================================
@@ -264,8 +267,8 @@ nav[role="doc-toc"] .active > a,
 table {
   border-collapse: collapse;
   width: 100%;
-  font-family: Calibri, sans-serif;
-  font-size: 0.92rem;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.95rem;
   margin: 1.5em 0;
 }
 
@@ -302,7 +305,7 @@ tbody tr:hover {
 .page-navigation .nav-page a,
 .chapter-nav a {
   color: #B87333 !important;
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.88rem;
   text-decoration: none;
   border: 1px solid #B87333;
@@ -332,7 +335,7 @@ tbody tr:hover {
 /* ── Footer — flush with nav buttons, no floating gap ────────────────────── */
 .nav-footer,
 footer {
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.82rem;
   color: #36454F;
   border-top: none;
@@ -370,7 +373,7 @@ pre {
 figcaption,
 .figure-caption,
 .quarto-float-caption {
-  font-family: Calibri, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 0.83rem;
   color: #8a9ba8;
   text-align: center;
@@ -413,6 +416,7 @@ figcaption,
 [data-bs-theme="dark"] main a:hover {
   color: #e8b47a;
 }
+/* underline intentionally omitted — hover is signaled by color shift only */
 
 [data-bs-theme="dark"] #TOC a,
 [data-bs-theme="dark"] nav[role="doc-toc"] a {
@@ -543,7 +547,7 @@ figcaption,
  
   /* ── Typography ───────────────────────────────────────────────────────────── */
   body {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: 'Source Serif 4', Georgia, "Times New Roman", serif;
     font-size: 11pt;
     line-height: 1.6;
     color: #000000;
@@ -551,6 +555,7 @@ figcaption,
   }
  
   h1, h2, h3, h4, h5, h6 {
+    font-family: 'Source Sans 3', sans-serif;
     color: #000000;
     page-break-after: avoid;
   }
@@ -681,10 +686,3 @@ figcaption,
     margin-top: 3cm;
   }
 }
- 
-
-
-
-
-
-

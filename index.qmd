@@ -26,6 +26,8 @@ execute:
   cache: false
 ---
 
+## Welcome
+
 Economic and financial data arrive in sequence. That sequence is not incidental — it is the most important thing about the data. Knowing what inflation was last month tells you something about what it will be this month. Knowing how a market moved yesterday tells you something about how it might move tomorrow. The discipline of time series analysis is the systematic study of that temporal dependence: how to measure it, model it, and use it to form credible statements about the future.
 
 This book develops that discipline from the ground up. We begin with the simplest possible question — is this series predictable from its own past? — and work outward from there. Each chapter relaxes one assumption from the one before. The series may have a trend. Its parameters may shift over time. It may move jointly with other series in ways that matter for forecasting. Its variance, not just its mean, may be time-varying. At each step, the new complexity is introduced because the previous framework encountered a question it could not answer — and the tools that resolve it are developed in response to that question, not in advance of it. By the end of Chapter 11, the state space framework will reveal that almost every model introduced along the way is a special case of a single, elegant architecture. The full landscape only becomes visible from that vantage point, but each station along the road is worth the stop.
