@@ -26,7 +26,7 @@ execute:
   cache: false
 ---
 
-## Welcome
+## Welcome 
 
 Economic and financial data arrive in sequence. That sequence is not incidental — it is the most important thing about the data. Knowing what inflation was last month tells you something about what it will be this month. Knowing how a market moved yesterday tells you something about how it might move tomorrow. The discipline of time series analysis is the systematic study of that temporal dependence: how to measure it, model it, and use it to form credible statements about the future.
 
