@@ -1,0 +1,718 @@
+---
+title: "Lab — Build Your Professional Website"
+subtitle: "Week 4"
+author: "Nicolas Cachanosky, Department of Economics and Finance"
+date: today
+title-slide-attributes:
+  data-background-color: "#36454F"
+---
+
+## Today's goal {.section-divider background-color="#87A96B" footer=false}
+
+::: {style="font-size: 1.4em; text-align: center; margin-top: 1.5em;"}
+By the end of this lab, you will have a **live, public website** —
+deployed at `yourusername.github.io` — built with the same tools
+you'll use for your course project later this semester.
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.1em; color: #666;"}
+LAB SESSION — Week 4
+:::
+
+## What we're building
+
+Five pages, one deployed site:
+
+- **Home** — a short landing page introducing you
+- **CV** — an on-page summary, plus a downloadable PDF
+- **Research interests** — what you're working on
+- **Skills** — your tools and methods
+- **Contact** — how people can reach you
+
+::: {.callout-note icon=false}
+## Why this matters beyond today
+The same repo → build → push → deploy workflow you practice today is
+exactly what you'll use for your course project dashboard in Week 12.
+Get comfortable with it now, while the stakes are low.
+:::
+
+## Before we start: quick verify
+
+If you completed the pre-lab handout, confirm your tools are working.
+Open a terminal in Positron and run each command below.
+
+::: {.panel-tabset}
+
+### Git
+
+```bash
+git --version
+```
+Expected: a version number (e.g., `git version 2.43.0`). No number,
+no Git — raise your hand.
+
+### Quarto
+
+```bash
+quarto check
+```
+Expected: a series of green checkmarks, including a Python
+installation Quarto can use. Let it finish before continuing.
+
+### Positron
+
+Open Positron. Confirm you can see a terminal pane
+(**View → Terminal**, or the terminal icon).
+
+:::
+
+::: {.callout-warning icon=false}
+## If something failed
+Don't spend lab time debugging installs. Raise your hand — we'll get
+you a working setup and you can catch up on the deploy step by
+pairing with a neighbor in the meantime.
+:::
+
+## Git basics — just enough to get going {.section-divider background-color="#87A96B" footer=false}
+
+## What is Git, really?
+
+::: {style="font-size: 1.15em;"}
+Git tracks changes to a folder of files over time. Think of it as a
+**save history** for your project — one you can rewind, compare, and,
+crucially, **push to a server** so the world can see it.
+:::
+
+::: {.callout-note icon=false}
+## Definition — repository ("repo")
+A folder that Git is tracking. It contains your files **and** the
+full history of every change you've committed.
+:::
+
+We are going to use exactly four Git commands today. That's it — no
+branching, no merging, no rebasing. Everything else can wait.
+
+## The four commands you need today
+
+| Command | What it does |
+|---|---|
+| `git init` | Start tracking a folder |
+| `git add <file>` | Stage a file — mark it for the next commit |
+| `git commit -m "message"` | Save a snapshot, with a note describing it |
+| `git push` | Send your commits to GitHub |
+
+::: {style="text-align: center; margin-top: 1em; font-size: 1.1em; color: #666;"}
+Local folder → staged → committed → pushed to GitHub
+:::
+
+## A mental model
+
+::: {style="font-size: 1.2em;"}
+Think of `git add` + `git commit` as **taking a photograph** of your
+project at this exact moment, with a caption explaining what changed.
+
+`git push` **mails that photograph** to GitHub, where it becomes
+visible to anyone with the link — including, in a few minutes, your
+live website.
+:::
+
+::: {.callout-warning icon=false}
+## A commit is not automatic
+Git does not save your work continuously. If you don't `add` and
+`commit`, your changes exist only on your laptop — and if you don't
+`push`, GitHub never sees them. Committing often is a habit, not a
+one-time step.
+:::
+
+## Create your repository {.section-divider background-color="#87A96B" footer=false}
+
+## The one naming rule that matters today
+
+::: {style="font-size: 1.3em; text-align: center; margin-top: 1em;"}
+GitHub Pages will publish a personal site automatically **if, and
+only if,** your repository is named exactly:
+:::
+
+::: {style="text-align: center; font-family: monospace; font-size: 1.6em; margin-top: 0.8em; color: #B87333;"}
+yourusername.github.io
+:::
+
+::: {.callout-warning icon=false}
+## This has to match exactly
+Replace `yourusername` with **your actual GitHub username**, all
+lowercase, exactly as it appears on your GitHub profile. A mismatch
+here is the single most common reason a site fails to deploy.
+:::
+
+## Steps: create the repo on GitHub
+
+1. Go to **github.com** and click **New repository**
+2. Repository name: `yourusername.github.io`
+3. Visibility: **Public** — required for free GitHub Pages
+4. Do **not** initialize with a README yet — we'll add our own later
+5. Click **Create repository**
+
+::: {.callout-note icon=false}
+## Why public?
+Free GitHub Pages hosting requires a public repository. This is
+fine — a professional website is *meant* to be public.
+:::
+
+## Choose your working folder
+
+First, decide **where on your computer** this will live. Pick one
+folder for all your course work if you don't already have one.
+
+::: {.panel-tabset}
+
+### Windows (PowerShell)
+
+```powershell
+cd ~\Documents\ECON5371
+```
+
+If the folder doesn't exist yet, create it first:
+
+```powershell
+mkdir ~\Documents\ECON5371
+cd ~\Documents\ECON5371
+```
+
+### Mac / Linux
+
+```bash
+cd ~/Documents/ECON5371
+```
+
+If the folder doesn't exist yet, create it first:
+
+```bash
+mkdir -p ~/Documents/ECON5371
+cd ~/Documents/ECON5371
+```
+
+:::
+
+::: {.callout-note icon=false}
+## Why this matters
+`git clone` creates a new folder wherever your terminal is currently
+"standing." If you don't `cd` somewhere deliberate first, you may end
+up with your website folder buried inside Downloads or some other
+random location — annoying to find later.
+:::
+
+## Clone it to your laptop
+
+GitHub shows you a URL after creating the repo. Copy it, then run:
+
+```bash
+git clone https://github.com/yourusername/yourusername.github.io.git
+cd yourusername.github.io
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+This creates a new folder named `yourusername.github.io` **inside**
+whatever folder you were in — so `Documents/ECON5371/yourusername.github.io`,
+following the example above. `clone` downloads an empty repo and
+automatically connects it to GitHub — no separate `git init` needed.
+:::
+
+::: {.callout-warning icon=false}
+## Keep track of this path
+Positron will need to open this exact folder for the rest of the lab.
+If you're not sure where you are, run `pwd` (Mac/Linux) or `cd` with
+no arguments (Windows PowerShell) to print your current location.
+:::
+
+## Scaffold the site with Quarto {.section-divider background-color="#87A96B" footer=false}
+
+## One command, a working site
+
+From inside your cloned repo folder:
+
+```bash
+quarto create project website
+```
+
+Quarto will ask a few questions (directory — say **current
+directory** since you're already inside your repo folder) and then
+generate a starter website for you.
+
+::: {.callout-note icon=false}
+## What just happened?
+Quarto created a small set of files that together define a website:
+a config file, a homepage, and an "about" page — plus a render
+pipeline that turns your `.qmd` files into `.html` pages.
+:::
+
+## Tour of the generated files
+
+| File | Purpose |
+|---|---|
+| `_quarto.yml` | Site-wide configuration — title, navigation, theme, output location |
+| `index.qmd` | Your homepage |
+| `about.qmd` | A starter "about" page — we'll repurpose this |
+| `styles.css` | Optional custom styling |
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Every page on your site starts as a `.qmd` file. Quarto renders each
+one into HTML when you build the site.
+:::
+
+## Preview locally before you publish
+
+```bash
+quarto preview
+```
+
+This opens a live preview in your browser and **updates
+automatically** as you save changes to any `.qmd` file — no need to
+re-run the command after every edit.
+
+::: {.callout-note icon=false}
+## Good habit
+Keep the preview open in a browser tab while you build. You'll catch
+formatting mistakes immediately instead of after deploying.
+:::
+
+## Build your pages {.section-divider background-color="#87A96B" footer=false}
+
+## Two pages, not five
+
+::: {style="font-size: 1.2em;"}
+Today we're keeping this simple: **one landing page** that holds
+everything about you, and **one project page** that will grow into
+your ECON-5371 research project over the semester.
+:::
+
+::: {.callout-note icon=false}
+## Why one page for everything?
+A short academic site reads better as a single, well-organized page
+than as five thin ones. You can always split sections out later —
+Quarto makes that a five-minute change, not a rebuild.
+:::
+
+## Add pages to the navigation first
+
+Before writing content, tell Quarto your pages exist. Open
+`_quarto.yml` and add each page under `navbar`:
+
+```yaml
+website:
+  title: "Your Name"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: project.qmd
+        text: Project
+```
+
+Then create `project.qmd` — `index.qmd` already exists from the
+scaffold.
+
+## Page 1 — Home (`index.qmd`)
+
+Everything about you lives here: intro, CV summary, research
+interests, skills, and contact — in that order, using headings to
+separate sections.
+
+```markdown
+---
+title: "Your Name"
+---
+
+![](images/headshot.jpg){width=200px}
+
+I am a graduate student in Economics at UTEP, studying
+[your focus area].
+
+## CV
+
+[**Download full CV (PDF)**](files/cv.pdf)
+
+**Education**
+
+- M.S. Economics, University of Texas at El Paso (expected 20XX)
+- B.A. Economics, [Institution] (20XX)
+
+**Experience**
+
+- [Role], [Organization], [Dates]
+
+## Research interests
+
+My research interests center on [topic area], particularly
+[specific question or method].
+```
+
+## Page 1 — Home, continued
+
+```markdown
+## Skills
+
+- Python (pandas, statsmodels, arch)
+- R / Stata
+- Git & GitHub
+- Time series forecasting
+
+## Contact
+
+**Email:** your_email@miners.utep.edu
+
+**LinkedIn:** [linkedin.com/in/yourname](https://linkedin.com/in/yourname) ·
+**GitHub:** [github.com/yourusername](https://github.com/yourusername)
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+Save your headshot into an `images/` folder and your CV into a
+`files/` folder, then reference each with the relative paths above.
+:::
+
+## Page 2 — Project (`project.qmd`)
+
+A placeholder for now — analytical details are still ahead of you
+this semester. Say what you can honestly say today.
+
+```markdown
+---
+title: "Research Project"
+---
+
+## Overview
+
+I am developing a time series forecasting project on
+[working topic], as part of ECON-5371. A full description,
+methodology, and results will be posted here as the project
+develops.
+
+## Status
+
+*Proposal stage — details forthcoming.*
+```
+
+::: {.callout-note icon=false}
+## Reuse this later
+This page becomes the home for your paper, dashboard, and
+presentation links in Week 12. Starting the file today means you're
+just editing it later, not creating it from scratch under deadline.
+:::
+
+## Configure for GitHub Pages {.section-divider background-color="#87A96B" footer=false}
+
+## Where does the site actually live?
+
+::: {style="font-size: 1.15em;"}
+GitHub Pages doesn't publish your `.qmd` files — it publishes
+**rendered HTML**. Quarto needs to know where to put that HTML so
+GitHub can find it.
+:::
+
+In `_quarto.yml`, confirm (or add) an output directory:
+
+```yaml
+project:
+  type: website
+  output-dir: docs
+```
+
+::: {.callout-note icon=false}
+## Why `docs/`?
+GitHub Pages can serve directly from a `/docs` folder on your `main`
+branch — no separate deployment branch needed. This is the simplest
+setup for a solo site.
+:::
+
+## The one invisible file that trips people up
+
+Create an empty file named exactly `.nojekyll` inside your `docs/`
+folder:
+
+```bash
+touch docs/.nojekyll
+```
+
+::: {.callout-warning icon=false}
+## Why this matters
+GitHub Pages assumes Jekyll by default, which ignores files and
+folders starting with an underscore — including Quarto's own output
+folders. `.nojekyll` tells GitHub "don't do that." Skip this file and
+parts of your site will silently fail to load.
+:::
+
+## Render the site
+
+```bash
+quarto render
+```
+
+This builds every `.qmd` file into HTML inside `docs/`. Run this
+whenever you're ready to publish new changes — `quarto preview` is
+for local editing only and does not update `docs/`.
+
+## Turn on GitHub Pages (one-time setting)
+
+On GitHub, in your repository:
+
+1. Go to **Settings → Pages**
+2. Under **Source**, select **Deploy from a branch**
+3. Branch: **main** — Folder: **/docs**
+4. Click **Save**
+
+::: {style="font-size: 1.05em; margin-top: 1em; color: #666;"}
+You only need to do this once per repository.
+:::
+
+## Push and deploy {.section-divider background-color="#87A96B" footer=false}
+
+## Send it to GitHub
+
+Back in the terminal, from your repo folder:
+
+```bash
+git add .
+git commit -m "Initial website: home, CV, research, skills, contact"
+git push
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+That's it. `git add .` stages every changed file, `commit` snapshots
+them with a message, and `push` sends everything to GitHub.
+:::
+
+## Visit your site
+
+Your site is live at:
+
+::: {style="text-align: center; font-family: monospace; font-size: 1.5em; margin-top: 0.8em; color: #B87333;"}
+https://yourusername.github.io
+:::
+
+::: {.callout-warning icon=false}
+## Give it a few minutes
+The first deploy can take 2–5 minutes to go live — GitHub is
+building your site behind the scenes. If you see a 404, that's
+usually why. Refresh in a bit before assuming something is broken.
+:::
+
+## Write your README.md {.section-divider background-color="#87A96B" footer=false}
+
+## Every repo tells you what it's for — or should
+
+::: {style="font-size: 1.15em;"}
+A `README.md` is the first thing anyone sees when they open your
+repository — including you, six months from now. Today's version is
+short, but the habit starts here. You'll write a fuller one for your
+project repository later in the semester.
+:::
+
+::: {.callout-note icon=false}
+## Definition — README
+A Markdown file, always named `README.md`, placed at the root of a
+repository. GitHub renders it automatically on the repo's front page.
+:::
+
+## What belongs in today's README
+
+```markdown
+# Your Name — Personal Website
+
+Source code for my personal website, built with Quarto and
+deployed via GitHub Pages.
+
+**Live site:** https://yourusername.github.io
+
+## Built with
+- [Quarto](https://quarto.org)
+- GitHub Pages
+
+## Structure
+- `index.qmd` — home page (CV, research interests, skills, contact)
+- `project.qmd` — research project page
+- `files/` — downloadable CV
+- `images/` — headshot and other images
+- `docs/` — rendered site (published output, do not edit directly)
+```
+
+## Commit the README
+
+```bash
+git add README.md
+git commit -m "Add README"
+git push
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Refresh your repository page on GitHub — your README now renders
+automatically below the file list.
+:::
+
+## If it's not working {.section-divider background-color="#87A96B" footer=false}
+
+## Common failure points, in order of likelihood
+
+| Symptom | Likely cause |
+|---|---|
+| 404 at `yourusername.github.io` | Repo name doesn't exactly match `yourusername.github.io` |
+| Site loads but looks broken/unstyled | Missing `.nojekyll` in `docs/` |
+| Nothing published at all | Pages not enabled in **Settings → Pages**, or wrong branch/folder selected |
+| Changes don't appear | Forgot `quarto render` before `git push` — you pushed source, not the rendered site |
+| `git push` rejected | Repo has commits you don't have locally — ask for help before force-pushing anything |
+
+::: {.callout-note icon=false}
+## The fix is almost always: render, then push
+The single most common gap is editing a `.qmd` file, forgetting to
+run `quarto render`, and pushing stale HTML. Make "render → add →
+commit → push" a fixed sequence.
+:::
+
+## Key Terms {.callout-note icon=false}
+
+**Repository (repo)**
+: A folder tracked by Git, containing files and their full change history.
+
+**Commit**
+: A saved snapshot of your project at a point in time, with a message describing the change.
+
+**Push**
+: Sending local commits to a remote server (GitHub).
+
+**Clone**
+: Downloading a copy of a remote repository to your local machine, pre-connected to that remote.
+
+**GitHub Pages**
+: A free hosting service that publishes static HTML directly from a GitHub repository.
+
+**`.nojekyll`**
+: An empty marker file that disables GitHub's default Jekyll processing, required for Quarto sites.
+
+**README.md**
+: A Markdown file at a repository's root, automatically rendered on the repo's GitHub page, describing what the project is and how to use it.
+
+## Make it yours {.section-divider background-color="#87A96B" footer=false}
+
+## Today's site is the minimum — not the ceiling
+
+::: {style="font-size: 1.15em;"}
+A live, deployed site with your CV, research interests, skills, and
+contact info **already satisfies today's requirement.** Everything
+on the next few slides is optional exploration — worth doing, but
+not another deadline. Don't spend three hours picking a font instead
+of finishing a problem set.
+:::
+
+## Get inspiration
+
+Browse a few academic and professional personal sites and note what
+you like — layout, tone, what they choose to highlight first.
+Borrowing structure is normal; nobody expects total originality from
+a first website.
+
+::: {.callout-note icon=false}
+## A reference, not a bar to clear
+You're welcome to look at my own site's repository for ideas:
+
+**[github.com/ncachanosky/website-quarto](https://github.com/ncachanosky/website-quarto)**
+
+Mine is more customized than what you built today — that's expected
+after years of iterating on it, not the standard for this week.
+:::
+
+## Styling — color
+
+Two directions worth trying:
+
+- **UTEP colors** — orange `#FF8200` and blue `#041E42`, if you want
+  an institutional look
+- **Your own palette** — pick 2–3 colors that feel like you; a
+  simple approach is one accent color plus a neutral background and
+  dark text
+
+::: {.callout-warning icon=false}
+## Check contrast, not just taste
+Light gray text on a white background looks clean but can be hard to
+read. Aim for dark text on a light background (or the reverse) —
+your eyes will thank you, and so will anyone with low vision.
+:::
+
+## Styling — typography
+
+- Pick one font for body text and, optionally, a second for
+  headings — more than two starts to look busy
+- Body text should be comfortably readable at a normal zoom level;
+  when in doubt, go slightly larger rather than smaller
+- Quarto/reveal and website themes both support custom fonts via
+  `_quarto.yml` or `styles.css` — small changes, visible impact
+
+## Styling — favicon
+
+That small icon in a browser tab is a **favicon**, and adding one is
+a quick way to make your site feel finished rather than default.
+
+```yaml
+website:
+  favicon: images/favicon.png
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+A square image (e.g., your initials, a simple mark, or even a small
+version of your headshot) works well. Free favicon generators can
+resize an image to the right dimensions if you don't want to do it
+by hand.
+:::
+
+## Check it beyond your laptop screen
+
+- **View it on your phone.** A common first-site issue is an image
+  or table that looks fine on a laptop but overflows on a narrow
+  screen — worth a quick check before calling it done.
+- **Add alt text to your headshot** (and any other images):
+  `![Alt text describing the image](images/headshot.jpg)`. It helps
+  screen-reader users and costs you one sentence.
+
+## Optional, advanced: a custom domain
+
+If you already own a personal domain (or plan to), GitHub Pages can
+serve your site from it instead of `yourusername.github.io`. This is
+entirely optional and easy to add later — not something to set up
+today.
+
+::: {style="font-size: 1.05em; margin-top: 1em; color: #666;"}
+See GitHub's docs on "Managing a custom domain for your GitHub Pages
+site" when you're ready.
+:::
+
+## Use AI tools to help
+
+Claude, Copilot, and similar tools are well-suited to exactly this
+kind of styling work. Some things worth trying:
+
+- *"Here's my `styles.css` — help me change the accent color to a
+  warm terracotta."*
+- *"My headshot image is overflowing on mobile — here's my
+  `index.qmd`, how do I fix the sizing?"*
+- *"Suggest a font pairing for an academic personal website that
+  feels modern but not flashy."*
+
+::: {.callout-note icon=false}
+## Paste in context, not just a question
+Sharing the actual file (your `.qmd`, `.yml`, or `.css`) gets a far
+more useful answer than describing the problem in the abstract — the
+tool can point to the exact line to change.
+:::
+
+## Next steps
+
+::: {style="font-size: 1.2em;"}
+Your website is live. From here:
+
+- Keep refining content over the semester — it's never "done"
+- The same **repo → render → push → deploy** workflow returns in
+  Week 12 for your project dashboard
+- Questions or breakage after today? Office hours, or email with
+  **ECON-5371** in the subject line
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.3em; color: #B87333;"}
+See you at yourusername.github.io
+:::
