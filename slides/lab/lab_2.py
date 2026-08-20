@@ -43,7 +43,7 @@ COLOR_OBSERVED = tab10(0)  # blue
 url = "https://raw.githubusercontent.com/ncachanosky/ECON-5371-lab/main/lab_1/gdp_synthetic.csv"
 df = pd.read_csv(url, parse_dates=["date"])
 df = df.set_index("date")
-df.index.freq = "QS"  # explicitly quarterly-start; avoids statsmodels having
+df.index.freq = "QS"   # explicitly quarterly-start; avoids statsmodels having
                        # to guess the frequency (and warn about it) every time
 
 print(df.head())
