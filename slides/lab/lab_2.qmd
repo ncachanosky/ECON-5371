@@ -1,0 +1,692 @@
+---
+title: "Lab 1 — Non-Stationary Models, Seasonality"
+subtitle: "Week 5"
+author: "Nicolas Cachanosky, Department of Economics and Finance"
+date: today
+title-slide-attributes:
+  data-background-color: "#36454F"
+---
+
+## Today's goal {.section-divider background-color="#87A96B" footer=false}
+
+::: {style="font-size: 1.4em; text-align: center; margin-top: 1.5em;"}
+Set up your **course lab repository**, then apply the Chapter 4
+toolkit — unit root testing, ARIMA, and SARIMA — to a real dataset
+you've committed to GitHub yourself.
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.1em; color: #666;"}
+LAB SESSION — Week 5 — Lab 1
+:::
+
+## What we're building
+
+::: {style="font-size: 1.15em;"}
+This is the **first entry** in a repository that will grow with you
+across the semester — one folder per lab, starting today with
+`lab_1/`.
+:::
+
+- A dedicated `ECON5371-labs` repository — separate from your
+  personal website
+- A `lab_1/` folder containing your data, your code, and a README
+  documenting what's inside
+- A full Box-Jenkins pass on a real (synthetic) series: test, fit,
+  forecast
+
+::: {.callout-note icon=false}
+## Why a separate repo from your website?
+Your website is a professional artifact — polished, public-facing.
+This repo is your working lab notebook: rougher, iterative, and
+graded on process as much as polish.
+:::
+
+## Create the lab repository {.section-divider background-color="#87A96B" footer=false}
+
+## On GitHub
+
+1. Go to **github.com** and click **New repository**
+2. Name it `ECON5371-labs` (or similar — this one has no naming
+   constraint, since it doesn't need to match a GitHub Pages URL)
+3. Visibility: **Public**
+4. Initialize with a **README** this time — we'll edit it in a
+   moment, but starting with one is fine here
+
+::: {.callout-note icon=false}
+## Different from Week 4 on purpose
+Your website repo required the exact name `username.github.io` for
+Pages to work. This repo has no such constraint — name it whatever
+makes sense to you.
+:::
+
+## Clone it to your laptop
+
+Use the same course working folder from Week 4.
+
+::: {.panel-tabset}
+
+### Windows (PowerShell)
+
+```powershell
+cd ~\Documents\ECON5371
+git clone https://github.com/yourusername/ECON5371-labs.git
+cd ECON5371-labs
+```
+
+### Mac / Linux
+
+```bash
+cd ~/Documents/ECON5371
+git clone https://github.com/yourusername/ECON5371-labs.git
+cd ECON5371-labs
+```
+
+:::
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+If you don't remember where your course folder is, revisit Week 4's
+lab — same location works for everything this semester.
+:::
+
+## Set up today's lab folder
+
+Inside your cloned repo, create a folder for today's work:
+
+::: {.panel-tabset}
+
+### Windows (PowerShell)
+
+```powershell
+mkdir lab_1
+```
+
+### Mac / Linux
+
+```bash
+mkdir -p lab_1
+```
+
+:::
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Every lab this semester gets its own top-level folder —
+`lab_1/`, `lab_2/`, and so on. Each one is self-contained: its own
+data, its own script, its own README.
+:::
+
+## Download today's dataset
+
+::: {style="font-size: 1.15em;"}
+I've posted `gdp_synthetic.csv` on Blackboard. Download it now and
+move it into `lab_1/`.
+:::
+
+::: {.callout-warning icon=false}
+## Exact filename and location matter
+Save it as `gdp_synthetic.csv` inside `lab_1/` — not the Downloads
+folder, not renamed. The code we write today assumes this exact
+path.
+:::
+
+Confirm it's in place:
+
+::: {.panel-tabset}
+
+### Windows (PowerShell)
+
+```powershell
+dir lab_1
+```
+
+### Mac / Linux
+
+```bash
+ls lab_1
+```
+
+:::
+
+## Commit and push the data — before any Python
+
+::: {style="font-size: 1.2em;"}
+This is the key sequencing move today: we push the **data first**,
+before writing any analysis code. That's what lets us read it
+straight from GitHub in a moment.
+:::
+
+```bash
+git add lab_1/gdp_synthetic.csv
+git commit -m "Add Lab 1 dataset"
+git push
+```
+
+::: {.callout-note icon=false}
+## Confirm it worked
+Refresh your repository page on GitHub. You should see `lab_1/gdp_synthetic.csv`
+listed. Click into it — GitHub will preview the CSV contents.
+:::
+
+## Start your README
+
+Open the `README.md` GitHub created for you and replace its contents
+with something like this — short today, it will grow with each lab.
+
+```markdown
+# ECON5371-labs
+
+Lab work for ECON-5371 (Time Series Analysis and Forecasting).
+Each numbered folder is one lab session, self-contained.
+
+## Labs
+- `lab_1/` — Unit root testing, ARIMA, and SARIMA on a
+  synthetic quarterly series (Week 5)
+```
+
+```bash
+git add README.md
+git commit -m "Start repo README"
+git push
+```
+
+::: {style="font-size: 1.05em; margin-top: 1em; color: #666;"}
+We'll add a second, lab-specific README inside `lab_1/` itself later
+today — this top-level one is the repo's front door.
+:::
+
+## Read the data from GitHub {.section-divider background-color="#87A96B" footer=false}
+
+## Two kinds of GitHub URL
+
+::: {style="font-size: 1.15em;"}
+The page you were just looking at is **not** the URL Python needs.
+That page is GitHub's *viewer* — it wraps your file in a website.
+We need the **raw** file itself.
+:::
+
+| URL type | Looks like | Use for |
+|---|---|---|
+| Normal (viewer) | `github.com/user/repo/blob/main/...` | Browsing in a browser |
+| Raw (file content) | `raw.githubusercontent.com/user/repo/main/...` | Reading in Python |
+
+::: {.callout-warning icon=false}
+## Common mistake
+Pasting the normal `github.com/.../blob/...` URL into `pd.read_csv()`
+returns an HTML page, not a CSV — pandas will fail with a confusing
+parsing error. Always use the `raw.githubusercontent.com` form.
+:::
+
+## Build your raw URL
+
+On your file's GitHub page, click the **Raw** button — GitHub gives
+you the correct URL directly. It will look like this:
+
+```
+https://raw.githubusercontent.com/yourusername/ECON5371-labs/main/lab_1/gdp_synthetic.csv
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Swap in **your own username** and confirm the repo name matches what
+you created. Copy this exact URL — you'll paste it into Python next.
+:::
+
+::: {.callout-note icon=false}
+## What you'll see on screen today
+I'll demonstrate with my own repo's URL, pointing at my copy of the
+same dataset. The pattern is identical — only the username and repo
+name differ once you build yours.
+:::
+
+## Load it with pandas
+
+```{python}
+import pandas as pd
+
+url = "https://raw.githubusercontent.com/ncachanosky/ECON-5371-lab/main/lab_1/gdp_synthetic.csv"
+df = pd.read_csv(url, parse_dates=["date"])
+df = df.set_index("date")
+
+df.head()
+```
+
+::: {.callout-warning icon=false}
+## Use your own URL, not mine
+The URL above points to my repository. Replace it with the raw URL
+from your own `lab_1/gdp_synthetic.csv` before running this cell —
+otherwise you're reading my data, not the copy you just committed.
+:::
+
+::: {.callout-note icon=false}
+## Why this matters beyond today
+This is exactly how you'll pull your own project's data later in the
+semester, and how anyone — a classmate, a referee, future-you —
+replicates your analysis without needing your laptop.
+:::
+
+## Plot the series
+
+```{python}
+import matplotlib.pyplot as plt
+
+EO_COPPER = "#B87333"
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.plot(df.index, df["business_activity_index"], color=EO_COPPER, linewidth=1.6)
+ax.set_title("Business Activity Index — Synthetic Quarterly Series")
+ax.set_xlim(df.index.min(), df.index.max())
+fig.tight_layout()
+plt.show()
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Look at the shape before running a single test. Do you see a trend?
+A repeating pattern? That's your eyes doing preliminary diagnosis —
+the formal tests come next.
+:::
+
+## Test for a unit root {.section-divider background-color="#87A96B" footer=false}
+
+## State the hypotheses first
+
+::: {.callout-note icon=false}
+## ADF — Augmented Dickey-Fuller
+$H_0$: the series has a unit root (non-stationary).
+$H_1$: the series is stationary.
+:::
+
+::: {.callout-note icon=false}
+## KPSS
+$H_0$: the series is stationary.
+$H_1$: the series has a unit root (non-stationary).
+:::
+
+::: {style="font-size: 1.1em; margin-top: 0.8em;"}
+Notice the null hypotheses point in **opposite directions** — that's
+by design. Running both gives us a joint check, not just one test's
+opinion.
+:::
+
+## ADF on the level series
+
+```{python}
+from statsmodels.tsa.stattools import adfuller
+
+adf_level = adfuller(df["business_activity_index"], autolag="AIC")
+
+print(f"ADF statistic: {adf_level[0]:.4f}")
+print(f"p-value: {adf_level[1]:.4f}")
+print(f"Lags used: {adf_level[2]}")
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+ADF statistic **−0.1143**, p-value **0.9480**. We fail to reject
+$H_0$ — this is consistent with a unit root.
+:::
+
+## KPSS on the level series
+
+```{python}
+from statsmodels.tsa.stattools import kpss
+
+kpss_level = kpss(df["business_activity_index"], regression="c", nlags="auto")
+
+print(f"KPSS statistic: {kpss_level[0]:.4f}")
+print(f"p-value: {kpss_level[1]:.4f}")
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+KPSS statistic **1.4310**, p-value **0.0100**. We reject $H_0$ —
+the series is **not** stationary.
+:::
+
+::: {.callout-note icon=false}
+## Both tests agree
+ADF fails to reject non-stationarity, and KPSS rejects stationarity.
+Two independent tests, same conclusion — a genuinely unit-root
+series, not a borderline call.
+:::
+
+## Take the first difference
+
+```{python}
+df["diff"] = df["business_activity_index"].diff()
+df_diff = df["diff"].dropna()
+
+df_diff.head()
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+`.diff()` computes $y_t - y_{t-1}$. The first observation becomes
+missing by construction — `.dropna()` removes it before testing.
+:::
+
+## Re-test after differencing
+
+```{python}
+adf_diff = adfuller(df_diff, autolag="AIC")
+kpss_diff = kpss(df_diff, regression="c", nlags="auto")
+
+print(f"ADF:  statistic = {adf_diff[0]:.4f}, p-value = {adf_diff[1]:.4f}")
+print(f"KPSS: statistic = {kpss_diff[0]:.4f}, p-value = {kpss_diff[1]:.4f}")
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+ADF: statistic **−3.0050**, p-value **0.0344** — now we **reject**
+$H_0$. KPSS: statistic **0.0921**, p-value **≥ 0.10** — we **fail to
+reject** stationarity.
+:::
+
+::: {.callout-note icon=false}
+## Verdict: $I(1)$
+Both tests flip after one difference and agree the differenced
+series is stationary. The level series is integrated of order 1.
+:::
+
+## Identify the ARIMA order {.section-divider background-color="#87A96B" footer=false}
+
+## ACF and PACF on the differenced series
+
+```{python}
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.5))
+plot_acf(df_diff, lags=12, ax=axes[0])
+plot_pacf(df_diff, lags=12, ax=axes[1])
+for ax in axes:
+    for seasonal_lag in [4, 8, 12]:
+        ax.axvline(seasonal_lag, color="gray", linestyle=":", linewidth=1)
+fig.tight_layout()
+plt.show()
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.6em;"}
+Dotted lines mark the seasonal lags — 4, 8, 12 — where we'd expect a
+quarterly pattern to show up.
+:::
+
+## What the ACF/PACF actually show
+
+::: {style="font-size: 1.15em;"}
+Look at lags **4, 8, and 12** specifically: ACF values of
+**+0.87, +0.84, +0.77** — a strong, repeating spike exactly at the
+seasonal frequency.
+:::
+
+::: {.callout-note icon=false}
+## This is a seasonality signature
+A short-run ARMA pattern fades out gradually. A sharp, isolated spike
+recurring every 4 lags is the fingerprint of **quarterly
+seasonality** — this series needs a seasonal term, not just a
+non-seasonal ARMA.
+:::
+
+## Fit a first candidate ARIMA
+
+Start simple, ignoring seasonality for a moment, just to see what a
+plain ARIMA captures:
+
+```{python}
+from statsmodels.tsa.arima.model import ARIMA
+
+candidate = ARIMA(df["business_activity_index"], order=(1, 1, 1))
+candidate_fit = candidate.fit()
+
+print(f"AIC: {candidate_fit.aic:.3f}")
+print(f"BIC: {candidate_fit.bic:.3f}")
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Keep these numbers — we'll compare them to a seasonal specification
+in a moment.
+:::
+
+## Let auto_arima search
+
+```{python}
+import pmdarima as pm
+
+auto_model = pm.auto_arima(
+    df["business_activity_index"],
+    seasonal=True,
+    m=4,
+    trace=False,
+    error_action="ignore",
+    suppress_warnings=True,
+)
+
+print(auto_model.summary())
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+`auto_arima` selects **SARIMA(1,0,1)(0,1,1)[4]** — AIC **193.67**,
+clearly better than our plain ARIMA(1,1,1) candidate.
+:::
+
+::: {.callout-warning icon=false}
+## auto_arima is a search tool, not a black box
+It searches efficiently over a grid of specifications — it does not
+know economics. Always sanity-check the result against what the
+ACF/PACF told you, the way we just did.
+:::
+
+## What the seasonal model is saying {.section-divider background-color="#87A96B" footer=false}
+
+## Reading SARIMA(1,0,1)(0,1,1)[4]
+
+::: {style="font-size: 1.15em;"}
+Four pieces, each with a plain-language job:
+:::
+
+| Term | Meaning |
+|---|---|
+| $(1,0,1)$ non-seasonal | Short-run AR(1) and MA(1) dynamics quarter to quarter |
+| $(0,1,1)$ seasonal | One **seasonal difference** removes the repeating pattern; one seasonal MA term captures leftover seasonal correlation |
+| $[4]$ | The seasonal period — 4 quarters |
+
+::: {.callout-note icon=false}
+## Why $D=1$ and not a seasonal AR term?
+`auto_arima` found that differencing at lag 4 — comparing each
+quarter to the same quarter a year earlier — removes the seasonal
+pattern more efficiently than trying to model it with an AR term.
+:::
+
+## Fit the selected model directly
+
+```{python}
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+final_model = SARIMAX(
+    df["business_activity_index"],
+    order=(1, 0, 1),
+    seasonal_order=(0, 1, 1, 4),
+)
+final_fit = final_model.fit(disp=False)
+
+print(final_fit.summary())
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+AR(1) coefficient **0.620** (significant), seasonal MA coefficient
+**−0.803** (significant) — both terms are doing real work, not just
+padding the specification.
+:::
+
+## Forecast forward
+
+```{python}
+forecast_horizon = 8  # two years ahead
+forecast = final_fit.get_forecast(steps=forecast_horizon)
+forecast_mean = forecast.predicted_mean
+conf_int = forecast.conf_int(alpha=0.05)
+
+forecast_mean.head()
+```
+
+## Plot the fan chart
+
+```{python}
+fig, ax = plt.subplots(figsize=(9, 4.5))
+
+ax.plot(df.index, df["business_activity_index"], color="#36454F", linewidth=1.4, label="Observed")
+ax.plot(forecast_mean.index, forecast_mean, color=EO_COPPER, linewidth=1.8, label="Forecast")
+ax.fill_between(
+    forecast_mean.index,
+    conf_int.iloc[:, 0],
+    conf_int.iloc[:, 1],
+    color=EO_COPPER,
+    alpha=0.2,
+    label="95% interval",
+)
+
+ax.set_xlim(df.index.min(), forecast_mean.index.max())
+ax.legend(loc="upper left", frameon=False)
+fig.tight_layout()
+plt.show()
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Notice the forecast continues the seasonal zigzag — the model learned
+the quarterly pattern and projects it forward, with widening
+uncertainty as the horizon grows.
+:::
+
+## Annotate your code {.section-divider background-color="#87A96B" footer=false}
+
+## Comments explain *why*, print() reports numbers
+
+::: {style="font-size: 1.15em;"}
+Go back through your script and apply one consistent rule: **interpretive
+content lives in comments, `print()` is for numeric output only.**
+:::
+
+```{python}
+# ADF null hypothesis: the series has a unit root.
+# We fail to reject at the 5% level (p = 0.9480), consistent
+# with non-stationarity in levels.
+adf_level = adfuller(df["business_activity_index"], autolag="AIC")
+print(f"ADF statistic: {adf_level[0]:.4f}, p-value: {adf_level[1]:.4f}")
+```
+
+::: {.callout-warning icon=false}
+## What this avoids
+Don't `print("This confirms the series is non-stationary!")` —
+that's narration masquerading as output. Say it in a comment, where
+it belongs; let `print()` report the number that backs it up.
+:::
+
+## Update your lab_1 README
+
+Create a **second** README, this one specific to today's folder:
+`lab_1/README.md`.
+
+```markdown
+# Lab 1 — Non-Stationary Models, Seasonality
+
+## What this does
+Applies unit root testing (ADF, KPSS), ARIMA identification,
+and SARIMA estimation to a synthetic quarterly series with a
+stochastic trend and seasonal pattern.
+
+## Data
+`gdp_synthetic.csv` — 80 quarterly observations (2005Q1–2024Q4),
+one column: `business_activity_index`.
+
+## How to run
+1. Open `lab_1_analysis.qmd` (or `.py`) in Positron
+2. Run cells top to bottom — no external setup required
+   beyond the packages listed below
+
+## Requirements
+`pandas`, `statsmodels`, `pmdarima`, `matplotlib`
+
+## Key result
+ADF/KPSS jointly confirm the series is I(1). auto_arima selects
+SARIMA(1,0,1)(0,1,1)[4] as the best specification (AIC = 193.67).
+```
+
+::: {.callout-note icon=false}
+## This is a replication instruction, in miniature
+Anyone — a classmate, a grader, future-you — should be able to read
+this file and rerun your analysis without asking you a single
+question.
+:::
+
+## A quick word on .gitignore
+
+Python leaves behind files you don't want in your repo — cached
+bytecode, notebook checkpoints. A `.gitignore` file tells Git to
+ignore them automatically.
+
+```bash
+# .gitignore
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+```
+
+Save this as `.gitignore` in your repo's root folder (not inside
+`lab_1/`) — it applies to the whole repository.
+
+## Commit and push everything {.section-divider background-color="#87A96B" footer=false}
+
+## Wrap up today's work
+
+```bash
+git add .
+git commit -m "Lab 1: unit root testing, ARIMA, SARIMA on synthetic series"
+git push
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+`git add .` stages every change since your last commit — your script,
+both README files, and `.gitignore` — in one pass.
+:::
+
+::: {.callout-note icon=false}
+## Check your work
+Refresh your repository on GitHub. Confirm you can see: `lab_1/gdp_synthetic.csv`,
+your analysis script, `lab_1/README.md`, the top-level `README.md`,
+and `.gitignore`.
+:::
+
+## Key Terms {.callout-note icon=false}
+
+**Unit root**
+: A property of a non-stationary series where shocks have a permanent effect rather than decaying over time.
+
+**ADF test**
+: Augmented Dickey-Fuller test; $H_0$ = unit root present (non-stationary).
+
+**KPSS test**
+: $H_0$ = series is stationary; used jointly with ADF for a two-sided check.
+
+**Seasonal differencing**
+: Subtracting the value from the same season in the prior cycle ($y_t - y_{t-s}$) to remove a repeating seasonal pattern.
+
+**SARIMA$(p,d,q)(P,D,Q)_s$**
+: An ARIMA model extended with seasonal AR, differencing, and MA terms at period $s$.
+
+**Raw GitHub URL**
+: The `raw.githubusercontent.com` link that serves a file's actual content, suitable for `pd.read_csv()` — distinct from the browser-facing `github.com/.../blob/...` page.
+
+**.gitignore**
+: A file listing patterns Git should never track — cache files, checkpoints, and other build artifacts.
+
+## Next steps
+
+::: {style="font-size: 1.2em;"}
+Your `ECON5371-labs` repository now has its first entry. From here:
+
+- `lab_1/` stays as-is — a record of today's work
+- Future labs each get their own folder, following the same pattern
+- The repo-level README grows with a new bullet each time
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.3em; color: #B87333;"}
+See you at Lab 2 — Week 7
+:::
+
+
+
+
+
+
