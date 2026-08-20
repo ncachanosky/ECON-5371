@@ -1,0 +1,560 @@
+---
+title: "Building a Project Dashboard"
+subtitle: "Week 12 — Quarto Dashboards"
+author: "Nicolas Cachanosky, Department of Economics and Finance"
+date: today
+title-slide-attributes:
+  data-background-color: "#36454F"
+---
+
+## Today's goal {.section-divider background-color="#87A96B" footer=false}
+
+::: {style="font-size: 1.4em; text-align: center; margin-top: 1.5em;"}
+Build a working project dashboard from scratch, using Quarto —
+the same tool behind this textbook and every slide deck you've seen
+this semester. No new framework to learn.
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.1em; color: #666;"}
+LAB SESSION — Week 12 — Dashboards
+:::
+
+## Why a dashboard, and why now
+
+::: {style="font-size: 1.15em;"}
+Your final project deliverable includes a dashboard. This lab gives
+you a **working reference example** — built live, in front of you,
+including the mistakes — that you can copy from and adapt.
+:::
+
+- We'll reuse a model you already know: the VAR system from Lab 4
+- The point isn't to teach VAR again — it's to teach how to **display**
+  results you've already learned how to produce
+- Every dashboard you'll ever build has the same bones: data,
+  computation, layout, and (usually) a way for the viewer to interact
+
+::: {.callout-note icon=false}
+## A different kind of lab
+Labs 1–5 taught time series methods. This one teaches a **tool**. The
+good-coding-practices track (config blocks, error handling) pauses
+here — there's no new practice today, just a new skill: presentation.
+:::
+
+## What is a dashboard, really?
+
+::: {style="font-size: 1.15em;"}
+A dashboard is a **report that responds**. A static report shows one
+fixed view of your results. A dashboard lets the viewer choose what
+they see — which variable, which time period, which model — without
+you rebuilding anything.
+:::
+
+::: {.callout-note icon=false}
+## Definition
+A dashboard is a document organized into cards, arranged in rows and
+columns, optionally with controls (dropdowns, sliders) that let the
+viewer change what's displayed.
+:::
+
+Four moving pieces, in every dashboard you'll ever build:
+
+1. **Data** — what you're showing
+2. **Computation** — what you did to it (a model, a test, a summary)
+3. **Layout** — how it's arranged on the page
+4. **Interactivity** *(optional, but what makes it a dashboard and not
+   just a report)*
+
+## Why Quarto, specifically
+
+::: {style="font-size: 1.15em;"}
+There are other dashboard tools — Streamlit, Dash, Shiny — but they
+require a **running server** and a framework you'd need to learn from
+scratch.
+:::
+
+::: {.callout-note icon=false}
+## Quarto dashboards are static
+No server. `quarto render` produces a self-contained HTML file — the
+same thing that happens when you render a slide deck or the textbook.
+Deploy it to GitHub Pages exactly like your Week 4 website.
+:::
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Same `.qmd` files, same code cells, same `# %%`-adjacent authoring
+experience — just a different `format:` in the YAML.
+:::
+
+## Create the dashboard repository {.section-divider background-color="#87A96B" footer=false}
+
+## A new, separate repo
+
+::: {style="font-size: 1.15em;"}
+Like `ECON5371-labs`, this gets its own repository —
+`ECON5371-dashboard` — separate from your labs and your website.
+:::
+
+1. GitHub → **New repository** → `ECON5371-dashboard`
+2. Public
+3. Clone into your course working folder, same as every prior lab
+
+```bash
+cd ~/Documents/ECON5371
+git clone https://github.com/yourusername/ECON5371-dashboard.git
+cd ECON5371-dashboard
+```
+
+::: {.callout-note icon=false}
+## This one, you'll actually keep using
+Unlike the labs — one folder each, done and archived — this repo is
+where your **actual project dashboard** will live later this
+semester. Build good structure now; you'll build on it directly.
+:::
+
+## Set up folders — ordered, on purpose
+
+```bash
+mkdir data
+mkdir images
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+Data separate from code, images separate from both. A repo that
+looks organized *before* you've written a line of dashboard code is a
+habit worth having by now — this is the same instinct as Lab 5's
+`data/` subfolder, applied from the start instead of added later.
+:::
+
+Copy `macro_var_synthetic.csv` (from your `ECON5371-labs` repo, Lab
+4's folder) into `data/` here.
+
+```bash
+git add data/macro_var_synthetic.csv
+git commit -m "Add VAR dataset for dashboard reference"
+git push
+```
+
+## Build increment 1 — the skeleton {.section-divider background-color="#87A96B" footer=false}
+
+## The YAML: one new key
+
+```yaml
+---
+title: "ECON-5371 Project Dashboard"
+subtitle: "Reference example — Vector Autoregression"
+author: "Your Name"
+format: dashboard
+---
+```
+
+::: {style="font-size: 1.15em; margin-top: 1em;"}
+`format: dashboard` is the only thing that turns a normal `.qmd` into
+a dashboard. Everything else about writing code cells stays exactly
+what you already know.
+:::
+
+## Rows, and your first value boxes
+
+::: {style="font-size: 1.1em;"}
+`##` headings become **rows**. Inside a row, a code cell with
+`#| content: valuebox` becomes a compact stat card.
+:::
+
+```{{python}}
+#| content: valuebox
+#| title: "Observations"
+#| icon: calendar3
+#| color: primary
+import pandas as pd
+
+df = pd.read_csv("data/macro_var_synthetic.csv", parse_dates=["date"])
+dict(value=len(df))
+```
+
+::: {.callout-note icon=false}
+## The mechanic
+A value box cell returns a Python `dict` — Quarto reads its keys
+(`value`, `icon`, `color`) to build the box. `icon` names come from
+the free Bootstrap Icons library.
+:::
+
+## What we actually saw when we rendered this
+
+::: {style="font-size: 1.2em; text-align: center; margin-top: 1em;"}
+Three value boxes — stretched to fill the **entire screen height**,
+not a compact strip.
+:::
+
+::: {.callout-warning icon=false}
+## Why: a dashboard with one row always fills 100%
+Quarto splits page height across however many rows exist. With only
+one row — even set to `height=20%` — there's nothing else to claim
+the remaining 80%, so Quarto expands the one row to fill everything.
+This isn't a bug. It's relative sizing with nothing to divide.
+:::
+
+::: {style="font-size: 1.1em; margin-top: 0.8em;"}
+The fix wasn't in this row at all — it was adding a **second row**.
+Row heights only make sense relative to each other.
+:::
+
+## Build increment 2 — a plot card {.section-divider background-color="#87A96B" footer=false}
+
+## Adding the time-series plot
+
+```{{python}}
+#| title: "Output Gap, Inflation, and Policy Rate"
+import matplotlib.pyplot as plt
+
+plt.rcParams['figure.figsize'] = (11, 4)
+
+fig, ax = plt.subplots()
+for var in ["output_gap", "inflation", "policy_rate"]:
+    ax.plot(df["date"], df[var], label=var, linewidth=1.2)
+ax.legend(loc="upper left", frameon=False)
+plt.show()
+```
+
+::: {.callout-warning icon=false}
+## Matplotlib doesn't auto-resize
+Unlike interactive plotting libraries, a static matplotlib figure
+doesn't stretch to fit its card. Set the figure size explicitly —
+`plt.rcParams['figure.figsize']` — sized for how wide the card will
+actually be.
+:::
+
+## Three rows in, cramped again
+
+::: {style="font-size: 1.15em;"}
+Once we added a **third** row — a table and two value boxes — the
+page looked squeezed again. A "Date Range" box even had its text
+clipped, cut off mid-number.
+:::
+
+::: {.callout-warning icon=false}
+## Same root cause, compounding
+Row 1 and Row 2 had explicit heights (20% / 80%) that summed to 100%
+— fine for two rows. Adding a third row with **no height specified**
+meant Quarto tried to fit 20% + 80% + (undefined) into one page. The
+undefined row got squeezed, and so did everything else.
+:::
+
+::: {.callout-note icon=false}
+## The fix: audit your total every time you add a row
+We rebalanced to 15% / 55% / 30% — three numbers that actually sum to
+100%. Every time you add a row to a dashboard, re-check that all your
+row heights on that page still add up.
+:::
+
+## Build increment 3 — columns and a table {.section-divider background-color="#87A96B" footer=false}
+
+## Splitting a row into columns
+
+::: {style="font-size: 1.1em;"}
+`###` headings, nested under a `## Row`, split that row into
+**columns** — one level down from how rows split the page.
+:::
+
+```markdown
+## Row {height=30%}
+
+### Column {width=60%}
+... stationarity table ...
+
+### Column {width=40%}
+... lag order and stability value boxes ...
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+Same nesting logic throughout Quarto dashboards: page → rows →
+columns → cards. One heading level per layer.
+:::
+
+## A results table with `tabulate`
+
+```{{python}}
+#| title: "Stationarity (ADF Test)"
+from statsmodels.tsa.stattools import adfuller
+from tabulate import tabulate
+from IPython.display import Markdown
+
+rows = []
+for var in variables:
+    result = adfuller(df[var], autolag="AIC")
+    verdict = "Stationary" if result[1] < 0.05 else "Unit root"
+    rows.append([var, f"{result[0]:.3f}", f"{result[1]:.4f}", verdict])
+
+adf_table = pd.DataFrame(rows, columns=["Variable", "ADF Stat", "p-value", "Result"])
+Markdown(tabulate(adf_table, showindex=False, headers=adf_table.columns))
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+`tabulate` turns a small DataFrame into a clean markdown table;
+wrapping it in `Markdown(...)` tells Quarto to render it as
+formatted text, not print raw markdown syntax to the page.
+:::
+
+## One more content problem: text that overflows its box
+
+::: {style="font-size: 1.15em;"}
+Even after fixing row heights, one value box still showed clipped
+text: `"1985–2024"` wrapped onto two lines, and the second line got
+cut off by the box's own height.
+:::
+
+::: {.callout-warning icon=false}
+## Value boxes expect short content
+A value box is built for a glanceable number or short label — not a
+long string. `"1985–2024"` (9 characters) was too wide to stay on one
+line at that font size.
+:::
+
+::: {.callout-note icon=false}
+## The fix: shorten the content, don't fight the box
+We changed the display to `'85–'24` — a compact year format that
+fits on one line. When a value box's content doesn't fit, shortening
+what you're displaying is usually the right move, not resizing the
+box indefinitely.
+:::
+
+## Build increment 4 — a second page, and tabs {.section-divider background-color="#87A96B" footer=false}
+
+## Multiple pages: `#` headings
+
+::: {style="font-size: 1.15em;"}
+A **level-1** heading (`#`, not `##`) starts a new **page** —
+appearing as a link in the dashboard's navbar.
+:::
+
+```markdown
+# Overview
+... everything so far ...
+
+# Model Results
+... Granger causality, IRFs, FEVD ...
+```
+
+::: {.callout-note icon=false}
+## Confirmed: state carries across pages
+Variables defined in Page 1's Python cells (`df`, `variables`) were
+still available in Page 2's cells, without re-importing or re-loading
+anything. One shared Python session for the whole document.
+:::
+
+## Tabs: `.tabset` on a row
+
+::: {style="font-size: 1.1em;"}
+Three results — Granger causality, impulse responses, variance
+decomposition — don't need to compete for space on one page. A
+**tabset** lets the viewer click between them.
+:::
+
+````markdown
+## Row {.tabset height=100%}
+
+```{{python}}
+#| title: "Granger Causality"
+... table ...
+```
+
+```{{python}}
+#| title: "Variance Decomposition"
+... plot ...
+```
+````
+
+::: {style="font-size: 1.05em; margin-top: 0.5em;"}
+Two cells, `.tabset` on the row — this should produce two tabs.
+:::
+
+## What we actually got: four tabs, not three
+
+::: {style="font-size: 1.2em; text-align: center; margin-top: 1em;"}
+A dropdown-plus-image pair, meant to be **one** tab
+("Impulse Responses"), rendered as **two separate tabs** instead.
+:::
+
+::: {.callout-warning icon=false}
+## Why: `#| title:` labels one cell, not a group
+Inside a `.tabset`, **every individual cell** becomes its own tab by
+default. `#| title:` names that one cell's tab — it doesn't merge
+multiple cells into a single tab, even if you intend them to belong
+together.
+:::
+
+## The fix: `###` headings group cells into tabs
+
+````markdown
+## Row {.tabset height=100%}
+
+### Granger Causality
+```{{python}}
+... one cell ...
+```
+
+### Impulse Responses
+```{{ojs}}
+... dropdown cell ...
+```
+```{{ojs}}
+... image cell ...
+```
+````
+
+::: {style="font-size: 1.1em; margin-top: 0.8em;"}
+A `###` heading starts a new tab; **every cell underneath it**,
+however many, belongs to that same tab. This is the same row → column
+→ card nesting pattern from Build Increment 3, one more layer deep.
+:::
+
+::: {.callout-note icon=false}
+## General lesson
+When a Quarto layout container (tabset, columns, rows) needs to hold
+*more than one cell* as a single unit, reach for an explicit heading
+to group them — don't rely on a single cell's own title option.
+:::
+
+## Build increment 5 — real interactivity {.section-divider background-color="#87A96B" footer=false}
+
+## What makes this a dashboard, not a report
+
+::: {style="font-size: 1.15em;"}
+Everything so far is **static** — the same output every time,
+regardless of who's looking at it. A dropdown that changes what's
+displayed is the feature that actually earns the word "dashboard."
+:::
+
+::: {.callout-note icon=false}
+## Observable JS (`{{ojs}}`)
+A second language Quarto supports alongside Python, running in the
+viewer's browser — no server required. This keeps a dashboard
+deployable as plain static HTML, same as GitHub Pages.
+:::
+
+## A dropdown that swaps an image
+
+```{{python}}
+#| output: false
+# Generate one IRF panel image per shock variable, saved to images/
+# (full code: one matplotlib figure per shock, saved as a PNG)
+```
+
+```{{ojs}}
+viewof shock_choice = Inputs.select(
+  ["output_gap", "inflation", "policy_rate"],
+  {{label: "Shock to:", value: "output_gap"}}
+)
+```
+
+```{{ojs}}
+html`<img src="images/irf_${{shock_choice}}.png" style="width: 100%;">`
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+`viewof` creates both the visible dropdown **and** a reactive
+variable, `shock_choice`. Any `{{ojs}}` cell referencing it re-runs
+automatically the moment the dropdown changes.
+:::
+
+## Why images, not a live recomputation
+
+::: {.callout-note icon=false}
+## A deliberate simplification
+Connecting Python-computed values directly into `{{ojs}}` (via
+`ojs_define()`) is possible, but stacks several new, untested
+concepts at once. Pre-generating one image per option and letting the
+dropdown just swap which image shows is simpler, safer, and still
+genuinely interactive.
+:::
+
+This worked on the first render — no gotcha here, for once.
+
+## Build increment 6 — UTEP branding {.section-divider background-color="#87A96B" footer=false}
+
+## A theme file, same pattern as the slides
+
+::: {style="font-size: 1.1em;"}
+Dashboard theming uses the same SCSS structure as `eo-slides.scss`:
+`scss:defaults` for variables, `scss:rules` for fine-grained CSS.
+:::
+
+```scss
+/*-- scss:defaults --*/
+$utep-orange: #FF8200;
+$utep-blue:   #041E42;
+$utep-silver: #B1B3B3;
+
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro...');
+
+$primary:   $utep-blue;
+$secondary: $utep-silver;
+$navbar-bg: $utep-blue;
+$navbar-fg: #FFFFFF;
+```
+
+```yaml
+format:
+  dashboard:
+    theme: [cosmo, dashboard-theme.scss]
+```
+
+::: {.callout-note icon=false}
+## UTEP's current brand fonts
+Crimson Pro for headings and titles, Inter for body text — both
+freely available via Google Fonts, so no fallback substitution is
+needed.
+:::
+
+## Mapping value box colors to the brand
+
+::: {style="font-size: 1.1em;"}
+`color: primary` and `color: secondary` now resolve to UTEP Blue and
+Silver automatically, once set in the theme file. For Orange — not a
+default Bootstrap slot — use the hex value directly:
+:::
+
+```yaml
+#| color: "#FF8200"
+```
+
+::: {style="font-size: 1.05em; margin-top: 0.8em;"}
+Result: every value box on the page uses only Blue, Silver, and
+Orange — no leftover Bootstrap cyan or green.
+:::
+
+## Wrap-up {.section-divider background-color="#87A96B" footer=false}
+
+## What this dashboard actually demonstrates
+
+- Value boxes, sized rows and columns, and the arithmetic that
+  governs them
+- Tables via `tabulate`
+- Multi-page navigation and tabsets — including how cells group (or
+  don't) inside them
+- One real interactive element via Observable JS
+- Brand-consistent theming via SCSS
+
+::: {.callout-note icon=false}
+## This repo is yours to copy from
+`ECON5371-dashboard` isn't a one-off exercise — it's the starting
+point for your actual project dashboard. Swap in your own data, your
+own model's results, and adjust the layout to fit what you're
+showing.
+:::
+
+## Before you leave
+
+```bash
+git add .
+git commit -m "Complete dashboard reference example"
+git push
+```
+
+::: {style="font-size: 1.1em; margin-top: 1em;"}
+Update `README.md`: what this dashboard shows, how to run it, and a
+note on which parts are meant to be copied versus replaced for your
+own project.
+:::
+
+::: {style="text-align: center; margin-top: 2em; font-size: 1.3em; color: #B87333;"}
+Your project dashboard is next — same tools, your own data
+:::
