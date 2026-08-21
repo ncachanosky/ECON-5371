@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>6&nbsp; Forecast Evaluation – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -357,7 +361,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -407,7 +411,7 @@ Figure&nbsp;6.1: Noisy (roughly linear) data is fitted to a linear function and 
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What AIC Is Really Minimising
+<span class="screen-reader-only">Note</span>What AIC Is Really Minimising
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -422,7 +426,7 @@ What AIC Is Really Minimising
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Core Distinction
+<span class="screen-reader-only">Note</span>The Core Distinction
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -516,7 +520,7 @@ The Core Distinction
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Optimal Forecasts Under Different Loss Functions
+<span class="screen-reader-only">Note</span>Optimal Forecasts Under Different Loss Functions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -543,7 +547,7 @@ Optimal Forecasts Under Different Loss Functions
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-MAPE Near Zero
+<span class="screen-reader-only">Warning</span>MAPE Near Zero
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -575,7 +579,7 @@ MAPE Near Zero
 <div id="cell-fig-gdp-growth" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — GDP growth series</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ax.plot(gdp.index, gdp[<span class="st">"GDP Growth"</span>],</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_CHARCOAL, lw<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.9</span>)</span>
@@ -592,13 +596,13 @@ MAPE Near Zero
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"US Real GDP Growth, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss"> Q2 – </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="op">-</span><span class="dv">1</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss"> Q4"</span>)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-growth" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_05_files/figure-html/fig-gdp-growth-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_05_files/figure-html/fig-gdp-growth-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-growth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.2: Annualised quarterly US real GDP growth, 1947 Q2 – 2019 Q4 (pre-COVID sample). Shaded regions are NBER recessions. The series fluctuates around a mean of roughly 3 percent, with pronounced negative episodes during recessions and sharp recoveries immediately after. Volatility is not constant — the pre-1985 period is visibly more turbulent than the Great Moderation era that follows — a feature that bears on the evaluation design in Section 5.3.
@@ -610,7 +614,7 @@ Figure&nbsp;6.2: Annualised quarterly US real GDP growth, 1947 Q2 – 2019 Q4 (p
 <p>The series has a sample mean of 3.11 percent and a standard deviation of 3.71 percent. A naïve forecast that always predicts the sample mean would produce an RMSE equal to that standard deviation — roughly 3.7 percentage points. Any model that cannot beat this benchmark is not useful. The question this chapter develops the tools to answer is whether an ARIMA model beats not just the sample mean but the more demanding benchmark of the random walk with drift — a model that predicts next quarter’s growth will equal this quarter’s growth plus a constant. As we will see, that is a harder target than it sounds.</p>
 <details class="code-fold">
 <summary>Show code — loss function illustration</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Illustrate how MSE, MAE, and RMSE respond differently to error magnitude</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Illustrate how MSE, MAE, and RMSE respond differently to error magnitude</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">4</span>, <span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Loss function comparison — how different criteria penalise errors"</span>)</span>
@@ -627,7 +631,7 @@ Figure&nbsp;6.2: Annualised quarterly US real GDP growth, 1947 Q2 – 2019 Q4 (p
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MSE weights large errors heavily (4² = 16 vs 2² = 4)."</span>)</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MAE weights all errors proportionally (|4| = 2×|2|)."</span>)</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Asymm (α=0.3): underprediction (e&gt;0) penalised 0.7×|e|,"</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"               overprediction  (e&lt;0) penalised 0.3×|e|."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"               overprediction  (e&lt;0) penalised 0.3×|e|."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-loss-illustration" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -674,7 +678,7 @@ Asymm (α=0.3): underprediction (e&gt;0) penalised 0.7×|e|,
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Look-Ahead Bias: Forms to Watch For
+<span class="screen-reader-only">Warning</span>Look-Ahead Bias: Forms to Watch For
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -697,7 +701,7 @@ Look-Ahead Bias: Forms to Watch For
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Rolling vs.&nbsp;Recursive: The Core Trade-off
+<span class="screen-reader-only">Note</span>Rolling vs.&nbsp;Recursive: The Core Trade-off
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -760,7 +764,7 @@ Rolling vs.&nbsp;Recursive: The Core Trade-off
 <div id="eval-loop" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code — rolling evaluation loop</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Evaluation design ─────────────────────────────────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Evaluation design ─────────────────────────────────────────────────────────</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>WINDOW   <span class="op">=</span> <span class="dv">40</span>      <span class="co"># rolling training window (quarters)</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>H_SHORT  <span class="op">=</span> <span class="dv">1</span>       <span class="co"># near-term horizon</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>H_LONG   <span class="op">=</span> <span class="dv">4</span>       <span class="co"># medium-term horizon</span></span>
@@ -871,7 +875,7 @@ Rolling vs.&nbsp;Recursive: The Core Trade-off
 <span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Evaluation window: "</span></span>
 <span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>origins_used[<span class="dv">0</span>]<span class="sc">.</span>strftime(<span class="st">'%Y-%m'</span>)<span class="sc">}</span><span class="ss"> – </span><span class="sc">{</span>origins_used[<span class="op">-</span><span class="dv">1</span>]<span class="sc">.</span>strftime(<span class="st">'%Y-%m'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Valid evaluation origins: </span><span class="sc">{</span>n_eval<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Horizons: h = </span><span class="sc">{</span>H_SHORT<span class="sc">}</span><span class="ss"> and h = </span><span class="sc">{</span>H_LONG<span class="sc">}</span><span class="ss"> quarters"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Horizons: h = </span><span class="sc">{</span>H_SHORT<span class="sc">}</span><span class="ss"> and h = </span><span class="sc">{</span>H_LONG<span class="sc">}</span><span class="ss"> quarters"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Evaluation window: 1957-01 – 2018-10
@@ -881,7 +885,7 @@ Horizons: h = 1 and h = 4 quarters</code></pre>
 </div>
 <details class="code-fold">
 <summary>Show code — RMSE summary table</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(e): <span class="cf">return</span> np.sqrt(np.mean(e.values<span class="op">**</span><span class="dv">2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(e): <span class="cf">return</span> np.sqrt(np.mean(e.values<span class="op">**</span><span class="dv">2</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae_fn(e):  <span class="cf">return</span> np.mean(np.<span class="bu">abs</span>(e.values))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Out-of-sample forecast accuracy — annualised GDP growth (pp)"</span>)</span>
@@ -900,7 +904,7 @@ Horizons: h = 1 and h = 4 quarters</code></pre>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'RMSE ratio (ARIMA/RW)'</span><span class="sc">:22}</span><span class="ss">  </span><span class="sc">{</span>ratio_h1<span class="sc">:&gt;10.3f}</span><span class="ss">  </span><span class="sc">{</span>ratio_h4<span class="sc">:&gt;10.3f}</span><span class="ss">"</span>)</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">56</span>)</span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"RMSE in annualised percentage points."</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ratio &lt; 1 → ARIMA beats random walk on this metric."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ratio &lt; 1 → ARIMA beats random walk on this metric."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-rmse" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -929,7 +933,7 @@ Ratio &lt; 1 → ARIMA beats random walk on this metric.</code></pre>
 <div id="cell-fig-errors" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code — forecast error plot</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax.plot(errors_arima[H_SHORT].index, errors_arima[H_SHORT].values,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>EO_COPPER,   lw<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.85</span>, label<span class="op">=</span><span class="st">"ARIMA(1,1,1)+drift"</span>)</span>
@@ -948,13 +952,13 @@ Ratio &lt; 1 → ARIMA beats random walk on this metric.</code></pre>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Rolling Forecast Errors — Annualised GDP Growth"</span>)</span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-errors" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_05_files/figure-html/fig-errors-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_05_files/figure-html/fig-errors-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.3: Rolling one-step-ahead forecast errors for the ARIMA(1,1,1) with drift (copper) and the random walk with drift (sky blue), annualised GDP growth, pre-COVID sample. Both sequences are centred near zero. Large errors cluster around NBER recessions (shaded), reflecting the difficulty of forecasting turning points. The question is not whether either model makes large errors during recessions — they both do — but whether the ARIMA’s errors are systematically smaller across the full evaluation period.
@@ -997,7 +1001,7 @@ Figure&nbsp;6.3: Rolling one-step-ahead forecast errors for the ARIMA(1,1,1) wit
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What the DM Test Does and Does Not Tell You
+<span class="screen-reader-only">Warning</span>What the DM Test Does and Does Not Tell You
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1018,7 +1022,7 @@ What the DM Test Does and Does Not Tell You
 <div id="dm-test" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code — Diebold-Mariano test</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm <span class="im">as</span> spnorm</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm <span class="im">as</span> spnorm</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dm_test_nw(e1, e2, h, power<span class="op">=</span><span class="dv">2</span>):</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -1069,7 +1073,7 @@ What the DM Test Does and Does Not Tell You
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">62</span>)</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Negative DM stat → ARIMA has lower average squared loss than RW."</span>)</span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Positive DM stat → RW has lower average squared loss than ARIMA."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Positive DM stat → RW has lower average squared loss than ARIMA."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Diebold-Mariano Test — ARIMA(1,1,1)+drift vs RW with drift
@@ -1088,7 +1092,7 @@ Positive DM stat → RW has lower average squared loss than ARIMA.</code></pre>
 <div id="cell-fig-loss-diff" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code — cumulative loss differential</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h, color, label <span class="kw">in</span> [(H_SHORT, EO_COPPER, <span class="st">"h = 1"</span>),</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                        (H_LONG,  EO_SKYBLUE, <span class="st">"h = 4"</span>)]:</span>
@@ -1108,13 +1112,13 @@ Positive DM stat → RW has lower average squared loss than ARIMA.</code></pre>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"DM Cumulative Loss Differential — GDP Growth"</span>)</span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-loss-diff" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-loss-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_05_files/figure-html/fig-loss-diff-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_05_files/figure-html/fig-loss-diff-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loss-diff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.4: Cumulative loss differential <span class="math inline">\(\sum_{s \leq t} d_s\)</span> where <span class="math inline">\(d_t = e_{1,t}^2 - e_{2,t}^2\)</span> (ARIMA squared error minus RW squared error), for <span class="math inline">\(h = 1\)</span> (copper) and <span class="math inline">\(h = 4\)</span> (sky blue). Downward slope means the ARIMA accumulates less squared loss than the random walk; upward slope means the reverse. At <span class="math inline">\(h = 1\)</span> the copper line drifts slightly downward on net, consistent with the negative DM statistic (<span class="math inline">\(-0.803\)</span>) but without a clear directional break. At <span class="math inline">\(h = 4\)</span> the sky blue line trends upward, reflecting the random walk’s accumulating advantage; recessions (shaded) are the episodes where the gap widens most sharply, suggesting the ARIMA’s four-step forecasts struggle particularly around turning points.
@@ -1154,7 +1158,7 @@ Figure&nbsp;6.4: Cumulative loss differential <span class="math inline">\(\sum_{
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Optimal Combination Weights: The Key Results
+<span class="screen-reader-only">Note</span>Optimal Combination Weights: The Key Results
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1177,7 +1181,7 @@ Optimal Combination Weights: The Key Results
 <p>We form three combined forecasts — equal weights, Bates-Granger optimal weights estimated from the evaluation sample, and OLS combination — and compare their RMSE against the two individual models at <span class="math inline">\(h = 1\)</span> and <span class="math inline">\(h = 4\)</span>.</p>
 <details class="code-fold">
 <summary>Show code — forecast combination</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>results_combo <span class="op">=</span> {}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>results_combo <span class="op">=</span> {}</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h <span class="kw">in</span> [H_SHORT, H_LONG]:</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    e1 <span class="op">=</span> errors_arima[h].values</span>
@@ -1237,7 +1241,7 @@ Optimal Combination Weights: The Key Results
 <span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> np.sqrt(np.mean(e_arr<span class="op">**</span><span class="dv">2</span>))</span>
 <span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">:25}</span><span class="ss">  </span><span class="sc">{</span>r<span class="sc">:&gt;8.3f}</span><span class="ss">  </span><span class="sc">{</span>r<span class="op">/</span>rw_rmse<span class="sc">:&gt;8.3f}</span><span class="ss">"</span>)</span>
 <span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">52</span>)</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-combination" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1292,7 +1296,7 @@ RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk.</code></pre>
 <p>For a well-calibrated model, <span class="math inline">\(\widehat{\text{coverage}}\)</span> should be close to the nominal level <span class="math inline">\(1 - \alpha\)</span>. Systematic shortfall indicates that the model’s prediction intervals are too narrow — the tails of the forecast distribution are too thin relative to the actual distribution of outcomes. The interval bounds were stored in the main evaluation loop in Section 5.3, so checking coverage requires no additional model fitting.</p>
 <details class="code-fold">
 <summary>Show code — interval coverage check</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interval bounds were stored in the main evaluation loop (Section 5.3).</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interval bounds were stored in the main evaluation loop (Section 5.3).</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># No re-estimation needed here.</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>alpha_levels <span class="op">=</span> [<span class="fl">0.10</span>, <span class="fl">0.05</span>]</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1317,7 +1321,7 @@ RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk.</code></pre>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">:&gt;15}</span><span class="ss">  </span><span class="sc">{</span>nominal<span class="sc">:&gt;10.2f}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="dv">0</span>]<span class="sc">:&gt;10.3f}</span><span class="ss">  </span><span class="sc">{</span>row[<span class="dv">1</span>]<span class="sc">:&gt;10.3f}</span><span class="ss">"</span>)</span>
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"═"</span> <span class="op">*</span> <span class="dv">54</span>)</span>
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Values below nominal → intervals too narrow (undercoverage)."</span>)</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Values above nominal → intervals too wide  (overcoverage)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Values above nominal → intervals too wide  (overcoverage)."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-coverage" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="11">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1357,7 +1361,7 @@ Values above nominal → intervals too wide  (overcoverage).</code></pre>
 <div id="cell-fig-pit" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code — PIT histogram</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Point forecasts and SEs were stored in the main loop — no re-estimation.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Point forecasts and SEs were stored in the main loop — no re-estimation.</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PIT value: z_t = Φ((actual - forecast_mean) / forecast_se)</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pit_vals <span class="op">=</span> {}</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h <span class="kw">in</span> [H_SHORT, H_LONG]:</span>
@@ -1388,13 +1392,13 @@ Values above nominal → intervals too wide  (overcoverage).</code></pre>
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"PIT Histograms — ARIMA(1,1,1)+drift, GDP Growth"</span>)</span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-pit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_05_files/figure-html/fig-pit-output-1.png" width="891" height="466" class="figure-img">
+<img src="chapter_05_files/figure-html/fig-pit-output-1.png" width="893" height="465" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.5: Probability integral transform (PIT) histograms for the ARIMA(1,1,1)+drift at <span class="math inline">\(h = 1\)</span> (left) and <span class="math inline">\(h = 4\)</span> (right). The dashed line marks the uniform benchmark (perfect calibration). At <span class="math inline">\(h = 1\)</span> the histogram is roughly flat — modest irregularity but no systematic shape — consistent with the near-nominal 90% and 95% coverage reported in the previous table. At <span class="math inline">\(h = 4\)</span> a pronounced J-shape emerges: heavy mass near both 0 and 1, with a spike concentrated at the upper tail. The right-tail spike indicates the model systematically underforecasts growth at the four-quarter horizon — actual outcomes frequently land in the upper tail of the predictive distribution — consistent with the model anchoring too strongly on the rolling mean and missing the persistence of above-trend expansions.
@@ -1424,7 +1428,7 @@ Figure&nbsp;6.5: Probability integral transform (PIT) histograms for the ARIMA(1
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Glossary
+<span class="screen-reader-only">Note</span>Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1510,13 +1514,14 @@ Glossary
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1921,7 +1926,7 @@ Glossary
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb17" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Forecast Evaluation"</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -3777,7 +3782,7 @@ Glossary
 <span id="cb17-1878"><a href="#cb17-1878" aria-hidden="true" tabindex="-1"></a>sharpness (narrow distributions). Reduces to MAE for degenerate point</span>
 <span id="cb17-1879"><a href="#cb17-1879" aria-hidden="true" tabindex="-1"></a>forecast distributions.</span>
 <span id="cb17-1880"><a href="#cb17-1880" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

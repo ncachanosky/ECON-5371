@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>13&nbsp; Appendix: A Primer on Matrix Algebra – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -40,10 +43,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -75,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -88,7 +91,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -141,7 +144,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -365,7 +369,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Notation Used in This Course
+<span class="screen-reader-only">Note</span>Notation Used in This Course
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -403,7 +407,7 @@ Notation Used in This Course
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.1 — Vector
+<span class="screen-reader-only">Note</span>Definition A.1 — Vector
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -434,7 +438,7 @@ Definition A.1 — Vector
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.2 — Matrix
+<span class="screen-reader-only">Note</span>Definition A.2 — Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -448,7 +452,7 @@ Definition A.2 — Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Common Mistake
+<span class="screen-reader-only">Warning</span>A Common Mistake
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -472,7 +476,7 @@ A Common Mistake
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.3 — Square Matrix
+<span class="screen-reader-only">Note</span>Definition A.3 — Square Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -499,7 +503,7 @@ Definition A.3 — Square Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.4 — Diagonal Matrix
+<span class="screen-reader-only">Note</span>Definition A.4 — Diagonal Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -525,7 +529,7 @@ Definition A.4 — Diagonal Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.5 — Identity Matrix
+<span class="screen-reader-only">Note</span>Definition A.5 — Identity Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -554,7 +558,7 @@ Definition A.5 — Identity Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.6 — Triangular Matrix
+<span class="screen-reader-only">Note</span>Definition A.6 — Triangular Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -587,7 +591,7 @@ Definition A.6 — Triangular Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.7 — Symmetric Matrix
+<span class="screen-reader-only">Note</span>Definition A.7 — Symmetric Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -613,7 +617,7 @@ Definition A.7 — Symmetric Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.8 — Zero Matrix
+<span class="screen-reader-only">Note</span>Definition A.8 — Zero Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -633,7 +637,7 @@ Definition A.8 — Zero Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.9 — Matrix Addition
+<span class="screen-reader-only">Note</span>Definition A.9 — Matrix Addition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -646,7 +650,7 @@ Definition A.9 — Matrix Addition
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Common Mistake
+<span class="screen-reader-only">Warning</span>A Common Mistake
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -682,7 +686,7 @@ A Common Mistake
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.10 — Scalar Multiplication
+<span class="screen-reader-only">Note</span>Definition A.10 — Scalar Multiplication
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -704,7 +708,7 @@ Definition A.10 — Scalar Multiplication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Common Mistake
+<span class="screen-reader-only">Warning</span>A Common Mistake
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -720,7 +724,7 @@ A Common Mistake
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.11 — Conformability for Multiplication
+<span class="screen-reader-only">Note</span>Definition A.11 — Conformability for Multiplication
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -737,7 +741,7 @@ Definition A.11 — Conformability for Multiplication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.12 — Matrix Multiplication
+<span class="screen-reader-only">Note</span>Definition A.12 — Matrix Multiplication
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -773,7 +777,7 @@ c_{22} &amp;= (3)(6) + (4)(8) = 18 + 32 = 50
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Common Mistake: Multiplication Is Not Commutative
+<span class="screen-reader-only">Warning</span>A Common Mistake: Multiplication Is Not Commutative
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -803,7 +807,7 @@ A Common Mistake: Multiplication Is Not Commutative
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.13 — Transpose
+<span class="screen-reader-only">Note</span>Definition A.13 — Transpose
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -837,7 +841,7 @@ Definition A.13 — Transpose
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Common Mistake
+<span class="screen-reader-only">Warning</span>A Common Mistake
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -854,7 +858,7 @@ A Common Mistake
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.14 — Cofactor
+<span class="screen-reader-only">Note</span>Definition A.14 — Cofactor
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -867,7 +871,7 @@ Definition A.14 — Cofactor
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.15 — Adjugate Matrix
+<span class="screen-reader-only">Note</span>Definition A.15 — Adjugate Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -889,7 +893,7 @@ Definition A.15 — Adjugate Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.16 — Determinant
+<span class="screen-reader-only">Note</span>Definition A.16 — Determinant
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -906,7 +910,7 @@ Definition A.16 — Determinant
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.17 — 2×2 Determinant
+<span class="screen-reader-only">Note</span>Definition A.17 — 2×2 Determinant
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -933,7 +937,7 @@ Definition A.17 — 2×2 Determinant
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.18 — 3×3 Determinant (Expansion Along Row 1)
+<span class="screen-reader-only">Note</span>Definition A.18 — 3×3 Determinant (Expansion Along Row 1)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -950,7 +954,7 @@ Definition A.18 — 3×3 Determinant (Expansion Along Row 1)
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Direct Formula for a 3×3 Determinant
+<span class="screen-reader-only">Note</span>The Direct Formula for a 3×3 Determinant
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -997,7 +1001,7 @@ The Direct Formula for a 3×3 Determinant
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Shortcut for Triangular Matrices
+<span class="screen-reader-only">Note</span>A Shortcut for Triangular Matrices
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1010,7 +1014,7 @@ A Shortcut for Triangular Matrices
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Note on Scope
+<span class="screen-reader-only">Warning</span>A Note on Scope
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1068,7 +1072,7 @@ C_{31} &amp;= +\begin{vmatrix} 0 &amp; 1 \\ 1 &amp; 4 \end{vmatrix} = 0-1 = -1
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.19 — Linear Independence
+<span class="screen-reader-only">Note</span>Definition A.19 — Linear Independence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1091,7 +1095,7 @@ Definition A.19 — Linear Independence
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.20 — Rank
+<span class="screen-reader-only">Note</span>Definition A.20 — Rank
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1105,7 +1109,7 @@ Definition A.20 — Rank
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Rank and the Determinant
+<span class="screen-reader-only">Note</span>Rank and the Determinant
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1134,7 +1138,7 @@ Rank and the Determinant
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why This Matters: Multicollinearity
+<span class="screen-reader-only">Warning</span>Why This Matters: Multicollinearity
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1155,7 +1159,7 @@ Why This Matters: Multicollinearity
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.21 — Matrix Inverse
+<span class="screen-reader-only">Note</span>Definition A.21 — Matrix Inverse
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1176,7 +1180,7 @@ Definition A.21 — Matrix Inverse
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.22 — Inverse via Adjugate
+<span class="screen-reader-only">Note</span>Definition A.22 — Inverse via Adjugate
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1223,7 +1227,7 @@ Definition A.22 — Inverse via Adjugate
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A Note on Scope and Practice
+<span class="screen-reader-only">Warning</span>A Note on Scope and Practice
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1243,7 +1247,7 @@ A Note on Scope and Practice
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.23 — Trace
+<span class="screen-reader-only">Note</span>Definition A.23 — Trace
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1278,7 +1282,7 @@ Definition A.23 — Trace
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.24 — Quadratic Form
+<span class="screen-reader-only">Note</span>Definition A.24 — Quadratic Form
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1322,7 +1326,7 @@ Definition A.24 — Quadratic Form
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.25 — Positive Definite Matrix
+<span class="screen-reader-only">Note</span>Definition A.25 — Positive Definite Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1335,7 +1339,7 @@ Definition A.25 — Positive Definite Matrix
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why This Matters: OLS Is a Minimum, Not a Saddle Point
+<span class="screen-reader-only">Warning</span>Why This Matters: OLS Is a Minimum, Not a Saddle Point
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1355,7 +1359,7 @@ Why This Matters: OLS Is a Minimum, Not a Saddle Point
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.26 — Eigenvalue and Eigenvector
+<span class="screen-reader-only">Note</span>Definition A.26 — Eigenvalue and Eigenvector
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1386,7 +1390,7 @@ Definition A.26 — Eigenvalue and Eigenvector
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Where Eigenvalues Reappear
+<span class="screen-reader-only">Note</span>Where Eigenvalues Reappear
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1493,7 +1497,7 @@ x_1 = 1, \qquad x_2 = 2, \qquad x_3 = -1, \qquad x_4 = 3
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Checking the Solution
+<span class="screen-reader-only">Note</span>Checking the Solution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1599,7 +1603,7 @@ x_5^2 &amp;= 5^2 = 25
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Deriving the Normal Equations
+<span class="screen-reader-only">Note</span>Deriving the Normal Equations
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1665,7 +1669,7 @@ S(\boldsymbol{\beta}) &amp;= \mathbf{e}'\mathbf{e} = (\mathbf{y}-\mathbf{X}\bold
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition A.27 — Variance-Covariance Matrix
+<span class="screen-reader-only">Note</span>Definition A.27 — Variance-Covariance Matrix
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1783,7 +1787,7 @@ y_i &amp; 3 &amp; 5 &amp; 6 &amp; 8 &amp; 9 \\
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Glossary
+<span class="screen-reader-only">Note</span>Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1888,13 +1892,14 @@ Glossary
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>5&nbsp; Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -380,7 +384,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -420,7 +424,7 @@ Learning Objectives
 <div id="cell-fig-rw-combined" class="cell" data-fig-height="7" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — combined random walk figure</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rng_rw <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rng_rw <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>T_rw   <span class="op">=</span> <span class="dv">60</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N_rw   <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mu_rw  <span class="op">=</span> <span class="fl">0.3</span></span>
@@ -477,13 +481,13 @@ Learning Objectives
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Random Walk: Paths and ACF, With and Without Drift"</span>)</span>
 <span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-rw-combined" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rw-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-rw-combined-output-1.png" width="892" height="1072" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-rw-combined-output-1.png" width="893" height="1071" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rw-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.1: Random walks without drift (left column) and with drift <span class="math inline">\(\mu = 0.3\)</span> (right column), <span class="math inline">\(T = 60\)</span>, ten paths each. Top row: path realisations with <span class="math inline">\(\pm 2\sqrt{t}\)</span> confidence envelope (blue shading) showing how the spread of possible outcomes grows over time. Without drift, paths wander symmetrically; with drift, all paths trend upward but diverge widely around the deterministic trend line (dashed). Bottom row: sample ACF of one realisation from each case — both show autocorrelations near 1.0 across all lags, the fingerprint of a unit root process. The PACF (not shown) would have a single spike at lag 1.
@@ -517,7 +521,7 @@ Figure&nbsp;5.1: Random walks without drift (left column) and with drift <span c
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 4.1 — Integration Order
+<span class="screen-reader-only">Note</span>Definition 4.1 — Integration Order
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -536,7 +540,7 @@ Definition 4.1 — Integration Order
 <div id="cell-fig-spurious" class="cell" data-fig-height="7" data-fig-width="6" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code — spurious regression</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats <span class="im">as</span> spstats</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats <span class="im">as</span> spstats</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Nicolas Cage films vs pool drownings (1999-2009) ──────────────────────────</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Source: Tyler Vigen, Spurious Correlations</span></span>
@@ -614,13 +618,13 @@ Definition 4.1 — Integration Order
 <span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Spurious Regressions: Obvious (left) and Plausible (right)"</span>)</span>
 <span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-spurious" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spurious-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-spurious-output-1.png" width="882" height="769" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-spurious-output-1.png" width="893" height="768" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spurious-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.2: Two spurious regression examples. Left: Nicolas Cage films vs pool drownings — obviously unrelated, yet <span class="math inline">\(R^2 = 0.45\)</span> and <span class="math inline">\(t &gt; 2\)</span>. Right: log CPI regressed on log real GDP — economically plausible-sounding but equally spurious; both are <span class="math inline">\(I(1)\)</span> series trending upward together. In both cases the time series plots (top row) show two series moving in the same direction; the scatterplots (bottom row) show apparent linear relationships with significant <span class="math inline">\(t\)</span>-statistics and non-trivial <span class="math inline">\(R^2\)</span>.
@@ -649,7 +653,7 @@ Figure&nbsp;5.2: Two spurious regression examples. Left: Nicolas Cage films vs p
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 4.2 — ADF Specification Choices
+<span class="screen-reader-only">Note</span>Definition 4.2 — ADF Specification Choices
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -711,7 +715,7 @@ p_{\max}\)</span> and choose the <span class="math inline">\(p\)</span> that min
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What the Newey-West HAC Estimator Is Doing
+<span class="screen-reader-only">Note</span>What the Newey-West HAC Estimator Is Doing
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -776,7 +780,7 @@ What the Newey-West HAC Estimator Is Doing
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-OLS vs GLS Detrending: Why It Matters for Power
+<span class="screen-reader-only">Note</span>OLS vs GLS Detrending: Why It Matters for Power
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -792,7 +796,7 @@ OLS vs GLS Detrending: Why It Matters for Power
 <div id="cell-fig-gdp-level" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code — GDP level and growth</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ax.plot(gdp.index, gdp[<span class="st">"Log SA"</span>], color<span class="op">=</span>EO_COPPER, lw<span class="op">=</span><span class="fl">1.0</span>)</span>
@@ -820,13 +824,13 @@ OLS vs GLS Detrending: Why It Matters for Power
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US Real GDP: Level and Growth Rate, 1947–2024"</span>)</span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-level" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-gdp-level-output-1.png" width="890" height="769" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-gdp-level-output-1.png" width="894" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.3: Log SA real GDP (top) and its first difference — the quarterly growth rate (bottom), 1947–2024. NBER recessions shaded. The level shows persistent upward drift with no fixed mean — the visual signature of an integrated process. The growth rate fluctuates around a stable positive mean with no visible trend, consistent with <span class="math inline">\(I(0)\)</span> behaviour. The severe COVID-19 contraction and recovery in 2020 is the dominant outlier in the growth rate series.
@@ -838,7 +842,7 @@ Figure&nbsp;5.3: Log SA real GDP (top) and its first difference — the quarterl
 <p>The time plot confirms what Chapter 1 established: the level shows persistent upward drift with no fixed attractor — the visual signature of an <span class="math inline">\(I(1)\)</span> process. The growth rate fluctuates around a stable positive mean. This guides the specification choice: constant and trend for the level (the stationary alternative is trend-stationarity); constant only for the growth rate.</p>
 <details class="code-fold">
 <summary>Show code — full ADF/KPSS specification</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller, kpss</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller, kpss</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_ur_tests(series, name, adf_reg<span class="op">=</span><span class="st">"ct"</span>, kpss_reg<span class="op">=</span><span class="st">"ct"</span>):</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -900,7 +904,7 @@ Figure&nbsp;5.3: Log SA real GDP (top) and its first difference — the quarterl
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>adf_growth, kpss_growth <span class="op">=</span> run_ur_tests(</span>
 <span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    gdp[<span class="st">"GDP Growth"</span>],    <span class="st">"GDP Growth Rate (QoQ)"</span>,</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    adf_reg<span class="op">=</span><span class="st">"c"</span>,  kpss_reg<span class="op">=</span><span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    adf_reg<span class="op">=</span><span class="st">"c"</span>,  kpss_reg<span class="op">=</span><span class="st">"c"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-urtest-gdp" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -986,7 +990,7 @@ Table&nbsp;5.1
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Overdifferencing Problem
+<span class="screen-reader-only">Note</span>The Overdifferencing Problem
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1014,7 +1018,7 @@ The Overdifferencing Problem
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 4.3 — ARIMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(d\)</span>,<span class="math inline">\(q\)</span>) Model
+<span class="screen-reader-only">Note</span>Definition 4.3 — ARIMA(<span class="math inline">\(p\)</span>,<span class="math inline">\(d\)</span>,<span class="math inline">\(q\)</span>) Model
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1041,7 +1045,7 @@ Definition 4.3 — ARIMA(<span class="math inline">\(p\)</span>,<span class="mat
 <div id="cell-fig-ts-vs-ds" class="cell" data-fig-height="6" data-fig-width="6" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code — trend-stationary vs difference-stationary</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rng_td <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">123</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rng_td <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span><span class="dv">123</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>T_td   <span class="op">=</span> <span class="dv">80</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>N_td   <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>alpha  <span class="op">=</span> <span class="fl">0.0</span></span>
@@ -1107,13 +1111,13 @@ Definition 4.3 — ARIMA(<span class="math inline">\(p\)</span>,<span class="mat
 <span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Trend-Stationary vs Difference-Stationary: Same Drift, Same Noise"</span>)</span>
 <span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ts-vs-ds" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ts-vs-ds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-ts-vs-ds-output-1.png" width="893" height="921" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-ts-vs-ds-output-1.png" width="893" height="919" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ts-vs-ds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.4: Trend-stationary (left) vs difference-stationary (right), five paths each, <span class="math inline">\(T = 80\)</span>, same drift and noise variance. Top row: both processes look similar on a single realisation — both trend upward with fluctuations around the trend line (dashed). The difference only becomes apparent across realisations: trend-stationary paths hug the trend and return to it after shocks; difference-stationary paths diverge permanently. Bottom row: residuals after removing the OLS-estimated linear trend. Bottom-left: detrending works for the trend-stationary process — residuals are stationary and fluctuate around zero. Bottom-right: detrending <em>fails</em> for the difference-stationary process — the residuals still wander without mean-reversion, because OLS detrending cannot remove a stochastic trend. This is the key diagnostic: if detrended residuals look like the bottom-right panel, the series is difference-stationary and differencing — not detrending — is the correct treatment.
@@ -1135,7 +1139,7 @@ Figure&nbsp;5.4: Trend-stationary (left) vs difference-stationary (right), five 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The ARIMA Workflow: Four Steps
+<span class="screen-reader-only">Note</span>The ARIMA Workflow: Four Steps
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1171,10 +1175,10 @@ The ARIMA Workflow: Four Steps
 <section id="auto_arima-a-practical-search-tool" class="level3">
 <h3 class="anchored" data-anchor-id="auto_arima-a-practical-search-tool">auto_arima: A Practical Search Tool</h3>
 <p>Choosing <span class="math inline">\((p,d,q)\)</span> by the manual Box-Jenkins workflow — examine ACF/PACF, select candidate orders, fit, diagnose, revise — is the principled approach and the one that builds genuine understanding. In practice, researchers often use <strong>auto-ARIMA</strong> to search over a grid of <span class="math inline">\((p,q)\)</span> orders for a given <span class="math inline">\(d\)</span> and select by information criteria. The <code>pmdarima</code> library provides this:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima <span class="im">import</span> auto_arima</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima <span class="im">import</span> auto_arima</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> auto_arima(y, d<span class="op">=</span><span class="dv">1</span>, max_p<span class="op">=</span><span class="dv">4</span>, max_q<span class="op">=</span><span class="dv">4</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                   information_criterion<span class="op">=</span><span class="st">'bic'</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   stepwise<span class="op">=</span><span class="va">True</span>, seasonal<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   stepwise<span class="op">=</span><span class="va">True</span>, seasonal<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>stepwise=True</code> option uses a stepwise search (Hyndman and Khandakar, 2008) rather than exhaustive grid search, making it feasible for large grids. Starting from ARIMA(2,1,2), it tests neighbouring specifications and moves in the direction of improving BIC until no further improvement is possible.</p>
 </section>
 <section id="python-identifying-and-estimating-an-arima-for-log-sa-gdp" class="level3">
@@ -1183,7 +1187,7 @@ The ARIMA Workflow: Four Steps
 <div id="cell-fig-gdp-growth-acfpacf" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code — GDP growth ACF/PACF</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>gr_clean <span class="op">=</span> gdp[<span class="st">"GDP Growth"</span>].dropna()</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1211,13 +1215,13 @@ The ARIMA Workflow: Four Steps
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"US GDP Growth: ACF and PACF, 1947–2024"</span>)</span>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-growth-acfpacf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-growth-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-gdp-growth-acfpacf-output-1.png" width="891" height="618" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-gdp-growth-acfpacf-output-1.png" width="894" height="617" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-growth-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.5: ACF and PACF of quarterly US GDP growth (log-differenced SA real GDP), 1947Q2–2024Q3. The ACF tails off gradually; the PACF shows a significant spike at lag 1 and possibly lag 2, with values inside the band thereafter. This pattern is broadly consistent with an AR(1) or AR(2) process for GDP growth — equivalently, an ARIMA(1,1,0) or ARIMA(2,1,0) for the level. The MA identification is less clear, suggesting an ARMA(p,q) structure that information criteria will help resolve.
@@ -1229,7 +1233,7 @@ Figure&nbsp;5.5: ACF and PACF of quarterly US GDP growth (log-differenced SA rea
 <p>The ACF and PACF of GDP growth suggest autoregressive structure at short lags, consistent with ARIMA(1,1,0) or ARIMA(2,1,0) as starting candidates. We now fit a grid of ARIMA models on log SA GDP and compare by information criteria, then use <code>auto_arima</code> as a cross-check.</p>
 <details class="code-fold">
 <summary>Show code — ARIMA model selection</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima <span class="im">import</span> auto_arima <span class="im">as</span> pm_auto_arima</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pmdarima <span class="im">import</span> auto_arima <span class="im">as</span> pm_auto_arima</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Restrict to pre-COVID sample ──────────────────────────────────────────────</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># gdp_level_pre defined earlier in fig-spurious cell; redefined here</span></span>
@@ -1280,7 +1284,7 @@ Figure&nbsp;5.5: ACF and PACF of quarterly US GDP growth (log-differenced SA rea
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>                          stepwise<span class="op">=</span><span class="va">True</span>, seasonal<span class="op">=</span><span class="va">False</span>,</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>                          suppress_warnings<span class="op">=</span><span class="va">True</span>, error_action<span class="op">=</span><span class="st">"ignore"</span>)</span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Selected: ARIMA</span><span class="sc">{</span>auto_mod<span class="sc">.</span>order<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  AIC: </span><span class="sc">{</span>auto_mod<span class="sc">.</span>aic()<span class="sc">:.1f}</span><span class="ss">  BIC: </span><span class="sc">{</span>auto_mod<span class="sc">.</span>bic()<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  AIC: </span><span class="sc">{</span>auto_mod<span class="sc">.</span>aic()<span class="sc">:.1f}</span><span class="ss">  BIC: </span><span class="sc">{</span>auto_mod<span class="sc">.</span>bic()<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-arima-ic" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1315,7 +1319,7 @@ auto_arima cross-check (BIC, stepwise, 1947–2019):
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-auto_arima Is a Search Tool, Not a Black Box
+<span class="screen-reader-only">Warning</span>auto_arima Is a Search Tool, Not a Black Box
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1327,7 +1331,7 @@ auto_arima Is a Search Tool, Not a Black Box
 <div id="cell-fig-arima-diagnostics" class="cell" data-fig-height="7" data-fig-width="6" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code — ARIMA diagnostics</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>best_order <span class="op">=</span> ic_df.loc[ic_df[<span class="st">"BIC"</span>].idxmin(), <span class="st">"Model"</span>]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>match   <span class="op">=</span> re.search(<span class="vs">r"ARIMA</span><span class="ch">\(</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="vs">,1,</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)</span><span class="ch">\)</span><span class="vs">"</span>, best_order)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>p_best  <span class="op">=</span> <span class="bu">int</span>(match.group(<span class="dv">1</span>))</span>
@@ -1377,7 +1381,7 @@ auto_arima Is a Search Tool, Not a Black Box
 <span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig,</span>
 <span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"ARIMA(</span><span class="sc">{</span>p_best<span class="sc">}</span><span class="ss">,1,</span><span class="sc">{</span>q_best<span class="sc">}</span><span class="ss">) Residual Diagnostics — Log SA GDP, 1947–2019"</span>)</span>
 <span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fitting: ARIMA(1,1,1) on 1947–2019
@@ -1385,8 +1389,8 @@ auto_arima Is a Search Tool, Not a Black Box
 ==============================================================================
 Dep. Variable:                 Log SA   No. Observations:                   72
 Model:                 ARIMA(1, 1, 1)   Log Likelihood                 268.887
-Date:                Mon, 17 Aug 2026   AIC                           -531.774
-Time:                        12:30:32   BIC                           -524.986
+Date:                Fri, 21 Aug 2026   AIC                           -531.774
+Time:                        13:09:48   BIC                           -524.986
 Sample:                    01-01-2002   HQIC                          -529.075
                          - 10-01-2019                                         
 Covariance Type:                  opg                                         
@@ -1410,7 +1414,7 @@ Warnings:
 <div id="fig-arima-diagnostics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arima-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-arima-diagnostics-output-2.png" width="891" height="1072" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-arima-diagnostics-output-2.png" width="893" height="1071" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arima-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.6: ARIMA residual diagnostics for log SA real GDP, 1947–2019. Top: residual time series with NBER recessions shaded — no dominant outlier distorts the scale. Middle: residual ACF. Bottom: residual PACF. A well-specified model shows no systematic structure beyond sampling noise.
@@ -1421,9 +1425,9 @@ Figure&nbsp;5.6: ARIMA residual diagnostics for log SA real GDP, 1947–2019. To
 </div>
 <p>Before running diagnostics, a note on sample choice. We restrict estimation to 1947–2019 throughout this section. The COVID-19 contraction of 2020Q2 — a loss of nearly 10% of GDP in a single quarter — is a pandemic-driven event with no counterpart in the postwar data. Fitting an ARIMA model on the full sample would give this single observation enormous leverage over the parameter estimates and dominate every residual plot, obscuring the model’s actual performance on normal business cycle dynamics. This is the same logic applied to the ICSA series in Chapter 3: when an outlier reflects a structural break or an extraordinary event rather than model misspecification, restricting the estimation sample is the honest choice. Chapter 6 provides the formal tools — Chow tests and Bai-Perron — to test whether such restrictions are justified.</p>
 <p>An alternative to sample restriction is to include an <strong>additive outlier dummy</strong> directly in the model. A dummy variable equal to 1 for the COVID quarter and zero otherwise can be added as an exogenous regressor via the <code>exog</code> argument in <code>statsmodels</code>’ <code>ARIMA</code> or <code>SARIMAX</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>covid_dummy <span class="op">=</span> (gdp_level.index <span class="op">==</span> <span class="st">"2020-04-01"</span>).astype(<span class="bu">float</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>covid_dummy <span class="op">=</span> (gdp_level.index <span class="op">==</span> <span class="st">"2020-04-01"</span>).astype(<span class="bu">float</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mod <span class="op">=</span> ARIMA(gdp_level, order<span class="op">=</span>(p, <span class="dv">1</span>, q),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>            exog<span class="op">=</span>covid_dummy.values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>            exog<span class="op">=</span>covid_dummy.values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)).fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This allows the full sample to be used while absorbing the outlier’s distorting effect on the parameter estimates. Multiple dummies handle multiple outlier quarters. The estimated dummy coefficient measures the size of the outlier directly — if it is large and significant, restricting the sample was the right instinct. This approach connects to the structural break framework in Chapter 6, where dummies for known break dates are a standard modelling tool.</p>
 </section>
 </section>
@@ -1442,7 +1446,7 @@ Figure&nbsp;5.6: ARIMA residual diagnostics for log SA real GDP, 1947–2019. To
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-ARIMA vs ARMA Forecasting: The Key Difference
+<span class="screen-reader-only">Note</span>ARIMA vs ARMA Forecasting: The Key Difference
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1491,7 +1495,7 @@ ARIMA vs ARMA Forecasting: The Key Difference
 <div id="cell-fig-arima-forecast" class="cell" data-fig-height="6" data-fig-width="6" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code — ARIMA forecasts</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="dv">20</span>   <span class="co"># quarters ahead</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="dv">20</span>   <span class="co"># quarters ahead</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fc       <span class="op">=</span> mod_best.get_forecast(steps<span class="op">=</span>h)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>fc_mean  <span class="op">=</span> fc.predicted_mean</span>
@@ -1549,13 +1553,13 @@ ARIMA vs ARMA Forecasting: The Key Difference
 <span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig,</span>
 <span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Log SA Real GDP Forecasts from </span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">Q</span><span class="sc">{</span>end_q<span class="sc">}</span><span class="ss">, +</span><span class="sc">{</span>h<span class="sc">}</span><span class="ss"> quarters"</span>)</span>
 <span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-arima-forecast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arima-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-arima-forecast-output-1.png" width="892" height="921" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-arima-forecast-output-1.png" width="893" height="920" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arima-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.7: ARIMA forecasts for log SA real GDP, 20 quarters ahead from 2024Q3. Top: point forecast (copper) with 95% prediction interval (shaded), overlaid on the last 10 years of observed data (charcoal). The forecast extrapolates the recent growth trend; the interval widens at rate <span class="math inline">\(\sqrt{h}\)</span>, reflecting the unit root in the level. Bottom: fan chart showing 50%, 75%, and 95% intervals — the widening fan is more dramatic than for stationary ARMA forecasts because uncertainty accumulates without the mean-reversion dampening that bounds interval width in the stationary case.
@@ -1617,7 +1621,7 @@ w_t = \mu^*
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 4.5 — SARIMA<span class="math inline">\((p,d,q)(P,D,Q)_s\)</span>
+<span class="screen-reader-only">Note</span>Definition 4.5 — SARIMA<span class="math inline">\((p,d,q)(P,D,Q)_s\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1677,7 +1681,7 @@ Definition 4.5 — SARIMA<span class="math inline">\((p,d,q)(P,D,Q)_s\)</span>
 <div id="cell-fig-nsa-gdp" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="13">
 <details class="code-fold">
 <summary>Show code — NSA GDP and differencing</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gdp_nsa_log <span class="op">=</span> gdp[<span class="st">"Log NSA"</span>].dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gdp_nsa_log <span class="op">=</span> gdp[<span class="st">"Log NSA"</span>].dropna()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Seasonal difference (removes seasonal unit root)</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>d4_nsa  <span class="op">=</span> gdp_nsa_log.diff(<span class="dv">4</span>).dropna()</span>
@@ -1711,13 +1715,13 @@ Definition 4.5 — SARIMA<span class="math inline">\((p,d,q)(P,D,Q)_s\)</span>
 <span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Log NSA Real GDP: Level and Differenced, 1947–2024"</span>)</span>
 <span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-nsa-gdp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nsa-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-nsa-gdp-output-1.png" width="890" height="769" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-nsa-gdp-output-1.png" width="893" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nsa-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.8: Log NSA real GDP (top) and its seasonal and regular differences <span class="math inline">\(\Delta_4\Delta y_t\)</span> (bottom), 1947Q1–2024Q3. The level shows both the upward stochastic trend and the pronounced seasonal swing — the within-year dip in Q1 is visible as a regular sawtooth pattern superimposed on the trend. After applying both seasonal and regular differencing, the series fluctuates around zero with no visible trend or seasonal pattern.
@@ -1729,7 +1733,7 @@ Figure&nbsp;5.8: Log NSA real GDP (top) and its seasonal and regular differences
 <div id="cell-fig-nsa-acfpacf" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="14">
 <details class="code-fold">
 <summary>Show code — seasonal ACF/PACF</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>plot_acf(d1d4_nsa, lags<span class="op">=</span><span class="dv">16</span>, ax<span class="op">=</span>ax,</span>
@@ -1764,13 +1768,13 @@ Figure&nbsp;5.8: Log NSA real GDP (top) and its seasonal and regular differences
 <span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"NSA GDP: ACF and PACF of $</span><span class="ch">\\</span><span class="st">Delta_4</span><span class="ch">\\</span><span class="st">Delta$ Log Level"</span>)</span>
 <span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-nsa-acfpacf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nsa-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-nsa-acfpacf-output-1.png" width="891" height="618" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-nsa-acfpacf-output-1.png" width="894" height="617" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nsa-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.9: ACF and PACF of <span class="math inline">\(\Delta_4\Delta\)</span> log NSA real GDP. Unit lags (1, 2, 3) and seasonal lags (4, 8, 12) should both be inspected. Significant spikes at lags 1 and 4 in the ACF and/or PACF signal non-seasonal AR/MA and seasonal AR/MA structure respectively, pointing toward a SARIMA<span class="math inline">\((p,1,q)(P,1,Q)_4\)</span> specification.
@@ -1782,7 +1786,7 @@ Figure&nbsp;5.9: ACF and PACF of <span class="math inline">\(\Delta_4\Delta\)</s
 <p>The seasonal lags (marked with vertical dotted lines at 4, 8, 12) are the key diagnostic features. Significant spikes at lag 4 in the ACF or PACF — after both regular and seasonal differencing — suggest that the seasonal differencing has not fully removed all seasonal dependence and that a seasonal AR or MA term is needed. If the spike at lag 4 appears in the PACF but not the ACF, a SAR(1) term is indicated; if it appears in the ACF but not the PACF, an SMA(1) term. Both appearing suggests SARMA(1,1) at the seasonal level.</p>
 <details class="code-fold">
 <summary>Show code — SARIMA estimation</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.statespace.sarimax <span class="im">import</span> SARIMAX</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.statespace.sarimax <span class="im">import</span> SARIMAX</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit candidate SARIMA specifications and compare</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>sarima_specs <span class="op">=</span> [</span>
@@ -1830,7 +1834,7 @@ Figure&nbsp;5.9: ACF and PACF of <span class="math inline">\(\Delta_4\Delta\)</s
 <span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>                           seasonal_order<span class="op">=</span>best_sarima_spec[<span class="dv">1</span>],</span>
 <span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>                           trend<span class="op">=</span><span class="st">"c"</span>).fit(disp<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">BIC-preferred: </span><span class="sc">{</span>best_sarima_label<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mod_sarima_best.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mod_sarima_best.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-sarima-fit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1851,8 +1855,8 @@ BIC-preferred: SARIMA(0,1,1)(0,1,1)_4
 =========================================================================================
 Dep. Variable:                           Log NSA   No. Observations:                   91
 Model:             SARIMAX(0, 1, 1)x(0, 1, 1, 4)   Log Likelihood                 243.209
-Date:                           Mon, 17 Aug 2026   AIC                           -478.418
-Time:                                   12:30:36   BIC                           -468.601
+Date:                           Fri, 21 Aug 2026   AIC                           -478.418
+Time:                                   13:09:50   BIC                           -468.601
 Sample:                               01-01-2002   HQIC                          -474.467
                                     - 07-01-2024                                         
 Covariance Type:                             opg                                         
@@ -1912,7 +1916,7 @@ Warnings:
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Theorem 4.1 — SES-ARIMA Duality
+<span class="screen-reader-only">Note</span>Theorem 4.1 — SES-ARIMA Duality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1931,7 +1935,7 @@ Theorem 4.1 — SES-ARIMA Duality
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Theorem 4.2 — Holt-ARIMA Duality
+<span class="screen-reader-only">Note</span>Theorem 4.2 — Holt-ARIMA Duality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1948,7 +1952,7 @@ Theorem 4.2 — Holt-ARIMA Duality
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Theorem 4.3 — Holt-Winters-SARIMA Duality
+<span class="screen-reader-only">Note</span>Theorem 4.3 — Holt-Winters-SARIMA Duality
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1968,7 +1972,7 @@ Theorem 4.3 — Holt-Winters-SARIMA Duality
 <div id="cell-fig-ets-arima" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="16">
 <details class="code-fold">
 <summary>Show code — ETS-ARIMA duality demonstration</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> SimpleExpSmoothing</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> SimpleExpSmoothing</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>gr_clean <span class="op">=</span> gdp[<span class="st">"GDP Growth"</span>].dropna()</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -2018,13 +2022,13 @@ Theorem 4.3 — Holt-Winters-SARIMA Duality
 <span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"SES optimised alpha      : </span><span class="sc">{</span>alpha_ses<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ARIMA(0,1,1) theta_1     : </span><span class="sc">{</span>theta1_hat<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Implied alpha (1+theta_1): </span><span class="sc">{</span>alpha_arima<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference               : </span><span class="sc">{</span><span class="bu">abs</span>(alpha_ses <span class="op">-</span> alpha_arima)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference               : </span><span class="sc">{</span><span class="bu">abs</span>(alpha_ses <span class="op">-</span> alpha_arima)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ets-arima" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ets-arima-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-ets-arima-output-1.png" width="889" height="618" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-ets-arima-output-1.png" width="892" height="617" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ets-arima-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.10: SES forecasts and ARIMA(0,1,1) forecasts for log SA real GDP growth, demonstrating the duality. Left: SES fitted values with optimised <span class="math inline">\(\alpha\)</span>. Right: ARIMA(0,1,1) fitted values with estimated <span class="math inline">\(\theta_1\)</span>. The two sets of fitted values should be nearly identical, and the implied <span class="math inline">\(\alpha = 1 + \hat\theta_1\)</span> from the ARIMA should match the SES-optimised <span class="math inline">\(\alpha\)</span> closely.
@@ -2067,7 +2071,7 @@ Difference               : 0.9702</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 4.6 — Beveridge-Nelson Decomposition
+<span class="screen-reader-only">Note</span>Definition 4.6 — Beveridge-Nelson Decomposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2088,7 +2092,7 @@ Definition 4.6 — Beveridge-Nelson Decomposition
 <div id="cell-fig-bn-decomp" class="cell" data-fig-height="8" data-fig-width="6" data-execution_count="17">
 <details class="code-fold">
 <summary>Show code — BN decomposition</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute MA(∞) coefficients from fitted ARIMA ──────────────────────────────</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute MA(∞) coefficients from fitted ARIMA ──────────────────────────────</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Depends on: mod_best (fitted in fig-arima-diagnostics cell)</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#             gdp_level_pre (defined in fig-spurious and tbl-arima-ic cells)</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ma_inf <span class="op">=</span> mod_best.impulse_responses(nperiods<span class="op">=</span><span class="dv">100</span>, orthogonalized<span class="op">=</span><span class="va">False</span>)</span>
@@ -2178,7 +2182,7 @@ Definition 4.6 — Beveridge-Nelson Decomposition
 <span id="cb21-88"><a href="#cb21-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-89"><a href="#cb21-89" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Beveridge-Nelson Decomposition: Log SA Real GDP"</span>)</span>
 <span id="cb21-90"><a href="#cb21-90" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>2009Q2 (GFC trough):
@@ -2191,7 +2195,7 @@ Definition 4.6 — Beveridge-Nelson Decomposition
 <div id="fig-bn-decomp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bn-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-bn-decomp-output-2.png" width="892" height="1224" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-bn-decomp-output-2.png" width="893" height="1223" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bn-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.11: Beveridge-Nelson decomposition of log SA real GDP. Top: observed log GDP (charcoal) and BN permanent component (copper) — the two track closely because most GDP variation is permanent. Middle: BN transitory component (business cycle). NBER recessions shaded. Bottom: comparison of BN cycle with the HP filter cycle (<span class="math inline">\(\lambda=1600\)</span>) from Chapter 2. The BN cycle is more volatile and less smooth than the HP cycle, reflecting the BN decomposition’s model-based rather than smoothness-penalised approach.
@@ -2239,7 +2243,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Complete Box-Jenkins Workflow
+<span class="screen-reader-only">Note</span>The Complete Box-Jenkins Workflow
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2367,7 +2371,7 @@ The Complete Box-Jenkins Workflow
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Glossary
+<span class="screen-reader-only">Note</span>Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -2453,13 +2457,14 @@ Glossary
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2864,7 +2869,7 @@ Glossary
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb23" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition"</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -5500,7 +5505,7 @@ Glossary
 <span id="cb23-2668"><a href="#cb23-2668" aria-hidden="true" tabindex="-1"></a>endogeneity caveats as ARMAX. If regressors are $I(1)$, VECM (Chapter 8) is</span>
 <span id="cb23-2669"><a href="#cb23-2669" aria-hidden="true" tabindex="-1"></a>preferred over ARIMAX.</span>
 <span id="cb23-2670"><a href="#cb23-2670" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>3&nbsp; Decomposition, Smoothing, and Business Cycle Analysis – Time Series Analysis for Economists</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -76,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-59898bd1c6b9d2bb783127feaa000c76.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ebaaaceb7f9007524e55bbdcf066eaf9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-54a86e8a85c7da627d7b819274ebacc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -177,7 +180,8 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../../index.html" class="sidebar-logo-link">
-      <img src="../../assets/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../../">Time Series Analysis for Economists</a> 
@@ -364,7 +368,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Learning Objectives
+<span class="screen-reader-only">Note</span>Learning Objectives
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -400,7 +404,7 @@ Learning Objectives
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 2.1 — Time Series Decomposition
+<span class="screen-reader-only">Note</span>Definition 2.1 — Time Series Decomposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -424,7 +428,7 @@ Definition 2.1 — Time Series Decomposition
 <div id="cell-fig-gdp-nsa-sa" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code — NSA vs SA real GDP</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ax.plot(gdp.index, gdp[<span class="st">"Real GDP (NSA, SAAR)"</span>] <span class="op">/</span> <span class="fl">1e3</span>, color<span class="op">=</span>EO_COPPER,  lw<span class="op">=</span><span class="fl">0.9</span>, label<span class="op">=</span><span class="st">"NSA (SAAR)"</span>)</span>
@@ -447,13 +451,13 @@ Definition 2.1 — Time Series Decomposition
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> gdp.index[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"US Real GDP: NSA vs. SA, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-gdp-nsa-sa" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-nsa-sa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-gdp-nsa-sa-output-1.png" width="892" height="769" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-gdp-nsa-sa-output-1.png" width="893" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-nsa-sa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.1: US Real GDP: NSA (SAAR) vs.&nbsp;officially SA, from first available observation through 2024. Both series are expressed as seasonally adjusted annual rates (billions of 2017 USD) to ensure comparability — the raw NSA series is a quarterly total, while GDPC1 is already annualised. The NSA series (copper) exhibits pronounced intra-year oscillation around the SA trend (blue). On the log scale (bottom panel) the oscillations are proportionally stable over time, confirming that the multiplicative model — equivalently, the additive model on logs — is the appropriate decomposition framework.
@@ -485,7 +489,7 @@ Figure&nbsp;3.1: US Real GDP: NSA (SAAR) vs.&nbsp;officially SA, from first avai
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The Classical Decomposition Algorithm
+<span class="screen-reader-only">Note</span>The Classical Decomposition Algorithm
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -507,7 +511,7 @@ The Classical Decomposition Algorithm
 <div id="cell-fig-classical-decomp" class="cell" data-fig-height="6" data-fig-width="6" data-execution_count="4">
 <details class="code-fold">
 <summary>Show code — Classical decomposition</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>decomp <span class="op">=</span> seasonal_decompose(gdp[<span class="st">"Log NSA"</span>], model<span class="op">=</span><span class="st">"additive"</span>, period<span class="op">=</span><span class="dv">4</span>, extrapolate_trend<span class="op">=</span><span class="st">"freq"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>decomp <span class="op">=</span> seasonal_decompose(gdp[<span class="st">"Log NSA"</span>], model<span class="op">=</span><span class="st">"additive"</span>, period<span class="op">=</span><span class="dv">4</span>, extrapolate_trend<span class="op">=</span><span class="st">"freq"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -542,13 +546,13 @@ The Classical Decomposition Algorithm
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> gdp.index[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"Classical Decomposition — Log NSA Real GDP, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-classical-decomp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-classical-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-classical-decomp-output-1.png" width="891" height="921" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-classical-decomp-output-1.png" width="894" height="920" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-classical-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.2: Classical additive decomposition of log NSA real GDP. Top panel: observed log level (charcoal) overlaid with the 2×4 moving average trend (copper) — the overlap makes visible how closely the trend tracks the long-run path and where the seasonal and irregular components pull the data away from it. Middle panel: seasonal factors (four quarterly constants), stable across the postwar period and large relative to the irregular. Bottom panel: irregular remainder, the component that contains the business cycle signal. NBER recessions are shaded throughout.
@@ -584,7 +588,7 @@ Figure&nbsp;3.2: Classical additive decomposition of log NSA real GDP. Top panel
 <div id="cell-fig-linear-detrend" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="5">
 <details class="code-fold">
 <summary>Show code — Linear and quadratic detrending</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>log_sa <span class="op">=</span> gdp[<span class="st">"Log SA"</span>].dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>log_sa <span class="op">=</span> gdp[<span class="st">"Log SA"</span>].dropna()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>T      <span class="op">=</span> <span class="bu">len</span>(log_sa)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>t      <span class="op">=</span> np.arange(<span class="dv">1</span>, T <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -624,7 +628,7 @@ Figure&nbsp;3.2: Classical additive decomposition of log NSA real GDP. Top panel
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Linear and Quadratic Detrending — Log SA Real GDP"</span>)</span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-linear-detrend" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -653,7 +657,7 @@ Figure&nbsp;3.3: Linear and quadratic detrending of log SA real GDP, 1947–2024
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 2.2 — The HP Filter
+<span class="screen-reader-only">Note</span>Definition 2.2 — The HP Filter
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -680,7 +684,7 @@ Definition 2.2 — The HP Filter
 <div id="cell-fig-hp-hamilton" class="cell" data-fig-height="8" data-fig-width="6" data-execution_count="6">
 <details class="code-fold">
 <summary>Show code — Four-method cycle comparison</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>log_sa_full <span class="op">=</span> gdp[<span class="st">"Log SA"</span>].dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>log_sa_full <span class="op">=</span> gdp[<span class="st">"Log SA"</span>].dropna()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── HP Filter ─────────────────────────────────────────────────────────────────</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>cycle_hp, trend_hp <span class="op">=</span> hpfilter(log_sa_full, lamb<span class="op">=</span><span class="dv">1600</span>)</span>
@@ -742,13 +746,13 @@ Definition 2.2 — The HP Filter
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> gdp.index[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"Business Cycle — Four Methods, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-hp-hamilton" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-hp-hamilton-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-hp-hamilton-output-1.png" width="892" height="1224" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-hp-hamilton-output-1.png" width="893" height="1223" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hp-hamilton-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.4: Business cycle components from four methods applied to log SA real GDP. HP filter (λ=1600, copper); Hamilton filter (h=8, blue); linear detrend (sage); STL irregular (terracotta). NBER recessions are shaded. The Hamilton panel is blank before 1949 Q4 by construction: the filter requires h=8 quarters of lead time and four lags of the series, so the first cycle estimate is only available once those observations exist. This is not a deficiency — it is an honest acknowledgement that the method needs a minimum data window. The STL irregular is the noisiest series but the most unfiltered: it has not been smoothed by any bandwidth parameter, so every quarter’s deviation from trend is shown at full resolution.
@@ -771,7 +775,7 @@ Figure&nbsp;3.4: Business cycle components from four methods applied to log SA r
 <div id="cell-fig-hp-endpoint" class="cell" data-fig-height="3.5" data-fig-width="6" data-execution_count="7">
 <details class="code-fold">
 <summary>Show code — HP end-point bias</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cutoff <span class="op">=</span> <span class="st">"2007-10-01"</span>   <span class="co"># data through 2007 Q4</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cutoff <span class="op">=</span> <span class="st">"2007-10-01"</span>   <span class="co"># data through 2007 Q4</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Real-time HP: estimated on data up to cutoff only</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>log_sa_rt          <span class="op">=</span> log_sa_full[log_sa_full.index <span class="op">&lt;=</span> cutoff]</span>
@@ -801,13 +805,13 @@ Figure&nbsp;3.4: Business cycle components from four methods applied to log SA r
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"HP Filter End-Point Bias: Real-Time vs. Full-Sample, 1947–2007"</span>)</span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-hp-endpoint" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-hp-endpoint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-hp-endpoint-output-1.png" width="892" height="542" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-hp-endpoint-output-1.png" width="893" height="542" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hp-endpoint-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.5: HP filter end-point bias: real-time vs.&nbsp;full-sample cycle estimates for log SA real GDP. The copper line shows the HP cycle computed using only data available through 2007 Q4 (the last pre-crisis quarter). The blue line shows the HP cycle computed on the full sample through 2024. Both use λ=1600. In the years immediately preceding the 2008 recession (shaded), the real-time HP cycle is substantially smaller — and in some quarters near zero — while the full-sample estimate shows a clear positive boom. A policymaker relying on the real-time HP cycle in 2006–2007 would have seen a roughly neutral output gap; the same data, re-evaluated with hindsight, reveals a significant overheating. The gap between the two lines near 2007 is the end-point bias.
@@ -843,7 +847,7 @@ Figure&nbsp;3.5: HP filter end-point bias: real-time vs.&nbsp;full-sample cycle 
 <div id="cell-fig-stl-decomp" class="cell" data-fig-height="6" data-fig-width="6" data-execution_count="8">
 <details class="code-fold">
 <summary>Show code — STL decomposition</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>stl    <span class="op">=</span> STL(gdp[<span class="st">"Log NSA"</span>], period<span class="op">=</span><span class="dv">4</span>, seasonal<span class="op">=</span><span class="dv">7</span>, robust<span class="op">=</span><span class="va">True</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>stl    <span class="op">=</span> STL(gdp[<span class="st">"Log NSA"</span>], period<span class="op">=</span><span class="dv">4</span>, seasonal<span class="op">=</span><span class="dv">7</span>, robust<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> stl.fit()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
@@ -879,13 +883,13 @@ Figure&nbsp;3.5: HP filter end-point bias: real-time vs.&nbsp;full-sample cycle 
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> gdp.index[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"STL Decomposition — Log NSA Real GDP, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-stl-decomp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stl-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-stl-decomp-output-1.png" width="891" height="921" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-stl-decomp-output-1.png" width="894" height="920" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stl-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.6: STL decomposition of log NSA real GDP. Top panel: observed log level overlaid with the STL Loess trend — the trend is smoother and more flexible than the classical moving average, adapting to the productivity slowdown of the 1970s and the post-2008 recovery. Middle panel: seasonal component, allowed to evolve slowly over time. Bottom panel: irregular remainder, the component that contains the business cycle signal.
@@ -897,7 +901,7 @@ Figure&nbsp;3.6: STL decomposition of log NSA real GDP. Top panel: observed log 
 <div id="cell-fig-stl-vs-official" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="9">
 <details class="code-fold">
 <summary>Show code — STL vs official SA comparison</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># STL seasonal-adjusted = observed - seasonal component (in logs)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># STL seasonal-adjusted = observed - seasonal component (in logs)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>gdp[<span class="st">"Log STL-SA"</span>] <span class="op">=</span> gdp[<span class="st">"Log NSA"</span>] <span class="op">-</span> result.seasonal</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
@@ -913,13 +917,13 @@ Figure&nbsp;3.6: STL decomposition of log NSA real GDP. Top panel: observed log 
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> gdp.index[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"STL Seasonal Adjustment vs. Official GDPC1, </span><span class="sc">{</span>gdp<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">.</span>year<span class="sc">}</span><span class="ss">–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-stl-vs-official" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stl-vs-official-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-stl-vs-official-output-1.png" width="892" height="466" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-stl-vs-official-output-1.png" width="893" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stl-vs-official-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.7: Comparison of STL-adjusted and officially SA real GDP. The STL adjustment (copper dashed) closely tracks the BEA’s X-13-based SA series (blue), with the two differing primarily in periods of structural change (post-2008, post-2020) where X-13’s ARIMA-based end-extension and calendar adjustment produce marginally smoother estimates. The correspondence is close enough for research and teaching purposes.
@@ -955,7 +959,7 @@ Figure&nbsp;3.7: Comparison of STL-adjusted and officially SA real GDP. The STL 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 2.3 — Simple Exponential Smoothing
+<span class="screen-reader-only">Note</span>Definition 2.3 — Simple Exponential Smoothing
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -983,7 +987,7 @@ Definition 2.3 — Simple Exponential Smoothing
 <div id="cell-fig-ses-holt" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="10">
 <details class="code-fold">
 <summary>Show code — SES and Holt’s method</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>series_fit <span class="op">=</span> gdp[<span class="st">"Log STL-SA"</span>].dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>series_fit <span class="op">=</span> gdp[<span class="st">"Log STL-SA"</span>].dropna()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># SES with two alpha values for illustration</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ses_low  <span class="op">=</span> SimpleExpSmoothing(series_fit).fit(smoothing_level<span class="op">=</span><span class="fl">0.05</span>, optimized<span class="op">=</span><span class="va">False</span>)</span>
@@ -1036,13 +1040,13 @@ Definition 2.3 — Simple Exponential Smoothing
 <span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Exponential Smoothing — Log STL-SA Real GDP"</span>)</span>
 <span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-ses-holt" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ses-holt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-ses-holt-output-1.png" width="892" height="769" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-ses-holt-output-1.png" width="894" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ses-holt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.8: Simple exponential smoothing (top) and Holt’s method with and without damping (bottom), applied to the log STL-SA real GDP series. SES with small α produces a smooth level that lags the data considerably; larger α tracks the data closely but produces a jagged level. Holt’s method with trend produces forecasts that extrapolate the recent slope linearly (blue) or with damping (terracotta), which flattens out at longer horizons. Parameters are estimated by maximum likelihood.
@@ -1080,7 +1084,7 @@ Figure&nbsp;3.8: Simple exponential smoothing (top) and Holt’s method with and
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition 2.4 — The Holt-Winters Additive Model: ETS(A,A,A)
+<span class="screen-reader-only">Note</span>Definition 2.4 — The Holt-Winters Additive Model: ETS(A,A,A)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1098,12 +1102,12 @@ Definition 2.4 — The Holt-Winters Additive Model: ETS(A,A,A)
 <h3 class="anchored" data-anchor-id="the-full-ets-taxonomy">The Full ETS Taxonomy</h3>
 <p>Not all 30 possible combinations of (E, T, S) components are numerically stable or practically useful. The table below shows the complete taxonomy of valid models.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Complete ETS Model Table (all 30 combinations)
+<span class="screen-reader-only">Note</span>Complete ETS Model Table (all 30 combinations)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1374,7 +1378,7 @@ Complete ETS Model Table (all 30 combinations)
 <div id="cell-fig-hw-forecast" class="cell" data-fig-height="5" data-fig-width="6" data-execution_count="11">
 <details class="code-fold">
 <summary>Show code — Holt-Winters forecast</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>series_nsa <span class="op">=</span> gdp[<span class="st">"Log NSA"</span>].dropna()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>series_nsa <span class="op">=</span> gdp[<span class="st">"Log NSA"</span>].dropna()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit ETS(A,Ad,A): additive error, additive damped trend, additive seasonal</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>hw_model <span class="op">=</span> ExponentialSmoothing(</span>
@@ -1441,7 +1445,7 @@ Complete ETS Model Table (all 30 combinations)
 <span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>end_yr <span class="op">=</span> fcast_idx[<span class="op">-</span><span class="dv">1</span>].year</span>
 <span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="ss">f"Holt-Winters Forecast — Log NSA Real GDP, 2000–</span><span class="sc">{</span>end_yr<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Fitted parameters:
@@ -1456,7 +1460,7 @@ Complete ETS Model Table (all 30 combinations)
 <div id="fig-hw-forecast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-hw-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-hw-forecast-output-2.png" width="891" height="769" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-hw-forecast-output-2.png" width="893" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hw-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.9: Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP, 2000–2026. The model is fit on data through 2024 Q3 and forecasts eight quarters ahead. The seasonal pattern is extrapolated from the estimated seasonal factors; the trend is damped, reflecting appropriate skepticism about the persistence of the recent growth rate. The 80% and 95% prediction intervals (shaded bands) widen with horizon. NBER recessions are shaded; the sharp 2020 outlier is visible in both the data and the residual diagnostics.
@@ -1474,7 +1478,7 @@ Figure&nbsp;3.9: Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP, 2000–
 <div id="cell-fig-hw-traintest" class="cell" data-fig-height="4" data-fig-width="6" data-execution_count="12">
 <details class="code-fold">
 <summary>Show code — Train-test split</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> series_nsa[series_nsa.index <span class="op">&lt;</span> <span class="st">"2020-01-01"</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> series_nsa[series_nsa.index <span class="op">&lt;</span> <span class="st">"2020-01-01"</span>]</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>test  <span class="op">=</span> series_nsa[series_nsa.index <span class="op">&gt;=</span> <span class="st">"2020-01-01"</span>]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>hw_train <span class="op">=</span> ExponentialSmoothing(</span>
@@ -1518,13 +1522,13 @@ Figure&nbsp;3.9: Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP, 2000–
 <span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>eo_style_ax(ax)</span>
 <span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>eo_suptitle(fig, <span class="st">"Holt-Winters Out-of-Sample Forecast — Log NSA Real GDP"</span>)</span>
 <span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-hw-traintest" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-hw-traintest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_02_files/figure-html/fig-hw-traintest-output-1.png" width="892" height="618" class="figure-img">
+<img src="chapter_02_files/figure-html/fig-hw-traintest-output-1.png" width="894" height="617" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hw-traintest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.10: Train-test evaluation of the Holt-Winters ETS(A,Ad,A) model on log NSA real GDP. The model is fit on 1947–2019 Q4 (training set, 292 observations) and forecasts 20 quarters ahead into 2020–2024 (test set). The 2020 COVID shock falls squarely in the test period and produces large errors in 2020 Q1–Q2. Abstracting from the pandemic quarters, the model tracks the subsequent recovery and the 2023–2024 level reasonably well, with point forecasts staying within the 80% prediction interval for most of the test period.
@@ -1549,7 +1553,7 @@ Figure&nbsp;3.10: Train-test evaluation of the Holt-Winters ETS(A,Ad,A) model on
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Glossary
+<span class="screen-reader-only">Note</span>Glossary
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1636,13 +1640,14 @@ Glossary
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2047,7 +2052,7 @@ Glossary
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Decomposition, Smoothing, and Business Cycle Analysis"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> ""</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="an">abstract:</span><span class="co"> |</span></span>
@@ -3263,7 +3268,7 @@ Glossary
 <span id="cb12-1238"><a href="#cb12-1238" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-1239"><a href="#cb12-1239" aria-hidden="true" tabindex="-1"></a>**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 4.</span>
 <span id="cb12-1240"><a href="#cb12-1240" aria-hidden="true" tabindex="-1"></a>:::</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
