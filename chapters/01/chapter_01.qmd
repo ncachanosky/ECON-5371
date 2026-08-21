@@ -497,6 +497,10 @@ $$y_t = \left(y_0 - \frac{c}{1-\phi}\right)\phi^t + \frac{c}{1-\phi} \tag{1.2}$$
 
 The solution is a weighted sum of the initial deviation from the long-run level $\bar{y} = c/(1-\phi)$ — decaying at rate $\phi^t$ — and the long-run level itself.
 
+It is worth pausing to be precise about the difference between $c$ and $\bar{y} = c/(1-\phi)$, because the two are easily confused. The constant $c$ is the **forcing term** — the fixed amount added to the system at every single period regardless of where $y_t$ currently stands. It is an input. The long-run equilibrium $\bar{y} = c/(1-\phi)$ is an **output** — the level at which the process eventually settles when the forcing and the decay exactly balance. To see this, note that at the equilibrium the process is not moving: $y_t = y_{t-1} = \bar{y}$. Substituting into $y_t = \phi y_{t-1} + c$ gives $\bar{y} = \phi\bar{y} + c$, so $\bar{y}(1-\phi) = c$ and $\bar{y} = c/(1-\phi)$.
+
+The ratio $1/(1-\phi)$ acts as a multiplier. When $\phi$ is close to 1, even a small constant $c$ can produce a very large equilibrium — the process is barely stable and the constant has an outsized influence. When $\phi$ is close to 0, $\bar{y} \approx c$ — the process has almost no memory and the equilibrium is essentially the constant itself. When $\phi = 1$, the denominator is zero and no finite equilibrium exists: the constant $c$ no longer creates a level to return to but instead produces a permanent drift, as we see in the unit root case below.
+
 #### Stability and the Characteristic Root
 
 The long-run behavior depends entirely on $\phi$:
@@ -1011,9 +1015,9 @@ Not all non-stationarity is the same, and the type matters for how we handle it.
 
 A process is **[trend stationary](https://en.wikipedia.org/wiki/Trend-stationary_process)** if it fluctuates around a deterministic trend — a fixed function of time — with stationary fluctuations:
 
-$$y_t = \alpha + \beta t + u_t$$
+$$y_t = c + \beta t + u_t$$
 
-where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\mathbb{E}[y_t] = \alpha + \beta t$ depends on $t$. But the deviations from trend are stationary. Crucially, a shock that perturbs $u_t$ at time $t$ has only a **transitory** effect: the series eventually returns to the deterministic trend path. To achieve stationarity, we **detrend** — regress $y_t$ on a constant and time and work with the residuals.
+where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\mathbb{E}[y_t] = c + \beta t$ depends on $t$. But the deviations from trend are stationary. Crucially, a shock that perturbs $u_t$ at time $t$ has only a **transitory** effect: the series eventually returns to the deterministic trend path. To achieve stationarity, we **detrend** — regress $y_t$ on a constant and time and work with the residuals.
 
 #### Difference Stationarity and Unit Roots
 
@@ -1068,7 +1072,7 @@ The unit root null $\phi = 1$ becomes $H_0: \delta = 0$; the stationary alternat
 
 $$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + c + \beta t + u_t \tag{1.7}$$
 
-The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
+Here $c$ is the constant term — the deterministic counterpart of $c$ in the AR(1) notation — and $\beta t$ is the optional linear trend. The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
 
 | Specification | Regression equation | Use when... |
 |:---|:---|:---|
@@ -1119,6 +1123,10 @@ The KPSS test decomposes the series as:
 $$y_t = \xi t + r_t + \varepsilon_t$$
 
 where $\xi t$ is a deterministic trend, $\varepsilon_t$ is a stationary error, and $r_t = r_{t-1} + u_t$ is a random walk with $u_t \sim WN(0,\sigma_u^2)$. The null $\sigma_u^2 = 0$ means the random walk component is absent — the series is stationary around its deterministic part. The alternative $\sigma_u^2 > 0$ allows a unit root.
+
+The two stochastic components play very different roles, and keeping them conceptually separate is the key to understanding the test. The component $r_t$ is the **object under scrutiny**: it is the stochastic trend whose variance $\sigma_u^2$ the test is trying to detect. Under the null, $\sigma_u^2 = 0$ so $u_t \equiv 0$ and $r_t = r_0$ for all $t$ — a constant that simply shifts the level of the series. Under the alternative, $r_t$ wanders without bound, and this wandering is what makes the series nonstationary.
+
+The component $\varepsilon_t$, by contrast, is the **legitimate stationary variation** in the series — the part that fluctuates around the deterministic trend even when no unit root is present. Crucially, $\varepsilon_t$ is allowed to be serially correlated: a stationary but persistent process will fluctuate for extended periods without returning to its mean, and it would be wrong to mistake that persistence for a unit root. This is exactly why the long-run variance estimator $\hat{\lambda}^2$ is needed: it corrects for the serial correlation in $\varepsilon_t$ so that the test statistic measures only the wandering due to $r_t$, not the persistence due to $\varepsilon_t$. Without this correction, a highly persistent but stationary series would generate large cumulative residuals $S_t$ and lead to false rejection of the stationarity null.
 
 #### The Test Statistic
 
