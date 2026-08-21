@@ -845,6 +845,16 @@ standard $F(3, \infty)$ 5 percent critical value of around 2.60. The gap
 reflects the cost of the search: we have performed many tests and must adjust
 for the best-case selection.
 
+::: {.callout-note icon=false}
+## Explore this interactively
+
+The [Structural Break Explorer](https://ncachanosky.github.io/ECON-5371-widgets/widgets/breaks/)
+lets you set a true break location and magnitude, add noise, and watch the
+Chow $F(\tau)$ trace and the resulting QLR statistic against the Andrews (1993)
+critical value. Set the magnitude to zero to see how often the test still
+rejects by chance — the size distortion the Davies problem exists to correct.
+:::
+
 ### Python: QLR Test on GDP Growth
 
 ```{python}

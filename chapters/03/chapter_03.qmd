@@ -1407,6 +1407,16 @@ seasonal model (SARIMA, Chapter 4), not a higher-order ARMA.
 or ARMA(1,1) often fits as well as higher-order alternatives once information
 criteria penalise for complexity. Overfitting is a real risk.
 
+::: {.callout-note icon=false}
+## Explore this interactively
+
+The table above is easiest to internalize by watching it happen. The
+[ARMA(2,2) Explorer](https://ncachanosky.github.io/ECON-5371-widgets/widgets/arma/)
+lets you drag the AR and MA coefficients and watch the simulated series, ACF, and
+PACF update live — including what happens to both functions once a coefficient
+crosses outside the stationarity or invertibility region.
+:::
+
 ### Step 3: The Box-Jenkins Workflow
 
 The ACF/PACF pattern gives a tentative identification. The Box-Jenkins workflow

@@ -879,6 +879,17 @@ The variance declines slowly toward its unconditional level of 1.00, but it
 will take many periods to get there — which is exactly what the half-life of
 34 days predicts.
 
+::: {.callout-note icon=false}
+## Explore this interactively
+
+The [GARCH(1,1) Explorer](https://ncachanosky.github.io/ECON-5371-widgets/widgets/garch/)
+opens with these exact parameters — $\omega = 0.02$, $\alpha = 0.08$,
+$\beta = 0.90$ — so you can reproduce this worked example directly. Move the
+sliders to see how persistence, unconditional variance, and half-life respond,
+or inject a single large shock partway through the sample and watch the
+conditional variance spike and decay in real time.
+:::
+
 ### Estimation by Quasi-Maximum Likelihood
 
 Ordinary least squares cannot estimate GARCH models. The conditional variance
