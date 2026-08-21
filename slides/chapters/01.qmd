@@ -13,8 +13,9 @@ title-slide-attributes:
 
 - Not the subject matter — not that it's economics, or finance
 - The answer: each observation is connected to the ones before it
-- In cross-sectional work, independence is the *ideal*. Here, dependence is the *object of study*
-- That single shift changes every tool we use: estimators, standard errors, tests — even the questions we ask
+- In cross-sectional work, independence is the *ideal*. Here, dependence is the **object of study**
+- That single shift changes the questions we can and should ask
+  - And therefore it changes how we look at estimators, standard errors, and tests
 
 ::: {.notes}
 Open here, board or slide. This is the thesis of the entire course, not
@@ -35,6 +36,10 @@ Four building blocks the rest of the course rests on:
 
 ::: {.eo-recap}
 Everything in Chapters 2–11 is a variation on these four ideas. Get this chapter right, and the rest of the course is mostly extension, not new territory.
+:::
+
+::: {.eo-definition}
+Today you need to be **patient**. We'll be introducing concepts that may (or may not) be new to you. We'll start to put this concepts together in the upcoming chapters.
 :::
 
 ---
@@ -75,23 +80,20 @@ Section 1
 :::
 
 ::: {.eo-recap}
-Trends, cycles, volatility clustering, unit roots — what distinguishes these series is exactly what this course teaches you to characterize and model.
+This course teaches, among other tools, how to extract the different underlying behavior of series that look the same to the eye.
 :::
 
 ---
 
 ## What Forecasting *Is*
 
-> Using what we know today to say something credible about tomorrow.
+- What forecasting is **not**
+  - **Prediction**: Cross-sectionl data, there is no time — and therefore no temporal component
+  - **Causal inference**: Does not requires a causal relationship — a forecast can work perfectly well built on pure correlation
 
-Sounds simple. It is easy to confuse with two things it is **not**:
-
-::: {.eo-definition}
-**Forecasting** — forming the conditional expectation $\mathbb{E}[y_{T+h} \mid \mathcal{F}_T]$: an exercise in conditional *prediction*.
-:::
-
-- **Not cross-sectional prediction** — no temporal ordering, no information set that closes at a point in time
-- **Not causal inference** — a forecast can work perfectly well built on pure correlation
+- What forecasting **is**
+  - The conditional expectation $\mathbb{E}[y_{T+h} \mid \mathcal{F}_T]$
+  - An exercise in conditional **prediction on time**.
 
 ::: {.eo-hazard}
 **Common mistake.** Lagged $X$ helping forecast $Y$ is tempting to read as "$X$ causes $Y$." It doesn't. It only means $X$ carries information about $Y$'s future path — that's all Granger causality (later in the course) formalizes.
@@ -116,14 +118,14 @@ $$
 **Density forecast** — the full probability distribution $\hat{p}(y_{T+h}\mid \mathcal{F}_T)$: every detail of our uncertainty, skewness and tail risk included
 
 ::: {.eo-recap}
-Point forecasts are the most common in practice — and the most incomplete. They say nothing about how confident we should be.
+Forecasts **are not** about point predictions. Forecasts are about a "likely" range of values. The main role of the point estimate is to calibrate the location of the interval.
 :::
 
 ---
 
 ## What Makes Economic Forecasting Hard
 
-Genuinely harder than weather forecasting. Why?
+Economic forecasting can be harder than weather forecasting. Why?
 
 - **Structural change** — economic relationships aren't physical laws; they shift as institutions, technology, and policy change
 - **Measurement error and revisions** — today's GDP release is not the number we'll have in two years
@@ -138,34 +140,35 @@ None of this makes forecasting worthless. The question is never "is this forecas
 
 ## The Loss Function
 
-> Why does the conditional mean solve the forecasting problem — and does that answer depend on how we define "solve"?
+> There are $\infty$ ways to forecast $y_t$; how are they evaluated? What's the benchmark?
 
-The **loss function** $\mathcal{L}(e_{T+h})$, where $e_{T+h} = y_{T+h} - \hat{y}_{T+h|T}$, encodes our preference over different kinds of mistakes.
+The **loss function** defines how the forecast is going to be evaluated
+
+Let $e_{T+h} = y_{T+h} - \hat{y}_{T+h|T} \quad$ be the "loss" — the forecast error.
 
 - **Squared error loss:** $\mathcal{L}(e) = e^2$ — symmetric, penalizes large errors disproportionately
 - **Absolute error loss:** $\mathcal{L}(e) = |e|$ — symmetric, penalty linear in error size
 - **Asymmetric loss** — over- and under-forecasting cost differently (a central bank facing surprise inflation vs. surprise deflation)
 
-Different preferences imply **different optimal forecasts** — this is not a technicality.
+Which forecast is optimal depends on how the **loss function** is defined.
 
 ---
 
 ## Why Squared Loss Gives the Mean
 
-We want $m$ minimizing $\mathbb{E}[(y-m)^2]$.
+We want $m$ minimizing $\mathbb{E}[(y-\hat{y})^2]$.
 
 $$
 \begin{aligned}
-\frac{d}{dm}\,\mathbb{E}[(y-m)^2]
-&= \frac{d}{dm}\,\mathbb{E}[y^2 - 2my + m^2] \\
-&= -2\,\mathbb{E}[y] + 2m
+\frac{d}{\hat{y}}\,\mathbb{E}[(y-\hat{y})^2] &= \frac{d}{d\hat{y}}\,\mathbb{E}[y^2 - 2\hat{y}y + \hat{y}^2] \\
+&= -2\,\mathbb{E}[y] + 2\hat{y}
 \end{aligned}
 $$
 
 Setting this to zero:
 
 $$
--2\,\mathbb{E}[y] + 2m = 0 \;\implies\; m = \mathbb{E}[y] \tag{1}
+-2\,\mathbb{E}[y] + 2\hat{y} = 0 \;\implies\; \hat{y} = \mathbb{E}[y] \tag{1}
 $$
 
 ::: {.eo-definition}
@@ -176,26 +179,25 @@ The **conditional mean** minimizes expected squared error. This is why $\hat{y}_
 
 ## Why Absolute Loss Gives the Median
 
-We want $m$ minimizing $\mathbb{E}[|y-m|] = \displaystyle\int_{-\infty}^{m}(m-y)f(y)\,dy + \int_{m}^{\infty}(y-m)f(y)\,dy$.
+We want $\hat{y}$ minimizing $\mathbb{E}[|y-\hat{y}|] = \displaystyle\int_{-\infty}^{\hat{y}}(\hat{y}-y)f(y)\,dy + \int_{\hat{y}}^{\infty}(y-\hat{y})f(y)\,dy$.
 
 Differentiating under the integral sign:
 
 $$
 \begin{aligned}
-\frac{d}{dm}\,\mathbb{E}[|y-m|]
-&= F(m) - \big[1 - F(m)\big] \\
-&= 2F(m) - 1
+\frac{d}{d\hat{y}}\,\mathbb{E}[|y-\hat{y}|] &= F(\hat{y}) - \big[1 - F(\hat{y})\big] \\
+&= 2F(\hat{y}) - 1
 \end{aligned}
 $$
 
 Setting this to zero:
 
 $$
-2F(m) - 1 = 0 \;\implies\; F(m) = \tfrac{1}{2} \tag{2}
+2F(\hat{y}) - 1 = 0 \;\implies\; F(\hat{y}) = \tfrac{1}{2} \tag{2}
 $$
 
 ::: {.eo-definition}
-$F(m) = 1/2$ is, by definition, the **median**. The conditional median minimizes expected absolute error.
+$F(\hat{y}) = 1/2$ is, by definition, the **median**. The conditional median minimizes expected absolute error.
 :::
 
 ---
@@ -224,7 +226,7 @@ Section 2
 
 > Every time series analysis begins with a convention for labeling observations in time.
 
-- Time index $t$ runs over $\mathcal{T} = \{1, \ldots, T\}$ (sample) or $\mathcal{T} = \mathbb{Z}$ (theoretical process)
+- Time index $t$ runs over $\mathcal{T} = \{1, \ldots, T\}$ (sample)
 - Arithmetic on $t$ is meaningful: $y_t - y_{t-1}$ is the change; $y_{t-12}$ is a year ago (monthly data); $y_{T+h}$ is $h$ periods beyond the sample
 - $\mathcal{F}_t$ — the **information set**: everything observable at time $t$
 
@@ -238,6 +240,8 @@ $$
 
 ## The Lag and Difference Operators
 
+Time series notation can become very complex very fast. Some operators help reduce notation and simplify mathematical expressions.
+
 ::: {.eo-definition}
 **Lag operator** $L$: $\quad Ly_t = y_{t-1}$, and $L^k y_t = y_{t-k}$
 :::
@@ -245,8 +249,6 @@ $$
 ::: {.eo-definition}
 **Difference operator** $\Delta$: $\quad \Delta y_t = y_t - y_{t-1} = (1-L)y_t$
 :::
-
-These are not shorthand for convenience — they let us write an entire model class as a single polynomial equation. The AR($p$) model, for instance, compresses to $\Phi(L)y_t = c + \varepsilon_t$. We will lean on this constantly starting in Chapter 3.
 
 ---
 
@@ -270,7 +272,8 @@ Purely a statement about the first two moments — no pattern, no memory, no str
 
 ![](../../chapters/01/chapter_01_files/figure-html/fig-wn-series-output-1.png){fig-alt="Gaussian white noise time series with no visible pattern, and its sample ACF showing all bars near zero and inside the confidence band"}
 
-*Top: a simulated Gaussian white noise series — no trend, no visible pattern. Bottom: its sample ACF. Every bar sits inside the $\pm1.96/\sqrt{T}$ confidence band — exactly what "zero autocorrelation at every nonzero lag" looks like in practice.*
+*Top: a simulated Gaussian white noise series — no trend, no visible pattern.*
+*Bottom: its sample ACF. Every bar sits inside the $\pm1.96/\sqrt{T}$ confidence band — there is no memory to extract.*
 
 ::: {.notes}
 Quick visual anchor before moving to the IID vs weak white noise distinction.
@@ -310,41 +313,53 @@ Section 3
 
 ## A Time Series Model Is a Difference Equation
 
-> What is an AR(1) model, mechanically — before we ever call it a "model"?
+> All time series is built on top of **differential equations**
 
 A first-order deterministic rule relating today's value to yesterday's:
-
-$$
-y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots
-$$
+- $y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots$
 
 Add white noise $\varepsilon_t \sim WN(0,\sigma^2)$:
+- $y_t = \phi\,y_{t-1} + c + \varepsilon_t$
+
+Given an initial value $y_0$
 
 $$
-y_t = \phi\,y_{t-1} + c + \varepsilon_t
+\begin{align*}
+y_1 &= \phi\,y_0 + c \\
+y_2 &= \phi\,y_1 + c = \phi^2\,y_0 + (1 + \phi) c \\
+y_3 &= \phi\,y_2 + c = \phi^3\,y_0 + (1 + \phi^2 + \phi) c \\
+& \vdots \\ 
+y_t &= \phi\,y_{t-1} + c = \phi^t\,y_0 + (1 + \phi^{t-1} + ... + \phi) c \\
+\end{align*}
 $$
 
-::: {.eo-recap}
-This *is* the AR(1) model. Everything we call "time series econometrics" starts as ordinary difference-equation mathematics with a random shock bolted on. We develop the deterministic theory first — the statistical properties follow directly.
+::: {.eo-definition}
+The **value** of $\phi$ is crucial for the behavior and stability of $y$.
 :::
 
 ---
 
 ## First-Order: Homogeneous and Particular Solutions
 
+We need to infer the behavioral structure of the series.
+
 We want $y_t$ as an explicit function of $t$ and $y_0$. Split the solution:
 
 $$
-y_t = \underbrace{y_t^{(h)}}_{\text{homogeneous}} + \underbrace{y_t^{(p)}}_{\text{particular}}
+y_t = \underbrace{\phi\,y_{t-1}}_{\text{homogeneous}} + \underbrace{c}_{\text{particular}} = y_t^{(h)} + y_t^{(p)}
 $$
 
-**Homogeneous** ($c=0$): try $y_t^{(h)} = A\lambda^t$.
-
+**Homogeneous** ($c=0$): try an exponential function:
 $$
-A\lambda^t = \phi A\lambda^{t-1} \;\implies\; \lambda=\phi
+\begin{align*}
+y_t^{(h)} &= A\lambda^t \\
+A\lambda^t &= \phi A \lambda^{t-1}  \leftarrow \text{substituting:}\, y_t^{(h)}= \phi y_{t-1}^{(h)} \\
+\lambda &= \phi
+\end{align*}
 $$
 
-$\lambda=\phi$ is the **characteristic root** — the lone root of $\lambda - \phi = 0$.
+
+- $\lambda=\phi$ is the **characteristic root** — the lone root of $\lambda - \phi = 0$.
 
 **Particular** (constant forcing): try $y_t^{(p)}=k$.
 
@@ -424,17 +439,24 @@ An explosive root is not just "unstable" in the way a unit root is — deviation
 When $\phi=1$, the constant particular solution breaks down ($k=c/(1-\phi)$ is undefined). Trying $y_t^{(p)}=kt$ instead gives $k=c$, so:
 
 $$
-y_t = y_0 + ct
+\begin{align*}
+y_t &= \phi^t y_0 + ct \\
+y_t &= y_0 + ct 
+\end{align*}
 $$
 
-— linear trend if $c\neq 0$ (random walk with drift), or no return to any level if $c=0$ (pure random walk).
+— If $c\neq0$: random walk with drift
+- If $c=0$: pure random walk (no level to return to)
+linear trend if $c\neq 0$ (random walk with drift), or no return to any level if $c=0$ (pure random walk).
 
-With noise, $\phi=1$ gives $y_t = y_{t-1}+\mu+\varepsilon_t$. First-differencing:
-
+Add noise to a pure random walk and take the first-difference
 $$
-\Delta y_t = y_t - y_{t-1} = \mu + \varepsilon_t
+\begin{align*}
+y_t &= y_{t-1} + \mu + \varepsilon_t \\
+\Delta y_t &= \mu + \varepsilon \\
+\Delta y_t &= \varepsilon \quad \left(\text{if } \mu=0 \right)
+\end{align*}
 $$
-
 ::: {.eo-recap}
 What's left after differencing a unit-root series is **just white noise**. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step.
 :::
@@ -455,13 +477,13 @@ $\text{Var}(y_t) = t\sigma^2$ grows **linearly in $t$** — no stable process be
 
 ## The $p$-th Order Case and the Companion Matrix
 
-The direct multiperiod generalization — an AR($p$):
+What if the series has a large number $(p)$ of lags? — an AR($p$). Any shortcuts?
 
 $$
 y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 $$
 
-Stack the relevant lags into a state vector $\mathbf{z}_t = (y_t, y_{t-1}, \ldots, y_{t-p+1})'$. The scalar $p$-th order equation becomes a **first-order vector** equation:
+Stack the relevant lags into a state vector $\mathbf{z}_t = (y_t, y_{t-1}, \ldots, y_{t-p+1})'$ and $\mathbf{c} = (c, 0, ..., )'$. The scalar $p$-th order equation becomes a **first-order vector** equation:
 
 $$
 \mathbf{z}_t = \mathbf{F}\mathbf{z}_{t-1} + \mathbf{c}, \qquad
@@ -473,16 +495,15 @@ $$
 0 & 0 & \cdots & 0
 \end{pmatrix}
 $$
-
 ::: {.eo-recap}
-Not a new equation — the same AR($p$) reorganized. Row 1 reads off exactly equation (1); every other row just records $y_{t-j}=y_{t-j}$.
+This is the same AR($p$) reorganized. Row 1 reads off exactly equation (1); every other row just records $y_{t-j}=y_{t-j}$.
 :::
 
 ---
 
 ## Eigenvalues *Are* the Characteristic Roots
 
-> We already know how to find eigenvalues from Matrix Algebra Parts I–II. What do they tell us here?
+**Why do this?**
 
 ::: {.eo-definition}
 **Proposition.** The eigenvalues of the companion matrix $\mathbf{F}$ are identical to the characteristic roots $\lambda_1,\ldots,\lambda_p$ of the original $p$-th order difference equation.
@@ -496,7 +517,7 @@ $$
 
 is exactly the scalar equation's characteristic polynomial — same object, two derivations.
 
-We don't re-derive eigenvalues here — we already have them. This is the payoff of the appendix: stability of an entire AR($p$) system reduces to a computation you already know how to do.
+One single "matrix" approach to a differential equation of any degree $p$.
 
 ---
 
@@ -757,7 +778,7 @@ The unit root null $\phi=1$ becomes $H_0:\delta=0$; the stationary alternative b
 **Augmented Dickey-Fuller (ADF).** Adds lagged differences to absorb serial correlation:
 
 $$
-\Delta y_t = \delta y_{t-1} + \sum_{j=1}^p \psi_j \Delta y_{t-j} + \alpha+\beta t + u_t
+\Delta y_t = \delta y_{t-1} + \sum_{j=1}^p \psi_j \Delta y_{t-j} + c+\beta t + u_t
 $$
 
 Test statistic: the $t$-ratio on $\hat\delta$.
@@ -770,8 +791,8 @@ Test statistic: the $t$-ratio on $\hat\delta$.
 | Specification | Terms | Use when... |
 |:---|:---|:---|
 | No constant, no trend | None | Zero-mean series, no drift |
-| Constant only | $\alpha$ | Non-zero mean |
-| Constant and trend | $\alpha+\beta t$ | May trend under $H_1$ |
+| Constant only | $c$ | Non-zero mean |
+| Constant and trend | $c+\beta t$ | May trend under $H_1$ |
 
 The correct choice is determined by the **alternative hypothesis** — always let the time plot guide it.
 
@@ -891,45 +912,3 @@ Chapter 2 turns to **decomposition and smoothing** — breaking a series into tr
 The connection to this chapter is direct: decomposition is, in part, another way of asking the stationarity question — is the trend deterministic or stochastic? — but now with an eye toward *forecasting* each component separately rather than just diagnosing it.
 
 We'll return to real GDP and CPI as running examples, this time asking not "is this series stationary?" but "what is the cleanest way to separate what's predictable from what isn't?"
-
----
-
-## Key Terms
-
-::: {.eo-keyterms}
-Forecasting
-: Forming the conditional expectation $\mathbb{E}[y_{T+h}\mid\mathcal{F}_T]$ — conditional prediction, distinct from cross-sectional prediction and causal inference.
-
-Loss function
-: Encodes the cost of a forecast error; squared error loss is minimized by the conditional mean, absolute error loss by the conditional median.
-
-Lag operator $L$ / Difference operator $\Delta$
-: $Ly_t=y_{t-1}$; $\Delta y_t=(1-L)y_t$ — the algebra underlying every model class in this course.
-
-White noise / IID noise
-: Zero mean, constant variance, zero autocovariance at all nonzero lags; IID noise adds full independence, not just uncorrelatedness.
-
-Characteristic root / Eigenvalue
-: Root of a difference equation's characteristic polynomial; equivalently, an eigenvalue of the companion matrix $\mathbf{F}$.
-
-Stable / Unit root / Explosive
-: $|\lambda_j|<1$ / $=1$ / $>1$ — convergent, permanently-affected, or unbounded dynamics.
-
-ACF $\rho(h)$ / PACF $\alpha(h)$
-: Total vs. direct correlation between $y_t$ and $y_{t-h}$, after removing intermediate lags for the PACF.
-
-Weak stationarity
-: Constant mean, constant variance, autocovariance depending only on lag.
-
-Trend-stationary / Difference-stationary
-: Nonstationary via deterministic trend (transitory shocks, fix by detrending) vs. via unit root (permanent shocks, fix by differencing).
-
-$I(d)$
-: Integrated of order $d$ — requires $d$ rounds of differencing to reach stationarity.
-
-ADF test / KPSS test
-: $H_0$: unit root, reject toward stationarity — vs. $H_0$: stationarity, reject toward unit root. Read jointly.
-
-Spurious regression
-: Apparent, statistically "significant" relationship between unrelated nonstationary series, arising from shared trending.
-:::

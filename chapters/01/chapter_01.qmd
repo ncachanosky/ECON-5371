@@ -878,77 +878,6 @@ $$\alpha(2) = \frac{\rho(2) - \rho(1)^2}{1 - \rho(1)^2}$$
 
 For general $h$, the PACF is computed via the Yule-Walker equationsWe derive this recursion properly in Chapter 3, where it appears in its natural context as a method for estimating AR(p) parameters. For now, the key skill is interpreting the output, not computing it by hand.  
 
-
-The figure below makes the contrast concrete. In the ACF panel, the correlation between $y_t$ and $y_{t-2}$ travels along two routes: the direct link and the indirect route via $y_{t-1}$. The total $\rho(2)$ conflates both. In the PACF panel, the influence of $y_{t-1}$ is blocked (the intermediate node is faded), and only the residual direct dependence $\alpha(2)$ remains.
-
-```{python}
-#| label: fig-acfpacf-path
-#| fig-cap: "ACF vs PACF at lag $h=2$. Left: the ACF $\\rho(2)$ captures the total correlation between $y_t$ and $y_{t-2}$, including the indirect path routed through $y_{t-1}$ (copper chain arrows). Right: the PACF $\\alpha(2)$ controls for $y_{t-1}$ (shown faded), blocking the indirect route and measuring only the residual direct dependence. The faded node and dashed links represent the variation that has been partialled out."
-#| fig-width: 6
-#| fig-height: 2.6
-#| code-fold: true
-#| code-summary: "Show code — ACF vs PACF path diagram"
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 2.6), constrained_layout=True)
-
-def _node(ax, x, y, label, ec=EO_CHARCOAL, alpha=1.0, r=0.20):
-    circ = plt.Circle((x, y), r, facecolor=PAGE_BG, edgecolor=ec,
-                      linewidth=1.2, alpha=alpha, zorder=3)
-    ax.add_patch(circ)
-    ax.text(x, y, label, ha='center', va='center',
-            fontsize=7, color=ec, alpha=alpha, fontfamily='serif', zorder=4)
-
-def _arc(ax, x1, y1, x2, y2, color=EO_CHARCOAL, lw=1.2, alpha=1.0,
-         rad=0.0, label='', lx=0.0, ly=0.18):
-    ax.annotate('', xy=(x2, y2), xytext=(x1, y1),
-                arrowprops=dict(arrowstyle='->', color=color, lw=lw,
-                                alpha=alpha,
-                                connectionstyle=f'arc3,rad={rad}'),
-                zorder=2)
-    if label:
-        ax.text((x1+x2)/2 + lx, (y1+y2)/2 + ly, label,
-                ha='center', va='center', fontsize=7,
-                color=color, alpha=alpha)
-
-for ax in (ax1, ax2):
-    ax.set_xlim(-0.5, 2.5)
-    ax.set_ylim(-0.85, 0.65)
-    ax.axis('off')
-
-# ── ACF panel ─────────────────────────────────────────────────────────────────
-ax1.set_title(r"ACF: $\rho(2)$ — total correlation", fontsize=8, pad=3)
-_node(ax1, 0, 0, r'$y_t$')
-_node(ax1, 1, 0, r'$y_{t{-}1}$')
-_node(ax1, 2, 0, r'$y_{t{-}2}$')
-
-# Chain: y_t -> y_{t-1} -> y_{t-2}  (copper, above)
-_arc(ax1, 0.20, 0.06, 0.80, 0.06, color=EO_COPPER, label=r'$\rho(1)$', ly=0.18)
-_arc(ax1, 1.20, 0.06, 1.80, 0.06, color=EO_COPPER, label=r'$\rho(1)$', ly=0.18)
-
-# Total arc below (sky blue)
-_arc(ax1, 0.20, -0.08, 1.80, -0.08,
-     color=EO_SKYBLUE, lw=1.5, rad=-0.42,
-     label=r'$\rho(2)$', ly=-0.34)
-
-# ── PACF panel ────────────────────────────────────────────────────────────────
-ax2.set_title(r"PACF: $\alpha(2)$ — direct effect only", fontsize=8, pad=3)
-_node(ax2, 0, 0, r'$y_t$')
-_node(ax2, 1, 0, r'$y_{t{-}1}$', ec='#BBBBBB', alpha=0.4)   # faded
-_node(ax2, 2, 0, r'$y_{t{-}2}$')
-
-# Blocked indirect paths (dashed, light grey)
-_arc(ax2, 0.20, 0.06, 0.80, 0.06, color='#CCCCCC', lw=0.8, alpha=0.5)
-_arc(ax2, 1.20, 0.06, 1.80, 0.06, color='#CCCCCC', lw=0.8, alpha=0.5)
-
-# Direct partial correlation (copper arc)
-_arc(ax2, 0.20, -0.08, 1.80, -0.08,
-     color=EO_COPPER, lw=1.5, rad=-0.42,
-     label=r'$\alpha(2)$', ly=-0.34)
-
-eo_suptitle(fig, "Direct vs Total Dependence: ACF and PACF at Lag 2")
-plt.show()
-```
-
 The ACF and PACF together serve as the primary diagnostic tool for model identification. Their joint behavior reveals the structure of the underlying process and guides the choice of model class and order. Chapter 3 develops these identification patterns in full, once the AR, MA, and ARMA families have been formally introduced. For now, the key skill is computing and reading these functions — the interpretation deepens with each model class we study.
 
 ### Python Example: ACF and PACF for US GDP and CPI
@@ -1137,15 +1066,15 @@ $$\Delta y_t = \delta y_{t-1} + c + \varepsilon_t, \qquad \delta = \phi - 1$$
 
 The unit root null $\phi = 1$ becomes $H_0: \delta = 0$; the stationary alternative $\phi < 1$ becomes $H_1: \delta < 0$. This is a one-sided test. The **Augmented Dickey-Fuller test** adds lagged differences to absorb serial correlation in the errors:
 
-$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + \alpha + \beta t + u_t \tag{1.7}$$
+$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + c + \beta t + u_t \tag{1.7}$$
 
-Here $\alpha$ is the constant term — the deterministic counterpart of $c$ in the AR(1) notation — and $\beta t$ is the optional linear trend. The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
+The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
 
 | Specification | Regression equation | Use when... |
 |:---|:---|:---|
 | No constant, no trend | $\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series is zero-mean with no drift |
-| Constant only | $\Delta y_t = \alpha + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series has a non-zero mean |
-| Constant and trend | $\Delta y_t = \alpha + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series may trend under $H_1$ |
+| Constant only | $\Delta y_t = c + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series has a non-zero mean |
+| Constant and trend | $\Delta y_t = c + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series may trend under $H_1$ |
 
 : ADF specification choices {#tbl-adf-specs}
 

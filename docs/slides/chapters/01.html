@@ -153,8 +153,11 @@ Nicolas Cachanosky, Department of Economics and Finance
 <ul>
 <li>Not the subject matter — not that it’s economics, or finance</li>
 <li>The answer: each observation is connected to the ones before it</li>
-<li>In cross-sectional work, independence is the <em>ideal</em>. Here, dependence is the <em>object of study</em></li>
-<li>That single shift changes every tool we use: estimators, standard errors, tests — even the questions we ask</li>
+<li>In cross-sectional work, independence is the <em>ideal</em>. Here, dependence is the <strong>object of study</strong></li>
+<li>That single shift changes the questions we can and should ask
+<ul>
+<li>And therefore it changes how we look at estimators, standard errors, and tests</li>
+</ul></li>
 </ul>
 <aside class="notes">
 <p>Open here, board or slide. This is the thesis of the entire course, not just the chapter — worth letting it land before moving to logistics. ~3 min.</p>
@@ -181,6 +184,9 @@ Nicolas Cachanosky, Department of Economics and Finance
 </ol>
 <div class="eo-recap">
 <p>Everything in Chapters 2–11 is a variation on these four ideas. Get this chapter right, and the rest of the course is mostly extension, not new territory.</p>
+</div>
+<div class="eo-definition">
+<p>Today you need to be <strong>patient</strong>. We’ll be introducing concepts that may (or may not) be new to you. We’ll start to put this concepts together in the upcoming chapters.</p>
 </div>
 </section>
 <section id="todays-roadmap" class="slide level2 outline-slide">
@@ -221,21 +227,22 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 <div class="eo-recap">
-<p>Trends, cycles, volatility clustering, unit roots — what distinguishes these series is exactly what this course teaches you to characterize and model.</p>
+<p>This course teaches, among other tools, how to extract the different underlying behavior of series that look the same to the eye.</p>
 </div>
 </section>
 <section id="what-forecasting-is" class="slide level2">
 <h2>What Forecasting <em>Is</em></h2>
-<blockquote>
-<p>Using what we know today to say something credible about tomorrow.</p>
-</blockquote>
-<p>Sounds simple. It is easy to confuse with two things it is <strong>not</strong>:</p>
-<div class="eo-definition">
-<p><strong>Forecasting</strong> — forming the conditional expectation <span class="math inline">\(\mathbb{E}[y_{T+h} \mid \mathcal{F}_T]\)</span>: an exercise in conditional <em>prediction</em>.</p>
-</div>
 <ul>
-<li><strong>Not cross-sectional prediction</strong> — no temporal ordering, no information set that closes at a point in time</li>
-<li><strong>Not causal inference</strong> — a forecast can work perfectly well built on pure correlation</li>
+<li>What forecasting is <strong>not</strong>
+<ul>
+<li><strong>Prediction</strong>: Cross-sectionl data, there is no time — and therefore no temporal component</li>
+<li><strong>Causal inference</strong>: Does not requires a causal relationship — a forecast can work perfectly well built on pure correlation</li>
+</ul></li>
+<li>What forecasting <strong>is</strong>
+<ul>
+<li>The conditional expectation <span class="math inline">\(\mathbb{E}[y_{T+h} \mid \mathcal{F}_T]\)</span></li>
+<li>An exercise in conditional <strong>prediction on time</strong>.</li>
+</ul></li>
 </ul>
 <div class="eo-hazard">
 <p><strong>Common mistake.</strong> Lagged <span class="math inline">\(X\)</span> helping forecast <span class="math inline">\(Y\)</span> is tempting to read as “<span class="math inline">\(X\)</span> causes <span class="math inline">\(Y\)</span>.” It doesn’t. It only means <span class="math inline">\(X\)</span> carries information about <span class="math inline">\(Y\)</span>’s future path — that’s all Granger causality (later in the course) formalizes.</p>
@@ -253,12 +260,12 @@ Nicolas Cachanosky, Department of Economics and Finance
 \]</span></p>
 <p><strong>Density forecast</strong> — the full probability distribution <span class="math inline">\(\hat{p}(y_{T+h}\mid \mathcal{F}_T)\)</span>: every detail of our uncertainty, skewness and tail risk included</p>
 <div class="eo-recap">
-<p>Point forecasts are the most common in practice — and the most incomplete. They say nothing about how confident we should be.</p>
+<p>Forecasts <strong>are not</strong> about point predictions. Forecasts are about a “likely” range of values. The main role of the point estimate is to calibrate the location of the interval.</p>
 </div>
 </section>
 <section id="what-makes-economic-forecasting-hard" class="slide level2">
 <h2>What Makes Economic Forecasting Hard</h2>
-<p>Genuinely harder than weather forecasting. Why?</p>
+<p>Economic forecasting can be harder than weather forecasting. Why?</p>
 <ul>
 <li><strong>Structural change</strong> — economic relationships aren’t physical laws; they shift as institutions, technology, and policy change</li>
 <li><strong>Measurement error and revisions</strong> — today’s GDP release is not the number we’ll have in two years</li>
@@ -272,29 +279,29 @@ Nicolas Cachanosky, Department of Economics and Finance
 <section id="the-loss-function" class="slide level2">
 <h2>The Loss Function</h2>
 <blockquote>
-<p>Why does the conditional mean solve the forecasting problem — and does that answer depend on how we define “solve”?</p>
+<p>There are <span class="math inline">\(\infty\)</span> ways to forecast <span class="math inline">\(y_t\)</span>; how are they evaluated? What’s the benchmark?</p>
 </blockquote>
-<p>The <strong>loss function</strong> <span class="math inline">\(\mathcal{L}(e_{T+h})\)</span>, where <span class="math inline">\(e_{T+h} = y_{T+h} - \hat{y}_{T+h|T}\)</span>, encodes our preference over different kinds of mistakes.</p>
+<p>The <strong>loss function</strong> defines how the forecast is going to be evaluated</p>
+<p>Let <span class="math inline">\(e_{T+h} = y_{T+h} - \hat{y}_{T+h|T} \quad\)</span> be the “loss” — the forecast error.</p>
 <ul>
 <li><strong>Squared error loss:</strong> <span class="math inline">\(\mathcal{L}(e) = e^2\)</span> — symmetric, penalizes large errors disproportionately</li>
 <li><strong>Absolute error loss:</strong> <span class="math inline">\(\mathcal{L}(e) = |e|\)</span> — symmetric, penalty linear in error size</li>
 <li><strong>Asymmetric loss</strong> — over- and under-forecasting cost differently (a central bank facing surprise inflation vs.&nbsp;surprise deflation)</li>
 </ul>
-<p>Different preferences imply <strong>different optimal forecasts</strong> — this is not a technicality.</p>
+<p>Which forecast is optimal depends on how the <strong>loss function</strong> is defined.</p>
 </section>
 <section id="why-squared-loss-gives-the-mean" class="slide level2">
 <h2>Why Squared Loss Gives the Mean</h2>
-<p>We want <span class="math inline">\(m\)</span> minimizing <span class="math inline">\(\mathbb{E}[(y-m)^2]\)</span>.</p>
+<p>We want <span class="math inline">\(m\)</span> minimizing <span class="math inline">\(\mathbb{E}[(y-\hat{y})^2]\)</span>.</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{d}{dm}\,\mathbb{E}[(y-m)^2]
-&amp;= \frac{d}{dm}\,\mathbb{E}[y^2 - 2my + m^2] \\
-&amp;= -2\,\mathbb{E}[y] + 2m
+\frac{d}{\hat{y}}\,\mathbb{E}[(y-\hat{y})^2] &amp;= \frac{d}{d\hat{y}}\,\mathbb{E}[y^2 - 2\hat{y}y + \hat{y}^2] \\
+&amp;= -2\,\mathbb{E}[y] + 2\hat{y}
 \end{aligned}
 \]</span></p>
 <p>Setting this to zero:</p>
 <p><span class="math display">\[
--2\,\mathbb{E}[y] + 2m = 0 \;\implies\; m = \mathbb{E}[y] \tag{1}
+-2\,\mathbb{E}[y] + 2\hat{y} = 0 \;\implies\; \hat{y} = \mathbb{E}[y] \tag{1}
 \]</span></p>
 <div class="eo-definition">
 <p>The <strong>conditional mean</strong> minimizes expected squared error. This is why <span class="math inline">\(\hat{y}_{T+h|T} = \mathbb{E}[y_{T+h}\mid\mathcal{F}_T]\)</span> is the optimal forecast <em>specifically under squared error loss</em> — not universally.</p>
@@ -302,21 +309,20 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="why-absolute-loss-gives-the-median" class="slide level2">
 <h2>Why Absolute Loss Gives the Median</h2>
-<p>We want <span class="math inline">\(m\)</span> minimizing <span class="math inline">\(\mathbb{E}[|y-m|] = \displaystyle\int_{-\infty}^{m}(m-y)f(y)\,dy + \int_{m}^{\infty}(y-m)f(y)\,dy\)</span>.</p>
+<p>We want <span class="math inline">\(\hat{y}\)</span> minimizing <span class="math inline">\(\mathbb{E}[|y-\hat{y}|] = \displaystyle\int_{-\infty}^{\hat{y}}(\hat{y}-y)f(y)\,dy + \int_{\hat{y}}^{\infty}(y-\hat{y})f(y)\,dy\)</span>.</p>
 <p>Differentiating under the integral sign:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{d}{dm}\,\mathbb{E}[|y-m|]
-&amp;= F(m) - \big[1 - F(m)\big] \\
-&amp;= 2F(m) - 1
+\frac{d}{d\hat{y}}\,\mathbb{E}[|y-\hat{y}|] &amp;= F(\hat{y}) - \big[1 - F(\hat{y})\big] \\
+&amp;= 2F(\hat{y}) - 1
 \end{aligned}
 \]</span></p>
 <p>Setting this to zero:</p>
 <p><span class="math display">\[
-2F(m) - 1 = 0 \;\implies\; F(m) = \tfrac{1}{2} \tag{2}
+2F(\hat{y}) - 1 = 0 \;\implies\; F(\hat{y}) = \tfrac{1}{2} \tag{2}
 \]</span></p>
 <div class="eo-definition">
-<p><span class="math inline">\(F(m) = 1/2\)</span> is, by definition, the <strong>median</strong>. The conditional median minimizes expected absolute error.</p>
+<p><span class="math inline">\(F(\hat{y}) = 1/2\)</span> is, by definition, the <strong>median</strong>. The conditional median minimizes expected absolute error.</p>
 </div>
 </section>
 <section id="why-this-difference-matters" class="slide level2">
@@ -340,7 +346,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 <p>Every time series analysis begins with a convention for labeling observations in time.</p>
 </blockquote>
 <ul>
-<li>Time index <span class="math inline">\(t\)</span> runs over <span class="math inline">\(\mathcal{T} = \{1, \ldots, T\}\)</span> (sample) or <span class="math inline">\(\mathcal{T} = \mathbb{Z}\)</span> (theoretical process)</li>
+<li>Time index <span class="math inline">\(t\)</span> runs over <span class="math inline">\(\mathcal{T} = \{1, \ldots, T\}\)</span> (sample)</li>
 <li>Arithmetic on <span class="math inline">\(t\)</span> is meaningful: <span class="math inline">\(y_t - y_{t-1}\)</span> is the change; <span class="math inline">\(y_{t-12}\)</span> is a year ago (monthly data); <span class="math inline">\(y_{T+h}\)</span> is <span class="math inline">\(h\)</span> periods beyond the sample</li>
 <li><span class="math inline">\(\mathcal{F}_t\)</span> — the <strong>information set</strong>: everything observable at time <span class="math inline">\(t\)</span></li>
 </ul>
@@ -351,13 +357,13 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="the-lag-and-difference-operators" class="slide level2">
 <h2>The Lag and Difference Operators</h2>
+<p>Time series notation can become very complex very fast. Some operators help reduce notation and simplify mathematical expressions.</p>
 <div class="eo-definition">
 <p><strong>Lag operator</strong> <span class="math inline">\(L\)</span>: <span class="math inline">\(\quad Ly_t = y_{t-1}\)</span>, and <span class="math inline">\(L^k y_t = y_{t-k}\)</span></p>
 </div>
 <div class="eo-definition">
 <p><strong>Difference operator</strong> <span class="math inline">\(\Delta\)</span>: <span class="math inline">\(\quad \Delta y_t = y_t - y_{t-1} = (1-L)y_t\)</span></p>
 </div>
-<p>These are not shorthand for convenience — they let us write an entire model class as a single polynomial equation. The AR(<span class="math inline">\(p\)</span>) model, for instance, compresses to <span class="math inline">\(\Phi(L)y_t = c + \varepsilon_t\)</span>. We will lean on this constantly starting in Chapter 3.</p>
 </section>
 <section id="white-noise" class="slide level2">
 <h2>White Noise</h2>
@@ -375,7 +381,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 <section id="white-noise-what-it-looks-like" class="slide level2">
 <h2>White Noise: What It Looks Like</h2>
 
-<img data-src="../../chapters/01/chapter_01_files/figure-html/fig-wn-series-output-1.png" class="img-fluid r-stretch" alt="Gaussian white noise time series with no visible pattern, and its sample ACF showing all bars near zero and inside the confidence band"><p><em>Top: a simulated Gaussian white noise series — no trend, no visible pattern. Bottom: its sample ACF. Every bar sits inside the <span class="math inline">\(\pm1.96/\sqrt{T}\)</span> confidence band — exactly what “zero autocorrelation at every nonzero lag” looks like in practice.</em></p>
+<img data-src="../../chapters/01/chapter_01_files/figure-html/fig-wn-series-output-1.png" class="img-fluid r-stretch" alt="Gaussian white noise time series with no visible pattern, and its sample ACF showing all bars near zero and inside the confidence band"><p><em>Top: a simulated Gaussian white noise series — no trend, no visible pattern.</em> <em>Bottom: its sample ACF. Every bar sits inside the <span class="math inline">\(\pm1.96/\sqrt{T}\)</span> confidence band — there is no memory to extract.</em></p>
 <aside class="notes">
 <p>Quick visual anchor before moving to the IID vs weak white noise distinction. The point: white noise is a low bar to clear on the ACF alone — which is exactly why the ARCH/GARCH forward-pointer on the next slide matters.</p>
 <style type="text/css">
@@ -413,31 +419,41 @@ Nicolas Cachanosky, Department of Economics and Finance
 <section id="a-time-series-model-is-a-difference-equation" class="slide level2">
 <h2>A Time Series Model Is a Difference Equation</h2>
 <blockquote>
-<p>What is an AR(1) model, mechanically — before we ever call it a “model”?</p>
+<p>All time series is built on top of <strong>differential equations</strong></p>
 </blockquote>
-<p>A first-order deterministic rule relating today’s value to yesterday’s:</p>
+<p>A first-order deterministic rule relating today’s value to yesterday’s: - <span class="math inline">\(y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots\)</span></p>
+<p>Add white noise <span class="math inline">\(\varepsilon_t \sim WN(0,\sigma^2)\)</span>: - <span class="math inline">\(y_t = \phi\,y_{t-1} + c + \varepsilon_t\)</span></p>
+<p>Given an initial value <span class="math inline">\(y_0\)</span></p>
 <p><span class="math display">\[
-y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots
+\begin{align*}
+y_1 &amp;= \phi\,y_0 + c \\
+y_2 &amp;= \phi\,y_1 + c = \phi^2\,y_0 + (1 + \phi) c \\
+y_3 &amp;= \phi\,y_2 + c = \phi^3\,y_0 + (1 + \phi^2 + \phi) c \\
+&amp; \vdots \\
+y_t &amp;= \phi\,y_{t-1} + c = \phi^t\,y_0 + (1 + \phi^{t-1} + ... + \phi) c \\
+\end{align*}
 \]</span></p>
-<p>Add white noise <span class="math inline">\(\varepsilon_t \sim WN(0,\sigma^2)\)</span>:</p>
-<p><span class="math display">\[
-y_t = \phi\,y_{t-1} + c + \varepsilon_t
-\]</span></p>
-<div class="eo-recap">
-<p>This <em>is</em> the AR(1) model. Everything we call “time series econometrics” starts as ordinary difference-equation mathematics with a random shock bolted on. We develop the deterministic theory first — the statistical properties follow directly.</p>
+<div class="eo-definition">
+<p>The <strong>value</strong> of <span class="math inline">\(\phi\)</span> is crucial for the behavior and stability of <span class="math inline">\(y\)</span>.</p>
 </div>
 </section>
 <section id="first-order-homogeneous-and-particular-solutions" class="slide level2">
 <h2>First-Order: Homogeneous and Particular Solutions</h2>
+<p>We need to infer the behavioral structure of the series.</p>
 <p>We want <span class="math inline">\(y_t\)</span> as an explicit function of <span class="math inline">\(t\)</span> and <span class="math inline">\(y_0\)</span>. Split the solution:</p>
 <p><span class="math display">\[
-y_t = \underbrace{y_t^{(h)}}_{\text{homogeneous}} + \underbrace{y_t^{(p)}}_{\text{particular}}
+y_t = \underbrace{\phi\,y_{t-1}}_{\text{homogeneous}} + \underbrace{c}_{\text{particular}} = y_t^{(h)} + y_t^{(p)}
 \]</span></p>
-<p><strong>Homogeneous</strong> (<span class="math inline">\(c=0\)</span>): try <span class="math inline">\(y_t^{(h)} = A\lambda^t\)</span>.</p>
-<p><span class="math display">\[
-A\lambda^t = \phi A\lambda^{t-1} \;\implies\; \lambda=\phi
+<p><strong>Homogeneous</strong> (<span class="math inline">\(c=0\)</span>): try an exponential function: <span class="math display">\[
+\begin{align*}
+y_t^{(h)} &amp;= A\lambda^t \\
+A\lambda^t &amp;= \phi A \lambda^{t-1}  \leftarrow \text{substituting:}\, y_t^{(h)}= \phi y_{t-1}^{(h)} \\
+\lambda &amp;= \phi
+\end{align*}
 \]</span></p>
-<p><span class="math inline">\(\lambda=\phi\)</span> is the <strong>characteristic root</strong> — the lone root of <span class="math inline">\(\lambda - \phi = 0\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\lambda=\phi\)</span> is the <strong>characteristic root</strong> — the lone root of <span class="math inline">\(\lambda - \phi = 0\)</span>.</li>
+</ul>
 <p><strong>Particular</strong> (constant forcing): try <span class="math inline">\(y_t^{(p)}=k\)</span>.</p>
 <p><span class="math display">\[
 k = \phi k + c \;\implies\; k = \frac{c}{1-\phi}, \quad \phi\neq 1
@@ -507,16 +523,19 @@ y_t = \left(y_0 - \frac{c}{1-\phi}\right)\phi^t + \frac{c}{1-\phi} \tag{1}
 <h2>The Unit Root Case and Why Differencing Works</h2>
 <p>When <span class="math inline">\(\phi=1\)</span>, the constant particular solution breaks down (<span class="math inline">\(k=c/(1-\phi)\)</span> is undefined). Trying <span class="math inline">\(y_t^{(p)}=kt\)</span> instead gives <span class="math inline">\(k=c\)</span>, so:</p>
 <p><span class="math display">\[
-y_t = y_0 + ct
+\begin{align*}
+y_t &amp;= \phi^t y_0 + ct \\
+y_t &amp;= y_0 + ct
+\end{align*}
 \]</span></p>
-<p>— linear trend if <span class="math inline">\(c\neq 0\)</span> (random walk with drift), or no return to any level if <span class="math inline">\(c=0\)</span> (pure random walk).</p>
-<p>With noise, <span class="math inline">\(\phi=1\)</span> gives <span class="math inline">\(y_t = y_{t-1}+\mu+\varepsilon_t\)</span>. First-differencing:</p>
-<p><span class="math display">\[
-\Delta y_t = y_t - y_{t-1} = \mu + \varepsilon_t
-\]</span></p>
-<div class="eo-recap">
-<p>What’s left after differencing a unit-root series is <strong>just white noise</strong>. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step.</p>
-</div>
+<p>— If <span class="math inline">\(c\neq0\)</span>: random walk with drift - If <span class="math inline">\(c=0\)</span>: pure random walk (no level to return to) linear trend if <span class="math inline">\(c\neq 0\)</span> (random walk with drift), or no return to any level if <span class="math inline">\(c=0\)</span> (pure random walk).</p>
+<p>Add noise to a pure random walk and take the first-difference <span class="math display">\[
+\begin{align*}
+y_t &amp;= y_{t-1} + \mu + \varepsilon_t \\
+\Delta y_t &amp;= \mu + \varepsilon \\
+\Delta y_t &amp;= \varepsilon \quad \left(\text{if } \mu=0 \right)
+\end{align*}
+\]</span> ::: {.eo-recap} What’s left after differencing a unit-root series is <strong>just white noise</strong>. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step. :::</p>
 </section>
 <section id="random-walks-dont-return" class="slide level2">
 <h2>Random Walks Don’t Return</h2>
@@ -528,11 +547,11 @@ y_t = y_0 + ct
 </section>
 <section id="the-p-th-order-case-and-the-companion-matrix" class="slide level2">
 <h2>The <span class="math inline">\(p\)</span>-th Order Case and the Companion Matrix</h2>
-<p>The direct multiperiod generalization — an AR(<span class="math inline">\(p\)</span>):</p>
+<p>What if the series has a large number <span class="math inline">\((p)\)</span> of lags? — an AR(<span class="math inline">\(p\)</span>). Any shortcuts?</p>
 <p><span class="math display">\[
 y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 \]</span></p>
-<p>Stack the relevant lags into a state vector <span class="math inline">\(\mathbf{z}_t = (y_t, y_{t-1}, \ldots, y_{t-p+1})'\)</span>. The scalar <span class="math inline">\(p\)</span>-th order equation becomes a <strong>first-order vector</strong> equation:</p>
+<p>Stack the relevant lags into a state vector <span class="math inline">\(\mathbf{z}_t = (y_t, y_{t-1}, \ldots, y_{t-p+1})'\)</span> and <span class="math inline">\(\mathbf{c} = (c, 0, ..., )'\)</span>. The scalar <span class="math inline">\(p\)</span>-th order equation becomes a <strong>first-order vector</strong> equation:</p>
 <p><span class="math display">\[
 \mathbf{z}_t = \mathbf{F}\mathbf{z}_{t-1} + \mathbf{c}, \qquad
 \mathbf{F} = \begin{pmatrix}
@@ -542,16 +561,11 @@ y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 \vdots &amp; &amp; \ddots &amp; \vdots \\
 0 &amp; 0 &amp; \cdots &amp; 0
 \end{pmatrix}
-\]</span></p>
-<div class="eo-recap">
-<p>Not a new equation — the same AR(<span class="math inline">\(p\)</span>) reorganized. Row 1 reads off exactly equation (1); every other row just records <span class="math inline">\(y_{t-j}=y_{t-j}\)</span>.</p>
-</div>
+\]</span> ::: {.eo-recap} This is the same AR(<span class="math inline">\(p\)</span>) reorganized. Row 1 reads off exactly equation (1); every other row just records <span class="math inline">\(y_{t-j}=y_{t-j}\)</span>. :::</p>
 </section>
 <section id="eigenvalues-are-the-characteristic-roots" class="slide level2">
 <h2>Eigenvalues <em>Are</em> the Characteristic Roots</h2>
-<blockquote>
-<p>We already know how to find eigenvalues from Matrix Algebra Parts I–II. What do they tell us here?</p>
-</blockquote>
+<p><strong>Why do this?</strong></p>
 <div class="eo-definition">
 <p><strong>Proposition.</strong> The eigenvalues of the companion matrix <span class="math inline">\(\mathbf{F}\)</span> are identical to the characteristic roots <span class="math inline">\(\lambda_1,\ldots,\lambda_p\)</span> of the original <span class="math inline">\(p\)</span>-th order difference equation.</p>
 </div>
@@ -560,7 +574,7 @@ y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 \det(\lambda\mathbf{I}-\mathbf{F}) = \lambda^p - \phi_1\lambda^{p-1} - \cdots - \phi_p,
 \]</span></p>
 <p>is exactly the scalar equation’s characteristic polynomial — same object, two derivations.</p>
-<p>We don’t re-derive eigenvalues here — we already have them. This is the payoff of the appendix: stability of an entire AR(<span class="math inline">\(p\)</span>) system reduces to a computation you already know how to do.</p>
+<p>One single “matrix” approach to a differential equation of any degree <span class="math inline">\(p\)</span>.</p>
 </section>
 <section id="stability-via-eigenvalues" class="slide level2">
 <h2>Stability via Eigenvalues</h2>
@@ -777,7 +791,7 @@ y_t = \phi_{h,1}y_{t-1}+\cdots+\phi_{h,h}y_{t-h}+\varepsilon_t^{(h)}, \qquad \al
 <div class="eo-definition">
 <p><strong>Augmented Dickey-Fuller (ADF).</strong> Adds lagged differences to absorb serial correlation:</p>
 <p><span class="math display">\[
-\Delta y_t = \delta y_{t-1} + \sum_{j=1}^p \psi_j \Delta y_{t-j} + \alpha+\beta t + u_t
+\Delta y_t = \delta y_{t-1} + \sum_{j=1}^p \psi_j \Delta y_{t-j} + c+\beta t + u_t
 \]</span></p>
 <p>Test statistic: the <span class="math inline">\(t\)</span>-ratio on <span class="math inline">\(\hat\delta\)</span>.</p>
 </div>
@@ -800,12 +814,12 @@ y_t = \phi_{h,1}y_{t-1}+\cdots+\phi_{h,h}y_{t-h}+\varepsilon_t^{(h)}, \qquad \al
 </tr>
 <tr class="even">
 <td style="text-align: left;">Constant only</td>
-<td style="text-align: left;"><span class="math inline">\(\alpha\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(c\)</span></td>
 <td style="text-align: left;">Non-zero mean</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Constant and trend</td>
-<td style="text-align: left;"><span class="math inline">\(\alpha+\beta t\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(c+\beta t\)</span></td>
 <td style="text-align: left;">May trend under <span class="math inline">\(H_1\)</span></td>
 </tr>
 </tbody>
@@ -938,61 +952,6 @@ y_t = \xi t + r_t + \varepsilon_t, \qquad r_t = r_{t-1}+u_t,\; u_t\sim WN(0,\sig
 <p>Chapter 2 turns to <strong>decomposition and smoothing</strong> — breaking a series into trend, seasonal, and irregular components, and building the exponential smoothing (ETS) family of forecasting models on top of that decomposition.</p>
 <p>The connection to this chapter is direct: decomposition is, in part, another way of asking the stationarity question — is the trend deterministic or stochastic? — but now with an eye toward <em>forecasting</em> each component separately rather than just diagnosing it.</p>
 <p>We’ll return to real GDP and CPI as running examples, this time asking not “is this series stationary?” but “what is the cleanest way to separate what’s predictable from what isn’t?”</p>
-</section>
-<section id="key-terms" class="slide level2">
-<h2>Key Terms</h2>
-<div class="eo-keyterms">
-<dl>
-<dt>Forecasting</dt>
-<dd>
-Forming the conditional expectation <span class="math inline">\(\mathbb{E}[y_{T+h}\mid\mathcal{F}_T]\)</span> — conditional prediction, distinct from cross-sectional prediction and causal inference.
-</dd>
-<dt>Loss function</dt>
-<dd>
-Encodes the cost of a forecast error; squared error loss is minimized by the conditional mean, absolute error loss by the conditional median.
-</dd>
-<dt>Lag operator <span class="math inline">\(L\)</span> / Difference operator <span class="math inline">\(\Delta\)</span></dt>
-<dd>
-<span class="math inline">\(Ly_t=y_{t-1}\)</span>; <span class="math inline">\(\Delta y_t=(1-L)y_t\)</span> — the algebra underlying every model class in this course.
-</dd>
-<dt>White noise / IID noise</dt>
-<dd>
-Zero mean, constant variance, zero autocovariance at all nonzero lags; IID noise adds full independence, not just uncorrelatedness.
-</dd>
-<dt>Characteristic root / Eigenvalue</dt>
-<dd>
-Root of a difference equation’s characteristic polynomial; equivalently, an eigenvalue of the companion matrix <span class="math inline">\(\mathbf{F}\)</span>.
-</dd>
-<dt>Stable / Unit root / Explosive</dt>
-<dd>
-<span class="math inline">\(|\lambda_j|&lt;1\)</span> / <span class="math inline">\(=1\)</span> / <span class="math inline">\(&gt;1\)</span> — convergent, permanently-affected, or unbounded dynamics.
-</dd>
-<dt>ACF <span class="math inline">\(\rho(h)\)</span> / PACF <span class="math inline">\(\alpha(h)\)</span></dt>
-<dd>
-Total vs.&nbsp;direct correlation between <span class="math inline">\(y_t\)</span> and <span class="math inline">\(y_{t-h}\)</span>, after removing intermediate lags for the PACF.
-</dd>
-<dt>Weak stationarity</dt>
-<dd>
-Constant mean, constant variance, autocovariance depending only on lag.
-</dd>
-<dt>Trend-stationary / Difference-stationary</dt>
-<dd>
-Nonstationary via deterministic trend (transitory shocks, fix by detrending) vs.&nbsp;via unit root (permanent shocks, fix by differencing).
-</dd>
-<dt><span class="math inline">\(I(d)\)</span></dt>
-<dd>
-Integrated of order <span class="math inline">\(d\)</span> — requires <span class="math inline">\(d\)</span> rounds of differencing to reach stationarity.
-</dd>
-<dt>ADF test / KPSS test</dt>
-<dd>
-<span class="math inline">\(H_0\)</span>: unit root, reject toward stationarity — vs.&nbsp;<span class="math inline">\(H_0\)</span>: stationarity, reject toward unit root. Read jointly.
-</dd>
-<dt>Spurious regression</dt>
-<dd>
-Apparent, statistically “significant” relationship between unrelated nonstationary series, arising from shared trending.
-</dd>
-</dl>
-</div>
 
 </section>
     </div>
