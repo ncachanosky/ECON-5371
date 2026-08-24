@@ -10,12 +10,8 @@ title-slide-attributes:
 
 ## Why Bother With This Notation?
 
-> A VAR with four variables and four lags is sixteen equations. Written in matrix form, it is one line.
-
 - Matrix algebra is a **labor-saving device**, not an added layer of abstraction
-- Every result we prove later — stability, forecast variance, impulse responses — is easier once written this way
-- OLS itself collapses from page-long summation formulas to $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$
-- By reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake
+- It follow that by reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake
 
 ::: {.notes}
 Open with the VAR example on the board or a slide before this one if useful.
@@ -392,24 +388,14 @@ Beyond $3\times 3$, hand computation gets tedious fast — a $4\times4$ determin
 
 Expanding the cofactor formula fully gives an equivalent version with **no minors at all** — a signed sum of diagonal products:
 
-$$
-\begin{aligned}
-\det(\mathbf{A}) = \; &a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} \\
-- \; &a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
-\end{aligned}
-$$
-
-**Add** the three top-left-to-bottom-right diagonal products, **subtract** the three bottom-left-to-top-right diagonal products.
-
 ::: {.eo-definition}
-**Rule of Sarrus.** Write the first two columns of $\mathbf{A}$ again to the right of the matrix, then read the six diagonals directly off the page. Specific to $3\times 3$ — does **not** generalize to larger matrices, unlike cofactor expansion.
+$$
+\det(\mathbf{A}) = \; (a_{11}a_{22}a_{33}) + (a_{12}a_{23}a_{31}) + (a_{13}a_{21}a_{32}) - (a_{13}a_{22}a_{31}) - (a_{12}a_{21}a_{33}) - (a_{11}a_{23}a_{32})
+$$
 :::
 
-Same numeric example as before, both formulas agree:
-
-$$
-\det(\mathbf{A}) = \underbrace{10+0+6}_{\text{diagonal sum}} - \underbrace{1-0-16}_{\text{diagonal sum}} = -1
-$$
+**Add** the three top-left-to-bottom-right diagonal products
+**Subtract** the three bottom-left-to-top-right diagonal products
 
 ---
 
@@ -420,10 +406,8 @@ $$
 \begin{bmatrix} 2 & 0 & 1 \\ 1 & 3 & 2 \\ 4 & 1 & 3 \end{bmatrix}
 $$
 
-Copy the first two columns to the right, then multiply along the six diagonals:
-
 - Sum of top left $\to$ bottom-right diagonals: (2)(3)(3) + (0)(2)(4) + (1)(1)(1) = 18 + 0 + 1 = 19
-- Sum of botton-left $\to$ top-right diagonals: (4)(3)(1) + (1)(2)(2) + (3)(1)(0) = 12 + 4 + 0 = 16
+- Sum of botton-left $\to$ top-right diagonals: (1)(3)(4) + (0)(1)(3) + (2)(2)(1) = 12 + 0 + 4 = 16
 
 Determinant: $\det(\mathbf{A}) = |A| = 19-16=3$
 
@@ -483,15 +467,7 @@ Any one of the three can be written as a combination of the other two — that s
 
 $\mathbf{P} = \begin{bmatrix}1&2\\2&4\end{bmatrix}$, second column $=2\times$ first $\Rightarrow \det(\mathbf{P})=0$, $\text{rank}(\mathbf{P})=1$.
 
----
-
-## Why This Matters: Multicollinearity
-
-::: {.eo-hazard}
-**Perfect multicollinearity is rank deficiency.** If one regressor is an exact linear combination of others — a variable in dollars and the same variable in thousands of dollars, both included — the columns of $\mathbf{X}$ are dependent, $\mathbf{X}'\mathbf{X}$ is rank-deficient, $\det(\mathbf{X}'\mathbf{X})=0$, and $(\mathbf{X}'\mathbf{X})^{-1}$ **does not exist**. The regression cannot be estimated.
-:::
-
-Rank is not bookkeeping — it is the reason a regression can fail to run.
+If your regression data is in **$X$**, then coefficients cannot be calculated if **$(X\prime X)$** is not full-rank.
 
 ---
 

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
-  <meta name="dcterms.date" content="2026-08-21">
+  <meta name="dcterms.date" content="2026-08-24">
   <title>Matrix Algebra, Part I</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -143,18 +143,13 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 
-  <p class="date">2026-08-21</p>
+  <p class="date">2026-08-24</p>
 </section>
 <section id="why-bother-with-this-notation" class="slide level2">
 <h2>Why Bother With This Notation?</h2>
-<blockquote>
-<p>A VAR with four variables and four lags is sixteen equations. Written in matrix form, it is one line.</p>
-</blockquote>
 <ul>
 <li>Matrix algebra is a <strong>labor-saving device</strong>, not an added layer of abstraction</li>
-<li>Every result we prove later — stability, forecast variance, impulse responses — is easier once written this way</li>
-<li>OLS itself collapses from page-long summation formulas to <span class="math inline">\(\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}\)</span></li>
-<li>By reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake</li>
+<li>It follow that by reducing algebraic steps, matrix algebra minimizes the chances of a making a calculation mistake</li>
 </ul>
 <aside class="notes">
 <p>Open with the VAR example on the board or a slide before this one if useful. Framing: this is not math for its own sake — it’s the language the rest of the course is written in. ~3 min.</p>
@@ -469,20 +464,12 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 <section id="the-direct-formula-diagonals-not-minors" class="slide level2">
 <h2>The Direct Formula: Diagonals, Not Minors</h2>
 <p>Expanding the cofactor formula fully gives an equivalent version with <strong>no minors at all</strong> — a signed sum of diagonal products:</p>
-<p><span class="math display">\[
-\begin{aligned}
-\det(\mathbf{A}) = \; &amp;a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} \\
-- \; &amp;a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
-\end{aligned}
-\]</span></p>
-<p><strong>Add</strong> the three top-left-to-bottom-right diagonal products, <strong>subtract</strong> the three bottom-left-to-top-right diagonal products.</p>
 <div class="eo-definition">
-<p><strong>Rule of Sarrus.</strong> Write the first two columns of <span class="math inline">\(\mathbf{A}\)</span> again to the right of the matrix, then read the six diagonals directly off the page. Specific to <span class="math inline">\(3\times 3\)</span> — does <strong>not</strong> generalize to larger matrices, unlike cofactor expansion.</p>
-</div>
-<p>Same numeric example as before, both formulas agree:</p>
 <p><span class="math display">\[
-\det(\mathbf{A}) = \underbrace{10+0+6}_{\text{diagonal sum}} - \underbrace{1-0-16}_{\text{diagonal sum}} = -1
+\det(\mathbf{A}) = \; (a_{11}a_{22}a_{33}) + (a_{12}a_{23}a_{31}) + (a_{13}a_{21}a_{32}) - (a_{13}a_{22}a_{31}) - (a_{12}a_{21}a_{33}) - (a_{11}a_{23}a_{32})
 \]</span></p>
+</div>
+<p><strong>Add</strong> the three top-left-to-bottom-right diagonal products <strong>Subtract</strong> the three bottom-left-to-top-right diagonal products</p>
 </section>
 <section id="determinant-by-diagonals-a-full-worked-example" class="slide level2">
 <h2>Determinant by Diagonals: A Full Worked Example</h2>
@@ -490,10 +477,9 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 \mathbf{A} =
 \begin{bmatrix} 2 &amp; 0 &amp; 1 \\ 1 &amp; 3 &amp; 2 \\ 4 &amp; 1 &amp; 3 \end{bmatrix}
 \]</span></p>
-<p>Copy the first two columns to the right, then multiply along the six diagonals:</p>
 <ul>
 <li>Sum of top left <span class="math inline">\(\to\)</span> bottom-right diagonals: (2)(3)(3) + (0)(2)(4) + (1)(1)(1) = 18 + 0 + 1 = 19</li>
-<li>Sum of botton-left <span class="math inline">\(\to\)</span> top-right diagonals: (4)(3)(1) + (1)(2)(2) + (3)(1)(0) = 12 + 4 + 0 = 16</li>
+<li>Sum of botton-left <span class="math inline">\(\to\)</span> top-right diagonals: (1)(3)(4) + (0)(1)(3) + (2)(2)(1) = 12 + 0 + 4 = 16</li>
 </ul>
 <p>Determinant: <span class="math inline">\(\det(\mathbf{A}) = |A| = 19-16=3\)</span></p>
 <div class="eo-recap">
@@ -539,13 +525,7 @@ c_{22} &amp;= (3)(6)+(4)(8) = 50
 <p><strong>The connection.</strong> <span class="math inline">\(\mathbf{A}\)</span> is nonsingular <span class="math inline">\(\iff\)</span> full rank. Singularity and rank deficiency are the <em>same condition</em>, described two ways: one via a computed scalar, one via the information content of the rows/columns.</p>
 </div>
 <p><span class="math inline">\(\mathbf{P} = \begin{bmatrix}1&amp;2\\2&amp;4\end{bmatrix}\)</span>, second column <span class="math inline">\(=2\times\)</span> first <span class="math inline">\(\Rightarrow \det(\mathbf{P})=0\)</span>, <span class="math inline">\(\text{rank}(\mathbf{P})=1\)</span>.</p>
-</section>
-<section id="why-this-matters-multicollinearity" class="slide level2">
-<h2>Why This Matters: Multicollinearity</h2>
-<div class="eo-hazard">
-<p><strong>Perfect multicollinearity is rank deficiency.</strong> If one regressor is an exact linear combination of others — a variable in dollars and the same variable in thousands of dollars, both included — the columns of <span class="math inline">\(\mathbf{X}\)</span> are dependent, <span class="math inline">\(\mathbf{X}'\mathbf{X}\)</span> is rank-deficient, <span class="math inline">\(\det(\mathbf{X}'\mathbf{X})=0\)</span>, and <span class="math inline">\((\mathbf{X}'\mathbf{X})^{-1}\)</span> <strong>does not exist</strong>. The regression cannot be estimated.</p>
-</div>
-<p>Rank is not bookkeeping — it is the reason a regression can fail to run.</p>
+<p>If your regression data is in <strong><span class="math inline">\(X\)</span></strong>, then coefficients cannot be calculated if <strong><span class="math inline">\((X\prime X)\)</span></strong> is not full-rank.</p>
 </section>
 <section id="recap" class="slide level2 recap-slide" data-background-color="#87A96B" data-footer="false">
 <h2>Recap</h2>
