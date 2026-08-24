@@ -457,7 +457,7 @@ For most of this course, we work with weak white noise, noting when stronger ass
 
 This section is the mathematical core of the chapter. The machinery developed here — characteristic roots, companion matrices, eigenvalues, stability conditions — underpins every model in this course. It is worth working through carefully, because the payoff is large: by the end of this section, the concepts of stationarity, unit roots, and explosive processes follow almost as corollaries.
 
-A time series model is, at its core, a **[difference equation (with constant coefficients)](https://en.wikipedia.org/wiki/Linear_recurrence_with_constant_coefficients#Characteristic_equation_and_roots** — a rule relating the current value of a variable to its own past values and possibly to external inputs. A first-order deterministic example:
+A time series model is, at its core, a **[difference equation (with constant coefficients)](https://en.wikipedia.org/wiki/Linear_recurrence_with_constant_coefficients#Characteristic_equation_and_roots)** — a rule relating the current value of a variable to its own past values and possibly to external inputs. A first-order deterministic example:
 
 $$y_t = \phi y_{t-1} + c, \qquad t = 1, 2, 3, \ldots$$
 
