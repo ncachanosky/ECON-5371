@@ -167,7 +167,7 @@ By the end of this chapter, you will be able to:
 
 ### Data with a Memory
 
-Here is a question that seems almost too simple to be worth asking: what makes [time series](https://en.wikipedia.org/wiki/Time_series) data different from any other kind of data?
+What makes [time series](https://en.wikipedia.org/wiki/Time_series) data different from any other kind of data?
 
 The answer is not the subject matter. It is not that time series involve economics, or finance, or any particular domain. The answer is that time series data have a memory. Each observation is connected to the ones that came before it, and that connection is not a statistical nuisance to be corrected — it is the signal we are trying to model. Strip away the temporal ordering, and you have destroyed the most important thing the data contain.
 
