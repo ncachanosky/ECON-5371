@@ -315,11 +315,9 @@ Section 3
 
 > All time series is built on top of **differential equations**
 
-A first-order deterministic rule relating today's value to yesterday's:
-- $y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots$
+A first-order deterministic rule relating today's value to yesterday's: $y_t = \phi\,y_{t-1} + c \quad (t=1,2,3,\ldots)$
 
-Add white noise $\varepsilon_t \sim WN(0,\sigma^2)$:
-- $y_t = \phi\,y_{t-1} + c + \varepsilon_t$
+Add white noise $\varepsilon_t \sim WN(0,\sigma^2)$: $y_t = \phi\,y_{t-1} + c + \varepsilon_t$
 
 Given an initial value $y_0$
 
@@ -341,9 +339,7 @@ The **value** of $\phi$ is crucial for the behavior and stability of $y$.
 
 ## First-Order: Homogeneous and Particular Solutions
 
-We need to infer the behavioral structure of the series.
-
-We want $y_t$ as an explicit function of $t$ and $y_0$. Split the solution:
+We need to infer the behavioral structure of the series. We want $y_t$ as an explicit function of $t$ and $y_0$. Split the solution:
 
 $$
 y_t = \underbrace{\phi\,y_{t-1}}_{\text{homogeneous}} + \underbrace{c}_{\text{particular}} = y_t^{(h)} + y_t^{(p)}
@@ -445,8 +441,8 @@ y_t &= y_0 + ct
 \end{align*}
 $$
 
-— If $c\neq0$: random walk with drift
-- If $c=0$: pure random walk (no level to return to)
+* If $c\neq0$: random walk with drift  
+* If $c=0$: pure random walk (no level to return to)
 linear trend if $c\neq 0$ (random walk with drift), or no return to any level if $c=0$ (pure random walk).
 
 Add noise to a pure random walk and take the first-difference
@@ -457,8 +453,9 @@ y_t &= y_{t-1} + \mu + \varepsilon_t \\
 \Delta y_t &= \varepsilon \quad \left(\text{if } \mu=0 \right)
 \end{align*}
 $$
+
 ::: {.eo-recap}
-What's left after differencing a unit-root series is **just white noise**. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step.
+What's left after differencing a unit-root series is **just white noise**. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step.  
 :::
 
 ---
@@ -495,8 +492,9 @@ $$
 0 & 0 & \cdots & 0
 \end{pmatrix}
 $$
+
 ::: {.eo-recap}
-This is the same AR($p$) reorganized. Row 1 reads off exactly equation (1); every other row just records $y_{t-j}=y_{t-j}$.
+This is the same AR($p$) reorganized. Row 1 reads off exactly equation (1); every other row just records $y_{t-j}=y_{t-j}$.  
 :::
 
 ---
@@ -551,20 +549,6 @@ Any eigenvalue **on** the circle signals a unit root; any eigenvalue **outside**
 
 ::: {.eo-section-label}
 Section 4
-:::
-
----
-
-## Measuring Temporal Dependence
-
-> Two stationary processes can both have a stable mean and variance — and still "feel" completely different. What's missing from that picture?
-
-- One series barely correlated from one period to the next
-- Another remains strongly correlated for many lags before fading
-- Both can be stationary. Stationarity says nothing about **how fast** dependence decays
-
-::: {.eo-recap}
-The tools in this section measure exactly that — the shape of temporal dependence. They double as our first informal diagnostic for nonstationarity, well before we introduce formal tests later in this chapter.
 :::
 
 ---

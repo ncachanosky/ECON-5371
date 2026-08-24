@@ -421,8 +421,8 @@ Nicolas Cachanosky, Department of Economics and Finance
 <blockquote>
 <p>All time series is built on top of <strong>differential equations</strong></p>
 </blockquote>
-<p>A first-order deterministic rule relating today’s value to yesterday’s: - <span class="math inline">\(y_t = \phi\,y_{t-1} + c, \qquad t=1,2,3,\ldots\)</span></p>
-<p>Add white noise <span class="math inline">\(\varepsilon_t \sim WN(0,\sigma^2)\)</span>: - <span class="math inline">\(y_t = \phi\,y_{t-1} + c + \varepsilon_t\)</span></p>
+<p>A first-order deterministic rule relating today’s value to yesterday’s: <span class="math inline">\(y_t = \phi\,y_{t-1} + c \quad (t=1,2,3,\ldots)\)</span></p>
+<p>Add white noise <span class="math inline">\(\varepsilon_t \sim WN(0,\sigma^2)\)</span>: <span class="math inline">\(y_t = \phi\,y_{t-1} + c + \varepsilon_t\)</span></p>
 <p>Given an initial value <span class="math inline">\(y_0\)</span></p>
 <p><span class="math display">\[
 \begin{align*}
@@ -439,8 +439,7 @@ y_t &amp;= \phi\,y_{t-1} + c = \phi^t\,y_0 + (1 + \phi^{t-1} + ... + \phi) c \\
 </section>
 <section id="first-order-homogeneous-and-particular-solutions" class="slide level2">
 <h2>First-Order: Homogeneous and Particular Solutions</h2>
-<p>We need to infer the behavioral structure of the series.</p>
-<p>We want <span class="math inline">\(y_t\)</span> as an explicit function of <span class="math inline">\(t\)</span> and <span class="math inline">\(y_0\)</span>. Split the solution:</p>
+<p>We need to infer the behavioral structure of the series. We want <span class="math inline">\(y_t\)</span> as an explicit function of <span class="math inline">\(t\)</span> and <span class="math inline">\(y_0\)</span>. Split the solution:</p>
 <p><span class="math display">\[
 y_t = \underbrace{\phi\,y_{t-1}}_{\text{homogeneous}} + \underbrace{c}_{\text{particular}} = y_t^{(h)} + y_t^{(p)}
 \]</span></p>
@@ -528,14 +527,21 @@ y_t &amp;= \phi^t y_0 + ct \\
 y_t &amp;= y_0 + ct
 \end{align*}
 \]</span></p>
-<p>— If <span class="math inline">\(c\neq0\)</span>: random walk with drift - If <span class="math inline">\(c=0\)</span>: pure random walk (no level to return to) linear trend if <span class="math inline">\(c\neq 0\)</span> (random walk with drift), or no return to any level if <span class="math inline">\(c=0\)</span> (pure random walk).</p>
+<ul>
+<li>If <span class="math inline">\(c\neq0\)</span>: random walk with drift<br>
+</li>
+<li>If <span class="math inline">\(c=0\)</span>: pure random walk (no level to return to) linear trend if <span class="math inline">\(c\neq 0\)</span> (random walk with drift), or no return to any level if <span class="math inline">\(c=0\)</span> (pure random walk).</li>
+</ul>
 <p>Add noise to a pure random walk and take the first-difference <span class="math display">\[
 \begin{align*}
 y_t &amp;= y_{t-1} + \mu + \varepsilon_t \\
 \Delta y_t &amp;= \mu + \varepsilon \\
 \Delta y_t &amp;= \varepsilon \quad \left(\text{if } \mu=0 \right)
 \end{align*}
-\]</span> ::: {.eo-recap} What’s left after differencing a unit-root series is <strong>just white noise</strong>. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step. :::</p>
+\]</span></p>
+<div class="eo-recap">
+<p>What’s left after differencing a unit-root series is <strong>just white noise</strong>. This is the mechanical reason differencing removes a stochastic trend — it undoes the accumulation of past shocks that a random walk performs at every step.</p>
+</div>
 </section>
 <section id="random-walks-dont-return" class="slide level2">
 <h2>Random Walks Don’t Return</h2>
@@ -561,7 +567,10 @@ y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 \vdots &amp; &amp; \ddots &amp; \vdots \\
 0 &amp; 0 &amp; \cdots &amp; 0
 \end{pmatrix}
-\]</span> ::: {.eo-recap} This is the same AR(<span class="math inline">\(p\)</span>) reorganized. Row 1 reads off exactly equation (1); every other row just records <span class="math inline">\(y_{t-j}=y_{t-j}\)</span>. :::</p>
+\]</span></p>
+<div class="eo-recap">
+<p>This is the same AR(<span class="math inline">\(p\)</span>) reorganized. Row 1 reads off exactly equation (1); every other row just records <span class="math inline">\(y_{t-j}=y_{t-j}\)</span>.</p>
+</div>
 </section>
 <section id="eigenvalues-are-the-characteristic-roots" class="slide level2">
 <h2>Eigenvalues <em>Are</em> the Characteristic Roots</h2>
@@ -600,20 +609,6 @@ y_t = \phi_1 y_{t-1} + \cdots + \phi_p y_{t-p} + c + \varepsilon_t
 <h2>The ACF and PACF</h2>
 <div class="eo-section-label">
 <p>Section 4</p>
-</div>
-</section>
-<section id="measuring-temporal-dependence" class="slide level2">
-<h2>Measuring Temporal Dependence</h2>
-<blockquote>
-<p>Two stationary processes can both have a stable mean and variance — and still “feel” completely different. What’s missing from that picture?</p>
-</blockquote>
-<ul>
-<li>One series barely correlated from one period to the next</li>
-<li>Another remains strongly correlated for many lags before fading</li>
-<li>Both can be stationary. Stationarity says nothing about <strong>how fast</strong> dependence decays</li>
-</ul>
-<div class="eo-recap">
-<p>The tools in this section measure exactly that — the shape of temporal dependence. They double as our first informal diagnostic for nonstationarity, well before we introduce formal tests later in this chapter.</p>
 </div>
 </section>
 <section id="the-autocovariance-and-autocorrelation-functions" class="slide level2">
