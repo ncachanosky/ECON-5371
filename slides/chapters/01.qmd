@@ -441,9 +441,9 @@ y_t &= y_0 + ct
 \end{align*}
 $$
 
-* If $c\neq0$: random walk with drift  
 * If $c=0$: pure random walk (no level to return to)
-linear trend if $c\neq 0$ (random walk with drift), or no return to any level if $c=0$ (pure random walk).
+* If $c\neq0$: random walk with drift (linear trend)  
+
 
 Add noise to a pure random walk and take the first-difference
 $$

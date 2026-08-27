@@ -18,7 +18,7 @@ title-slide-attributes:
 - Every time series tells two stories simultaneously: where it's headed long-run, and where it stands right now relative to that path
 
 ::: {.eo-recap}
-Separating those two stories — trend versus deviation from trend — is exactly what this chapter's tools do. The Fed's "output gap," the BLS's seasonally adjusted unemployment rate, every headline GDP number you read: all of them are decompositions, whether the reader realizes it or not.
+Separating those two stories — trend versus deviation from trend — is what this chapter's tools do. The Fed's "output gap," the BLS's seasonally adjusted unemployment rate, every headline GDP number you read: all of them are decompositions, whether the reader realizes it or not.
 :::
 
 ::: {.notes}
@@ -71,7 +71,7 @@ Look at any macroeconomic series over a long horizon and three distinct patterns
 - **Irregular** — what's left after trend and season are removed — where the business cycle signal lives
 
 ::: {.eo-recap}
-This is not an academic exercise. Every major economic data release you have ever read in the news has already been passed through some form of decomposition before it reached you.
+Every major economic data release you have ever read in the news has already been passed through some form of decomposition before it reached you.
 :::
 
 ---
@@ -114,7 +114,7 @@ Two versions of the same underlying series:
 :::
 
 ::: {.eo-hazard}
-**Units.** `GDPC1` is a Seasonally Adjusted Annual Rate (SAAR) — each quarter's value is multiplied by 4. `ND000334Q` is a raw quarterly *total*. Plotting them together without converting NSA to SAAR first makes the SA series look four times larger for no economic reason — a units error, not a seasonal one.
+**Units.** `GDPC1` is a Seasonally Adjusted Annual Rate (SAAR) — each quarter's value is multiplied by 4. `ND000334Q` is a raw quarterly *total*. Plotting them together without converting NSA to SAAR first makes the SA series look four times larger for no economic reason.
 :::
 
 ---
@@ -161,8 +161,6 @@ The oldest, most transparent approach: replace each observation with a **local a
 ::: {.eo-recap}
 Whatever the moving average *misses* becomes the seasonal and irregular components — trend estimation and decomposition are the same operation, viewed from two sides.
 :::
-
-No free smoothing parameter here — unlike the filters in Section 4, the averaging window is fixed by the seasonal period $m$ itself.
 
 ---
 
@@ -240,13 +238,10 @@ This is exactly why more flexible trend filters — HP, Hamilton, STL — have l
 
 ![](../../chapters/02/chapter_02_files/figure-html/fig-classical-decomp-output-1.png){fig-alt="Three panels: observed log NSA GDP overlaid with its 2x4 moving average trend, the seasonal factors, and the irregular remainder, with NBER recessions shaded"}
 
-*Top: observed (charcoal) vs. 2×4 MA trend (copper) — closely tracking. Middle: seasonal factors — large ($\pm2$–3%) and stable across nearly eighty years. Bottom: the irregular remainder, where the business cycle signal lives — visible dips at every major postwar recession.*
+*Top: observed (charcoal) vs. 2×4 MA trend (copper) — closely tracking. Middle: seasonal factors — large ($\pm2$–3%) and stable across nearly eighty years. Bottom: the irregular remainder, where the business cycle signal lives.*
 
 ::: {.notes}
-Four things worth naming if time allows: smooth near-linear trend in logs
-(consistent with balanced growth), large stable seasonal factors, and
-recession dips in '74-75, '81-82, '08-09, '20. Don't over-narrate — let
-the figure do the work, ~2 min max.
+Four things worth naming if time allows: smooth near-linear trend in logs (consistent with balanced growth), large stable seasonal factors, and recession dips in '74-75, '81-82, '08-09, '20. Don't over-narrate — let the figure do the work, ~2 min max.
 :::
 
 ---
@@ -320,7 +315,7 @@ The trend at each step comes from **Loess** — locally weighted polynomial regr
 Four user-controlled parameters: `period` ($m$), `seasonal` (width of the seasonal Loess window), `trend` (width of the trend Loess window), `robust` (outlier-resistant outer loop).
 
 ::: {.eo-recap}
-**Where the two methods genuinely differ.** STL treats the seasonal component as slowly varying but does **not** model calendar effects (trading days, Easter, holidays) — X-13 does. STL is additive by default; X-13 integrates ARIMA-based extension natively. STL is fully transparent, reproducible in Python; X-13 is an institutional standard with decades of accumulated logic.
+**Where the two methods differ.** STL treats the seasonal component as slowly varying but does **not** model calendar effects (trading days, Easter, holidays) — X-13 does. STL is additive by default; X-13 integrates ARIMA-based extension natively. STL is fully transparent, reproducible in Python; X-13 is an institutional standard with decades of accumulated logic.
 :::
 
 For research and teaching: STL. For the official figures in a statistical release: X-13.
@@ -428,7 +423,7 @@ Simple to apply, transparent objective, cycles that broadly match NBER dates. Th
 
 ## Hamilton's Critique
 
-> James Hamilton (2018, *Review of Economics and Statistics*): "Why You Should Never Use the Hodrick-Prescott Filter." Three fundamental problems.
+> James Hamilton (2018, *Review of Economics and Statistics*): "Why You Should **Never** Use the Hodrick-Prescott Filter." Three fundamental problems.
 
 ::: {.eo-hazard}
 **1. Spurious cycles.** Applying HP to a *pure random walk* — no cyclical component by construction — produces a cyclical residual with the same statistical properties as what practitioners report as real business cycles. The filter manufactures structure from noise.
@@ -507,7 +502,7 @@ Section 5
 Exponential smoothing methods form a weighted average of past observations, with weights declining **geometrically** the further back in time you go.
 
 ::: {.eo-recap}
-This is the first genuinely *forward-looking* tool in the chapter — everything before this point described the data; from here on, we're building forecasting machinery on top of that description.
+This is the first genuinely *forward-looking* tool in the textbook — everything before this point described the data; from here on, we're building forecasting machinery on top of that description.
 :::
 
 ---

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
-  <meta name="dcterms.date" content="2026-08-24">
+  <meta name="dcterms.date" content="2026-08-27">
   <title>Foundations of Time Series Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -143,7 +143,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 
-  <p class="date">2026-08-24</p>
+  <p class="date">2026-08-27</p>
 </section>
 <section id="data-with-a-memory" class="slide level2">
 <h2>Data With a Memory</h2>
@@ -528,9 +528,8 @@ y_t &amp;= y_0 + ct
 \end{align*}
 \]</span></p>
 <ul>
-<li>If <span class="math inline">\(c\neq0\)</span>: random walk with drift<br>
-</li>
-<li>If <span class="math inline">\(c=0\)</span>: pure random walk (no level to return to) linear trend if <span class="math inline">\(c\neq 0\)</span> (random walk with drift), or no return to any level if <span class="math inline">\(c=0\)</span> (pure random walk).</li>
+<li>If <span class="math inline">\(c=0\)</span>: pure random walk (no level to return to)</li>
+<li>If <span class="math inline">\(c\neq0\)</span>: random walk with drift (linear trend)</li>
 </ul>
 <p>Add noise to a pure random walk and take the first-difference <span class="math display">\[
 \begin{align*}

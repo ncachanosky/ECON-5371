@@ -167,7 +167,7 @@ By the end of this chapter, you will be able to:
 
 ### Data with a Memory
 
-What makes [time series](https://en.wikipedia.org/wiki/Time_series) data different from any other kind of data?
+Here is a question that seems almost too simple to be worth asking: what makes [time series](https://en.wikipedia.org/wiki/Time_series) data different from any other kind of data?
 
 The answer is not the subject matter. It is not that time series involve economics, or finance, or any particular domain. The answer is that time series data have a memory. Each observation is connected to the ones that came before it, and that connection is not a statistical nuisance to be corrected — it is the signal we are trying to model. Strip away the temporal ordering, and you have destroyed the most important thing the data contain.
 
@@ -457,7 +457,7 @@ For most of this course, we work with weak white noise, noting when stronger ass
 
 This section is the mathematical core of the chapter. The machinery developed here — characteristic roots, companion matrices, eigenvalues, stability conditions — underpins every model in this course. It is worth working through carefully, because the payoff is large: by the end of this section, the concepts of stationarity, unit roots, and explosive processes follow almost as corollaries.
 
-A time series model is, at its core, a **[difference equation (with constant coefficients)](https://en.wikipedia.org/wiki/Linear_recurrence_with_constant_coefficients#Characteristic_equation_and_roots)** — a rule relating the current value of a variable to its own past values and possibly to external inputs. A first-order deterministic example:
+A time series model is, at its core, a **[difference equation (with constant coefficients)](https://en.wikipedia.org/wiki/Linear_recurrence_with_constant_coefficients#Characteristic_equation_and_roots** — a rule relating the current value of a variable to its own past values and possibly to external inputs. A first-order deterministic example:
 
 $$y_t = \phi y_{t-1} + c, \qquad t = 1, 2, 3, \ldots$$
 
@@ -481,11 +481,44 @@ $$y_t = y_t^{(h)} + y_t^{(p)}$$
 
 where $y_t^{(h)}$ is the **homogeneous solution** and $y_t^{(p)}$ is the **particular solution**.
 
-**Homogeneous solution.** Setting $c = 0$: we try $y_t^{(h)} = A\lambda^t$. Substituting into $y_t^{(h)} = \phi y_{t-1}^{(h)}$:
+**Homogeneous solution.** Setting $c = 0$ gives $y_t^{(h)} = \phi\, y_{t-1}^{(h)}$. We need a function that satisfies this recursion for every $t$ — not just for a particular starting value, but for all time. The equation says "today's value is $\phi$ times yesterday's value," which means the function must change by the same factor $\phi$ at every step. A function with a constant ratio between consecutive values is an **exponential**: if $y_t^{(h)} = A\lambda^t$, then $y_{t-1}^{(h)} = A\lambda^{t-1}$, and their ratio is $y_t^{(h)}/y_{t-1}^{(h)} = \lambda$ — constant for every $t$. The parameter $\lambda$ is what we need to determine: which growth factor actually satisfies the equation?
 
-$$A\lambda^t = \phi A\lambda^{t-1} \implies \lambda = \phi$$
+Substituting $y_t^{(h)} = A\lambda^t$ into $y_t^{(h)} = \phi\, y_{t-1}^{(h)}$:
 
-The homogeneous solution is $y_t^{(h)} = A\phi^t$. The value $\lambda = \phi$ is the **characteristic root** — the single root of the characteristic equation $\lambda - \phi = 0$.
+$$A\lambda^t = \phi\, A\lambda^{t-1}$$
+
+Move the right-hand side to the left and "cancel out" A:
+
+$$\lambda^t - \phi\, \lambda^{t-1} = 0$$
+
+Dividing both sides by $\lambda^{t-1}$:
+
+$$\lambda - \phi = 0 \implies \lambda = \phi$$
+
+This is the **characteristic equation** of the first-order difference equation — the condition that $\lambda$ must satisfy for the exponential form $A\lambda^t$ to be a valid solution. Its unique solution $\lambda = \phi$ is the **characteristic root**, and the homogeneous solution is $y_t^{(h)} = A\phi^t$.
+
+The characteristic root $\lambda = \phi$ has a concrete interpretation: it is the period-to-period growth factor of the homogeneous solution. When $|\phi| < 1$, the factor is less than 1 in magnitude so $\phi^t \to 0$ — the solution decays. When $|\phi| = 1$, the factor equals 1 so $\phi^t$ neither grows nor shrinks — the solution persists. When $|\phi| > 1$, the factor exceeds 1 so $|\phi^t| \to \infty$ — the solution explodes. Far from being an algebraic convenience, $\lambda$ encodes the entire long-run behavior of the system in a single number.
+
+**Extending to the second-order case.** The same substitution on a second-order equation reveals a pattern worth recognizing now. For $y_t^{(h)} = \phi_1 y_{t-1}^{(h)} + \phi_2 y_{t-2}^{(h)}$, substitute $y_t^{(h)} = A\lambda^t$:
+
+$$A\lambda^t = \phi_1 A\lambda^{t-1} + \phi_2 A\lambda^{t-2}$$
+
+Move everything to the left and divide by $A$:
+
+$$\lambda^t - \phi_1 \lambda^{t-1} - \phi_2 \lambda^{t-2} = 0$$
+
+Dividing by $\lambda^{t-2}$ yields the **characteristic equation** of the second-order equation:
+
+$$\lambda^2 - \phi_1\lambda - \phi_2 = 0$$
+
+This is a **quadratic** — the degree matches the order of the difference equation. It has two roots $\lambda_1$ and $\lambda_2$ (possibly complex), which the
+quadratic formula gives explicitly:
+
+$$\lambda_{1,2} = \frac{\phi_1 \pm \sqrt{\phi_1^2 + 4\phi_2}}{2}$$
+
+The discriminant $\Delta = \phi_1^2 + 4\phi_2$ determines the nature of the roots. When $\Delta > 0$, the roots are two distinct real numbers. When $\Delta = 0$, there is a single repeated root $\lambda = \phi_1/2$. When $\Delta < 0$, the roots form a complex conjugate pair $\lambda_{1,2} = \phi_1/2 \pm i\sqrt{|\Delta|}/2$, with modulus $|\lambda| = \sqrt{-\phi_2}$. In this last case the stability condition $|\lambda| < 1$ reduces to the simple requirement $\phi_2 > -1$ — a useful shortcut when checking AR(2) stability by hand.
+
+The pattern generalizes immediately: a $p$-th order difference equation always produces a characteristic polynomial of degree $p$ with exactly $p$ roots. Each root contributes a term $A_j\lambda_j^t$ to the homogeneous solution, and it is the moduli of those roots — how they sit relative to the unit circle — that determine whether the full solution is stable, has a unit root, or is explosive. This is the connection to eigenvalues that we formalize through the companion matrix below.
 
 **Particular solution.** Trying a constant $y_t^{(p)} = k$:
 
@@ -827,7 +860,7 @@ for ax, (phi1, phi2, title) in zip(axes, specs_rd):
     ax.axvline(0, color=EO_CHARCOAL, linewidth=0.4, alpha=0.3)
     for root in roots:
         ax.scatter(root.real, root.imag,
-                   color=EO_COPPER, s=40, zorder=5)
+                   color=EO_COPPER, s=35, zorder=5)
     ax.set_xlim(-1.7, 1.7)
     ax.set_ylim(-1.7, 1.7)
     ax.set_aspect("equal")
@@ -1015,9 +1048,9 @@ Not all non-stationarity is the same, and the type matters for how we handle it.
 
 A process is **[trend stationary](https://en.wikipedia.org/wiki/Trend-stationary_process)** if it fluctuates around a deterministic trend — a fixed function of time — with stationary fluctuations:
 
-$$y_t = c + \beta t + u_t$$
+$$y_t = \alpha + \beta t + u_t$$
 
-where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\mathbb{E}[y_t] = c + \beta t$ depends on $t$. But the deviations from trend are stationary. Crucially, a shock that perturbs $u_t$ at time $t$ has only a **transitory** effect: the series eventually returns to the deterministic trend path. To achieve stationarity, we **detrend** — regress $y_t$ on a constant and time and work with the residuals.
+where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\mathbb{E}[y_t] = \alpha + \beta t$ depends on $t$. But the deviations from trend are stationary. Crucially, a shock that perturbs $u_t$ at time $t$ has only a **transitory** effect: the series eventually returns to the deterministic trend path. To achieve stationarity, we **detrend** — regress $y_t$ on a constant and time and work with the residuals.
 
 #### Difference Stationarity and Unit Roots
 
@@ -1038,11 +1071,11 @@ When any eigenvalue has modulus strictly greater than 1, the process is **explos
 ::: {.callout-note}
 ### Summary: Types of Non-Stationarity
 
-| Type | Source | Shocks | Fix |
-|:---|:---|:---|:---|
-| Trend stationary | Deterministic trend | Transitory | Detrend |
-| Difference stationary | Unit root ($|\lambda|=1$) | Permanent | First difference |
-| Explosive | Eigenvalue outside unit circle ($|\lambda|>1$) | Amplifying | Specialized tests |
+| Type                  | Source                                         | Shocks     | Fix               |
+|-----------------------|------------------------------------------------|------------|-------------------|
+| Trend stationar y     | Deterministic trend                            | Transitory | Detrend           |
+| Difference stationary | Unit root ($|\lambda|=1$)                      | Permanent  | First difference  |
+| Explosive             | Eigenvalue outside unit circle ($|\lambda|>1$) | Amplifying | Specialized tests |
 
 : Three types of non-stationarity and their treatments {#tbl-nonstationarity}
 :::
@@ -1070,15 +1103,15 @@ $$\Delta y_t = \delta y_{t-1} + c + \varepsilon_t, \qquad \delta = \phi - 1$$
 
 The unit root null $\phi = 1$ becomes $H_0: \delta = 0$; the stationary alternative $\phi < 1$ becomes $H_1: \delta < 0$. This is a one-sided test. The **Augmented Dickey-Fuller test** adds lagged differences to absorb serial correlation in the errors:
 
-$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + c + \beta t + u_t \tag{1.7}$$
+$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + \alpha + \beta t + u_t \tag{1.7}$$
 
-Here $c$ is the constant term — the deterministic counterpart of $c$ in the AR(1) notation — and $\beta t$ is the optional linear trend. The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
+Here $\alpha$ is the constant term — the deterministic counterpart of $c$ in the AR(1) notation — and $\beta t$ is the optional linear trend. The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
 
 | Specification | Regression equation | Use when... |
 |:---|:---|:---|
 | No constant, no trend | $\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series is zero-mean with no drift |
-| Constant only | $\Delta y_t = c + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series has a non-zero mean |
-| Constant and trend | $\Delta y_t = c + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series may trend under $H_1$ |
+| Constant only | $\Delta y_t = \alpha + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series has a non-zero mean |
+| Constant and trend | $\Delta y_t = \alpha + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series may trend under $H_1$ |
 
 : ADF specification choices {#tbl-adf-specs}
 
@@ -1136,6 +1169,8 @@ $$\text{KPSS} = \frac{1}{T^2}\,\frac{\sum_{t=1}^T S_t^2}{\hat{\lambda}^2}$$
 
 where $\hat{\lambda}^2$ is a long-run variance estimator that corrects for serial correlation in $\hat{\varepsilon}_t$, using a weighted sum of sample autocovariances with weights that downweight distant lags. The idea parallels the augmentation lags in the ADF test: ignoring serial correlation would distort the test statistic. The bandwidth controlling how many lags are included is chosen automatically by most software — a common rule is $l = \lfloor 4(T/100)^{1/4} \rfloor$ — and results should be checked for sensitivity to this choice.
 
+The intuition behind the statistic is elegant. Think of $S_t$ as the **running total** of the residuals from time 1 up to time $t$ — the accumulated net displacement of the series after removing its deterministic component. Under the null of stationarity, $\hat{\varepsilon}_t$ fluctuates around zero without persistent drift: positive spells are cancelled by negative ones, so the running total $S_t$ stays bounded and the squared values $S_t^2$ remain small on average. Under the alternative of a unit root, the residuals drift in one direction for extended periods without reversing — they reinforce rather than cancel — so $S_t$ wanders far from zero and grows large. The KPSS statistic, which averages $S_t^2$ across all $t$, is therefore small when stationarity holds and large when a unit root is present. The $\hat{\lambda}^2$ scaling ensures this contrast is not contaminated by the serial correlation of $\varepsilon_t$ itself: without it, a highly persistent but genuinely stationary series would produce large $S_t$ values and falsely trigger rejection.
+
 #### Critical Values and Interpretation
 
 | Specification | Decomposition | 10% | 5% | 1% |
@@ -1149,12 +1184,12 @@ where $\hat{\lambda}^2$ is a long-run variance estimator that corrects for seria
 
 #### Reading ADF and KPSS Jointly
 
-| ADF | KPSS | Joint conclusion |
-|:---|:---|:---|
-| Reject $H_0$ | Fail to reject $H_0$ | Both agree: stationary |
-| Fail to reject $H_0$ | Reject $H_0$ | Both agree: unit root |
-| Reject $H_0$ | Reject $H_0$ | Contradictory — near-integrated or structural break |
-| Fail to reject $H_0$ | Fail to reject $H_0$ | Contradictory — insufficient sample information |
+| ADF                  | KPSS                 | Joint conclusion                                   |
+|----------------------|----------------------|----------------------------------------------------|
+| Reject $H_0$         | Fail to reject $H_0$ | Both agree: stationary                             |
+| Fail to reject $H_0$ | Reject $H_0$         | Both agree: unit root                              |
+| Reject $H_0$         | Reject $H_0$         | Contradictory: near-integrated or structural break |
+| Fail to reject $H_0$ | Fail to reject $H_0$ | Contradictory: insufficient information            |
 
 : Joint interpretation of ADF and KPSS results {#tbl-joint}
 
@@ -1253,12 +1288,9 @@ def print_side_by_side(s1, n1, r1_adf, r1_kpss, s2, n2, r2_adf, r2_kpss, title):
     a1 = _run_adf(s1, r1_adf);   k1 = _run_kpss(s1, r1_kpss)
     a2 = _run_adf(s2, r2_adf);   k2 = _run_kpss(s2, r2_kpss)
     W  = 16
-
     print(f"\n{'\u2550'*58}")
     print(f"  {title}")
     print(f"{'\u2550'*58}")
-
-    # ADF block
     print(f"\n  ADF Test  (H\u2080: unit root)")
     print(f"  {'\u2500'*54}")
     print(f"  {'':22s} {n1:>{W}s} {n2:>{W}s}")
@@ -1270,16 +1302,13 @@ def print_side_by_side(s1, n1, r1_adf, r1_kpss, s2, n2, r2_adf, r2_kpss, title):
     for lv in ['1%', '5%', '10%']:
         print(f"  {f'Critical val {lv}':22s} {a1['cv'][lv]:>{W}.4f} {a2['cv'][lv]:>{W}.4f}")
     print(f"  {'Conclusion':22s} {a1['conc']:>{W}s} {a2['conc']:>{W}s}")
-
-    # KPSS block
     print(f"\n  KPSS Test (H\u2080: stationary)")
     print(f"  {'\u2500'*54}")
     print(f"  {'Spec':22s} {r1_kpss:>{W}s} {r2_kpss:>{W}s}")
     print(f"  {'Test statistic':22s} {k1['stat']:>{W}.4f} {k2['stat']:>{W}.4f}")
     print(f"  {'p-value':22s} {k1['p']:>{W}.4f} {k2['p']:>{W}.4f}")
     print(f"  {'Bandwidth':22s} {k1['bw']:>{W}d} {k2['bw']:>{W}d}")
-    cvk = ['10%', '5%', '1%']
-    for lv in cvk:
+    for lv in ['10%', '5%', '1%']:
         print(f"  {f'Critical val {lv}':22s} {k1['cv'][lv]:>{W}.4f} {k2['cv'][lv]:>{W}.4f}")
     print(f"  {'Conclusion':22s} {k1['conc']:>{W}s} {k2['conc']:>{W}s}")
     print(f"  {'\u2500'*54}")
