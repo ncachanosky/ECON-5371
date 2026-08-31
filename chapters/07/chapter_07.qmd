@@ -1411,7 +1411,7 @@ for caused in cols:
         if cause == caused:
             continue
         pair = var_data[[caused, cause]]
-        res  = grangercausalitytests(pair, maxlag=p_sel, verbose=False)
+        res = grangercausalitytests(pair, maxlag=p_sel)
         # F-test p-value at lag p_sel
         pval = res[p_sel][0]["ssr_ftest"][1]
         granger_pvals[(cause, caused)] = pval

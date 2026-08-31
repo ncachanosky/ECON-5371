@@ -10,12 +10,13 @@ title-slide-attributes:
 
 ## Two Stories at Once
 
-> Is the economy doing well right now, or poorly?
+> The releant question: Is output **above** or **below** where it ought to be?
 
-- Not "what is the level of GDP" — we can always read that off directly
-- The real question: is output *above* or *below* where it ought to be?
+- The level of GDP is unintersting, you can just look at the data
 - "Where it ought to be" is not observed. It has to be **constructed**
-- Every time series tells two stories simultaneously: where it's headed long-run, and where it stands right now relative to that path
+- Every time series tells two stories simultaneously:
+  - where it's headed long-run
+  - where it stands right now relative to that path
 
 ::: {.eo-recap}
 Separating those two stories — trend versus deviation from trend — is what this chapter's tools do. The Fed's "output gap," the BLS's seasonally adjusted unemployment rate, every headline GDP number you read: all of them are decompositions, whether the reader realizes it or not.
@@ -30,7 +31,7 @@ central bank framing lands well with a graduate audience. ~2 min.
 
 ## Why This Chapter Matters
 
-Two families of tools, one underlying goal — separate the predictable, structural part of a series from what's left over:
+Two families of tools to get the same result: separate the predictable, structural part of a series from what's left over
 
 1. **Decomposition and filtering** — trend, seasonal, and irregular components; moving averages, HP and Hamilton filters, STL
 2. **Exponential smoothing** — SES, Holt, Holt-Winters: forecasting methods built directly on top of a decomposition
@@ -96,7 +97,7 @@ Every major economic data release you have ever read in the news has already bee
 
 ---
 
-## Running Example: NSA and SA Real GDP
+## NSA and SA Real GDP
 
 Two versions of the same underlying series:
 
@@ -256,15 +257,13 @@ Section 3
 
 ## Why Seasonal Adjustment Matters
 
-> A policymaker watching raw retail sales in January sees a sharp drop from December — every single year, regardless of the economy's actual condition. How do you keep from reacting to noise?
-
-Seasonal patterns are large, predictable, and economically uninteresting — which is exactly what makes them dangerous to look at directly.
+Seasonal patterns are large, predictable, and economically uninteresting.
 
 ::: {.eo-recap}
 Nearly every headline number you read — the employment report, the GDP advance estimate, industrial production, housing starts — is seasonally adjusted before publication. The methodology behind that adjustment shapes the data everyone uses daily.
 :::
 
-The US Census Bureau's **X-13-ARIMA-SEATS** is the government standard. We won't run it — but understanding what it does is essential for interpreting official statistics correctly.
+The US Census Bureau's **X-13-ARIMA-SEATS** is the government standard. How doees it work?
 
 ---
 
@@ -282,19 +281,27 @@ This flexibility is exactly why official seasonal adjustments look smoother and 
 
 ---
 
-## X-13: The ARIMA and SEATS Components
+## X-13: The ARIMA and SEATS Components: The Steps
 
 ::: {.eo-hazard}
 **The end-point problem.** Every filter-based method loses observations near the ends of the sample — exactly where the most recent, policy-relevant data sit. Classical decomposition and X-11 alone both have this weakness.
 :::
 
 ::: {.eo-definition}
-**ARIMA component.** Pre-extends the series by fitting an ARIMA model (Chapter 3) and forecasting several periods ahead, applies the moving-average filter to the *extended* series, then discards the forecasted values — eliminating the end-point problem.
 
-**SEATS component.** An alternative: fit a SARIMA model, then decompose the series' spectrum directly into trend, seasonal, and irregular. Firmer statistical foundation; often smoother seasonal factors than X-11.
-:::
+Typical iterative procedure:
 
-X-13 is an industrial-grade production system — calendar effects, holiday effects, outlier detection, decades of accumulated refinement — not a simple function call.
+- Step 1: Add ARIMA extension(s)
+- Step 2: Prior adjustment — remove known deterministic factors such as holidays, flagged outliers, ...
+- Step 3: X-11 filter — the iterative moving average process
+- Step 4: Discard ARIMA extension(s)
+
+Alternative analytica procedure:
+
+- Step 1: Add ARIMA extension(s)
+- Step 2: Prior adjustment — remove known deterministic factors such as holidays, flagged outliers, ...
+- **Step 3: SEATS estimation**
+- Step 4: Discard ARIMA extension(s)
 
 ---
 
@@ -507,7 +514,7 @@ This is the first genuinely *forward-looking* tool in the textbook — everythin
 
 ---
 
-## Simple Exponential Smoothing
+## Simple Exponential Smoothing (SES)
 
 > After each new observation, how should we revise our estimate of "where the series is right now"?
 
@@ -531,36 +538,43 @@ $$
 The $h$-step forecast is **flat**: $\hat{y}_{T+h|T}=\hat{y}_{T+1|T}$ for all $h\geq1$.
 :::
 
-SES is appropriate for series with **no trend, no seasonality** — for a persistently trending series like GDP, it always lags, perpetually catching up.
 
 ---
 
 ## Holt's Method: Adding a Trend
 
-Maintain a separate smoothed **trend** alongside the level:
+SES: Appropriate for series with **no trend, no seasonality** — for a persistently trending series like GDP, it always lags, perpetually catching up.
+
+Holt: Add **level** and **trend**
 
 ::: {.eo-definition}
 - $\hat{\ell}_t$ — the smoothed **level**: our current best estimate of "where the series is right now," net of trend
 - $\hat{b}_t$ — the smoothed **trend**: our current best estimate of the slope — how fast the level is moving per period
 :::
 
+---
+
+## Holt's Method is A Simple Expansion
+
+Maintain a separate smoothed **trend** alongside the level:
+
 ::: {.eo-columns}
 ::: {}
 $$
 \begin{align}
+\hat{y}_{t+h|t} &= \hat{\ell}_t + \hat{b}_t h \\[4pt]
 \hat{\ell}_t    &= \alpha y_t + (1-\alpha)(\hat{\ell}_{t-1}+\hat{b}_{t-1})       \\[4 pt]
-\hat{b}_t       &= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \\[4 pt]
-\hat{y}_{t+h|t} &= \hat{\ell}_t + h\hat{b}_t
+\hat{b}_t       &= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1}
 \end{align}
 $$
 
 :::
 ::: {}
+**Forecast** = current level $(hat{\ell})$ $+$ trend $(\hat{b})$ $\times$ horizon $(h)$
+
 **Level** = weighted average of the new observation and the previous level-plus-trend estimate
 
 **Trend** = weighted average of this period's implied trend $(\hat\ell_t-\hat\ell_{t-1})$ and the previous trend estimate
-
-**Forecast** = current level $+$ trend $\times$ horizon
 :::
 :::
 
@@ -616,9 +630,12 @@ Section 6
 
 **ETS** — **E**rror, **T**rend, **S**easonality. Each component can take different forms:
 
-- **Error**: additive (A) or multiplicative (M)
-- **Trend**: none (N), additive (A), additive damped (Ad), multiplicative (M or Md)
-- **Seasonality**: none (N), additive (A), multiplicative (M)
+- **Error**:
+  - (A): additive | (M) multiplicative
+- **Trend**:
+  - (N) none | (A) additive | (Ad) additive damped | (M) multiplicative
+- **Seasonality**:
+  - (N) none | (A) additive | (M) multiplicative 
 
 ::: {.eo-recap}
 **ETS(E,T,S) names a specific model.** ETS(A,N,N) is SES. ETS(A,A,N) is undamped Holt. ETS(A,Ad,N) is damped Holt. What's new: a **formal statistical model** — likelihood function, prediction intervals — for every combination, not just a heuristic update rule.
@@ -640,10 +657,10 @@ A third smoothing equation, alongside level and trend:
 ::: {}
 $$
 \begin{align}
+\hat{y}_{t+h|t} &= \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)} \\[4pt]
 \hat{\ell}_t    &= \alpha(y_t-\hat{s}_{t-m}) + (1-\alpha)(\hat{\ell}_{t-1}+\hat{b}_{t-1}) \\[4pt]
 \hat{b}_t       &= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1}          \\[4pt]
-\hat{s}_t       &= \gamma(y_t-\hat{\ell}_{t-1}-\hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m}   \\[4pt]
-\hat{y}_{t+h|t} &= \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)}
+\hat{s}_t       &= \gamma(y_t-\hat{\ell}_{t-1}-\hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m}
 \end{align}
 $$
 
@@ -680,23 +697,6 @@ This *is* ETS(A,A,A). The damped-trend version, ETS(A,Ad,A) — the model we'll 
 
 ---
 
-## The Full Taxonomy — And Which Cases Matter
-
-Not all 30 (E,T,S) combinations are numerically stable or practically useful. Four matter most in macroeconomic work:
-
-| Model | What it is |
-|:---|:---|
-| ETS(A,N,N) | Simple exponential smoothing |
-| ETS(A,A,N) | Holt's linear method |
-| ETS(A,Ad,N) | Holt's damped method — often the best all-around performer |
-| ETS(A,A,A) / ETS(A,Ad,A) | Holt-Winters, undamped / damped |
-
-::: {.eo-hazard}
-The full taxonomy has **30 valid combinations** — not all numerically stable, most rarely used in practice. `statsmodels`' `ETSModel` and information criteria (AIC) handle the search; memorizing the full table isn't the point. Know the four above cold; recognize that the framework generalizes.
-:::
-
----
-
 ## Point Forecasts and Prediction Intervals
 
 For ETS(A,Ad,A), the $h$-step forecast:
@@ -715,7 +715,7 @@ Take the last estimated level, add the damped cumulative trend correction, add t
 :::
 
 ::: {.eo-hazard}
-**Prediction intervals are not confidence intervals.** A 95% PI says 95% of *future realizations* will fall in the band — it accounts for forecast uncertainty (future innovations), not parameter or model uncertainty. Estimated-parameter intervals in practice run slightly too narrow. Chapter 5 returns to calibrating this properly.
+**Prediction intervals are not confidence intervals.** A 95% PI says 95% of *future realizations* will fall in the band — it accounts for forecast uncertainty (future innovations), not parameter or model uncertainty. Estimated-parameter intervals in practice run slightly too narrow.
 :::
 
 ---
@@ -739,7 +739,7 @@ Bottom panel: in-sample residuals — the 2020 outlier is the model's honest ign
 
 ---
 
-## A First Honest Evaluation: Train-Test
+## A First Evaluation: Train-Test
 
 ::: {.eo-columns-figure}
 ::: {}
@@ -748,7 +748,7 @@ Bottom panel: in-sample residuals — the 2020 outlier is the model's honest ign
 Fit on 1947–2019 Q4, forecast 20 quarters into 2020–2024 — a window that happens to contain COVID.
 
 ::: {.eo-recap}
-Large errors in 2020 Q1–Q2 reflect the pandemic being outside the support of any postwar-trained model — not a forecasting failure. The full machinery for honest evaluation is Chapter 5's job.
+Large errors in 2020 Q1–Q2 reflect the pandemic being outside the support of any postwar-trained model — not a forecasting failure. The full machinery for forecast evaluation is Chapter 5's job.
 :::
 :::
 ::: {}
@@ -775,39 +775,3 @@ Chapter 3 develops the **ARMA family** — and provides the theoretical foundati
 Simple exponential smoothing turns out to be the optimal forecast for an **ARIMA(0,1,1)** process. Holt's method corresponds to **ARIMA(0,2,2)**. Holt-Winters corresponds to a **seasonal ARIMA**. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases, and understanding that connection unlocks better model selection, residual diagnostics, and principled prediction intervals.
 
 It also resolves the trend-cycle question this chapter never fully closed: Chapter 4's **Beveridge-Nelson decomposition** uses a series' estimated ARIMA structure to separate permanent and transitory components — no smoothing parameter to choose, no $\lambda$ to defend, a cycle uniquely pinned down by the data itself.
-
----
-
-## Key Terms
-
-::: {.eo-keyterms}
-Decomposition
-: $y_t=T_t+S_t+I_t$ (additive) or $T_t\times S_t\times I_t$ (multiplicative, equivalent to additive in logs).
-
-Trend / Seasonal / Irregular
-: The slow-moving level; systematic calendar-driven fluctuation with period $m$; the residual where the business cycle signal lives.
-
-Classical decomposition
-: Trend via centered $2\times m$ moving average, followed by averaging de-trended values by season.
-
-Business cycle
-: The deviation of output from its trend path — not a natural object, but a residual whose shape depends on the decomposition chosen.
-
-HP filter / Hamilton filter
-: A penalized-smoothness trend extractor governed by $\lambda$, vs. a regression-based cycle filter (project $y_{t+h}$ on four lags) with no end-point bias.
-
-X-13-ARIMA-SEATS / STL
-: The Census Bureau's institutional seasonal-adjustment standard (X-11 + ARIMA extension + SEATS), vs. the portable, transparent Loess-based alternative.
-
-Exponential smoothing / Smoothing parameter $\alpha$
-: Forecasts as geometrically-declining-weight averages of the past; $\alpha\in(0,1)$ governs how aggressively the level updates.
-
-SES / Holt's method / Damped trend
-: No-trend, no-seasonality smoothing (ETS(A,N,N)); adds a trend component (ETS(A,A,N)); multiplies the trend by $\phi\in(0,1)$ so forecasts converge (ETS(A,Ad,N)).
-
-Holt-Winters / ETS framework
-: Adds a seasonal smoothing equation (ETS(A,A,A) / ETS(A,Ad,A)); the unified (Error, Trend, Seasonality) taxonomy with likelihood-based estimation.
-
-Prediction interval
-: A horizon-widening range for $y_{T+h}$ reflecting forecast uncertainty — not parameter uncertainty, and not a confidence interval.
-:::

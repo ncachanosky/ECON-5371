@@ -684,7 +684,7 @@ z_t^2\)</span> — the state enters the observation multiplicatively, with noise
 <div id="fig-recursive-updating" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-recursive-updating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-recursive-updating-output-1.png" width="893" height="496" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-recursive-updating-output-1.png" width="891" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recursive-updating-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;12.1: <strong>The Kalman filter in motion: twelve consecutive updates through 1979.</strong> Copper dots: observed monthly core PCE inflation (annualised). Sky blue step line: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> after each successive monthly update. Dotted horizontal line: the December 1978 prior. Each step reflects one prediction-correction cycle; the cumulative effect of twelve updates shifts the trend estimate well above the prior as the filter accumulates evidence that the rise in inflation is persistent, not transitory.
@@ -954,7 +954,7 @@ Q = \sigma_\eta^2\]</span></p>
 <div id="fig-pce-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pce-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-pce-overview-output-1.png" width="893" height="496" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-pce-overview-output-1.png" width="892" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pce-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;12.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annualised month-on-month log change in the Personal Consumption Expenditures price index excluding food and energy, in percent per year. The series captures three distinct regimes: the Great Inflation of the 1970s, the Volcker disinflation of the early 1980s, and the Great Moderation thereafter. The high month-to-month volatility motivates the signal-extraction approach: any single observation is a noisy proxy for the underlying inflation trend. NBER recessions shaded.
@@ -1075,7 +1075,7 @@ Figure&nbsp;12.2: <strong>Monthly core PCE inflation, 1960–2019.</strong> Annu
 <div id="fig-filter-smooth" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-filter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-filter-smooth-output-1.png" width="893" height="542" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-filter-smooth-output-1.png" width="892" height="542" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-filter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;12.3: <strong>Filtered and smoothed estimates of trend inflation, 1960–2019.</strong> Copper: raw monthly core PCE inflation (annualised). Sky blue: filtered trend estimate <span class="math inline">\(\hat{\mu}_{t|t}\)</span> — the real-time estimate using only data up to <span class="math inline">\(t\)</span>, with ±1 standard deviation band. Sage: smoothed trend estimate <span class="math inline">\(\hat{\mu}_{t|T}\)</span> — the full-sample retrospective estimate. The smoother produces a cleaner picture of the three regimes; the filter lags slightly at turning points. NBER recessions shaded.
@@ -1140,7 +1140,7 @@ Figure&nbsp;12.3: <strong>Filtered and smoothed estimates of trend inflation, 19
 <div id="fig-diagnostics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-diagnostics-output-1.png" width="893" height="435" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-diagnostics-output-1.png" width="893" height="436" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;12.4: <strong>Innovation diagnostics for the local level model.</strong> Left: time series of standardised innovations <span class="math inline">\(v_t / \sqrt{F_t}\)</span>, which should resemble white noise if the model is correctly specified. Right: ACF of standardised innovations, lags 1–24. Bartlett bounds at ±1.96/√T shown as dashed blue lines. Ljung-Box <span class="math inline">\(p\)</span>-values reported in the text.
@@ -1515,7 +1515,7 @@ Figure&nbsp;12.5: <strong>Local level model fan chart, 2020–2021.</strong> Poi
 <div id="fig-nowcast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nowcast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_11_files/figure-html/fig-nowcast-output-1.png" width="893" height="845" class="figure-img">
+<img src="chapter_11_files/figure-html/fig-nowcast-output-1.png" width="892" height="845" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nowcast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;12.6: <strong>Mixed-frequency GDP nowcasting.</strong> Top panel (1985–2019): annualised quarterly real GDP growth (copper bars, plotted at the quarterly release date) and the monthly GDP nowcast (sky blue line) constructed by Mariano-Murasawa temporal aggregation of the filtered activity factor. The nowcast tracks GDP growth and leads each recession by one to two months as the monthly indicators weaken before the quarterly release confirms the slowdown. Bottom panel (1960–2019, full sample): the latent economic activity factor <span class="math inline">\(\hat{\alpha}_{t|t}\)</span> with ±1 SD band; the factor dips sharply ahead of every NBER recession across six decades. NBER recessions shaded in both panels.

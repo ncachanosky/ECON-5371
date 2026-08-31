@@ -2272,7 +2272,7 @@ was (partly) transitory, and recovery was the expected outcome.
 # ── Compute MA(∞) coefficients from fitted ARIMA ──────────────────────────────
 # Depends on: mod_best (fitted in fig-arima-diagnostics cell)
 #             gdp_level_pre (defined in fig-spurious and tbl-arima-ic cells)
-ma_inf = mod_best.impulse_responses(nperiods=100, orthogonalized=False)
+ma_inf = mod_best.impulse_responses(steps=100, orthogonalized=False)
 psi    = ma_inf.values.flatten()       # psi_0, psi_1, ..., psi_99
 psi1   = psi.sum()                     # long-run multiplier ψ(1)
 

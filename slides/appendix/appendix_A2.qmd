@@ -86,15 +86,8 @@ Three legal row operations, same as always: swap two rows, scale a row by a nonz
 ## Gauss-Jordan: Worked Example (Part 1)
 
 $$
-\mathbf{A} = \begin{bmatrix} 3 & 2 \\ 4 & 3 \end{bmatrix}, \qquad \det(\mathbf{A}) = 1
-$$
-
-$$
-\left[\begin{array}{cc|cc} 3 & 2 & 1 & 0 \\ 4 & 3 & 0 & 1 \end{array}\right]
-$$
-
-$$
 \begin{aligned}
+&: [\mathbf{A} \mid \mathbf{I}] \\[4pt]
 &: \left[\begin{array}{cc|cc} 3 & 2 & 1 & 0 \\ 4 & 3 & 0 & 1 \end{array}\right] \\[4pt]
 R_1 \to R_1 - R_2 &:
 \left[\begin{array}{cc|cc} -1 & -1 & 1 & -1 \\ 4 & 3 & 0 & 1 \end{array}\right] \\[4pt]
@@ -556,7 +549,7 @@ S(\boldsymbol{\beta}) &= (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{y}-\
 $$
 
 ::: {.eo-hazard}
-The middle two terms are each scalars, and a scalar always equals its own transpose: $\mathbf{y}'\mathbf{X}\boldsymbol{\beta} = (\mathbf{y}'\mathbf{X}\boldsymbol{\beta})' = \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$. That is what collapses $-\mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$ into $-2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$.
+Recall that: $\mathbf{y}'\mathbf{X}\boldsymbol{\beta} = (\mathbf{y}'\mathbf{X}\boldsymbol{\beta})' = \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$. That is what collapses $-\mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$ into $-2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}$.
 :::
 
 ---
@@ -659,7 +652,7 @@ $\hat{\beta}_0 = 1.0$, $\hat{\beta}_1 = 1.9$ — **identical** to Route 1. Two d
 
 ---
 
-## Standard Errors: Where $(\mathbf{X}'\mathbf{X})^{-1}$ Earns Its Keep
+## Standard Errors
 
 The matrix route does not stop at $\hat{\boldsymbol{\beta}}$ — it hands us standard errors for free, using the inverse we already computed:
 
@@ -705,18 +698,6 @@ $$
 ::: {.eo-recap}
 **Why the sign makes sense.** Push the fitted line's intercept up and, to keep fitting the same data, its slope typically has to come down — the two coefficients are not estimated independently. This off-diagonal term is *why* joint hypothesis tests on several coefficients at once need the whole variance-covariance matrix, not just a list of individual standard errors.
 :::
-
----
-
-## Closing the Loop: Multicollinearity and Standard Errors
-
-Recall $\mathbf{A}_\varepsilon^{-1}$ from Section 1 — entries in the teens, from a determinant of just $-0.3$.
-
-::: {.eo-hazard}
-**Now replace $\mathbf{A}_\varepsilon$ with $\mathbf{X}'\mathbf{X}$.** If two regressors are nearly collinear, $\mathbf{X}'\mathbf{X}$ is nearly singular — its determinant is close to zero, and $(\mathbf{X}'\mathbf{X})^{-1}$ has huge entries, exactly as we saw. Since $\widehat{\text{Var}}(\hat{\boldsymbol{\beta}}) = \hat{\sigma}^2(\mathbf{X}'\mathbf{X})^{-1}$, that inflation passes straight through: standard errors explode, $t$-statistics collapse toward zero, and coefficients that may be economically large look statistically insignificant.
-:::
-
-This is the mechanical reason multicollinearity produces the textbook symptom — "high $R^2$, but nothing individually significant." It was never a separate phenomenon; it is the same singularity problem from Section 1, one formula later.
 
 ---
 

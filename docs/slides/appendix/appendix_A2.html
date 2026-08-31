@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
-  <meta name="dcterms.date" content="2026-08-27">
+  <meta name="dcterms.date" content="2026-08-31">
   <title>Matrix Algebra, Part II</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -143,7 +143,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 
-  <p class="date">2026-08-27</p>
+  <p class="date">2026-08-31</p>
 </section>
 <section id="where-we-left-off" class="slide level2">
 <h2>Where We Left Off</h2>
@@ -207,13 +207,8 @@ Nicolas Cachanosky, Department of Economics and Finance
 <section id="gauss-jordan-worked-example-part-1" class="slide level2">
 <h2>Gauss-Jordan: Worked Example (Part 1)</h2>
 <p><span class="math display">\[
-\mathbf{A} = \begin{bmatrix} 3 &amp; 2 \\ 4 &amp; 3 \end{bmatrix}, \qquad \det(\mathbf{A}) = 1
-\]</span></p>
-<p><span class="math display">\[
-\left[\begin{array}{cc|cc} 3 &amp; 2 &amp; 1 &amp; 0 \\ 4 &amp; 3 &amp; 0 &amp; 1 \end{array}\right]
-\]</span></p>
-<p><span class="math display">\[
 \begin{aligned}
+&amp;: [\mathbf{A} \mid \mathbf{I}] \\[4pt]
 &amp;: \left[\begin{array}{cc|cc} 3 &amp; 2 &amp; 1 &amp; 0 \\ 4 &amp; 3 &amp; 0 &amp; 1 \end{array}\right] \\[4pt]
 R_1 \to R_1 - R_2 &amp;:
 \left[\begin{array}{cc|cc} -1 &amp; -1 &amp; 1 &amp; -1 \\ 4 &amp; 3 &amp; 0 &amp; 1 \end{array}\right] \\[4pt]
@@ -570,7 +565,7 @@ S(\boldsymbol{\beta}) &amp;= (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{
 \end{aligned}
 \]</span></p>
 <div class="eo-hazard">
-<p>The middle two terms are each scalars, and a scalar always equals its own transpose: <span class="math inline">\(\mathbf{y}'\mathbf{X}\boldsymbol{\beta} = (\mathbf{y}'\mathbf{X}\boldsymbol{\beta})' = \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span>. That is what collapses <span class="math inline">\(-\mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span> into <span class="math inline">\(-2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span>.</p>
+<p>Recall that: <span class="math inline">\(\mathbf{y}'\mathbf{X}\boldsymbol{\beta} = (\mathbf{y}'\mathbf{X}\boldsymbol{\beta})' = \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span>. That is what collapses <span class="math inline">\(-\mathbf{y}'\mathbf{X}\boldsymbol{\beta} - \boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span> into <span class="math inline">\(-2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y}\)</span>.</p>
 </div>
 </section>
 <section id="deriving-ols-in-matrix-form-the-first-order-condition" class="slide level2">
@@ -671,8 +666,8 @@ S(\boldsymbol{\beta}) &amp;= (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{
 <p><span class="math inline">\(\hat{\beta}_0 = 1.0\)</span>, <span class="math inline">\(\hat{\beta}_1 = 1.9\)</span> — <strong>identical</strong> to Route 1. Two derivations, one algebraic and one that scales, arriving at the same number.</p>
 </div>
 </section>
-<section id="standard-errors-where-mathbfxmathbfx-1-earns-its-keep" class="slide level2">
-<h2>Standard Errors: Where <span class="math inline">\((\mathbf{X}'\mathbf{X})^{-1}\)</span> Earns Its Keep</h2>
+<section id="standard-errors" class="slide level2">
+<h2>Standard Errors</h2>
 <p>The matrix route does not stop at <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> — it hands us standard errors for free, using the inverse we already computed:</p>
 <div class="eo-definition">
 <p><strong>Variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</strong></p>
@@ -707,14 +702,6 @@ S(\boldsymbol{\beta}) &amp;= (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})'(\mathbf{
 <div class="eo-recap">
 <p><strong>Why the sign makes sense.</strong> Push the fitted line’s intercept up and, to keep fitting the same data, its slope typically has to come down — the two coefficients are not estimated independently. This off-diagonal term is <em>why</em> joint hypothesis tests on several coefficients at once need the whole variance-covariance matrix, not just a list of individual standard errors.</p>
 </div>
-</section>
-<section id="closing-the-loop-multicollinearity-and-standard-errors" class="slide level2">
-<h2>Closing the Loop: Multicollinearity and Standard Errors</h2>
-<p>Recall <span class="math inline">\(\mathbf{A}_\varepsilon^{-1}\)</span> from Section 1 — entries in the teens, from a determinant of just <span class="math inline">\(-0.3\)</span>.</p>
-<div class="eo-hazard">
-<p><strong>Now replace <span class="math inline">\(\mathbf{A}_\varepsilon\)</span> with <span class="math inline">\(\mathbf{X}'\mathbf{X}\)</span>.</strong> If two regressors are nearly collinear, <span class="math inline">\(\mathbf{X}'\mathbf{X}\)</span> is nearly singular — its determinant is close to zero, and <span class="math inline">\((\mathbf{X}'\mathbf{X})^{-1}\)</span> has huge entries, exactly as we saw. Since <span class="math inline">\(\widehat{\text{Var}}(\hat{\boldsymbol{\beta}}) = \hat{\sigma}^2(\mathbf{X}'\mathbf{X})^{-1}\)</span>, that inflation passes straight through: standard errors explode, <span class="math inline">\(t\)</span>-statistics collapse toward zero, and coefficients that may be economically large look statistically insignificant.</p>
-</div>
-<p>This is the mechanical reason multicollinearity produces the textbook symptom — “high <span class="math inline">\(R^2\)</span>, but nothing individually significant.” It was never a separate phenomenon; it is the same singularity problem from Section 1, one formula later.</p>
 </section>
 <section id="recap" class="slide level2 recap-slide" data-background-color="#87A96B" data-footer="false">
 <h2>Recap</h2>

@@ -598,7 +598,7 @@ window.Quarto = {
 <div id="fig-icsa-overview" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-icsa-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-icsa-overview-output-1.png" width="893" height="1223" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-icsa-overview-output-1.png" width="892" height="1224" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-icsa-overview-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.1: Log initial jobless claims (ICSA), weekly, 1967–2024. The level plot (top) shows the full history: the sharp spike in early 2020 during the COVID-19 pandemic dwarfs all previous episodes including the early 1980s recession. The longer-run downward trend reflects structural changes in the labour market. NBER recessions are shaded. The ACF (middle) decays slowly over many lags — the hallmark of a highly persistent process. The PACF (bottom) drops sharply after the first lag and remains close to zero thereafter, the textbook signature of strong AR(1) dynamics. The full sample spans multiple structural breaks; we use it here for identification only and return to sample choice in Chapter 4.
@@ -906,7 +906,7 @@ h = 1, 2, \ldots, q \\[10pt]
 <div id="fig-ma-acf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ma-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-ma-acf-output-1.png" width="894" height="1223" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-ma-acf-output-1.png" width="891" height="1224" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ma-acf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.2: Simulated MA(1) and MA(2) processes (<span class="math inline">\(T = 500\)</span>) and their sample ACFs and PACFs. Left column: MA(1) with <span class="math inline">\(\theta_1 = 0.7\)</span>. Right column: MA(2) with <span class="math inline">\(\theta_1 = 0.6\)</span>, <span class="math inline">\(\theta_2 = 0.3\)</span>. Top row: time series. Middle row: sample ACF — the cutoff after lag 1 (left) and lag 2 (right) is visible, though sampling noise means a few small spikes appear beyond the cutoff. Bottom row: sample PACF — tailing off gradually, with no clean cutoff. The contrast with the AR PACF pattern from Section 3.2 is stark.
@@ -1094,7 +1094,7 @@ Figure&nbsp;4.2: Simulated MA(1) and MA(2) processes (<span class="math inline">
 <div id="fig-arma-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arma-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-arma-comparison-output-1.png" width="914" height="1071" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-arma-comparison-output-1.png" width="914" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arma-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.3: ACF and PACF for simulated AR(1), MA(1), and ARMA(1,1) processes (<span class="math inline">\(T = 500\)</span>). AR(1) with <span class="math inline">\(\phi_1 = 0.7\)</span>: PACF cuts off sharply after lag 1, ACF tails off. MA(1) with <span class="math inline">\(\theta_1 = 0.7\)</span>: ACF cuts off after lag 1, PACF tails off. ARMA(1,1) with <span class="math inline">\(\phi_1 = 0.6\)</span>, <span class="math inline">\(\theta_1 = 0.4\)</span>: both ACF and PACF tail off from the start — neither shows a clean cutoff. The identification table comes to life: each model class has a distinct signature.
@@ -1302,8 +1302,8 @@ ARMA(1,2)       5     -9174.8 **-9145.2** **-9164.1**
 ARMA(1,3)       6     -9172.7     -9137.2     -9159.9
 ARMA(2,2)       6     -9172.7     -9137.1     -9159.8
 ARMA(2,3)       7     -9170.8     -9129.3     -9155.8
-ARMA(2,1)       5     -9142.2     -9112.6     -9131.5
-ARMA(3,1)       6     -9122.4     -9086.8     -9109.5
+ARMA(2,1)       5     -9148.6     -9119.0     -9137.9
+ARMA(3,1)       6     -9122.4     -9086.9     -9109.6
 ARMA(1,1)       4     -9119.7     -9096.0     -9111.2
 ARMA(3,0)       5     -9114.3     -9084.7     -9103.6
 ARMA(2,0)       4     -8987.5     -8963.8     -8979.0
@@ -1393,8 +1393,8 @@ Table&nbsp;4.2
 ==============================================================================
 Dep. Variable:             Log Claims   No. Observations:                 2765
 Model:                 ARIMA(1, 0, 0)   Log Likelihood                4400.048
-Date:                Thu, 27 Aug 2026   AIC                          -8794.096
-Time:                        12:47:58   BIC                          -8776.322
+Date:                Mon, 31 Aug 2026   AIC                          -8794.096
+Time:                        14:52:35   BIC                          -8776.322
 Sample:                    01-07-1967   HQIC                         -8787.676
                          - 12-28-2019                                         
 Covariance Type:                  opg                                         
@@ -1464,7 +1464,7 @@ Warnings:
 <div id="fig-ar1-resid" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ar1-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-ar1-resid-output-1.png" width="893" height="1071" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-ar1-resid-output-1.png" width="892" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ar1-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.4: AR(1) residuals: time series (top), ACF (middle), and PACF (bottom). The ACF shows significant spikes at lags 1–3 and the PACF at lags 1–2 — the AR(1) has left predictable structure in the residuals. The time series shows heteroskedastic bursts around recessions, a pattern ARMA cannot model. The model is not adequate and we refine.
@@ -1493,8 +1493,8 @@ Table&nbsp;4.3
 ==============================================================================
 Dep. Variable:             Log Claims   No. Observations:                 2765
 Model:                 ARIMA(1, 0, 2)   Log Likelihood                4592.408
-Date:                Thu, 27 Aug 2026   AIC                          -9174.817
-Time:                        12:48:00   BIC                          -9145.193
+Date:                Mon, 31 Aug 2026   AIC                          -9174.817
+Time:                        14:52:36   BIC                          -9145.193
 Sample:                    01-07-1967   HQIC                         -9164.117
                          - 12-28-2019                                         
 Covariance Type:                  opg                                         
@@ -1502,12 +1502,12 @@ Covariance Type:                  opg
                  coef    std err          z      P&gt;|z|      [0.025      0.975]
 ------------------------------------------------------------------------------
 const         12.6700      0.097    130.683      0.000      12.480      12.860
-ar.L1          0.9961      0.002    640.025      0.000       0.993       0.999
+ar.L1          0.9961      0.002    640.020      0.000       0.993       0.999
 ma.L1         -0.3651      0.013    -27.316      0.000      -0.391      -0.339
 ma.L2         -0.1376      0.014     -9.603      0.000      -0.166      -0.110
 sigma2         0.0021   3.03e-05     69.676      0.000       0.002       0.002
 ===================================================================================
-Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              4189.86
+Ljung-Box (L1) (Q):                   0.01   Jarque-Bera (JB):              4189.85
 Prob(Q):                              0.93   Prob(JB):                         0.00
 Heteroskedasticity (H):               0.45   Skew:                             1.01
 Prob(H) (two-sided):                  0.00   Kurtosis:                         8.68
@@ -1587,7 +1587,7 @@ Warnings:
 <div id="fig-arma12-resid" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arma12-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-arma12-resid-output-1.png" width="893" height="1071" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-arma12-resid-output-1.png" width="892" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arma12-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.5: ARMA(1,2) residuals: time series (top), ACF (middle), and PACF (bottom). Comparing to the AR(1) residuals above, the short-lag spikes in the ACF and PACF have largely disappeared — the two MA terms absorbed the remaining structure. The heteroskedastic bursts persist, reflecting volatility clustering beyond the scope of ARMA models (Chapter 8).
@@ -1837,10 +1837,10 @@ Lags (h)
 
 Jarque-Bera Test — ARMA(1,2) Residuals
   H0: residuals are normally distributed
-  Statistic : 7043.22
+  Statistic : 7043.46
   p-value   : 0.0000
   Skewness  : 0.7042
-  Exc. kurt : 7.7072</code></pre>
+  Exc. kurt : 7.7073</code></pre>
 </div>
 </div>
 </figure>
@@ -1942,7 +1942,7 @@ Table&nbsp;4.6
 <div id="fig-resid-final" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resid-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-resid-final-output-1.png" width="893" height="768" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-resid-final-output-1.png" width="892" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resid-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.6: ARMA(1,2) standardised residuals (top) and a histogram with a fitted normal density (bottom). The standardised residuals fluctuate around zero with no obvious trend or systematic pattern, confirming mean adequacy. The histogram shows the fat-tailed, slightly skewed distribution typical of weekly labour market data — the normal approximation understates the frequency of large shocks.
@@ -2074,7 +2074,7 @@ Figure&nbsp;4.6: ARMA(1,2) standardised residuals (top) and a histogram with a f
 <div id="fig-forecast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-forecast-output-1.png" width="893" height="920" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-forecast-output-1.png" width="892" height="921" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.7: ARMA(1,2) forecasts for log initial jobless claims, 52 weeks ahead from the end of the pre-pandemic sample (end-2019). Top panel: point forecast (copper) with 95% prediction interval (shaded), overlaid on the last two years of observed data (charcoal). The forecast mean-reverts toward the unconditional mean; the interval widens as the horizon grows, eventually covering most of the historical range. Bottom panel: fan chart showing 50%, 75%, and 95% intervals — the widening fan visualises how uncertainty accumulates with horizon.
@@ -2184,7 +2184,7 @@ Figure&nbsp;4.7: ARMA(1,2) forecasts for log initial jobless claims, 52 weeks ah
 <div id="fig-armax" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-armax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_03_files/figure-html/fig-armax-output-1.png" width="893" height="769" class="figure-img">
+<img src="chapter_03_files/figure-html/fig-armax-output-1.png" width="892" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-armax-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4.8: ARMAX(1,2) fitted values and residuals for monthly log initial jobless claims with the federal funds rate as exogenous regressor, 1967–2019. Top panel: observed (charcoal) vs fitted (copper). Bottom panel: residuals with NBER recessions shaded. The federal funds rate adds most of its explanatory power around monetary tightening episodes — the 1979–82 Volcker disinflation in particular.
@@ -2289,17 +2289,17 @@ Table&nbsp;4.7
 <div class="cell-output cell-output-stdout">
 <pre><code>                           AR(1)     ARMA(1,2)     ARMA(2,2)    ARMAX(1,2)    ARMAX(2,2)
 ──────────────────┼──────────────┼──────────────┼──────────────┼──────────────┼──────────────
-   Intercept (mu*)   +12.6644***   +12.6747***   +12.6295***   +12.7243***   +12.6603***
-                        (0.1034)      (0.0978)      (0.1224)      (0.1172)      (0.1369)
-          beta_FFR             —             —             —    -0.0126***    -0.0119***
+   Intercept (mu*)   +12.6644***   +12.6747***   +12.6291***   +12.7243***   +12.6603***
+                        (0.1034)      (0.0978)      (0.1226)      (0.1172)      (0.1369)
+          beta_FFR             —             —             —    -0.0126***    -0.0118***
                                                                   (0.0030)      (0.0029)
-             phi_1    +0.9848***    +0.9815***    +0.1507       +0.9850***    +1.7640***
-                        (0.0064)      (0.0076)      (0.1801)      (0.0068)      (0.2364)
-             phi_2             —             —    +0.8208***             —    -0.7682***
-                                                    (0.1773)                    (0.2332)
-           theta_1             —    +0.0535*      +0.8897***    +0.0319       -0.7431***
-                                      (0.0315)      (0.1867)      (0.0330)      (0.2423)
-           theta_2             —    +0.0430       +0.0855**     +0.0265       +0.0235   
+             phi_1    +0.9848***    +0.9815***    +0.1503       +0.9850***    +1.7641***
+                        (0.0064)      (0.0076)      (0.1799)      (0.0068)      (0.2366)
+             phi_2             —             —    +0.8212***             —    -0.7682***
+                                                    (0.1771)                    (0.2334)
+           theta_1             —    +0.0535*      +0.8899***    +0.0319       -0.7430***
+                                      (0.0315)      (0.1866)      (0.0330)      (0.2425)
+           theta_2             —    +0.0430       +0.0853**     +0.0265       +0.0234   
                                       (0.0392)      (0.0382)      (0.0394)      (0.0438)
 ──────────────────┼──────────────┼──────────────┼──────────────┼──────────────┼──────────────
            Log-lik        1039.6        1041.1        1042.6        1047.2        1048.2

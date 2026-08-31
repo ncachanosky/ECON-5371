@@ -487,7 +487,7 @@ window.Quarto = {
 <div id="fig-rw-combined" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-rw-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-rw-combined-output-1.png" width="893" height="1071" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-rw-combined-output-1.png" width="892" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rw-combined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.1: Random walks without drift (left column) and with drift <span class="math inline">\(\mu = 0.3\)</span> (right column), <span class="math inline">\(T = 60\)</span>, ten paths each. Top row: path realisations with <span class="math inline">\(\pm 2\sqrt{t}\)</span> confidence envelope (blue shading) showing how the spread of possible outcomes grows over time. Without drift, paths wander symmetrically; with drift, all paths trend upward but diverge widely around the deterministic trend line (dashed). Bottom row: sample ACF of one realisation from each case — both show autocorrelations near 1.0 across all lags, the fingerprint of a unit root process. The PACF (not shown) would have a single spike at lag 1.
@@ -624,7 +624,7 @@ Figure&nbsp;5.1: Random walks without drift (left column) and with drift <span c
 <div id="fig-spurious" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spurious-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-spurious-output-1.png" width="893" height="768" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-spurious-output-1.png" width="882" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spurious-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.2: Two spurious regression examples. Left: Nicolas Cage films vs pool drownings — obviously unrelated, yet <span class="math inline">\(R^2 = 0.45\)</span> and <span class="math inline">\(t &gt; 2\)</span>. Right: log CPI regressed on log real GDP — economically plausible-sounding but equally spurious; both are <span class="math inline">\(I(1)\)</span> series trending upward together. In both cases the time series plots (top row) show two series moving in the same direction; the scatterplots (bottom row) show apparent linear relationships with significant <span class="math inline">\(t\)</span>-statistics and non-trivial <span class="math inline">\(R^2\)</span>.
@@ -830,7 +830,7 @@ p_{\max}\)</span> and choose the <span class="math inline">\(p\)</span> that min
 <div id="fig-gdp-level" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-gdp-level-output-1.png" width="894" height="769" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-gdp-level-output-1.png" width="890" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-level-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.3: Log SA real GDP (top) and its first difference — the quarterly growth rate (bottom), 1947–2024. NBER recessions shaded. The level shows persistent upward drift with no fixed mean — the visual signature of an integrated process. The growth rate fluctuates around a stable positive mean with no visible trend, consistent with <span class="math inline">\(I(0)\)</span> behaviour. The severe COVID-19 contraction and recovery in 2020 is the dominant outlier in the growth rate series.
@@ -1117,7 +1117,7 @@ Table&nbsp;5.1
 <div id="fig-ts-vs-ds" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ts-vs-ds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-ts-vs-ds-output-1.png" width="893" height="919" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-ts-vs-ds-output-1.png" width="893" height="921" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ts-vs-ds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.4: Trend-stationary (left) vs difference-stationary (right), five paths each, <span class="math inline">\(T = 80\)</span>, same drift and noise variance. Top row: both processes look similar on a single realisation — both trend upward with fluctuations around the trend line (dashed). The difference only becomes apparent across realisations: trend-stationary paths hug the trend and return to it after shocks; difference-stationary paths diverge permanently. Bottom row: residuals after removing the OLS-estimated linear trend. Bottom-left: detrending works for the trend-stationary process — residuals are stationary and fluctuate around zero. Bottom-right: detrending <em>fails</em> for the difference-stationary process — the residuals still wander without mean-reversion, because OLS detrending cannot remove a stochastic trend. This is the key diagnostic: if detrended residuals look like the bottom-right panel, the series is difference-stationary and differencing — not detrending — is the correct treatment.
@@ -1221,7 +1221,7 @@ Figure&nbsp;5.4: Trend-stationary (left) vs difference-stationary (right), five 
 <div id="fig-gdp-growth-acfpacf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gdp-growth-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-gdp-growth-acfpacf-output-1.png" width="894" height="617" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-gdp-growth-acfpacf-output-1.png" width="891" height="618" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gdp-growth-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.5: ACF and PACF of quarterly US GDP growth (log-differenced SA real GDP), 1947Q2–2024Q3. The ACF tails off gradually; the PACF shows a significant spike at lag 1 and possibly lag 2, with values inside the band thereafter. This pattern is broadly consistent with an AR(1) or AR(2) process for GDP growth — equivalently, an ARIMA(1,1,0) or ARIMA(2,1,0) for the level. The MA identification is less clear, suggesting an ARMA(p,q) structure that information criteria will help resolve.
@@ -1295,13 +1295,13 @@ Table&nbsp;5.2
 <div class="cell-output cell-output-stdout">
 <pre><code>         Model        Params           AIC           BIC            HQ
 ──────────────────────────────────────────────────────────────────────
-  ARIMA(1,1,1)             4        -531.8        -525.0        -529.1
   ARIMA(1,1,0)             3        -529.4        -524.9        -527.6
+  ARIMA(1,1,1)             4        -531.6        -524.8        -528.9
   ARIMA(2,1,0)             4        -530.3        -523.5        -527.6
   ARIMA(2,1,1)             5        -531.5        -522.5        -527.9
-  ARIMA(1,1,2)             5        -530.5        -521.4        -526.9
+  ARIMA(1,1,2)             5        -530.6        -521.5        -527.0
   ARIMA(3,1,0)             5        -529.8        -520.8        -526.2
-  ARIMA(2,1,2)             6        -529.1        -517.7        -524.6
+  ARIMA(2,1,2)             6        -529.1        -517.8        -524.6
   ARIMA(1,1,3)             6        -528.9        -517.6        -524.4
 
 ──────────────────────────────────────────────────
@@ -1384,27 +1384,26 @@ auto_arima cross-check (BIC, stepwise, 1947–2019):
 <span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Fitting: ARIMA(1,1,1) on 1947–2019
+<pre><code>Fitting: ARIMA(1,1,0) on 1947–2019
                                SARIMAX Results                                
 ==============================================================================
 Dep. Variable:                 Log SA   No. Observations:                   72
-Model:                 ARIMA(1, 1, 1)   Log Likelihood                 268.887
-Date:                Thu, 27 Aug 2026   AIC                           -531.774
-Time:                        12:48:28   BIC                           -524.986
-Sample:                    01-01-2002   HQIC                          -529.075
+Model:                 ARIMA(1, 1, 0)   Log Likelihood                 266.699
+Date:                Mon, 31 Aug 2026   AIC                           -529.397
+Time:                        14:52:58   BIC                           -524.872
+Sample:                    01-01-2002   HQIC                          -527.598
                          - 10-01-2019                                         
 Covariance Type:                  opg                                         
 ==============================================================================
                  coef    std err          z      P&gt;|z|      [0.025      0.975]
 ------------------------------------------------------------------------------
-ar.L1          0.8713      0.087     10.064      0.000       0.702       1.041
-ma.L1         -0.3967      0.140     -2.828      0.005      -0.672      -0.122
-sigma2       2.97e-05      4e-06      7.422      0.000    2.19e-05    3.75e-05
+ar.L1          0.6910      0.109      6.315      0.000       0.477       0.905
+sigma2      3.165e-05   4.51e-06      7.025      0.000    2.28e-05    4.05e-05
 ===================================================================================
-Ljung-Box (L1) (Q):                   0.02   Jarque-Bera (JB):                32.79
-Prob(Q):                              0.88   Prob(JB):                         0.00
-Heteroskedasticity (H):               0.92   Skew:                            -0.90
-Prob(H) (two-sided):                  0.84   Kurtosis:                         5.80
+Ljung-Box (L1) (Q):                   4.57   Jarque-Bera (JB):                15.76
+Prob(Q):                              0.03   Prob(JB):                         0.00
+Heteroskedasticity (H):               1.00   Skew:                            -0.67
+Prob(H) (two-sided):                  1.00   Kurtosis:                         4.87
 ===================================================================================
 
 Warnings:
@@ -1414,7 +1413,7 @@ Warnings:
 <div id="fig-arima-diagnostics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arima-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-arima-diagnostics-output-2.png" width="893" height="1071" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-arima-diagnostics-output-2.png" width="891" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arima-diagnostics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.6: ARIMA residual diagnostics for log SA real GDP, 1947–2019. Top: residual time series with NBER recessions shaded — no dominant outlier distorts the scale. Middle: residual ACF. Bottom: residual PACF. A well-specified model shows no systematic structure beyond sampling noise.
@@ -1559,7 +1558,7 @@ Figure&nbsp;5.6: ARIMA residual diagnostics for log SA real GDP, 1947–2019. To
 <div id="fig-arima-forecast" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arima-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-arima-forecast-output-1.png" width="893" height="920" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-arima-forecast-output-1.png" width="891" height="921" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arima-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.7: ARIMA forecasts for log SA real GDP, 20 quarters ahead from 2024Q3. Top: point forecast (copper) with 95% prediction interval (shaded), overlaid on the last 10 years of observed data (charcoal). The forecast extrapolates the recent growth trend; the interval widens at rate <span class="math inline">\(\sqrt{h}\)</span>, reflecting the unit root in the level. Bottom: fan chart showing 50%, 75%, and 95% intervals — the widening fan is more dramatic than for stationary ARMA forecasts because uncertainty accumulates without the mean-reversion dampening that bounds interval width in the stationary case.
@@ -1721,7 +1720,7 @@ w_t = \mu^*
 <div id="fig-nsa-gdp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nsa-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-nsa-gdp-output-1.png" width="893" height="769" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-nsa-gdp-output-1.png" width="890" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nsa-gdp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.8: Log NSA real GDP (top) and its seasonal and regular differences <span class="math inline">\(\Delta_4\Delta y_t\)</span> (bottom), 1947Q1–2024Q3. The level shows both the upward stochastic trend and the pronounced seasonal swing — the within-year dip in Q1 is visible as a regular sawtooth pattern superimposed on the trend. After applying both seasonal and regular differencing, the series fluctuates around zero with no visible trend or seasonal pattern.
@@ -1774,7 +1773,7 @@ Figure&nbsp;5.8: Log NSA real GDP (top) and its seasonal and regular differences
 <div id="fig-nsa-acfpacf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nsa-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-nsa-acfpacf-output-1.png" width="894" height="617" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-nsa-acfpacf-output-1.png" width="891" height="618" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nsa-acfpacf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.9: ACF and PACF of <span class="math inline">\(\Delta_4\Delta\)</span> log NSA real GDP. Unit lags (1, 2, 3) and seasonal lags (4, 8, 12) should both be inspected. Significant spikes at lags 1 and 4 in the ACF and/or PACF signal non-seasonal AR/MA and seasonal AR/MA structure respectively, pointing toward a SARIMA<span class="math inline">\((p,1,q)(P,1,Q)_4\)</span> specification.
@@ -1847,7 +1846,7 @@ Table&nbsp;5.3
 ──────────────────────────────────────────────────────────
 SARIMA(0,1,1)(0,1,1)_4          -478.4    -468.6    -474.5
 SARIMA(1,1,0)(0,1,1)_4          -478.1    -468.3    -474.1
-SARIMA(1,1,1)(1,1,1)_4          -479.1    -464.4    -473.2
+SARIMA(1,1,1)(1,1,1)_4          -477.9    -463.2    -472.0
 SARIMA(1,1,0)(1,1,0)_4          -455.4    -445.6    -451.4
 
 BIC-preferred: SARIMA(0,1,1)(0,1,1)_4
@@ -1855,8 +1854,8 @@ BIC-preferred: SARIMA(0,1,1)(0,1,1)_4
 =========================================================================================
 Dep. Variable:                           Log NSA   No. Observations:                   91
 Model:             SARIMAX(0, 1, 1)x(0, 1, 1, 4)   Log Likelihood                 243.209
-Date:                           Thu, 27 Aug 2026   AIC                           -478.418
-Time:                                   12:48:30   BIC                           -468.601
+Date:                           Mon, 31 Aug 2026   AIC                           -478.418
+Time:                                   14:53:01   BIC                           -468.601
 Sample:                               01-01-2002   HQIC                          -474.467
                                     - 07-01-2024                                         
 Covariance Type:                             opg                                         
@@ -1865,7 +1864,7 @@ Covariance Type:                             opg
 ------------------------------------------------------------------------------
 intercept   2.142e-05      0.000      0.045      0.964      -0.001       0.001
 ma.L1         -0.1640      0.068     -2.416      0.016      -0.297      -0.031
-ma.S.L4       -0.8249      0.104     -7.968      0.000      -1.028      -0.622
+ma.S.L4       -0.8249      0.104     -7.969      0.000      -1.028      -0.622
 sigma2         0.0002   1.76e-05     11.046      0.000       0.000       0.000
 ===================================================================================
 Ljung-Box (L1) (Q):                   0.02   Jarque-Bera (JB):              1351.71
@@ -2028,7 +2027,7 @@ Warnings:
 <div id="fig-ets-arima" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ets-arima-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-ets-arima-output-1.png" width="892" height="617" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-ets-arima-output-1.png" width="889" height="618" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ets-arima-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.10: SES forecasts and ARIMA(0,1,1) forecasts for log SA real GDP growth, demonstrating the duality. Left: SES fitted values with optimised <span class="math inline">\(\alpha\)</span>. Right: ARIMA(0,1,1) fitted values with estimated <span class="math inline">\(\theta_1\)</span>. The two sets of fitted values should be nearly identical, and the implied <span class="math inline">\(\alpha = 1 + \hat\theta_1\)</span> from the ARIMA should match the SES-optimised <span class="math inline">\(\alpha\)</span> closely.
@@ -2095,7 +2094,7 @@ Difference               : 0.9702</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute MA(∞) coefficients from fitted ARIMA ──────────────────────────────</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Depends on: mod_best (fitted in fig-arima-diagnostics cell)</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#             gdp_level_pre (defined in fig-spurious and tbl-arima-ic cells)</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ma_inf <span class="op">=</span> mod_best.impulse_responses(nperiods<span class="op">=</span><span class="dv">100</span>, orthogonalized<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ma_inf <span class="op">=</span> mod_best.impulse_responses(steps<span class="op">=</span><span class="dv">100</span>, orthogonalized<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>psi    <span class="op">=</span> ma_inf.values.flatten()       <span class="co"># psi_0, psi_1, ..., psi_99</span></span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>psi1   <span class="op">=</span> psi.<span class="bu">sum</span>()                     <span class="co"># long-run multiplier ψ(1)</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -2187,15 +2186,15 @@ Difference               : 0.9702</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>2009Q2 (GFC trough):
   Log GDP (observed)   : 9.6970
-  BN permanent (τ_t)   : 9.7088
-  BN cycle     (c_t)   : -1.18% of GDP
+  BN permanent (τ_t)   : 2217.9656
+  BN cycle     (c_t)   : -220826.86% of GDP
 </code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div id="fig-bn-decomp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bn-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_04_files/figure-html/fig-bn-decomp-output-2.png" width="893" height="1223" class="figure-img">
+<img src="chapter_04_files/figure-html/fig-bn-decomp-output-2.png" width="890" height="1224" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bn-decomp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.11: Beveridge-Nelson decomposition of log SA real GDP. Top: observed log GDP (charcoal) and BN permanent component (copper) — the two track closely because most GDP variation is permanent. Middle: BN transitory component (business cycle). NBER recessions shaded. Bottom: comparison of BN cycle with the HP filter cycle (<span class="math inline">\(\lambda=1600\)</span>) from Chapter 2. The BN cycle is more volatile and less smooth than the HP cycle, reflecting the BN decomposition’s model-based rather than smoothness-penalised approach.
@@ -5143,7 +5142,7 @@ I(1)\)</span> and <span class="math inline">\(y_t \sim I(1)\)</span>, their rela
 <span id="cb23-2306"><a href="#cb23-2306" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Compute MA(∞) coefficients from fitted ARIMA ──────────────────────────────</span></span>
 <span id="cb23-2307"><a href="#cb23-2307" aria-hidden="true" tabindex="-1"></a><span class="co"># Depends on: mod_best (fitted in fig-arima-diagnostics cell)</span></span>
 <span id="cb23-2308"><a href="#cb23-2308" aria-hidden="true" tabindex="-1"></a><span class="co">#             gdp_level_pre (defined in fig-spurious and tbl-arima-ic cells)</span></span>
-<span id="cb23-2309"><a href="#cb23-2309" aria-hidden="true" tabindex="-1"></a>ma_inf <span class="op">=</span> mod_best.impulse_responses(nperiods<span class="op">=</span><span class="dv">100</span>, orthogonalized<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-2309"><a href="#cb23-2309" aria-hidden="true" tabindex="-1"></a>ma_inf <span class="op">=</span> mod_best.impulse_responses(steps<span class="op">=</span><span class="dv">100</span>, orthogonalized<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb23-2310"><a href="#cb23-2310" aria-hidden="true" tabindex="-1"></a>psi    <span class="op">=</span> ma_inf.values.flatten()       <span class="co"># psi_0, psi_1, ..., psi_99</span></span>
 <span id="cb23-2311"><a href="#cb23-2311" aria-hidden="true" tabindex="-1"></a>psi1   <span class="op">=</span> psi.<span class="bu">sum</span>()                     <span class="co"># long-run multiplier ψ(1)</span></span>
 <span id="cb23-2312"><a href="#cb23-2312" aria-hidden="true" tabindex="-1"></a></span>

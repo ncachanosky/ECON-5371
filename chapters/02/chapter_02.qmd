@@ -654,15 +654,31 @@ Most official economic statistics are reported in seasonally adjusted form as th
 
 The US Bureau of Economic Analysis, Bureau of Labor Statistics, and statistical agencies across most developed economies adjust their data using **[X-13-ARIMA-SEATS](https://www.census.gov/data/software/x13as.html)**, a software package maintained by the US Census Bureau. Understanding what it does — even without running it — is essential for interpreting official statistics.
 
-X-13 is the latest in a long lineage of X-11 programs developed at the Census Bureau since the 1950s. It combines two conceptually distinct approaches:
+X-13 is the current generation of a lineage that began with the X-11 program developed at the Census Bureau in 1965. The original X-11 was a pure iterative moving-average filter — no ARIMA, no model-based decomposition. It evolved through X-11-ARIMA (Statistics Canada, 1980), which added ARIMA-based endpoint extension; X-12-ARIMA (Census Bureau, 1998), which expanded the ARIMA specification tools and diagnostics; and finally X-13-ARIMA-SEATS (2012), which added SEATS as a fully model-based alternative to the iterative filter. When analysts and texts refer to "the X-11 filter," they mean the iterative moving-average procedure that originated in 1965 and is still used as the core method inside X-13 today — X-11 names both the original standalone program and the inherited filter component.
 
-**The X-11 component** is a sophisticated iterative moving-average filter. Starting from a basic trend-cycle estimate, it extracts seasonal factors, removes them, re-estimates the trend on the adjusted series, re-estimates the seasonal factors, and iterates until convergence. The key advancement over classical decomposition is that it applies different moving averages to different parts of the series, allows seasonal factors to evolve slowly over time, and includes outlier detection and correction. This flexibility is why official seasonal adjustments are smoother and more credible than simple classical decomposition.
+Understanding the procedure in sequence makes its logic clear.
 
-**The ARIMA component** addresses a limitation of all filter-based methods: they lose observations at the ends of the sample, precisely where the most recent and policy-relevant data sit. X-13 pre-extends the series by fitting an ARIMA model (covered in Chapter 3) and forecasting several periods ahead, then applies the moving-average filter to the extended series, and finally discards the forecasted values. This eliminates the end-point problem that plagues classical methods.
+::: {.callout-note}
+## How X-13-ARIMA-SEATS Works: Step by Step
 
-**The SEATS component** (Signal Extraction in ARIMA Time Series) is an alternative signal-extraction procedure based on model-based decomposition: it fits a SARIMA model to the observed series, then uses the estimated model to decompose the spectrum of the series into trend, seasonal, and irregular components. SEATS produces smoother seasonal factors than X-11 under some conditions and has a firmer statistical foundation.
+**Step 1 — ARIMA extension.** Fit an ARIMA model to the raw series and use it to extend the series one to three years forward (and optionally backward). This gives the filter data at both ends of the sample, solving the endpoint loss problem that afflicts classical decomposition and the HP filter. (Chapter 3 covers ARIMA models in full.)
 
-X-13 requires a dedicated binary file. This software package is complex and has decades of accumulated logic for handling calendars (trading day effects, holiday effects, leap years), performing outlier detection, selecting ARIMA specifications, and producing diagnostic statistics. It is not a simple function — it is an industrial-grade statistical production system. The `statsmodels` library provides a Python wrapper (`statsmodels.tsa.x13.x13_arima_analysis`) that calls the X-13 binary, but the binary itself must be installed separately from the Census Bureau. For most analytical purposes — and for all the work in this course — the methods we can implement directly in Python are sufficient and considerably more transparent.
+**Step 2 — Prior adjustment.** Remove known deterministic effects before filtering: trading day variation (the number of Mondays, Tuesdays, … in each month varies), holiday effects (Easter, Thanksgiving), and outliers flagged by automatic detection. These are modelled as regression effects and subtracted from the extended series.
+
+**Step 3 — X-11 filter (iterative moving averages).** Apply a sequence of moving averages to the prior-adjusted, extended series:
+  - Estimate a preliminary trend using a long moving average.
+  - Subtract the trend to isolate the combined seasonal and irregular.
+  - Average across years by season to obtain preliminary seasonal factors.
+  - Subtract the seasonal factors to get a preliminary seasonally adjusted series.
+  - Re-estimate the trend on this cleaner series; repeat the cycle.
+  After two or three passes, the estimates converge. At each pass, outlier weights are updated to reduce the influence of extreme observations. The result is a smooth, stable set of seasonal factors that are allowed to evolve slowly over time.
+
+**Step 4 — Discard the extensions.** Drop the ARIMA-forecasted values added in Step 1. The final seasonal factors and seasonally adjusted series cover only the original sample.
+
+**Step 4 (alternative) — SEATS instead of the X-11 filter.** Rather than applying the iterative moving-average filter in Step 3, the SEATS method (Signal Extraction in ARIMA Time Series) uses the ARIMA model from Step 1 to perform a model-based canonical decomposition. It allocates the spectrum of the series mathematically across trend, seasonal, and irregular components. SEATS has a firmer statistical foundation than the X-11 filter and tends to produce smoother seasonal factors; it is the method of choice in most European statistical agencies and is increasingly preferred in the US as well.
+:::
+
+Why does X-13 require a dedicated binary rather than a simple Python function? Because the procedure above — particularly the prior adjustment for trading days and holidays, the automatic ARIMA specification search, the outlier detection logic, and the diagnostic suite — represents decades of accumulated refinements in production-grade Fortran code. The `statsmodels` library provides a Python wrapper (`statsmodels.tsa.x13.x13_arima_analysis`) that calls the X-13 binary, but the binary itself must be installed separately from the Census Bureau website. For research and teaching purposes the methods we implement directly in Python are sufficient and considerably more transparent; for producing official statistics, X-13 is the unavoidable standard.
 
 ### STL Decomposition: A Flexible, Portable Alternative
 
@@ -832,12 +848,12 @@ For $h = 1$ this is the same as the undamped Holt forecast. For large $h$, the c
 series_fit = gdp["Log STL-SA"].dropna()
 
 # SES with two alpha values for illustration
-ses_low  = SimpleExpSmoothing(series_fit).fit(smoothing_level=0.05, optimized=False)
-ses_high = SimpleExpSmoothing(series_fit).fit(smoothing_level=0.4,  optimized=False)
+ses_low  = SimpleExpSmoothing(series_fit, initialization_method="estimated").fit(smoothing_level=0.05, optimized=False)
+ses_high = SimpleExpSmoothing(series_fit, initialization_method="estimated").fit(smoothing_level=0.4,  optimized=False)
 
 # Holt (undamped and damped)
-holt_und  = Holt(series_fit).fit(optimized=True)
-holt_dmp  = Holt(series_fit, damped_trend=True).fit(optimized=True)
+holt_und  = Holt(series_fit, initialization_method="estimated").fit(optimized=True)
+holt_dmp  = Holt(series_fit, damped_trend=True, initialization_method="estimated").fit(optimized=True)
 
 h_fcast   = 12   # forecast horizon
 
@@ -1160,7 +1176,7 @@ The train-test exercise illustrates a lesson that comes up repeatedly in forecas
 
 The decomposition and smoothing methods in this chapter are intuitive and practically useful, but they rest on assumptions that Chapter 3 will justify — and in some cases tighten.
 
-Chapter 3 develops the ARMA family of models, which provide the theoretical foundation for the methods introduced here. Simple exponential smoothing turns out to be the optimal forecast for an ARIMA(0,1,1) process; Holt's linear method corresponds to ARIMA(0,2,2); the Holt-Winters seasonal model corresponds to a seasonal ARIMA. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. Understanding that connection unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also connects the trend-cycle question from this chapter to a model-based answer: the Beveridge-Nelson decomposition, developed in Chapter 4, uses the estimated ARIMA structure of a series to separate its permanent and transitory components — no smoothing parameter required, and a cycle uniquely pinned down by the data.
+Chapter 3 develops the ARMA family of models, which provide the theoretical foundation for the methods introduced here. Simple exponential smoothing turns out to be the optimal forecast for an ARIMA(0,1,1) process; Holt's linear method corresponds to ARIMA(0,2,2); the Holt-Winters seasonal model corresponds to a seasonal ARIMA. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. Understanding that connection unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also connects the trend-cycle question from this chapter to a model-based answer: the Beveridge-Nelson decomposition, developed in Chapter 3, uses the estimated ARIMA structure of a series to separate its permanent and transitory components — no smoothing parameter required, and a cycle uniquely pinned down by the data.
 
 
 ## Key Terms
@@ -1212,5 +1228,5 @@ Chapter 3 develops the ARMA family of models, which provide the theoretical foun
 
 **AIC** — Akaike Information Criterion; $-2\ell + 2k$ where $\ell$ is the log-likelihood and $k$ is the number of parameters; lower is better; used for model selection within the ETS family.
 
-**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 4.
+**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 3.
 :::

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
-  <meta name="dcterms.date" content="2026-08-27">
+  <meta name="dcterms.date" content="2026-08-31">
   <title>Lab 1 — Non-Stationary Models, Seasonality</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -212,7 +212,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 
-  <p class="date">2026-08-27</p>
+  <p class="date">2026-08-31</p>
 </section>
 <section id="todays-goal" class="slide level2 section-divider" data-background-color="#87A96B" data-footer="false">
 <h2>Today’s goal</h2>
@@ -436,7 +436,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="load-it-with-pandas" class="slide level2">
 <h2>Load it with pandas</h2>
-<div id="ac19904c" class="cell" data-execution_count="1">
+<div id="faee9b45" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <style scoped="">
@@ -514,11 +514,11 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="plot-the-series" class="slide level2">
 <h2>Plot the series</h2>
-<div id="e5718d96" class="cell" data-execution_count="2">
+<div id="bc036eb8" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lab_2_files/figure-revealjs/cell-3-output-1.png" width="854" height="373"></p>
+<p><img data-src="lab_2_files/figure-revealjs/cell-3-output-1.png" width="856" height="374"></p>
 </figure>
 </div>
 </div>
@@ -558,7 +558,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="adf-on-the-level-series" class="slide level2">
 <h2>ADF on the level series</h2>
-<div id="c491fcfe" class="cell" data-execution_count="3">
+<div id="52136596" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>ADF statistic: -0.1143
 p-value: 0.9480
@@ -571,7 +571,7 @@ Lags used: 8</code></pre>
 </section>
 <section id="kpss-on-the-level-series" class="slide level2">
 <h2>KPSS on the level series</h2>
-<div id="473989b1" class="cell" data-execution_count="4">
+<div id="3033733e" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>KPSS statistic: 1.4310
 p-value: 0.0100</code></pre>
@@ -593,7 +593,7 @@ p-value: 0.0100</code></pre>
 </section>
 <section id="take-the-first-difference" class="slide level2">
 <h2>Take the first difference</h2>
-<div id="b9a590d0" class="cell" data-execution_count="5">
+<div id="0b2cdf73" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>date
 2005-04-01    4.184
@@ -610,7 +610,7 @@ Name: diff, dtype: float64</code></pre>
 </section>
 <section id="re-test-after-differencing" class="slide level2">
 <h2>Re-test after differencing</h2>
-<div id="c3c891ef" class="cell" data-execution_count="6">
+<div id="9dcf1712" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>ADF:  statistic = -3.0050, p-value = 0.0344
 KPSS: statistic = 0.0921, p-value = 0.1000</code></pre>
@@ -635,11 +635,11 @@ KPSS: statistic = 0.0921, p-value = 0.1000</code></pre>
 </section>
 <section id="acf-and-pacf-on-the-differenced-series" class="slide level2">
 <h2>ACF and PACF on the differenced series</h2>
-<div id="1b44ebe9" class="cell" data-execution_count="7">
+<div id="9fff8d53" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lab_2_files/figure-revealjs/cell-8-output-1.png" width="950" height="325"></p>
+<p><img data-src="lab_2_files/figure-revealjs/cell-8-output-1.png" width="953" height="326"></p>
 </figure>
 </div>
 </div>
@@ -667,7 +667,7 @@ KPSS: statistic = 0.0921, p-value = 0.1000</code></pre>
 <section id="fit-a-first-candidate-arima" class="slide level2">
 <h2>Fit a first candidate ARIMA</h2>
 <p>Start simple, ignoring seasonality for a moment, just to see what a plain ARIMA captures:</p>
-<div id="6ae6aece" class="cell" data-execution_count="8">
+<div id="8eabd6ce" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>AIC: 394.860
 BIC: 401.969</code></pre>
@@ -679,14 +679,14 @@ BIC: 401.969</code></pre>
 </section>
 <section id="let-auto_arima-search" class="slide level2">
 <h2>Let auto_arima search</h2>
-<div id="b0be0220" class="cell" data-execution_count="9">
+<div id="eb89c33b" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>                                     SARIMAX Results                                     
 =========================================================================================
 Dep. Variable:                                 y   No. Observations:                   80
 Model:             SARIMAX(1, 0, 1)x(0, 1, 1, 4)   Log Likelihood                 -91.836
-Date:                           Thu, 27 Aug 2026   AIC                            193.673
-Time:                                   12:54:51   BIC                            205.326
+Date:                           Mon, 31 Aug 2026   AIC                            193.673
+Time:                                   15:01:38   BIC                            205.326
 Sample:                               01-01-2005   HQIC                           198.330
                                     - 10-01-2024                                         
 Covariance Type:                             opg                                         
@@ -695,8 +695,8 @@ Covariance Type:                             opg
 ------------------------------------------------------------------------------
 intercept      0.7085      0.272      2.602      0.009       0.175       1.242
 ar.L1          0.6201      0.146      4.254      0.000       0.334       0.906
-ma.L1          0.2727      0.180      1.517      0.129      -0.080       0.625
-ma.S.L4       -0.8025      0.081     -9.898      0.000      -0.961      -0.644
+ma.L1          0.2727      0.180      1.516      0.129      -0.080       0.625
+ma.S.L4       -0.8026      0.081     -9.899      0.000      -0.961      -0.644
 sigma2         0.6164      0.098      6.316      0.000       0.425       0.808
 ===================================================================================
 Ljung-Box (L1) (Q):                   0.00   Jarque-Bera (JB):                 0.79
@@ -770,22 +770,22 @@ Warnings:
 </section>
 <section id="fit-the-selected-model-directly" class="slide level2">
 <h2>Fit the selected model directly</h2>
-<div id="9798e1bd" class="cell" data-execution_count="10">
+<div id="6448e76a" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>                                     SARIMAX Results                                     
 =========================================================================================
 Dep. Variable:           business_activity_index   No. Observations:                   80
 Model:             SARIMAX(1, 0, 1)x(0, 1, 1, 4)   Log Likelihood                 -99.295
-Date:                           Thu, 27 Aug 2026   AIC                            206.590
-Time:                                   12:54:51   BIC                            215.913
+Date:                           Mon, 31 Aug 2026   AIC                            206.590
+Time:                                   15:01:38   BIC                            215.913
 Sample:                               01-01-2005   HQIC                           210.316
                                     - 10-01-2024                                         
 Covariance Type:                             opg                                         
 ==============================================================================
                  coef    std err          z      P&gt;|z|      [0.025      0.975]
 ------------------------------------------------------------------------------
-ar.L1          0.9967      0.006    153.636      0.000       0.984       1.009
-ma.L1          0.0492      0.104      0.474      0.635      -0.154       0.253
+ar.L1          0.9967      0.006    153.699      0.000       0.984       1.009
+ma.L1          0.0492      0.104      0.474      0.636      -0.154       0.253
 ma.S.L4       -0.8148      0.106     -7.675      0.000      -1.023      -0.607
 sigma2         0.7359      0.136      5.414      0.000       0.469       1.002
 ===================================================================================
@@ -805,24 +805,24 @@ Warnings:
 </section>
 <section id="forecast-forward" class="slide level2">
 <h2>Forecast forward</h2>
-<div id="9a6050df" class="cell" data-execution_count="11">
+<div id="3d7648cd" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
-<pre><code>2025-01-01    136.441257
-2025-04-01    139.756199
-2025-07-01    142.686279
-2025-10-01    138.951576
-2026-01-01    138.395424
+<pre><code>2025-01-01    136.441297
+2025-04-01    139.756257
+2025-07-01    142.686295
+2025-10-01    138.951582
+2026-01-01    138.395486
 Freq: QS-OCT, Name: predicted_mean, dtype: float64</code></pre>
 </div>
 </div>
 </section>
 <section id="plot-the-fan-chart" class="slide level2">
 <h2>Plot the fan chart</h2>
-<div id="3d90c494" class="cell" data-execution_count="12">
+<div id="5ef07563" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="lab_2_files/figure-revealjs/cell-13-output-1.png" width="854" height="421"></p>
+<p><img data-src="lab_2_files/figure-revealjs/cell-13-output-1.png" width="856" height="422"></p>
 </figure>
 </div>
 </div>
@@ -839,7 +839,7 @@ Freq: QS-OCT, Name: predicted_mean, dtype: float64</code></pre>
 <div style="font-size: 1.15em;">
 <p>Go back through your script and apply one consistent rule: <strong>interpretive content lives in comments, <code>print()</code> is for numeric output only.</strong></p>
 </div>
-<div id="9acafe00" class="cell" data-execution_count="13">
+<div id="b9d2c7dc" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-stdout">
 <pre><code>ADF statistic: -0.1143, p-value: 0.9480</code></pre>
 </div>

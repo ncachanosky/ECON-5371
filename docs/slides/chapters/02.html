@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Nicolas Cachanosky, Department of Economics and Finance">
-  <meta name="dcterms.date" content="2026-08-27">
+  <meta name="dcterms.date" content="2026-08-31">
   <title>Decomposition, Smoothing, and Business Cycle Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -143,18 +143,21 @@ Nicolas Cachanosky, Department of Economics and Finance
 </div>
 </div>
 
-  <p class="date">2026-08-27</p>
+  <p class="date">2026-08-31</p>
 </section>
 <section id="two-stories-at-once" class="slide level2">
 <h2>Two Stories at Once</h2>
 <blockquote>
-<p>Is the economy doing well right now, or poorly?</p>
+<p>The releant question: Is output <strong>above</strong> or <strong>below</strong> where it ought to be?</p>
 </blockquote>
 <ul>
-<li>Not “what is the level of GDP” — we can always read that off directly</li>
-<li>The real question: is output <em>above</em> or <em>below</em> where it ought to be?</li>
+<li>The level of GDP is unintersting, you can just look at the data</li>
 <li>“Where it ought to be” is not observed. It has to be <strong>constructed</strong></li>
-<li>Every time series tells two stories simultaneously: where it’s headed long-run, and where it stands right now relative to that path</li>
+<li>Every time series tells two stories simultaneously:
+<ul>
+<li>where it’s headed long-run</li>
+<li>where it stands right now relative to that path</li>
+</ul></li>
 </ul>
 <div class="eo-recap">
 <p>Separating those two stories — trend versus deviation from trend — is what this chapter’s tools do. The Fed’s “output gap,” the BLS’s seasonally adjusted unemployment rate, every headline GDP number you read: all of them are decompositions, whether the reader realizes it or not.</p>
@@ -175,7 +178,7 @@ Nicolas Cachanosky, Department of Economics and Finance
 </section>
 <section id="why-this-chapter-matters" class="slide level2">
 <h2>Why This Chapter Matters</h2>
-<p>Two families of tools, one underlying goal — separate the predictable, structural part of a series from what’s left over:</p>
+<p>Two families of tools to get the same result: separate the predictable, structural part of a series from what’s left over</p>
 <ol type="1">
 <li><strong>Decomposition and filtering</strong> — trend, seasonal, and irregular components; moving averages, HP and Hamilton filters, STL</li>
 <li><strong>Exponential smoothing</strong> — SES, Holt, Holt-Winters: forecasting methods built directly on top of a decomposition</li>
@@ -229,8 +232,8 @@ Nicolas Cachanosky, Department of Economics and Finance
 <p><strong>The two are the same model.</strong> <span class="math inline">\(\log y_t = \log T_t + \log S_t + \log I_t\)</span> — multiplicative in levels is additive in logs. Since most economic series grow exponentially, we work in logs and apply additive methods throughout this chapter.</p>
 </div>
 </section>
-<section id="running-example-nsa-and-sa-real-gdp" class="slide level2">
-<h2>Running Example: NSA and SA Real GDP</h2>
+<section id="nsa-and-sa-real-gdp" class="slide level2">
+<h2>NSA and SA Real GDP</h2>
 <p>Two versions of the same underlying series:</p>
 <div class="eo-columns">
 <div>
@@ -369,14 +372,11 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 </section>
 <section id="why-seasonal-adjustment-matters" class="slide level2">
 <h2>Why Seasonal Adjustment Matters</h2>
-<blockquote>
-<p>A policymaker watching raw retail sales in January sees a sharp drop from December — every single year, regardless of the economy’s actual condition. How do you keep from reacting to noise?</p>
-</blockquote>
-<p>Seasonal patterns are large, predictable, and economically uninteresting — which is exactly what makes them dangerous to look at directly.</p>
+<p>Seasonal patterns are large, predictable, and economically uninteresting.</p>
 <div class="eo-recap">
 <p>Nearly every headline number you read — the employment report, the GDP advance estimate, industrial production, housing starts — is seasonally adjusted before publication. The methodology behind that adjustment shapes the data everyone uses daily.</p>
 </div>
-<p>The US Census Bureau’s <strong>X-13-ARIMA-SEATS</strong> is the government standard. We won’t run it — but understanding what it does is essential for interpreting official statistics correctly.</p>
+<p>The US Census Bureau’s <strong>X-13-ARIMA-SEATS</strong> is the government standard. How doees it work?</p>
 </section>
 <section id="x-13-the-x-11-component" class="slide level2">
 <h2>X-13: The X-11 Component</h2>
@@ -388,17 +388,27 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <p>This flexibility is exactly why official seasonal adjustments look smoother and more credible than the fixed-window classical decomposition we just built by hand.</p>
 </div>
 </section>
-<section id="x-13-the-arima-and-seats-components" class="slide level2">
-<h2>X-13: The ARIMA and SEATS Components</h2>
+<section id="x-13-the-arima-and-seats-components-the-steps" class="slide level2">
+<h2>X-13: The ARIMA and SEATS Components: The Steps</h2>
 <div class="eo-hazard">
 <p><strong>The end-point problem.</strong> Every filter-based method loses observations near the ends of the sample — exactly where the most recent, policy-relevant data sit. Classical decomposition and X-11 alone both have this weakness.</p>
 </div>
 <div class="eo-definition">
-<p><strong>ARIMA component.</strong> Pre-extends the series by fitting an ARIMA model (Chapter 3) and forecasting several periods ahead, applies the moving-average filter to the <em>extended</em> series, then discards the forecasted values — eliminating the end-point problem.</p>
-<p><strong>SEATS component.</strong> An alternative: fit a SARIMA model, then decompose the series’ spectrum directly into trend, seasonal, and irregular. Firmer statistical foundation; often smoother seasonal factors than X-11.</p>
-</div>
-<p>X-13 is an industrial-grade production system — calendar effects, holiday effects, outlier detection, decades of accumulated refinement — not a simple function call.</p>
-</section>
+<p>Typical iterative procedure:</p>
+<ul>
+<li>Step 1: Add ARIMA extension(s)</li>
+<li>Step 2: Prior adjustment — remove known deterministic factors such as holidays, flagged outliers, …</li>
+<li>Step 3: X-11 filter — the iterative moving average process</li>
+<li>Step 4: Discard ARIMA extension(s)</li>
+</ul>
+<p>Alternative analytica procedure:</p>
+<ul>
+<li>Step 1: Add ARIMA extension(s)</li>
+<li>Step 2: Prior adjustment — remove known deterministic factors such as holidays, flagged outliers, …</li>
+<li><strong>Step 3: SEATS estimation</strong></li>
+<li>Step 4: Discard ARIMA extension(s)</li>
+</ul>
+<hr>
 <section id="stl-a-portable-alternative" class="slide level2">
 <h2>STL: A Portable Alternative</h2>
 <blockquote>
@@ -408,6 +418,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <p><strong>STL</strong> — Seasonal-Trend decomposition using <strong>Loess</strong>. Implemented natively in <code>statsmodels</code>, no external dependency. Iterates between an inner loop (updates seasonal and trend given the current decomposition) and an outer loop (robustness weights, downweighting outliers).</p>
 </div>
 <p>The trend at each step comes from <strong>Loess</strong> — locally weighted polynomial regression, fitting a low-degree polynomial to a local neighborhood at each point. More flexible than a global moving average window, less prone to distortion near structural shifts.</p>
+<hr>
 </section>
 <section id="stl-parameters-and-how-stl-differs-from-x-13" class="slide level2">
 <h2>STL Parameters and How STL Differs from X-13</h2>
@@ -416,6 +427,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <p><strong>Where the two methods differ.</strong> STL treats the seasonal component as slowly varying but does <strong>not</strong> model calendar effects (trading days, Easter, holidays) — X-13 does. STL is additive by default; X-13 integrates ARIMA-based extension natively. STL is fully transparent, reproducible in Python; X-13 is an institutional standard with decades of accumulated logic.</p>
 </div>
 <p>For research and teaching: STL. For the official figures in a statistical release: X-13.</p>
+<hr>
 </section>
 <section id="stl-decomposition-of-log-nsa-gdp" class="slide level2">
 <h2>STL Decomposition of Log NSA GDP</h2>
@@ -428,6 +440,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <p><img data-src="../../chapters/02/chapter_02_files/figure-html/fig-stl-decomp-output-1.png" class="img-fluid" alt="Three panels: observed log NSA GDP overlaid with the STL Loess trend, the seasonal component, and the irregular remainder"></p>
 </div>
 </div>
+<hr>
 </section>
 <section id="stl-vs.-the-official-series" class="slide level2">
 <h2>STL vs.&nbsp;the Official Series</h2>
@@ -436,12 +449,14 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <div class="eo-recap">
 <p><strong>Close enough to validate the approach.</strong> For research and teaching purposes, STL recovers essentially the same seasonally adjusted series the government publishes — using a fully transparent, reproducible method with no external dependency.</p>
 </div>
+<hr>
 </section>
 <section id="trend-filters-and-the-business-cycle" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Trend Filters and the Business Cycle</h2>
 <div class="eo-section-label">
 <p>Section 4</p>
 </div>
+<hr>
 </section>
 <section id="what-the-business-cycle-actually-is" class="slide level2">
 <h2>What the Business Cycle Actually Is</h2>
@@ -452,6 +467,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <div class="eo-recap">
 <p><strong>The business cycle is not a natural object.</strong> It is a <em>residual</em> — whatever’s left after removing the trend. Since different methods produce different trends, they produce different business cycles. Whether the 1990s boom looks large or the 2001 recession looks shallow depends directly on which trend we chose.</p>
 </div>
+<hr>
 </section>
 <section id="a-simple-baseline-linear-and-quadratic-detrending" class="slide level2">
 <h2>A Simple Baseline: Linear and Quadratic Detrending</h2>
@@ -467,6 +483,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <div class="eo-hazard">
 <p><strong>Both assume a purely deterministic trend</strong> — shocks are transitory, the series always reverts to a fixed path. But Chapter 1 established log real GDP is <span class="math inline">\(I(1)\)</span>: shocks are at least partly <strong>permanent</strong>. Imposing a deterministic trend on a unit-root process is misspecification — the trend chases the data, contaminating the extracted cycle.</p>
 </div>
+<hr>
 </section>
 <section id="the-hp-filter-the-optimization-problem" class="slide level2">
 <h2>The HP Filter: The Optimization Problem</h2>
@@ -481,6 +498,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <li><strong>Second sum</strong>: penalizes changes in the trend’s <em>growth rate</em> — pulls the trend toward a straight line</li>
 <li><span class="math inline">\(\lambda\)</span>: governs the tradeoff</li>
 </ul>
+<hr>
 </section>
 <section id="the-hp-filter-definition-and-lambda" class="slide level2">
 <h2>The HP Filter: Definition and <span class="math inline">\(\lambda\)</span></h2>
@@ -492,6 +510,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <div class="eo-recap">
 <p>Simple to apply, transparent objective, cycles that broadly match NBER dates. This is why HP became the de facto standard — and why it’s taught in every graduate macro course.</p>
 </div>
+<hr>
 </section>
 <section id="hamiltons-critique" class="slide level2">
 <h2>Hamilton’s Critique</h2>
@@ -503,6 +522,7 @@ M_t^- = \tfrac{1}{4}(y_{t-2}+y_{t-1}+y_t+y_{t+1})
 <p><strong>2. End-point bias.</strong> The trend near the most recent observations is especially sensitive to <span class="math inline">\(\lambda\)</span> — less data on one side to anchor it. Exactly when policymakers need reliable estimates, the HP cycle is least trustworthy.</p>
 <p><strong>3. Wrong-order penalty.</strong> The second-difference penalty assumes the trend is <span class="math inline">\(I(2)\)</span>. Log real GDP is <span class="math inline">\(I(1)\)</span>. HP solves the right optimization for the wrong class of process.</p>
 </div>
+<hr>
 </section>
 <section id="hamiltons-alternative" class="slide level2">
 <h2>Hamilton’s Alternative</h2>
@@ -517,6 +537,7 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-hazard">
 <p>The tradeoff is interpretive: the Hamilton filter extracts a cycle at frequency <span class="math inline">\(1/h\)</span> — for <span class="math inline">\(h=8\)</span>, a two-year horizon. Shorter than the conventional NBER cycle; it misses lower-frequency variation HP would retain. A feature, not a flaw — but one to be aware of.</p>
 </div>
+<hr>
 </section>
 <section id="four-methods-one-series" class="slide level2">
 <h2>Four Methods, One Series</h2>
@@ -535,6 +556,7 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<hr>
 </section>
 <section id="end-point-bias-a-policy-illustration" class="slide level2">
 <h2>End-Point Bias: A Policy Illustration</h2>
@@ -549,12 +571,14 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-recap">
 <p>Hamilton’s filter has no analogous problem: its cycle at date <span class="math inline">\(t\)</span> depends only on observations well before <span class="math inline">\(t\)</span>, so real-time and full-sample estimates <strong>coincide</strong> by construction.</p>
 </div>
+<hr>
 </section>
 <section id="exponential-smoothing-ses-and-holt" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Exponential Smoothing: SES and Holt</h2>
 <div class="eo-section-label">
 <p>Section 5</p>
 </div>
+<hr>
 </section>
 <section id="a-different-kind-of-tool" class="slide level2">
 <h2>A Different Kind of Tool</h2>
@@ -565,9 +589,10 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-recap">
 <p>This is the first genuinely <em>forward-looking</em> tool in the textbook — everything before this point described the data; from here on, we’re building forecasting machinery on top of that description.</p>
 </div>
+<hr>
 </section>
-<section id="simple-exponential-smoothing" class="slide level2">
-<h2>Simple Exponential Smoothing</h2>
+<section id="simple-exponential-smoothing-ses" class="slide level2">
+<h2>Simple Exponential Smoothing (SES)</h2>
 <blockquote>
 <p>After each new observation, how should we revise our estimate of “where the series is right now”?</p>
 </blockquote>
@@ -585,36 +610,43 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 \]</span></p>
 <p>The <span class="math inline">\(h\)</span>-step forecast is <strong>flat</strong>: <span class="math inline">\(\hat{y}_{T+h|T}=\hat{y}_{T+1|T}\)</span> for all <span class="math inline">\(h\geq1\)</span>.</p>
 </div>
-<p>SES is appropriate for series with <strong>no trend, no seasonality</strong> — for a persistently trending series like GDP, it always lags, perpetually catching up.</p>
+<hr>
 </section>
 <section id="holts-method-adding-a-trend" class="slide level2">
 <h2>Holt’s Method: Adding a Trend</h2>
-<p>Maintain a separate smoothed <strong>trend</strong> alongside the level:</p>
+<p>SES: Appropriate for series with <strong>no trend, no seasonality</strong> — for a persistently trending series like GDP, it always lags, perpetually catching up.</p>
+<p>Holt: Add <strong>level</strong> and <strong>trend</strong></p>
 <div class="eo-definition">
 <ul>
 <li><span class="math inline">\(\hat{\ell}_t\)</span> — the smoothed <strong>level</strong>: our current best estimate of “where the series is right now,” net of trend</li>
 <li><span class="math inline">\(\hat{b}_t\)</span> — the smoothed <strong>trend</strong>: our current best estimate of the slope — how fast the level is moving per period</li>
 </ul>
 </div>
+<hr>
+</section>
+<section id="holts-method-is-a-simple-expansion" class="slide level2">
+<h2>Holt’s Method is A Simple Expansion</h2>
+<p>Maintain a separate smoothed <strong>trend</strong> alongside the level:</p>
 <div class="eo-columns">
 <div>
 <p><span class="math display">\[
 \begin{align}
+\hat{y}_{t+h|t} &amp;= \hat{\ell}_t + \hat{b}_t h \\[4pt]
 \hat{\ell}_t    &amp;= \alpha y_t + (1-\alpha)(\hat{\ell}_{t-1}+\hat{b}_{t-1})       \\[4 pt]
-\hat{b}_t       &amp;= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \\[4 pt]
-\hat{y}_{t+h|t} &amp;= \hat{\ell}_t + h\hat{b}_t
+\hat{b}_t       &amp;= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1}
 \end{align}
 \]</span></p>
 </div>
 <div>
+<p><strong>Forecast</strong> = current level <span class="math inline">\((hat{\ell})\)</span> <span class="math inline">\(+\)</span> trend <span class="math inline">\((\hat{b})\)</span> <span class="math inline">\(\times\)</span> horizon <span class="math inline">\((h)\)</span></p>
 <p><strong>Level</strong> = weighted average of the new observation and the previous level-plus-trend estimate</p>
 <p><strong>Trend</strong> = weighted average of this period’s implied trend <span class="math inline">\((\hat\ell_t-\hat\ell_{t-1})\)</span> and the previous trend estimate</p>
-<p><strong>Forecast</strong> = current level <span class="math inline">\(+\)</span> trend <span class="math inline">\(\times\)</span> horizon</p>
 </div>
 </div>
 <div class="eo-recap">
 <p>Two smoothing parameters now: <span class="math inline">\(\alpha\)</span> (level) and <span class="math inline">\(\beta\)</span> (trend). Small <span class="math inline">\(\beta\)</span> — the model assumes the trend is persistent, changes slowly. Large <span class="math inline">\(\beta\)</span> — the trend chases recent changes in slope.</p>
 </div>
+<hr>
 </section>
 <section id="holts-damped-trend" class="slide level2">
 <h2>Holt’s Damped Trend</h2>
@@ -629,6 +661,7 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-recap">
 <p><strong>Damping usually wins.</strong> Empirically, damped-trend forecasts outperform undamped ones at medium and long horizons — trends rarely persist at their most-recently-estimated slope. Damping is insurance against overextrapolation, and for a series as persistently trending as GDP, it’s almost always the more defensible default.</p>
 </div>
+<hr>
 </section>
 <section id="ses-and-holt-applied-to-gdp" class="slide level2">
 <h2>SES and Holt Applied to GDP</h2>
@@ -647,12 +680,14 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+<hr>
 </section>
 <section id="holt-winters-and-the-ets-framework" class="slide level2 section-divider" data-background-color="#B87333" data-footer="false">
 <h2>Holt-Winters and the ETS Framework</h2>
 <div class="eo-section-label">
 <p>Section 6</p>
 </div>
+<hr>
 </section>
 <section id="one-framework-three-letters" class="slide level2">
 <h2>One Framework, Three Letters</h2>
@@ -661,13 +696,27 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 </blockquote>
 <p><strong>ETS</strong> — <strong>E</strong>rror, <strong>T</strong>rend, <strong>S</strong>easonality. Each component can take different forms:</p>
 <ul>
-<li><strong>Error</strong>: additive (A) or multiplicative (M)</li>
-<li><strong>Trend</strong>: none (N), additive (A), additive damped (Ad), multiplicative (M or Md)</li>
-<li><strong>Seasonality</strong>: none (N), additive (A), multiplicative (M)</li>
+<li><strong>Error</strong>:
+<ul>
+<li>(A): additive | (M) multiplicative</li>
+</ul></li>
+<li><strong>Trend</strong>:
+<ul>
+<li><ol start="14" type="A">
+<li>none | (A) additive | (Ad) additive damped | (M) multiplicative</li>
+</ol></li>
+</ul></li>
+<li><strong>Seasonality</strong>:
+<ul>
+<li><ol start="14" type="A">
+<li>none | (A) additive | (M) multiplicative</li>
+</ol></li>
+</ul></li>
 </ul>
 <div class="eo-recap">
 <p><strong>ETS(E,T,S) names a specific model.</strong> ETS(A,N,N) is SES. ETS(A,A,N) is undamped Holt. ETS(A,Ad,N) is damped Holt. What’s new: a <strong>formal statistical model</strong> — likelihood function, prediction intervals — for every combination, not just a heuristic update rule.</p>
 </div>
+<hr>
 </section>
 <section id="holt-winters-adding-seasonality" class="slide level2">
 <h2>Holt-Winters: Adding Seasonality</h2>
@@ -683,10 +732,10 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div>
 <p><span class="math display">\[
 \begin{align}
+\hat{y}_{t+h|t} &amp;= \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)} \\[4pt]
 \hat{\ell}_t    &amp;= \alpha(y_t-\hat{s}_{t-m}) + (1-\alpha)(\hat{\ell}_{t-1}+\hat{b}_{t-1}) \\[4pt]
 \hat{b}_t       &amp;= \beta(\hat{\ell}_t-\hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1}          \\[4pt]
-\hat{s}_t       &amp;= \gamma(y_t-\hat{\ell}_{t-1}-\hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m}   \\[4pt]
-\hat{y}_{t+h|t} &amp;= \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)}
+\hat{s}_t       &amp;= \gamma(y_t-\hat{\ell}_{t-1}-\hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m}
 \end{align}
 \]</span></p>
 </div>
@@ -697,6 +746,7 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <p><strong>Forecast</strong> = level <span class="math inline">\(+\)</span> trend <span class="math inline">\(\times\)</span> horizon <span class="math inline">\(+\)</span> matching seasonal factor</p>
 </div>
 </div>
+<hr>
 </section>
 <section id="reading-the-holt-winters-equations" class="slide level2">
 <h2>Reading the Holt-Winters Equations</h2>
@@ -713,43 +763,7 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-recap">
 <p>This <em>is</em> ETS(A,A,A). The damped-trend version, ETS(A,Ad,A) — the model we’ll actually fit to GDP — multiplies the trend term by successive powers of <span class="math inline">\(\phi\)</span>, exactly as in Section 5.</p>
 </div>
-</section>
-<section id="the-full-taxonomy-and-which-cases-matter" class="slide level2">
-<h2>The Full Taxonomy — And Which Cases Matter</h2>
-<p>Not all 30 (E,T,S) combinations are numerically stable or practically useful. Four matter most in macroeconomic work:</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">What it is</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">ETS(A,N,N)</td>
-<td style="text-align: left;">Simple exponential smoothing</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ETS(A,A,N)</td>
-<td style="text-align: left;">Holt’s linear method</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ETS(A,Ad,N)</td>
-<td style="text-align: left;">Holt’s damped method — often the best all-around performer</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ETS(A,A,A) / ETS(A,Ad,A)</td>
-<td style="text-align: left;">Holt-Winters, undamped / damped</td>
-</tr>
-</tbody>
-</table>
-<div class="eo-hazard">
-<p>The full taxonomy has <strong>30 valid combinations</strong> — not all numerically stable, most rarely used in practice. <code>statsmodels</code>’ <code>ETSModel</code> and information criteria (AIC) handle the search; memorizing the full table isn’t the point. Know the four above cold; recognize that the framework generalizes.</p>
-</div>
+<hr>
 </section>
 <section id="point-forecasts-and-prediction-intervals" class="slide level2">
 <h2>Point Forecasts and Prediction Intervals</h2>
@@ -765,8 +779,9 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <p><strong>Prediction intervals.</strong> For ETS(A,N,N): <span class="math inline">\(\sigma_h^2 = \sigma^2[1+\alpha^2(h-1)]\)</span> — growing with horizon, as it should. Every ETS model shares this property.</p>
 </div>
 <div class="eo-hazard">
-<p><strong>Prediction intervals are not confidence intervals.</strong> A 95% PI says 95% of <em>future realizations</em> will fall in the band — it accounts for forecast uncertainty (future innovations), not parameter or model uncertainty. Estimated-parameter intervals in practice run slightly too narrow. Chapter 5 returns to calibrating this properly.</p>
+<p><strong>Prediction intervals are not confidence intervals.</strong> A 95% PI says 95% of <em>future realizations</em> will fall in the band — it accounts for forecast uncertainty (future innovations), not parameter or model uncertainty. Estimated-parameter intervals in practice run slightly too narrow.</p>
 </div>
+<hr>
 </section>
 <section id="holt-winters-forecast-for-nsa-gdp" class="slide level2">
 <h2>Holt-Winters Forecast for NSA GDP</h2>
@@ -781,9 +796,10 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <p><img data-src="../../chapters/02/chapter_02_files/figure-html/fig-hw-forecast-output-2.png" class="img-fluid" alt="Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP with prediction intervals, and residual diagnostics below"></p>
 </div>
 </div>
+<hr>
 </section>
-<section id="a-first-honest-evaluation-train-test" class="slide level2">
-<h2>A First Honest Evaluation: Train-Test</h2>
+<section id="a-first-evaluation-train-test" class="slide level2">
+<h2>A First Evaluation: Train-Test</h2>
 <div class="eo-columns-figure">
 <div>
 <blockquote>
@@ -791,13 +807,14 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 </blockquote>
 <p>Fit on 1947–2019 Q4, forecast 20 quarters into 2020–2024 — a window that happens to contain COVID.</p>
 <div class="eo-recap">
-<p>Large errors in 2020 Q1–Q2 reflect the pandemic being outside the support of any postwar-trained model — not a forecasting failure. The full machinery for honest evaluation is Chapter 5’s job.</p>
+<p>Large errors in 2020 Q1–Q2 reflect the pandemic being outside the support of any postwar-trained model — not a forecasting failure. The full machinery for forecast evaluation is Chapter 5’s job.</p>
 </div>
 </div>
 <div>
 <p><img data-src="../../chapters/02/chapter_02_files/figure-html/fig-hw-traintest-output-1.png" class="img-fluid" alt="Holt-Winters train-test evaluation, forecasting log NSA GDP from 2020 through 2024 after fitting on 1947-2019 data"></p>
 </div>
 </div>
+<hr>
 </section>
 <section id="recap" class="slide level2 recap-slide" data-background-color="#87A96B" data-footer="false">
 <h2>Recap</h2>
@@ -805,60 +822,16 @@ y_{t+h} = \beta_0+\beta_1y_t+\beta_2y_{t-1}+\beta_3y_{t-2}+\beta_4y_{t-3}+\varep
 <div class="eo-recap">
 <p>The central lesson threads through every section: the business cycle is not a natural object waiting to be discovered. It is a construct whose shape depends entirely on the decomposition we choose — and every method in this chapter makes that choice differently.</p>
 </div>
+<hr>
 </section>
 <section id="looking-ahead" class="slide level2">
 <h2>Looking Ahead</h2>
 <p>Chapter 3 develops the <strong>ARMA family</strong> — and provides the theoretical foundation the methods in this chapter borrowed without ever stating.</p>
 <p>Simple exponential smoothing turns out to be the optimal forecast for an <strong>ARIMA(0,1,1)</strong> process. Holt’s method corresponds to <strong>ARIMA(0,2,2)</strong>. Holt-Winters corresponds to a <strong>seasonal ARIMA</strong>. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases, and understanding that connection unlocks better model selection, residual diagnostics, and principled prediction intervals.</p>
 <p>It also resolves the trend-cycle question this chapter never fully closed: Chapter 4’s <strong>Beveridge-Nelson decomposition</strong> uses a series’ estimated ARIMA structure to separate permanent and transitory components — no smoothing parameter to choose, no <span class="math inline">\(\lambda\)</span> to defend, a cycle uniquely pinned down by the data itself.</p>
-</section>
-<section id="key-terms" class="slide level2">
-<h2>Key Terms</h2>
-<div class="eo-keyterms">
-<dl>
-<dt>Decomposition</dt>
-<dd>
-<span class="math inline">\(y_t=T_t+S_t+I_t\)</span> (additive) or <span class="math inline">\(T_t\times S_t\times I_t\)</span> (multiplicative, equivalent to additive in logs).
-</dd>
-<dt>Trend / Seasonal / Irregular</dt>
-<dd>
-The slow-moving level; systematic calendar-driven fluctuation with period <span class="math inline">\(m\)</span>; the residual where the business cycle signal lives.
-</dd>
-<dt>Classical decomposition</dt>
-<dd>
-Trend via centered <span class="math inline">\(2\times m\)</span> moving average, followed by averaging de-trended values by season.
-</dd>
-<dt>Business cycle</dt>
-<dd>
-The deviation of output from its trend path — not a natural object, but a residual whose shape depends on the decomposition chosen.
-</dd>
-<dt>HP filter / Hamilton filter</dt>
-<dd>
-A penalized-smoothness trend extractor governed by <span class="math inline">\(\lambda\)</span>, vs.&nbsp;a regression-based cycle filter (project <span class="math inline">\(y_{t+h}\)</span> on four lags) with no end-point bias.
-</dd>
-<dt>X-13-ARIMA-SEATS / STL</dt>
-<dd>
-The Census Bureau’s institutional seasonal-adjustment standard (X-11 + ARIMA extension + SEATS), vs.&nbsp;the portable, transparent Loess-based alternative.
-</dd>
-<dt>Exponential smoothing / Smoothing parameter <span class="math inline">\(\alpha\)</span></dt>
-<dd>
-Forecasts as geometrically-declining-weight averages of the past; <span class="math inline">\(\alpha\in(0,1)\)</span> governs how aggressively the level updates.
-</dd>
-<dt>SES / Holt’s method / Damped trend</dt>
-<dd>
-No-trend, no-seasonality smoothing (ETS(A,N,N)); adds a trend component (ETS(A,A,N)); multiplies the trend by <span class="math inline">\(\phi\in(0,1)\)</span> so forecasts converge (ETS(A,Ad,N)).
-</dd>
-<dt>Holt-Winters / ETS framework</dt>
-<dd>
-Adds a seasonal smoothing equation (ETS(A,A,A) / ETS(A,Ad,A)); the unified (Error, Trend, Seasonality) taxonomy with likelihood-based estimation.
-</dd>
-<dt>Prediction interval</dt>
-<dd>
-A horizon-widening range for <span class="math inline">\(y_{T+h}\)</span> reflecting forecast uncertainty — not parameter uncertainty, and not a confidence interval.
-</dd>
-</dl>
-</div>
 
+</section>
+</div>
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">

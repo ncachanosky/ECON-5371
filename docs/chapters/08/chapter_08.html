@@ -576,7 +576,7 @@ Table&nbsp;9.1
 <div id="fig-spread" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-spread-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-spread-output-1.png" width="893" height="844" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-spread-output-1.png" width="893" height="845" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spread-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.2: The 10-year/3-month term spread (bottom panel) alongside the two yield levels re-based to 1954Q1 (top panel). The individual rates drift without bound; the spread fluctuates around a positive mean and shows no long-run drift. Terracotta shading marks yield curve inversions — periods when the spread turns negative — which have preceded every recession in the sample. Grey shading marks NBER recessions.
@@ -929,8 +929,8 @@ Table&nbsp;9.3
 ────────────────────────────────────────────────────────────────────
       H₀: rank ≤    Eigenvalue     Trace    CV 90%    CV 95%        Decision
   ──────────────  ────────────  ────────  ────────  ────────  ──────────────
-               0        0.1120    31.852    13.429    15.494  Reject***
-               1        0.0056     1.433     2.705     3.841  Fail to reject
+               0  0.1120+0.0000j    31.852    13.429    15.494  Reject***
+               1  0.0056+0.0000j     1.433     2.705     3.841  Fail to reject
 ────────────────────────────────────────────────────────────────────
   * p&lt;0.10  ** p&lt;0.05  *** p&lt;0.01
   Estimated cointegrating rank: r̂ = 1
@@ -970,7 +970,7 @@ Table&nbsp;9.3
 <div id="fig-eigenvalues" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-eigenvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-eigenvalues-output-1.png" width="893" height="466" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-eigenvalues-output-1.png" width="892" height="466" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eigenvalues-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.3: Johansen eigenvalues (left) and trace statistics against 95% critical values (right) for the yield curve system. The first eigenvalue is 0.107 — substantially positive, indicating one stationary linear combination. The second is 0.014 — near zero, indicating one common stochastic trend. The trace statistic for <span class="math inline">\(r = 0\)</span> (33.33) towers above its critical value (15.49); the statistic for <span class="math inline">\(r = 1\)</span> (3.61) falls just below its critical value (3.84). The rank-1 conclusion is unambiguous.
@@ -1016,13 +1016,13 @@ Table&nbsp;9.4
   Estimated Cointegrating Vector (normalised)
 ────────────────────────────────────────────────────
   10-Year Yield   :  1.000  (normalisation)
-  3-Month T-Bill  : -1.0281
+  3-Month T-Bill  : -1.0281+0.0000j
 ────────────────────────────────────────────────────
   Implied long-run relationship:
-  10Y + (-1.0281) × 3M = constant (term premium)
+  10Y + (-1.0281+0.0000j) × 3M = constant (term premium)
 ────────────────────────────────────────────────────
   EH restriction: coefficient on 3M = -1.000
-  Estimated coefficient: -1.0281
+  Estimated coefficient: -1.0281+0.0000j
 ────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
@@ -1314,7 +1314,7 @@ Table&nbsp;9.5
 <div id="fig-vecm-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-fit-output-1.png" width="891" height="494" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-fit-output-1.png" width="893" height="496" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.5: Left: the lagged Johansen equilibrium residual <span class="math inline">\(z_{t-1}\)</span> over time, the series that drives the error correction mechanism. Terracotta shading marks inversions (<span class="math inline">\(z_{t-1} &lt; 0\)</span>); grey shading marks recessions. Right: scatter of <span class="math inline">\(z_{t-1}\)</span> against the subsequent quarterly change in the 3-month T-bill rate <span class="math inline">\(\Delta r^{3m}_t\)</span>, the equation where the ECT contributes most (<span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>). The positive slope — higher spread last period predicts a larger increase in the short rate this period — is the error correction mechanism made visual. The fitted OLS line (dashed) has slope <span class="math inline">\(\hat{\alpha}_2 = 0.084\)</span>.
@@ -1467,7 +1467,7 @@ Table&nbsp;9.6
 <div id="fig-vecm-residuals" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-residuals-output-1.png" width="893" height="1071" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-residuals-output-1.png" width="890" height="1072" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-residuals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.6: VECM residual diagnostics at the AIC-selected lag order <span class="math inline">\(p = 8\)</span>. Top row: residual time series — both equations are centred around zero with no systematic patterns; the Volcker episode (1980–82) generates sharp outliers in both series. Middle row: ACFs with 95% confidence bands — all bars lie within the bands for the long-rate equation; the short-rate equation has one bar near the boundary at lag 8, but no significant autocorrelation remains. Bottom row: histograms against the fitted normal — both distributions are fat-tailed due to the Volcker outliers, which drives the Jarque-Bera rejections in Table 8.7.
@@ -1602,7 +1602,7 @@ Table&nbsp;9.7
 <div id="fig-resid-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-resid-comparison-output-1.png" width="893" height="768" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-resid-comparison-output-1.png" width="891" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resid-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.7: Residual ACFs for the VECM (top row) vs.&nbsp;the differenced VAR (bottom row) at lag order <span class="math inline">\(p = 8\)</span>, long-rate equation left and short-rate equation right. Both models produce well-behaved ACFs at this lag order — all bars fall within the 95% confidence bands — confirming that the short-run dynamics are fully parameterised. The VECM and differenced VAR produce nearly identical ACF patterns, indicating that the ECT’s contribution shows up in long-horizon forecast accuracy rather than in residual autocorrelation at the quarterly frequency.
@@ -1765,7 +1765,7 @@ Table&nbsp;9.8
 <div id="fig-vecm-irf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vecm-irf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-vecm-irf-output-1.png" width="893" height="768" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-vecm-irf-output-1.png" width="891" height="769" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vecm-irf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.8: Orthogonalised impulse responses from the VECM at lag order <span class="math inline">\(p = 8\)</span>, Cholesky ordering: 10-year yield first, 3-month rate second. Shaded bands are 95% residual bootstrap confidence intervals (200 replications). All four responses converge to non-zero permanent levels — the hallmark of a cointegrated system where shocks to the common stochastic trend shift both rates permanently. A one-standard-deviation shock to the long rate (left column) produces a permanent effect of approximately 0.33 pp in both rates, converging within about 20 quarters. A shock to the short rate (right column) produces a larger permanent effect of approximately 0.60 pp in both rates, converging within about 15 quarters. The Cholesky restriction is visible: the short rate’s response to a long-rate shock (bottom-left) is zero at horizon zero by construction, then rises gradually.
@@ -1833,7 +1833,7 @@ Figure&nbsp;9.8: Orthogonalised impulse responses from the VECM at lag order <sp
 <div id="fig-forecast-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="chapter_08_files/figure-html/fig-forecast-comparison-output-1.png" width="893" height="844" class="figure-img">
+<img src="chapter_08_files/figure-html/fig-forecast-comparison-output-1.png" width="892" height="845" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecast-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.9: 40-quarter-ahead forecasts from the VECM (solid) and differenced VAR (dashed) for the 10-year yield (top, copper) and 3-month T-bill rate (bottom, sky blue), starting from 2019Q4. The VECM forecasts converge to a long-run spread of approximately 1.37 pp (2.44% minus 1.07%), matching the estimated term premium. The differenced VAR forecasts imply a spread of only 0.35 pp (1.97% minus 1.62%) — far below any historically plausible term premium. The divergence is immediate and widens with the forecast horizon, illustrating the practical cost of ignoring cointegration for long-horizon yield forecasting.
