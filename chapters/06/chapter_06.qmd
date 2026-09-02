@@ -22,7 +22,7 @@ abstract: |
   shock. Together these tools form a diagnostic layer that sits between model
   identification and model use — a layer that the forecast evaluation results
   of Chapter 5 showed we could not afford to skip.
-jupyter: python3
+jupyter: econ5371
 format:
   html:
     toc: true
@@ -1083,13 +1083,7 @@ data-driven penalty based on the Bayesian information criterion.
 #| code-fold: true
 #| code-summary: "Show code — Bai-Perron via ruptures"
 
-try:
-    import ruptures as rpt
-except ImportError:
-    import subprocess, sys
-    subprocess.run([sys.executable, "-m", "pip", "install",
-                    "ruptures", "--break-system-packages", "-q"], check=True)
-    import ruptures as rpt
+import ruptures as rpt
 
 # Use the full-sample AR(2) residuals as the signal
 # (testing for breaks in the mean and variance of the residuals)

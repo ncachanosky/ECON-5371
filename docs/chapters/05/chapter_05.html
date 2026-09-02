@@ -918,10 +918,10 @@ Rolling window: 40 quarters  |  Pre-COVID sample
 ════════════════════════════════════════════════════════
 Model                     RMSE h=1    RMSE h=4
 ────────────────────────────────────────────────────────
-ARIMA(1,1,1)+drift           3.426       3.571
+ARIMA(1,1,1)+drift           3.417       3.598
 RW with drift                3.492       3.483
 ────────────────────────────────────────────────────────
-RMSE ratio (ARIMA/RW)        0.981       1.025
+RMSE ratio (ARIMA/RW)        0.978       1.033
 ════════════════════════════════════════════════════════
 RMSE in annualised percentage points.
 Ratio &lt; 1 → ARIMA beats random walk on this metric.</code></pre>
@@ -1081,8 +1081,8 @@ Loss: squared error  |  H₀: equal expected loss  (two-sided)
 ══════════════════════════════════════════════════════════════
    Horizon     DM stat     p-value       Decision (5%)
 ──────────────────────────────────────────────────────────────
-     h = 1      -0.684       0.494      Fail to reject
-     h = 4       1.403       0.161      Fail to reject
+     h = 1      -0.803       0.422      Fail to reject
+     h = 4       1.802       0.072      Fail to reject
 ══════════════════════════════════════════════════════════════
 
 Negative DM stat → ARIMA has lower average squared loss than RW.
@@ -1255,11 +1255,11 @@ h = 1 quarter
 ════════════════════════════════════════════════════
 Model                          RMSE     vs RW
 ────────────────────────────────────────────────────
-ARIMA                         3.426     0.981
+ARIMA                         3.417     0.978
 RW                            3.492     1.000
-Equal weights                 3.399     0.973
-BG (ω=0.64)                   3.394     0.972
-OLS combo                     3.337     0.956
+Equal weights                 3.393     0.972
+BG (ω=0.65)                   3.387     0.970
+OLS combo                     3.327     0.953
 ════════════════════════════════════════════════════
 RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk.
 
@@ -1267,11 +1267,11 @@ h = 4 quarters
 ════════════════════════════════════════════════════
 Model                          RMSE     vs RW
 ────────────────────────────────────────────────────
-ARIMA                         3.571     1.025
+ARIMA                         3.598     1.033
 RW                            3.483     1.000
-Equal weights                 3.510     1.008
+Equal weights                 3.522     1.011
 BG (ω=0.00)                   3.483     1.000
-OLS combo                     3.389     0.973
+OLS combo                     3.385     0.972
 ════════════════════════════════════════════════════
 RMSE in annualised pp. 'vs RW' ratio: &lt; 1 beats random walk.</code></pre>
 </div>
@@ -1335,8 +1335,8 @@ Pre-COVID rolling evaluation  |  Nominal vs actual coverage
 ══════════════════════════════════════════════════════
        Interval     Nominal       h = 1       h = 4
 ──────────────────────────────────────────────────────
-   90% interval        0.90       0.875       0.714
-   95% interval        0.95       0.927       0.798
+   90% interval        0.90       0.879       0.706
+   95% interval        0.95       0.931       0.794
 ══════════════════════════════════════════════════════
 Values below nominal → intervals too narrow (undercoverage).
 Values above nominal → intervals too wide  (overcoverage).</code></pre>

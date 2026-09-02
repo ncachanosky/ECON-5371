@@ -461,7 +461,9 @@ A time series model is, at its core, a **[difference equation (with constant coe
 
 $$y_t = \phi y_{t-1} + c, \qquad t = 1, 2, 3, \ldots$$
 
-where $\phi$ and $c$ are constants and $y_0$ is a given initial condition. Adding white noise $\varepsilon_t \sim WN(0,\sigma^2)$:
+where $\phi$ and $c$ are constants and $y_0$ is a given initial condition. Before doing any algebra, it is worth saying in plain terms what these two parameters are doing. Think of $c$ as the **pull**: the value $y_t$ would converge to if there were no memory at all — a fixed anchor the process is always being drawn toward. Think of $\phi$ as the **push**: the memory factor that keeps $y_t$ close to its own recent past instead of jumping immediately to $c$. A large $|\phi|$ means strong memory and slow convergence toward the anchor; a small $|\phi|$ means weak memory and rapid convergence. The interplay between these two forces — the pull of $c$ and the push of $\phi$ — is what the mathematics below makes precise.
+
+Adding white noise $\varepsilon_t \sim WN(0,\sigma^2)$:
 
 $$y_t = \phi y_{t-1} + c + \varepsilon_t$$
 
@@ -475,7 +477,19 @@ The first-order linear difference equation with constant forcing term:
 
 $$y_t = \phi y_{t-1} + c \tag{1.1}$$
 
-We seek an explicit formula for $y_t$ as a function of $t$ and $y_0$. The **general solution** decomposes as:
+We seek an explicit formula for $y_t$ as a function of $t$ and $y_0$. The most transparent way to find it is to iterate the recursion backwards, substituting each period's value into the next:
+
+$$y_1 = \phi y_0 + c$$
+
+$$y_2 = \phi y_1 + c = \phi(\phi y_0 + c) + c = \phi^2 y_0 + (1 + \phi)c$$
+
+$$y_3 = \phi y_2 + c = \phi^3 y_0 + (1 + \phi + \phi^2)c$$
+
+The pattern is clear. Generalizing to period $t$:
+
+$$y_t = \phi^t y_0 + (1 + \phi + \phi^2 + \cdots + \phi^{t-1})c$$
+
+When $|\phi| < 1$, the geometric sum converges: $\sum_{j=0}^{t-1}\phi^j \to 1/(1-\phi)$ as $t \to \infty$, and $\phi^t \to 0$. So the solution converges to $\bar{y} = c/(1-\phi)$ — the long-run level we identified earlier. This iterative approach gives us the solution directly, without needing to guess its form. We can also arrive at it more systematically through the **homogeneous/particular decomposition**, which generalizes cleanly to higher-order equations. The **general solution** decomposes as:
 
 $$y_t = y_t^{(h)} + y_t^{(p)}$$
 
@@ -487,11 +501,15 @@ Substituting $y_t^{(h)} = A\lambda^t$ into $y_t^{(h)} = \phi\, y_{t-1}^{(h)}$:
 
 $$A\lambda^t = \phi\, A\lambda^{t-1}$$
 
-Move the right-hand side to the left and "cancel out" A:
+Move the right-hand side to the left:
 
-$$\lambda^t - \phi\, \lambda^{t-1} = 0$$
+$$A\lambda^t - \phi\, A\lambda^{t-1} = 0$$
 
-Dividing both sides by $\lambda^{t-1}$:
+Factor out $A\lambda^{t-1}$:
+
+$$A\lambda^{t-1}(\lambda - \phi) = 0$$
+
+For a non-trivial solution we require $A \neq 0$; for the exponential form to be meaningful we require $\lambda \neq 0$. Dividing both sides by $A\lambda^{t-1}$:
 
 $$\lambda - \phi = 0 \implies \lambda = \phi$$
 
@@ -503,22 +521,23 @@ The characteristic root $\lambda = \phi$ has a concrete interpretation: it is th
 
 $$A\lambda^t = \phi_1 A\lambda^{t-1} + \phi_2 A\lambda^{t-2}$$
 
-Move everything to the left and divide by $A$:
+Move everything to the left:
 
-$$\lambda^t - \phi_1 \lambda^{t-1} - \phi_2 \lambda^{t-2} = 0$$
+$$A\lambda^t - \phi_1 A\lambda^{t-1} - \phi_2 A\lambda^{t-2} = 0$$
 
-Dividing by $\lambda^{t-2}$ yields the **characteristic equation** of the second-order equation:
+Factor out $A\lambda^{t-2}$:
+
+$$A\lambda^{t-2}\bigl(\lambda^2 - \phi_1\lambda - \phi_2\bigr) = 0$$
+
+Dividing by $A\lambda^{t-2}$ yields the **characteristic equation** of the second-order equation:
 
 $$\lambda^2 - \phi_1\lambda - \phi_2 = 0$$
 
-This is a **quadratic** — the degree matches the order of the difference equation. It has two roots $\lambda_1$ and $\lambda_2$ (possibly complex), which the
-quadratic formula gives explicitly:
+This is a **quadratic** — the degree matches the order of the difference equation. It has two roots $\lambda_1$ and $\lambda_2$ (possibly complex), which the quadratic formula gives explicitly:
 
 $$\lambda_{1,2} = \frac{\phi_1 \pm \sqrt{\phi_1^2 + 4\phi_2}}{2}$$
 
-The discriminant $\Delta = \phi_1^2 + 4\phi_2$ determines the nature of the roots. When $\Delta > 0$, the roots are two distinct real numbers. When $\Delta = 0$, there is a single repeated root $\lambda = \phi_1/2$. When $\Delta < 0$, the roots form a complex conjugate pair $\lambda_{1,2} = \phi_1/2 \pm i\sqrt{|\Delta|}/2$, with modulus $|\lambda| = \sqrt{-\phi_2}$. In this last case the stability condition $|\lambda| < 1$ reduces to the simple requirement $\phi_2 > -1$ — a useful shortcut when checking AR(2) stability by hand.
-
-The pattern generalizes immediately: a $p$-th order difference equation always produces a characteristic polynomial of degree $p$ with exactly $p$ roots. Each root contributes a term $A_j\lambda_j^t$ to the homogeneous solution, and it is the moduli of those roots — how they sit relative to the unit circle — that determine whether the full solution is stable, has a unit root, or is explosive. This is the connection to eigenvalues that we formalize through the companion matrix below.
+The discriminant $\Delta = \phi_1^2 + 4\phi_2$ determines the nature of the roots. When $\Delta > 0$, the roots are two distinct real numbers. When $\Delta = 0$, there is a single repeated root $\lambda = \phi_1/2$. When $\Delta < 0$, the roots form a complex conjugate pair $\lambda_{1,2} = \phi_1/2 \pm i\sqrt{|\Delta|}/2$, with modulus $|\lambda| = \sqrt{-\phi_2}$. In this last case the stability condition $|\lambda| < 1$ reduces to the simple requirement $\phi_2 > -1$ — a useful shortcut when checking AR(2) stability by hand. The general homogeneous solution combines both roots: $y_t^{(h)} = A_1\lambda_1^t + A_2\lambda_2^t$. The pattern generalizes immediately: a $p$-th order difference equation always produces a characteristic polynomial of degree $p$ with exactly $p$ roots. Each root contributes a term $A_j\lambda_j^t$ to the homogeneous solution, and it is the moduli of those roots — how they sit relative to the unit circle — that determine whether the full solution is stable, has a unit root, or is explosive. This is the connection to eigenvalues that we formalize through the companion matrix below.
 
 **Particular solution.** Trying a constant $y_t^{(p)} = k$:
 
@@ -566,9 +585,9 @@ $$y_t = \phi y_{t-1} + c + \varepsilon_t \tag{1.3}$$
 
 The characteristic root $\phi$ still governs behavior. When $|\phi| < 1$, shocks are transitory — their influence decays geometrically at rate $|\phi|^h$ after $h$ periods. When $\phi = 1$, every shock has a permanent, equal effect on the level of $y_t$. This is the defining property of a [unit root process](https://en.wikipedia.org/wiki/Unit_root), and it is the direct stochastic analogue of the deterministic analysis above.
 
-The connection to white noise is direct and worth making explicit. When $\phi = 1$, the model is $y_t = y_{t-1} + \mu + \varepsilon_t$. Taking first differences:
+The connection to white noise is direct and worth making explicit. When $\phi = 1$, the model is $y_t = y_{t-1} + c + \varepsilon_t$. Taking first differences:
 
-$$\Delta y_t = y_t - y_{t-1} = \mu + \varepsilon_t$$
+$$\Delta y_t = y_t - y_{t-1} = c + \varepsilon_t$$
 
 What remains after differencing is a constant plus a white noise process — nothing more. This is why first-differencing a unit root series achieves stationarity: it strips away the stochastic trend entirely, leaving behind the unpredictable innovation $\varepsilon_t$ that was already present at each step. The random walk accumulates these innovations over time, which is what makes it nonstationary; first-differencing undoes that accumulation and recovers the white noise building block. The same logic extends to the general $I(1)$ case: if $y_t$ is integrated of order one, then $\Delta y_t$ is stationary, and in the simplest case it reduces to white noise. This is the theoretical justification for the practical recommendation to difference before modeling.
 
@@ -1048,7 +1067,7 @@ Not all non-stationarity is the same, and the type matters for how we handle it.
 
 A process is **[trend stationary](https://en.wikipedia.org/wiki/Trend-stationary_process)** if it fluctuates around a deterministic trend — a fixed function of time — with stationary fluctuations:
 
-$$y_t = \alpha + \beta t + u_t$$
+$$y_t = \alpha + \beta t + \varepsilon_t$$
 
 where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\mathbb{E}[y_t] = \alpha + \beta t$ depends on $t$. But the deviations from trend are stationary. Crucially, a shock that perturbs $u_t$ at time $t$ has only a **transitory** effect: the series eventually returns to the deterministic trend path. To achieve stationarity, we **detrend** — regress $y_t$ on a constant and time and work with the residuals.
 
@@ -1056,9 +1075,9 @@ where $u_t$ is weakly stationary. The series $y_t$ is nonstationary because $\ma
 
 A process is **difference stationary** if it is nonstationary in levels but stationary after first differencing — arising when the characteristic polynomial has a root on the unit circle. The canonical example is the random walk with drift:
 
-$$y_t = \mu + y_{t-1} + \varepsilon_t$$
+$$y_t = c + y_{t-1} + \varepsilon_t$$
 
-First differencing gives $\Delta y_t = \mu + \varepsilon_t$, which is stationary. But the level is not: its variance grows without bound, and unlike the trend-stationary case, shocks are **permanent** — a positive $\varepsilon_t$ raises $y_t$ permanently above the path it would otherwise have followed.
+First differencing gives $\Delta y_t = c + \varepsilon_t$, which is stationary. But the level is not: its variance grows without bound, and unlike the trend-stationary case, shocks are **permanent** — a positive $\varepsilon_t$ raises $y_t$ permanently above the path it would otherwise have followed.
 
 The distinction between transitory and permanent shocks has profound economic implications. Is an unexpected recession a transitory deviation from a stable growth path, or a permanent downward shift in the level of output? The answer changes the interpretation of business cycles, the conduct of policy, and the specification of macroeconometric models.
 
@@ -1103,15 +1122,15 @@ $$\Delta y_t = \delta y_{t-1} + c + \varepsilon_t, \qquad \delta = \phi - 1$$
 
 The unit root null $\phi = 1$ becomes $H_0: \delta = 0$; the stationary alternative $\phi < 1$ becomes $H_1: \delta < 0$. This is a one-sided test. The **Augmented Dickey-Fuller test** adds lagged differences to absorb serial correlation in the errors:
 
-$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + \alpha + \beta t + u_t \tag{1.7}$$
+$$\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p} \psi_j \Delta y_{t-j} + c + \beta t + \varepsilon_t \tag{1.7}$$
 
-Here $\alpha$ is the constant term — the deterministic counterpart of $c$ in the AR(1) notation — and $\beta t$ is the optional linear trend. The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
+The test statistic is the $t$-ratio on $\hat{\delta}$. Three specifications correspond to different assumptions about deterministic components:
 
 | Specification | Regression equation | Use when... |
 |:---|:---|:---|
-| No constant, no trend | $\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series is zero-mean with no drift |
-| Constant only | $\Delta y_t = \alpha + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series has a non-zero mean |
-| Constant and trend | $\Delta y_t = \alpha + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + u_t$ | Series may trend under $H_1$ |
+| No constant, no trend | $\Delta y_t = \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + \varepsilon_t$ | Series is zero-mean with no drift |
+| Constant only | $\Delta y_t = c + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + \varepsilon_t$ | Series has a non-zero mean |
+| Constant and trend | $\Delta y_t = c + \beta t + \delta y_{t-1} + \sum_{j=1}^{p}\psi_j\Delta y_{t-j} + \varepsilon_t$ | Series may trend under $H_1$ |
 
 : ADF specification choices {#tbl-adf-specs}
 
@@ -1153,9 +1172,9 @@ The ADF test is conservative about rejecting unit roots — by design, since it 
 
 The KPSS test decomposes the series as:
 
-$$y_t = \xi t + r_t + \varepsilon_t$$
+$$y_t = \beta t + r_t + \varepsilon_t$$
 
-where $\xi t$ is a deterministic trend, $\varepsilon_t$ is a stationary error, and $r_t = r_{t-1} + u_t$ is a random walk with $u_t \sim WN(0,\sigma_u^2)$. The null $\sigma_u^2 = 0$ means the random walk component is absent — the series is stationary around its deterministic part. The alternative $\sigma_u^2 > 0$ allows a unit root.
+where $\beta t$ is a deterministic trend, $\varepsilon_t$ is a stationary error, and $r_t = r_{t-1} + u_t$ is a random walk with $u_t \sim WN(0,\sigma_u^2)$. The null $\sigma_u^2 = 0$ means the random walk component is absent — the series is stationary around its deterministic part. The alternative $\sigma_u^2 > 0$ allows a unit root.
 
 The two stochastic components play very different roles, and keeping them conceptually separate is the key to understanding the test. The component $r_t$ is the **object under scrutiny**: it is the stochastic trend whose variance $\sigma_u^2$ the test is trying to detect. Under the null, $\sigma_u^2 = 0$ so $u_t \equiv 0$ and $r_t = r_0$ for all $t$ — a constant that simply shifts the level of the series. Under the alternative, $r_t$ wanders without bound, and this wandering is what makes the series nonstationary.
 
@@ -1175,8 +1194,8 @@ The intuition behind the statistic is elegant. Think of $S_t$ as the **running t
 
 | Specification | Decomposition | 10% | 5% | 1% |
 |:---|:---|---:|---:|---:|
-| Level stationary (constant only) | $y_t = \alpha + r_t + \varepsilon_t$ | 0.347 | 0.463 | 0.739 |
-| Trend stationary (constant + trend) | $y_t = \alpha + \beta t + r_t + \varepsilon_t$ | 0.119 | 0.146 | 0.216 |
+| Level stationary (constant only) | $y_t = c + r_t + \varepsilon_t$ | 0.347 | 0.463 | 0.739 |
+| Trend stationary (constant + trend) | $y_t = c + \beta t + r_t + \varepsilon_t$ | 0.119 | 0.146 | 0.216 |
 
 : KPSS asymptotic critical values {#tbl-kpss-cv}
 

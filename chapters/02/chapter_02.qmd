@@ -2,7 +2,7 @@
 title: "Decomposition, Smoothing, and Business Cycle Analysis"
 author: ""
 abstract: |
-  Every economic time series tells at least two stories simultaneously: one about where the economy is headed over the long run, and another about where it stands right now relative to that path. This chapter develops the tools to separate those stories. We work through classical decomposition, trend extraction and the business cycle, seasonal adjustment, and the family of exponential smoothing and Holt-Winters models. The organizing example is US GDP — both the seasonally adjusted and raw series — which lets us see what each method finds and, more importantly, what assumptions each method embeds. The central lesson is that the business cycle is not a natural object waiting to be discovered; it is a construct whose shape depends on the decomposition we choose.
+  Every economic time series tells at least two stories simultaneously: one about where the economy is headed over the long run, and another about where it stands right now relative to that path. This chapter develops the tools to separate those stories. We begin with classical decomposition by moving averages, then build up through linear filters (including the HP and Hamilton filters), exponential smoothing and the ETS family, and seasonal adjustment. The chapter closes by bringing all four methods together to ask the central question in business cycle analysis: what is the output gap, and how much does the answer depend on the method we choose?
 jupyter: python3
 format:
   html:
@@ -185,10 +185,11 @@ By the end of this chapter, you will be able to:
 
 - Decompose a time series into trend, seasonal, and irregular components using both the additive and multiplicative models, and explain which is more appropriate for a given series
 - Extract a trend using moving averages, linear/quadratic detrending, and the HP filter, and interpret the cyclical residual from each
-- Explain what the business cycle is, how different detrending choices produce different cycles, and articulate Hamilton's critique of the HP filter
+- Articulate Hamilton's three critiques of the HP filter and explain why the end-point bias problem matters for real-time policy analysis
 - Describe conceptually how X-13-ARIMA-SEATS works, explain why it differs from statistical decomposition methods, and apply STL decomposition as a portable alternative
 - Implement simple exponential smoothing, Holt's method, and the full Holt-Winters model in Python, and explain the role of each smoothing parameter
 - Fit ETS models using `statsmodels`, generate point forecasts and prediction intervals, and interpret the results economically
+- Explain what the business cycle is, why it is a statistical construct rather than a natural object, and how the choice of decomposition method determines the cycle we find
 :::
 
 
@@ -201,6 +202,8 @@ Not in an absolute sense — we can always read off the level of [GDP](https://e
 The idea of decomposition is both old and intuitive. Look at any macroeconomic time series over a long enough horizon and several distinct patterns emerge. There is a slow-moving direction — the trend — capturing the economy's long-run trajectory. There is a repeating rhythm tied to the calendar — the seasonal pattern — reflecting the fact that construction slows in winter, retail surges in December, and agricultural output concentrates in harvest months. And there is the irregular residual — what remains after trend and season are removed — which is where the business cycle lives.
 
 Separating these three layers is not merely an academic exercise. The [Federal Reserve](https://en.wikipedia.org/wiki/Federal_Reserve) targets the output gap — the deviation of actual GDP from potential — and that gap is precisely the cyclical component of a decomposition. When the [BLS](https://en.wikipedia.org/wiki/Bureau_of_Labor_Statistics) reports the unemployment rate, it reports a seasonally adjusted figure, removing the regular winter uptick and summer drop to expose the underlying labor market trend. Every major economic data release you will ever read in the news has been processed through some form of decomposition before it reaches you.
+
+This chapter builds the toolkit in stages. Section 2.2 introduces the classical approach via moving averages — the oldest and most transparent method. Section 2.3 develops linear filters, starting from the simplest OLS detrending and building up through the HP filter and Hamilton's regression-based alternative. Section 2.4 turns to exponential smoothing, which takes forecasting as its starting point rather than decomposition. Section 2.5 covers seasonal adjustment in practice, including the government's X-13-ARIMA-SEATS procedure and STL as a portable alternative. With all the tools in hand, Section 2.6 returns to the opening question: what is the business cycle, and how much does the answer depend on the method we chose?
 
 ### The Additive and Multiplicative Models
 
@@ -239,7 +242,7 @@ Our running example throughout this chapter is US real GDP. We will work with tw
 
 The first is the **[not seasonally adjusted (NSA)](https://fred.stlouisfed.org/series/ND000334Q)** series — ticker `ND000334Q` — real GDP in chained 2017 dollars from BEA Table 8.1.6. This is the raw quarterly series as the BEA actually measures it, before any statistical processing has been applied. It contains a strong seasonal pattern: output reliably contracts in Q1 (post-holiday slowdown) and surges in Q4 (holiday season, construction completions, inventory builds). This is the series we will decompose.
 
-The second is the **[seasonally adjusted (SA)](https://fred.stlouisfed.org/series/GDPC1)** series — ticker `GDPC1` — the version you see in virtually every news report, policy document, and macroeconomic model. The BEA produces this series using a sophisticated procedure called [X-13-ARIMA-SEATS](https://en.wikipedia.org/wiki/X-13ARIMA-SEATS), which we discuss in Section 2.4. It is the benchmark against which we will compare our own decompositions.
+The second is the **[seasonally adjusted (SA)](https://fred.stlouisfed.org/series/GDPC1)** series — ticker `GDPC1` — the version you see in virtually every news report, policy document, and macroeconomic model. The BEA produces this series using a sophisticated procedure called [X-13-ARIMA-SEATS](https://en.wikipedia.org/wiki/X-13ARIMA-SEATS), which we discuss in Section 2.5. It is the benchmark against which we will compare our own decompositions.
 
 A note on units before we proceed. `GDPC1` — the official SA series — is published as a **Seasonally Adjusted Annual Rate** (SAAR): each quarterly observation is multiplied by four to express the economy's pace as if that quarter's output were sustained for a full year. `ND000334Q` is a quarterly *total*, not annualised. Plotting them in raw form would show the SA series running about four times higher than the NSA series — not because the economy is larger, but because the units differ. We convert the NSA quarterly totals to SAAR (multiply by 4) before plotting so that the two series are directly comparable.
 
@@ -280,7 +283,7 @@ plt.show()
 The figure makes the seasonal pattern visible. In levels, the NSA series oscillates around the SA trend with an amplitude that grows over time — the hallmark of a multiplicative seasonal pattern. In logs, the oscillations are proportionally stable, confirming our earlier reasoning. Going forward, we work primarily in log levels unless otherwise noted.
 
 
-## Classical Decomposition {#sec-classical}
+## Moving Averages {#sec-moving-averages}
 
 ### Trend Estimation by Moving Averages
 
@@ -313,14 +316,18 @@ Given a time series $\{y_t\}$ with seasonal period $m$:
 
 2. **Remove the trend**: compute de-trended observations $d_t = y_t - \hat{T}_t$ (additive) or $d_t = y_t / \hat{T}_t$ (multiplicative).
 
-3. **Estimate seasonal factors** $\hat{S}_j$ for each period $j = 1, \ldots, m$ by averaging all de-trended values that fall in period $j$ across years. Normalize so that the seasonal factors sum to zero (additive) or average to one (multiplicative).
+3. **Estimate seasonal factors** $\hat{S}_j$ for each period $j = 1, \ldots, m$ by averaging all de-trended values that fall in period $j$ across years:
+
+$$\hat{S}_j^{\text{raw}} = \frac{1}{N_j}\sum_{t:\,\text{season}(t)=j} d_t$$
+
+where $N_j$ is the number of years in which period $j$ appears. Normalize so that the seasonal factors sum to zero (additive) or average to one (multiplicative).
 
 4. **Compute the irregular component**: $\hat{I}_t = y_t - \hat{T}_t - \hat{S}_t$ (additive) or $\hat{I}_t = y_t / (\hat{T}_t \cdot \hat{S}_t)$ (multiplicative).
 
 Note that the moving average loses observations at both ends of the sample: $\lfloor m/2 \rfloor$ at the start and $\lfloor m/2 \rfloor$ at the end. This is a practical cost of all local-smoothing trend estimators.
 :::
 
-The moving average trend has an important limitation: it follows the data closely enough that it can absorb some of the business cycle variation we actually want to preserve in the irregular component. There is no free parameter to control the degree of smoothing — the window width is determined by the seasonal period. This is one of the reasons that more sophisticated trend filters, discussed in the next section, have largely replaced simple moving averages in business cycle analysis, even while classical decomposition remains a useful first pass.
+The moving average trend has an important limitation: it follows the data closely enough that it can absorb some of the business cycle variation we actually want to preserve in the irregular component. There is no free parameter to control the degree of smoothing — the window width is determined by the seasonal period. This is one of the reasons that more sophisticated trend filters, discussed in Section 2.3, have largely replaced simple moving averages in business cycle analysis, even while classical decomposition remains a useful first pass.
 
 ### Decomposing Log NSA GDP
 
@@ -372,26 +379,20 @@ fig.tight_layout()
 plt.show()
 ```
 
-Four things are worth noting in this decomposition. First, the trend is smooth and nearly linear in logs — consistent with the balanced growth path that growth theory predicts for a modern economy. Second, the seasonal factors are large: a swing of roughly $\pm 2$–$3\%$ relative to trend within each year. This is the signal that seasonal adjustment is designed to remove. Third, the seasonal pattern is strikingly stable across the postwar period — the same quarterly rhythm repeating for nearly eighty years, which is precisely what justifies the fixed-factor assumption embedded in classical decomposition. Fourth, the irregular component — the residual that contains the business cycle — is noisy but exhibits clear recessionary dips, most prominently in 1974–75, 1981–82, 2008–09, and 2020. Throughout, all components are in log units: a seasonal factor of $+0.02$, for example, means output is approximately $2\%$ above its trend value in that quarter.
+The trend is smooth and nearly linear in logs — consistent with the balanced growth path that growth theory predicts for a modern economy. The seasonal factors are large, swinging roughly $\pm 2$–$3\%$ relative to trend within each year, and they are strikingly stable across the postwar period: the same quarterly rhythm repeating for nearly eighty years. That stability is precisely what justifies the fixed-factor assumption embedded in classical decomposition, and it is the signal that seasonal adjustment is designed to strip away. What remains in the irregular component is noisy but economically meaningful — clear recessionary dips are visible at 1974–75, 1981–82, 2008–09, and 2020, all corresponding to NBER-dated recessions. Throughout, all components are in log units: a seasonal factor of $+0.02$, for example, means output is approximately $2\%$ above its trend value in that quarter.
 
-### The Irregular Component as a First Business Cycle Estimate
+### From Moving Averages to Linear Filters
 
-The irregular from a classical decomposition is our first, crude estimate of the business cycle. It is crude for two reasons. The moving average trend absorbs some cyclical variation, making cycles appear smaller than they are. And the fixed seasonal factors assume the seasonal pattern never changes, which may be unrealistic over very long samples. Section 2.3 develops better tools for trend extraction, and Section 2.4 addresses the seasonal component more carefully.
+The irregular from a classical decomposition is our first, crude estimate of the business cycle. It is crude for two reasons. The moving average trend absorbs some cyclical variation, making cycles appear smaller than they are. And the fixed seasonal factors assume the seasonal pattern never changes, which may be unrealistic over very long samples. Section 2.3 develops better tools for trend extraction, and Section 2.5 addresses the seasonal component more carefully.
+
+The deeper limitation is that there is no optimization involved. The number of periods to average is fixed by the seasonal period, the weights are fixed by the two-step construction, and there is no smooth adjustment as the trend evolves. Section 2.3 introduces the linear filter family, which replaces these fixed conventions with a minimization problem — finding the smoothest trend that still tracks the data.
 
 
-## The Business Cycle as a Decomposition Problem {#sec-biz-cycle}
-
-### What the Business Cycle Is — and Is Not
-
-The [business cycle](https://en.wikipedia.org/wiki/Business_cycle) is one of the most studied and debated concepts in macroeconomics, yet it is surprisingly hard to define precisely. The phrase conjures images of booms and busts, expansions and recessions, the rhythmic up-and-down of economic activity. But this intuitive picture conceals a fundamental ambiguity: up and down relative to what?
-
-If we mean relative to last period, we are looking at growth rates — and growth rates are always fluctuating, even in a healthy economy. If we mean relative to a fixed level, we have the problem that the economy trends upward over time and never returns to its past level. The only economically coherent benchmark is the trend — the economy's long-run potential path — and deviations from that trend are what we mean by the business cycle.
-
-This definition has an important implication: the business cycle is not a natural object sitting in the data waiting to be discovered. It is a residual — what is left after we remove the trend. And because different methods produce different trends, they produce different business cycles. This is not a methodological embarrassment; it is an economically meaningful fact. Whether the 1990s boom appears large or modest, whether the 2001 recession looks shallow or deep, depends directly on how we model the trend that GDP is deviating from.
+## Linear Filters {#sec-linear-filters}
 
 ### Linear and Quadratic Detrending
 
-The simplest trend model is a deterministic time trend: we assume the log of output grows at a constant rate over time, and any deviation from that line is cyclical. This is the **linear detrending** approach. We estimate it by regressing log GDP on a linear time index $t$:
+The simplest possible linear filter asks: what if the trend is just a straight line? We assume the log of output grows at a constant rate over time, and any deviation from that line is cyclical. This is the **linear detrending** approach. We estimate it by regressing log GDP on a linear time index $t$:
 
 $$\log y_t = \alpha + \beta t + \varepsilon_t \tag{2.1}$$
 
@@ -407,7 +408,7 @@ Both approaches embed a strong assumption: that the trend is purely deterministi
 
 ```{python}
 #| label: fig-linear-detrend
-#| fig-cap: "Linear and quadratic detrending of log SA real GDP, 1947–2024. Top panel: the log level with both fitted trends. Bottom panel: the cyclical components (residuals). The linear trend forces US output to revert to a single long-run growth rate, making the 1970s slowdown appear as an extended negative cycle and the 1990s boom appear as a substantial positive one. The quadratic trend captures the productivity slowdown by allowing the growth rate to change, shifting the extracted cycle. NBER recession dates are shaded in both panels."
+#| fig-cap: "Linear and quadratic detrending of log SA real GDP. Top panel: the log level with both fitted trends. Bottom panel: the cyclical components (residuals). The linear trend forces US output to revert to a single long-run growth rate, making the 1970s slowdown appear as an extended negative cycle and the 1990s boom appear as a substantial positive one. The quadratic trend captures the productivity slowdown by allowing the growth rate to change, shifting the extracted cycle. NBER recession dates are shaded in both panels."
 #| fig-width: 6
 #| fig-height: 5
 #| code-fold: true
@@ -498,150 +499,318 @@ Third, the second-difference penalty implicitly assumes the trend is integrated 
 
 $$y_{t+h} = \beta_0 + \beta_1 y_t + \beta_2 y_{t-1} + \beta_3 y_{t-2} + \beta_4 y_{t-3} + \varepsilon_{t+h} \tag{2.4}$$
 
-and using the OLS residual as the cyclical component. For quarterly GDP, Hamilton recommends $h = 8$ (two years ahead). The residual $\hat{\varepsilon}_{t+h}$ captures the part of $y_{t+h}$ that is not predictable from the recent history of the series — which is a natural, model-free definition of a cyclical deviation.
+and using the OLS residual as the cyclical component. For quarterly GDP, Hamilton recommends $h = 8$ (two years ahead). The residual $\hat{\varepsilon}_{t+h}$ captures the part of $y_{t+h}$ that is not predictable from the recent history of the series. To see why this is a natural cycle measure: if output is highly persistent, the best prediction of where it will be in two years is simply where it is today. Anything that diverges from that prediction — unexpectedly high or low output relative to its own recent trend — is the cyclical component. The residual is not noise; it is the surprise, and surprises relative to the trend path are exactly what the business cycle measures.
 
 This approach has several advantages over HP. It is robust to the order of integration of $y_t$ — it works whether the series is $I(1)$ or trend-stationary. It has no end-point bias, since both ends of the sample lose observations symmetrically. It does not require choosing a smoothing parameter. And it does not generate spurious cycles from noise.
 
 The main disadvantage is interpretive: the Hamilton filter extracts a cycle at the frequency $1/h$, which for $h = 8$ quarters corresponds to a two-year horizon. This is somewhat shorter than the conventional NBER business cycle, and it misses lower-frequency variation that the HP filter would retain. As with every decomposition choice, this is a feature — Hamilton's filter is asking a specific question — but one that users should be aware of.
 
-```{python}
-#| label: fig-hp-hamilton
-#| fig-cap: "Business cycle components from four methods applied to log SA real GDP. HP filter (λ=1600, copper); Hamilton filter (h=8, blue); linear detrend (sage); STL irregular (terracotta). NBER recessions are shaded. The Hamilton panel is blank before 1949 Q4 by construction: the filter requires h=8 quarters of lead time and four lags of the series, so the first cycle estimate is only available once those observations exist. This is not a deficiency — it is an honest acknowledgement that the method needs a minimum data window. The STL irregular is the noisiest series but the most unfiltered: it has not been smoothed by any bandwidth parameter, so every quarter's deviation from trend is shown at full resolution."
-#| fig-width: 6
-#| fig-height: 8
-#| code-fold: true
-#| code-summary: "Show code — Four-method cycle comparison"
-
-log_sa_full = gdp["Log SA"].dropna()
-
-# ── HP Filter ─────────────────────────────────────────────────────────────────
-cycle_hp, trend_hp = hpfilter(log_sa_full, lamb=1600)
-
-# ── Hamilton Filter ────────────────────────────────────────────────────────────
-h_ham = 8
-lags  = 4
-y_arr = log_sa_full.values
-n     = len(y_arr)
-
-t_start = lags - 1
-t_end   = n - 1 - h_ham
-
-dep  = y_arr[(t_start + h_ham):(t_end + h_ham + 1)]
-regs = np.column_stack([
-    np.ones(len(dep)),
-    y_arr[t_start:t_end + 1],
-    y_arr[t_start - 1:t_end],
-    y_arr[t_start - 2:t_end - 1],
-    y_arr[t_start - 3:t_end - 2],
-])
-b_ham   = np.linalg.lstsq(regs, dep, rcond=None)[0]
-resid   = dep - regs @ b_ham
-
-ham_dates = log_sa_full.index[(t_start + h_ham):(t_end + h_ham + 1)]
-cycle_ham = pd.Series(resid, index=ham_dates)
-
-# ── STL Irregular ──────────────────────────────────────────────────────────────
-# Use the SA series for a fair comparison (no seasonal contamination)
-stl_sa     = STL(log_sa_full, period=4, seasonal=7, robust=True).fit()
-cycle_stl  = pd.Series(stl_sa.resid, index=log_sa_full.index)
-
-# ── Linear detrend cycle (already computed above) ─────────────────────────────
-cycle_lin_s = pd.Series(cycle_lin, index=log_sa_full.index)
-
-# ── Plot ───────────────────────────────────────────────────────────────────────
-labels = [
-    "HP Filter (λ = 1600)",
-    "Hamilton Filter (h = 8 quarters)",
-    "Linear Detrend",
-    "STL Irregular",
-]
-cycles = [cycle_hp * 100, cycle_ham * 100, cycle_lin_s * 100, cycle_stl * 100]
-colors = [EO_COPPER, EO_SKYBLUE, EO_SAGE, EO_TERRACOTTA]
-
-fig, axes = plt.subplots(4, 1, figsize=(6, 8), sharex=True)
-
-for ax, cyc, label, color in zip(axes, cycles, labels, colors):
-    ax.plot(cyc.index, cyc.values, color=color, lw=0.85)
-    ax.axhline(0, color=EO_CHARCOAL, lw=0.6, ls=":")
-    ax.fill_between(cyc.index, cyc.values, 0,
-                    where=(cyc.values < 0),
-                    color=color, alpha=0.22)
-    shade_recessions(ax, start=PLOT_START)
-    ax.set_title(label)
-    ax.set_ylabel("% dev.")
-    eo_style_ax(ax)
-
-end_yr = gdp.index[-1].year
-eo_suptitle(fig, f"Business Cycle — Four Methods, {gdp.index[0].year}–{end_yr}")
-fig.tight_layout()
-plt.show()
-```
-
-The four-panel figure is the visual centrepiece of this section, and it repays careful reading. Starting from the top:
-
-The **HP filter** produces the smoothest cycle. Its trend adapts continuously to the data, which is its strength and its weakness simultaneously. Notice that near the end of the sample the HP cycle tends to be smaller in absolute value than the other methods: with no future data to anchor the right end of the trend, the filter lets the trend drift toward recent observations, compressing the apparent cycle. This is end-point bias in action, and the next subsection shows its policy consequences in detail.
-
-The **Hamilton filter** panel is blank for the first several quarters. This is not a programming error — it is an honest feature of the method. The filter requires $h = 8$ quarters of lead time (it predicts $y_{t+8}$ from $y_t$ through $y_{t-3}$) plus four lags to form the right-hand side of the regression, so the first residual is only available once those observations exist. Both ends of the sample lose $h + \text{lags}$ observations symmetrically, which is exactly why the filter has no end-point bias: it treats the beginning and end of the sample identically. When data exists, the Hamilton cycle tracks NBER recessions reliably and generally agrees with HP on the direction of the cycle, while disagreeing on amplitude.
-
-The **linear detrend** cycle is the most volatile of the smooth methods. By constraining the trend to a single straight line fitted over the entire postwar period, it forces every deviation from that line — including the entire productivity slowdown of the 1970s — into the cyclical component. The result is a large, persistent negative cycle through the 1970s and a correspondingly large positive cycle through the late 1990s that almost certainly overstates the boom.
-
-The **STL irregular** is the most honest series in the figure. Because STL's Loess trend is highly flexible and its seasonal factors are estimated rather than imposed, the remainder captures genuine high-frequency variation without imposing any smoothness on the cycle itself. It is noisier than the other three methods — individual quarter-to-quarter movements are fully preserved — but precisely because of this, it is less likely to manufacture cycle patterns that are artifacts of the trend specification. The noise is the signal: it tells us that the "business cycle" in the other panels has already been smoothed by choices about λ, h, or the regression horizon before we even look at it.
-
 ### The HP Filter's End-Point Problem: A Policy Illustration
 
 The end-point bias of the HP filter is not merely a statistical curiosity. It can lead a policymaker who relies on real-time HP estimates to draw the opposite conclusion from the one the data, in hindsight, support. The pre-2008 period offers a vivid illustration.
 
-Run the HP filter on log SA real GDP using only data available through 2007 Q4 — the last quarter before the financial crisis was officially dated as having begun. The filter, seeing a long expansion with no future data to "know" about the coming collapse, interprets much of the 2004–2007 growth as trend. The result: a modest positive cycle, perhaps $+1$ to $+2\%$. The economy looks roughly at potential, perhaps slightly above. A policymaker reading this in early 2008 might conclude that no major stimulus is needed — the economy is running near its long-run path.
+Run the HP filter on log SA real GDP using only data available through 2007 Q4 — the last quarter before the financial crisis was officially dated as having begun. The HP trend, fitted on data that ends at the peak of a long expansion, has no future observations to pull it down. It therefore interprets a substantial portion of the 2004–2007 growth as trend rather than cycle. The result: a modest positive cycle, perhaps $+1$ to $+2\%$. The economy looks roughly at potential. A policymaker reading this in early 2008 might conclude no major policy response is needed.
 
-Now run the same HP filter on data through 2024 Q4. With the Great Recession and its aftermath now in the sample, the filter's trend for 2007 is pulled downward — the full-sample trend is lower than the real-time trend, because the filter now "knows" what came after. The 2007 cycle in the full-sample HP estimate looks substantially more positive than it did in real time: perhaps $+3$ to $+4\%$. The economy was running considerably hotter than the real-time filter suggested.
+Now run the same HP filter on data through 2024. The Great Recession and its protracted recovery are now in the sample. The filter's trend for 2007 is pulled *down* relative to the real-time estimate — with a deep trough visible after 2008, the filter places the pre-crisis trend lower, which makes the pre-crisis deviation from trend larger. The 2007 cycle in the full-sample HP estimate is substantially more positive: perhaps $+3$ to $+4\%$. In hindsight, the economy was running considerably hotter than the real-time filter suggested.
 
 ```{python}
 #| label: fig-hp-endpoint
-#| fig-cap: "HP filter end-point bias: real-time vs. full-sample cycle estimates for log SA real GDP. The copper line shows the HP cycle computed using only data available through 2007 Q4 (the last pre-crisis quarter). The blue line shows the HP cycle computed on the full sample through 2024. Both use λ=1600. In the years immediately preceding the 2008 recession (shaded), the real-time HP cycle is substantially smaller — and in some quarters near zero — while the full-sample estimate shows a clear positive boom. A policymaker relying on the real-time HP cycle in 2006–2007 would have seen a roughly neutral output gap; the same data, re-evaluated with hindsight, reveals a significant overheating. The gap between the two lines near 2007 is the end-point bias."
+#| fig-cap: "HP filter end-point bias over the pre-crisis decade, 2000–2007. Both lines use λ=1600 on the same log SA real GDP series. The copper line is the HP cycle a policymaker would have seen in real time, estimated on data through 2007 Q4 only. The blue dashed line is the full-sample cycle estimated on data through 2024. Near the 2007 peak the real-time cycle (copper) is close to zero or modestly positive, while the full-sample cycle (blue dashed) is clearly and persistently above it. The lavender band marks the revision gap where the full-sample estimate exceeds the real-time estimate — consistently positive every year of the expansion."
 #| fig-width: 6
 #| fig-height: 3.5
 #| code-fold: true
 #| code-summary: "Show code — HP end-point bias"
 
-cutoff = "2007-10-01"   # data through 2007 Q4
+log_sa_full = gdp["Log SA"].dropna()
+
+cutoff     = "2007-10-01"   # data through 2007 Q4
+zoom_start = "2000-01-01"
 
 # Real-time HP: estimated on data up to cutoff only
-log_sa_rt          = log_sa_full[log_sa_full.index <= cutoff]
-cycle_hp_rt, _     = hpfilter(log_sa_rt, lamb=1600)
+log_sa_rt        = log_sa_full[log_sa_full.index <= cutoff]
+cycle_hp_rt, _   = hpfilter(log_sa_rt, lamb=1600)
 
-# Full-sample HP (already computed)
-cycle_hp_full      = cycle_hp   # from the block above
+# Full-sample HP
+cycle_hp_full, trend_hp = hpfilter(log_sa_full, lamb=1600)
+cycle_hp_full_sub = cycle_hp_full[cycle_hp_full.index <= cutoff]
 
-# Restrict full-sample to the real-time window for overlay
-cycle_hp_full_sub  = cycle_hp_full[cycle_hp_full.index <= cutoff]
+# Zoom both series to 2000–2007 for clarity
+rt_zoom   = cycle_hp_rt[cycle_hp_rt.index >= zoom_start]
+full_zoom = cycle_hp_full_sub[cycle_hp_full_sub.index >= zoom_start]
 
 fig, ax = plt.subplots(figsize=(6, 3.5))
 
-ax.plot(cycle_hp_rt.index,       cycle_hp_rt.values * 100,
-        color=EO_COPPER,  lw=1.1, label="Real-time HP (data through 2007 Q4)")
-ax.plot(cycle_hp_full_sub.index, cycle_hp_full_sub.values * 100,
-        color=EO_SKYBLUE, lw=1.1, ls="--", label="Full-sample HP (data through 2024)")
+ax.plot(rt_zoom.index,   rt_zoom.values * 100,
+        color=EO_COPPER,  lw=1.4, label="Real-time HP (estimated through 2007 Q4)")
+ax.plot(full_zoom.index, full_zoom.values * 100,
+        color=EO_SKYBLUE, lw=1.4, ls="--", label="Full-sample HP (estimated through 2024)")
 ax.axhline(0, color=EO_CHARCOAL, lw=0.6, ls=":")
-ax.fill_between(cycle_hp_rt.index,
-                cycle_hp_rt.values * 100,
-                cycle_hp_full_sub.values * 100,
-                alpha=0.15, color=EO_LAVENDER, label="Revision gap")
-shade_recessions(ax, start=PLOT_START, end="2010-01-01")
-ax.set_title("Real-Time vs. Full-Sample HP Cycle — Pre-Crisis Period")
+ax.fill_between(rt_zoom.index,
+                rt_zoom.values * 100,
+                full_zoom.values * 100,
+                where=(full_zoom.values >= rt_zoom.values),
+                alpha=0.18, color=EO_LAVENDER, label="Revision gap (full > real-time)")
+shade_recessions(ax, start=zoom_start, end="2009-06-01")
+ax.set_title("Real-Time vs. Full-Sample HP Cycle, 2000–2007")
 ax.set_ylabel("% deviation from trend")
-ax.legend(loc="lower left", fontsize=6)
+ax.legend(loc="upper left", fontsize=6)
 eo_style_ax(ax)
-eo_suptitle(fig, "HP Filter End-Point Bias: Real-Time vs. Full-Sample, 1947–2007")
+eo_suptitle(fig, "HP Filter End-Point Bias: The Pre-Crisis Decade")
 fig.tight_layout()
 plt.show()
 ```
 
-The lavender band in the figure is the revision gap — the difference between what a policymaker would have seen in real time and what the same method says in hindsight. In the quarters immediately before the 2008 recession, the gap is substantial and in the wrong direction: the real-time HP cycle understates the boom, which means it also understates the vulnerability of an economy running above potential. A central bank tightening policy in response to the real-time cycle would have seen a reason to tighten modestly; with hindsight, the case for tightening was considerably stronger.
+The lavender band is the revision gap — consistently positive across 2004–2007, meaning the real-time filter understated the boom in every single year of the pre-crisis expansion. A central bank relying on the real-time HP cycle would have seen a roughly neutral output gap and moderate tightening at most; the full-sample estimate reveals an economy running substantially above potential. End-point bias is not random noise: it is systematic, it is worst near the frontier of the data, and it biases the cycle toward zero precisely when policymakers most need an accurate read.
 
-This is the policy consequence of end-point bias: systematic errors in real-time cycle estimates, concentrated exactly when the estimate matters most — at the frontier of the data. The Hamilton filter, by construction, does not have this property. Its cycle estimate at any date $t$ depends only on observations available well before $t$ (since the residual is dated $t+h$ and uses data from $t$ backward), so the real-time and full-sample estimates coincide.
+This is the policy consequence of end-point bias. The Hamilton filter, by construction, does not have this property. Its cycle estimate at any date $t$ depends only on observations available well before $t$ (since the residual is dated $t+h$ and uses data from $t$ backward), so the real-time and full-sample estimates coincide.
 
 
-The business cycle, in other words, is real — the economy genuinely expands and contracts — but its precise shape and magnitude are decomposition-dependent. When you read that the output gap is currently $+1.5\%$ or $-2\%$, you are reading a number that depends heavily on choices that rarely appear in the headline.
+## Exponential Smoothing {#sec-ses}
+
+Moving averages and linear filters approach decomposition retrospectively: given the full series, extract components by filtering or regression. Exponential smoothing takes a different starting point — the forecasting problem. The question it answers is: given a stream of observations arriving one at a time, how should we update our estimate of the current level of the series as each new observation arrives?
+
+The insight is that recent observations should count for more than old ones. An observation from last quarter is more informative about where the economy is right now than an observation from ten years ago. But the observation from ten years ago should not be thrown away entirely — it contains some information, just less. Exponential smoothing formalizes this intuition by assigning geometrically declining weights to past observations.
+
+### Simple Exponential Smoothing
+
+**[Simple exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing)** (SES) is designed for series with no trend and no seasonality — a level that fluctuates around a slowly moving mean. The smoothed level at time $t$ is:
+
+$$\hat{y}_{t+1|t} = \alpha y_t + (1 - \alpha)\hat{y}_{t|t-1} \tag{2.5}$$
+
+where $\alpha \in (0,1)$ is the **smoothing parameter**. The forecast for the next period is a weighted blend of the current observation $y_t$ and last period's forecast $\hat{y}_{t|t-1}$.
+
+Expanding the recursion reveals why this is called exponential smoothing:
+
+$$\hat{y}_{t+1|t} = \alpha y_t + \alpha(1-\alpha)y_{t-1} + \alpha(1-\alpha)^2 y_{t-2} + \cdots$$
+
+The weight on observation $y_{t-k}$ is $\alpha(1-\alpha)^k$, which declines geometrically in $k$. A small $\alpha$ (close to zero) places heavy weight on old observations: the smoothed level changes slowly and the forecast is nearly a long-run average. A large $\alpha$ (close to one) places almost all weight on the most recent observation: the forecast tracks the data closely and reacts quickly to new information.
+
+::: {.callout-note}
+## Definition 2.3 — Simple Exponential Smoothing
+
+Given observations $y_1, \ldots, y_T$ and a smoothing parameter $\alpha \in (0,1)$, the **SES** forecast is:
+
+$$\hat{y}_{t+1|t} = \alpha y_t + (1-\alpha)\hat{y}_{t|t-1}, \quad t = 1, 2, \ldots, T$$
+
+initialized at $\hat{y}_{1|0} = y_1$ (or estimated as a free parameter). The $h$-step-ahead forecast is flat: $\hat{y}_{T+h|T} = \hat{y}_{T+1|T}$ for all $h \geq 1$. SES is appropriate for series with no trend and no seasonality.
+:::
+
+An equivalent and illuminating way to write equation (2.5) is the **error-correction form**:
+
+$$\hat{y}_{t+1|t} = \hat{y}_{t|t-1} + \alpha e_t, \qquad e_t = y_t - \hat{y}_{t|t-1}$$
+
+where $e_t$ is the one-step forecast error. Each new forecast adjusts the previous forecast by a fraction $\alpha$ of the most recent error. Large $\alpha$ means aggressive updating; small $\alpha$ means conservative updating.
+
+SES produces **flat** multi-step forecasts: since there is no trend in the model, the best forecast at any horizon $h \geq 1$ is the current smoothed level. This is appropriate for stationary series, but for trending series like GDP we need to extend the framework.
+
+### Holt's Method: Adding a Trend
+
+**[Holt's linear exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing#Double_exponential_smoothing_(Holt_linear))** extends SES by maintaining a separate smoothed estimate of the trend alongside the level. The equations are:
+
+$$\hat{\ell}_t = \alpha y_t + (1-\alpha)(\hat{\ell}_{t-1} + \hat{b}_{t-1}) \tag{2.6}$$
+
+$$\hat{b}_t = \beta(\hat{\ell}_t - \hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \tag{2.7}$$
+
+$$\hat{y}_{t+h|t} = \hat{\ell}_t + h\hat{b}_t \tag{2.8}$$
+
+Here $\hat{\ell}_t$ is the smoothed level and $\hat{b}_t$ is the smoothed trend (slope). Equation (2.6) updates the level as a blend of the new observation and a one-step-ahead forecast from the previous state. Equation (2.7) updates the trend as a blend of the current change in level and the previous trend estimate. The $h$-step-ahead forecast (2.8) projects the current level forward at the current slope.
+
+An important variant is **Holt's damped trend method**, which multiplies the trend by a damping factor $\phi \in (0,1)$ at each forecast horizon:
+
+$$\hat{y}_{t+h|t} = \hat{\ell}_t + (\phi + \phi^2 + \cdots + \phi^h)\hat{b}_t$$
+
+For large $h$, the cumulative factor $\sum_{i=1}^h \phi^i \to \phi/(1-\phi)$ as $h \to \infty$, so the long-run forecast approaches a finite level rather than growing without bound. Empirical evidence consistently shows that damped trend forecasts outperform undamped ones at medium and long horizons.
+
+```{python}
+#| label: fig-ses-holt
+#| fig-cap: "Simple exponential smoothing (top) and Holt's method with and without damping (bottom), applied to the log SA real GDP series. SES with small α produces a smooth level that lags the trending data considerably; larger α tracks the data more closely. Holt's method extrapolates the recent slope linearly (blue) or with damping (terracotta), which flattens at longer horizons. Parameters are estimated by maximum likelihood."
+#| fig-width: 6
+#| fig-height: 5
+#| code-fold: true
+#| code-summary: "Show code — SES and Holt's method"
+
+# Use the officially SA series — STL-SA is computed later in Section 2.5
+series_fit = gdp["Log SA"].dropna()
+
+ses_low  = SimpleExpSmoothing(series_fit).fit(smoothing_level=0.05, optimized=False)
+ses_high = SimpleExpSmoothing(series_fit).fit(smoothing_level=0.4,  optimized=False)
+
+holt_und = Holt(series_fit).fit(optimized=True)
+holt_dmp = Holt(series_fit, damped_trend=True).fit(optimized=True)
+
+h_fcast  = 12
+ses_start = "2000-01-01"
+s = series_fit[series_fit.index >= ses_start]
+
+fig, axes = plt.subplots(2, 1, figsize=(6, 5), sharex=False)
+
+# ── SES panel ─────────────────────────────────────────────────────────────────
+ax = axes[0]
+ax.plot(s.index, s.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
+ax.plot(s.index, ses_low.fittedvalues[ses_low.fittedvalues.index >= ses_start],
+        color=EO_COPPER, lw=1.0, ls="--", label="SES α=0.05")
+ax.plot(s.index, ses_high.fittedvalues[ses_high.fittedvalues.index >= ses_start],
+        color=EO_SKYBLUE, lw=1.0, ls="--", label="SES α=0.40")
+shade_recessions(ax, start=ses_start)
+ax.set_title("Simple Exponential Smoothing (2000–present)")
+ax.legend(loc="upper left", fontsize=6)
+eo_style_ax(ax)
+
+# ── Holt panel ────────────────────────────────────────────────────────────────
+ax = axes[1]
+last_date = series_fit.index[-1]
+fcast_idx = pd.date_range(last_date, periods=h_fcast + 1, freq="QS")[1:]
+fcast_und = holt_und.forecast(h_fcast)
+fcast_dmp = holt_dmp.forecast(h_fcast)
+
+ax.plot(s.index, s.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
+ax.plot(s.index, holt_und.fittedvalues[holt_und.fittedvalues.index >= ses_start],
+        color=EO_SKYBLUE, lw=0.9, ls="--",
+        label=f"Holt undamped (α={holt_und.params['smoothing_level']:.2f}, β={holt_und.params['smoothing_trend']:.2f})")
+ax.plot(s.index, holt_dmp.fittedvalues[holt_dmp.fittedvalues.index >= ses_start],
+        color=EO_TERRACOTTA, lw=0.9, ls="--",
+        label=f"Holt damped (φ={holt_dmp.params['damping_trend']:.2f})")
+ax.plot(fcast_idx, fcast_und.values, color=EO_SKYBLUE,    lw=1.1, ls="-")
+ax.plot(fcast_idx, fcast_dmp.values, color=EO_TERRACOTTA, lw=1.1, ls="-")
+ax.axvline(last_date, color=EO_CHARCOAL, lw=0.6, ls=":")
+shade_recessions(ax, start=ses_start)
+ax.set_title("Holt's Method: Undamped and Damped Trend (2000–present)")
+ax.legend(loc="upper left", fontsize=6)
+eo_style_ax(ax)
+
+eo_suptitle(fig, "Exponential Smoothing — Log SA Real GDP")
+fig.tight_layout()
+plt.show()
+```
+
+The figure illustrates the key behavioral difference between the two methods. SES produces a smooth level that works well for series without trend, but it systematically lags a trending series — it is always trying to catch up. Holt's method follows the trend by construction. The undamped forecast extrapolates the recent slope linearly and diverges from the damped version over longer horizons. For a series as persistently trending as GDP, the damped version is almost always more appropriate: it is skeptical that the most recently estimated growth rate will persist indefinitely.
+
+### The ETS Framework
+
+The exponential smoothing methods developed so far can be organized into a unified framework known as **ETS** — named for its three components: **E**rror, **T**rend, and **S**easonality. This framework, developed formally by Hyndman et al. ([2002](https://www.sciencedirect.com/science/article/pii/S0169207001001108), [2008](https://link.springer.com/book/10.1007/978-3-540-71918-2)), provides a systematic taxonomy of all sensible combinations of exponential smoothing components, along with a formal statistical model — with likelihood function and prediction intervals — for each combination.
+
+Each of the three components can take different forms:
+
+- **Error (E):** additive (A) or multiplicative (M)
+- **Trend (T):** none (N), additive (A), additive damped (Ad), multiplicative (M), multiplicative damped (Md)
+- **Seasonality (S):** none (N), additive (A), multiplicative (M)
+
+The notation ETS(E,T,S) identifies a specific model. ETS(A,N,N) is simple exponential smoothing with additive errors — the SES model above. ETS(A,A,N) is Holt's undamped linear method. ETS(A,Ad,N) is Holt's damped method. The Holt-Winters seasonal models are ETS(A,A,A) and ETS(A,A,M).
+
+The four cases that matter most in macroeconomic applications are:
+
+**ETS(A,N,N) — Simple Exponential Smoothing.** No trend, no seasonality, additive error. The level equation is $\hat{\ell}_t = \hat{\ell}_{t-1} + \alpha e_t$ where $e_t = y_t - \hat{\ell}_{t-1}$ is the one-step forecast error. (Here and throughout the key-cases descriptions we write $e_t$ as shorthand for the error at time $t$; the dependence on the parameter vector $\theta$ through the state recursion is implicit, and made explicit in the MLE discussion below.) Forecasts are flat. Appropriate for stationary or slowly-drifting series with no seasonal pattern.
+
+**ETS(A,A,N) — Holt's Linear Method.** Additive trend, no seasonality, additive error. Level and slope both updated each period. Forecasts follow a linear projection from the current state. The undamped version extrapolates linearly; caution is warranted at long horizons.
+
+**ETS(A,Ad,N) — Holt's Damped Method.** Additive damped trend, no seasonality. Forecasts converge to a finite level as $h \to \infty$. Empirically, this is often the single best-performing exponential smoothing model across a wide range of real datasets, particularly at medium horizons.
+
+**ETS(A,A,A) — Holt-Winters Additive.** Additive trend, additive seasonal, additive error. Appropriate when the series has been log-transformed, so that multiplicative seasonality in levels becomes additive seasonality in logs.
+
+::: {.callout-note}
+## Definition 2.4 — The Holt-Winters Additive Model: ETS(A,A,A)
+
+Given a seasonal period $m$, the state equations are:
+
+$$\hat{\ell}_t = \alpha(y_t - \hat{s}_{t-m}) + (1-\alpha)(\hat{\ell}_{t-1} + \hat{b}_{t-1}) \tag{2.9}$$
+
+$$\hat{b}_t = \beta(\hat{\ell}_t - \hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \tag{2.10}$$
+
+$$\hat{s}_t = \gamma(y_t - \hat{\ell}_{t-1} - \hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m} \tag{2.11}$$
+
+$$\hat{y}_{t+h|t} = \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)} \tag{2.12}$$
+
+where $k = \lfloor (h-1)/m \rfloor$ ensures the correct seasonal index is used, and $\gamma \in (0, 1-\alpha)$ is the seasonal smoothing parameter. Three smoothing parameters — $\alpha$, $\beta$, $\gamma$ — and the initial states $\{\hat{\ell}_0, \hat{b}_0, \hat{s}_{1-m}, \ldots, \hat{s}_0\}$ are estimated jointly by maximum likelihood.
+
+The **damped variant, ETS(A,Ad,A)**, replaces $h\hat{b}_t$ in equation (2.12) with $\left(\sum_{i=1}^h \phi^i\right)\hat{b}_t$, where $\phi \in (0,1)$ is the damping parameter. Forecasts converge to a finite level as $h \to \infty$ rather than extrapolating the trend linearly. We fit the damped version in the Python example below, as it is almost always preferred at longer forecast horizons.
+:::
+
+The three smoothing equations have a parallel structure. The level (2.9) is updated as a blend of the de-seasonalized observation $y_t - \hat{s}_{t-m}$ and the extrapolated level from the previous state. The trend (2.10) updates the slope. The seasonal factor (2.11) updates the seasonal index for period $t$ as a blend of the de-trended observation and the same-season factor from one full year ago. The forecast (2.12) adds the projected level, the projected trend, and the appropriate seasonal factor.
+
+The full ETS framework extends to 30 combinations by allowing multiplicative errors and multiplicative seasonality, each with its own state equations and likelihood function. For log-transformed series the additive variants are almost always appropriate. Readers interested in the complete taxonomy will find it in Hyndman et al. (2008), *Forecasting with Exponential Smoothing: The State Space Approach*.
+
+### Parameter Estimation and Forecasting
+
+Parameters in ETS models — the smoothing parameters $\alpha$, $\beta$, $\gamma$, $\phi$ and the initial states — are estimated by **[maximum likelihood](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation)**. Let $\theta$ collect all parameters. The one-step-ahead forecast errors are computed recursively as $e_t(\theta) = y_t - \hat{y}_{t|t-1}(\theta)$. Under Gaussian errors, profiling out $\sigma^2$ gives the **concentrated log-likelihood**:
+
+$$\ell_c(\theta) = -\frac{T}{2}\left[1 + \log(2\pi) + \log\hat{\sigma}^2(\theta)\right], \qquad \hat{\sigma}^2(\theta) = \frac{1}{T}\sum_{t=1}^T e_t(\theta)^2$$
+
+Maximizing $\ell_c(\theta)$ is equivalent to minimizing $\sum e_t(\theta)^2$. The advantage of full MLE is that initial states are estimated as free parameters rather than set by convention, and the likelihood supports model comparison via AIC.
+
+With parameters estimated, point forecasts follow from running the state equations forward from the end of the sample. [Prediction intervals](https://en.wikipedia.org/wiki/Prediction_interval) are computed by simulation: draw future innovation sequences, propagate them through the state equations, and take empirical quantiles. These intervals widen with horizon — appropriately capturing the fact that uncertainty compounds as we look further ahead. Prediction intervals **are not** [confidence intervals](https://en.wikipedia.org/wiki/Confidence_interval): they account for future forecast uncertainty, not parameter uncertainty, so in practice they will be slightly too narrow.
+
+```{python}
+#| label: fig-hw-forecast
+#| fig-cap: "Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP, 2000–2026. The model is fit on the full available sample and forecasts eight quarters ahead. The seasonal pattern is extrapolated from the estimated seasonal factors; the damped trend reflects appropriate skepticism about the persistence of the recent growth rate. The 80% and 95% prediction intervals (shaded bands) widen with horizon. NBER recessions are shaded; the sharp 2020 outlier is visible in the residuals."
+#| fig-width: 6
+#| fig-height: 5
+#| code-fold: true
+#| code-summary: "Show code — Holt-Winters forecast"
+
+series_nsa = gdp["Log NSA"].dropna()
+
+hw_model = ExponentialSmoothing(
+    series_nsa,
+    trend="add",
+    damped_trend=True,
+    seasonal="add",
+    seasonal_periods=4,
+    initialization_method="estimated",
+).fit(optimized=True)
+
+h_ahead  = 8
+fcast    = hw_model.forecast(h_ahead)
+
+sim      = hw_model.simulate(h_ahead, repetitions=5000, error="add")
+pi_80_lo = np.percentile(sim, 10, axis=1)
+pi_80_hi = np.percentile(sim, 90, axis=1)
+pi_95_lo = np.percentile(sim, 2.5, axis=1)
+pi_95_hi = np.percentile(sim, 97.5, axis=1)
+
+fcast_idx = fcast.index
+hw_start  = "2000-01-01"
+
+fig, axes = plt.subplots(2, 1, figsize=(6, 5))
+
+ax = axes[0]
+obs_plot = series_nsa[series_nsa.index >= hw_start]
+ax.plot(obs_plot.index, obs_plot.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
+ax.plot(hw_model.fittedvalues[hw_model.fittedvalues.index >= hw_start].index,
+        hw_model.fittedvalues[hw_model.fittedvalues.index >= hw_start].values,
+        color=EO_COPPER, lw=0.8, ls="--", label="Fitted (in-sample)")
+ax.plot(fcast_idx, fcast.values, color=EO_SKYBLUE, lw=1.2, label="Forecast")
+ax.fill_between(fcast_idx, pi_80_lo, pi_80_hi, color=EO_SKYBLUE, alpha=0.25, label="80% PI")
+ax.fill_between(fcast_idx, pi_95_lo, pi_95_hi, color=EO_SKYBLUE, alpha=0.12, label="95% PI")
+ax.axvline(series_nsa.index[-1], color=EO_CHARCOAL, lw=0.6, ls=":")
+shade_recessions(ax, start=hw_start)
+ax.set_title("ETS(A,Ad,A) Forecast — Log NSA Real GDP")
+ax.legend(loc="upper left", fontsize=5.5, ncol=2)
+eo_style_ax(ax)
+
+ax = axes[1]
+resid_plot = hw_model.resid[hw_model.resid.index >= hw_start]
+ax.plot(resid_plot.index, resid_plot.values, color=EO_TERRACOTTA, lw=0.8)
+ax.axhline(0, color=EO_CHARCOAL, lw=0.6, ls=":")
+shade_recessions(ax, start=hw_start)
+ax.set_title("In-Sample Residuals")
+ax.set_ylabel("Residual (log units)")
+eo_style_ax(ax)
+
+print(f"Fitted parameters:")
+print(f"  α (level):    {hw_model.params['smoothing_level']:.4f}")
+print(f"  β (trend):    {hw_model.params['smoothing_trend']:.4f}")
+print(f"  γ (seasonal): {hw_model.params['smoothing_seasonal']:.4f}")
+print(f"  φ (damping):  {hw_model.params['damping_trend']:.4f}")
+print(f"  AIC:          {hw_model.aic:.2f}")
+print(f"  BIC:          {hw_model.bic:.2f}")
+
+end_yr = fcast_idx[-1].year
+eo_suptitle(fig, f"Holt-Winters Forecast — Log NSA Real GDP, 2000–{end_yr}")
+fig.tight_layout()
+plt.show()
+```
+
+The level smoothing parameter $\alpha$ reflects how quickly the model updates its estimate of the current level in response to new observations. The damping parameter $\phi$ (close to 1 but below it) indicates modest damping — the model retains most of the trend momentum but expects it to fade somewhat over the forecast horizon. The seasonal parameter $\gamma$ controls how much the model learns about seasonal factors from each new year of data. The 2020 Q2 observation produces a large negative residual — COVID-19, an exogenous shock outside the information set of any statistical model. This is a reflection of the model's appropriate ignorance about regime-changing events, not evidence of misspecification. Even from this single in-sample fit, the seasonal structure, trend momentum, and interval widths give us the key ingredients for the evaluation exercise in Chapter 5 — where we will ask not just whether the forecasts look reasonable, but whether they beat a benchmark and how their uncertainty is calibrated. A full framework for out-of-sample evaluation — including rolling windows, the Diebold-Mariano test, and forecast combination — is developed there.
 
 
 ## Seasonal Adjustment in Practice {#sec-seasonal}
@@ -686,13 +855,7 @@ The method we will use for seasonal decomposition is **STL** — Seasonal-Trend 
 
 STL is an iterative procedure. It alternates between two passes: an inner loop that updates the seasonal and trend estimates given the current decomposition, and an outer loop that computes robustness weights to reduce the influence of outliers. The trend at each step is estimated using **Loess** (locally weighted polynomial regression), which fits a low-degree polynomial to a local neighborhood of the data at each point — more flexible than a global moving average and less prone to distortion near structural shifts.
 
-The key user-controlled parameters are:
-- `period`: the seasonal period ($m = 4$ for quarterly, $12$ for monthly)
-- `seasonal`: the width of the seasonal Loess window (larger = smoother seasonal factors)
-- `trend`: the width of the trend Loess window (larger = smoother trend)
-- `robust`: whether to use the outlier-resistant outer loop
-
-The main differences from X-13 are worth stating clearly. STL treats the seasonal component as slowly varying but does not model calendar effects (trading day counts, Easter, holidays). X-13 explicitly adjusts for these. STL is additive by default (or multiplicative on logs). X-13 integrates ARIMA-based forecasting to avoid end-point loss. STL is fully transparent and reproduced in Python; X-13 is an institutional production standard with decades of accumulated refinements. For research and teaching, STL is the right tool. For producing the official figures that appear in a statistical release, X-13 is the standard.
+The main differences from X-13 are worth stating clearly. STL treats the seasonal component as slowly varying but does not model calendar effects (trading day counts, Easter, holidays). X-13 explicitly adjusts for these. STL is additive by default (or multiplicative on logs). X-13 integrates ARIMA-based forecasting to avoid end-point loss. STL is fully transparent and implemented in Python; X-13 is an institutional production standard with decades of accumulated refinements. For research and teaching, STL is the right tool. For producing the official figures that appear in a statistical release, X-13 is the standard.
 
 ```{python}
 #| label: fig-stl-decomp
@@ -705,9 +868,11 @@ The main differences from X-13 are worth stating clearly. STL treats the seasona
 stl    = STL(gdp["Log NSA"], period=4, seasonal=7, robust=True)
 result = stl.fit()
 
+# STL seasonal-adjusted series — used in comparisons below
+gdp["Log STL-SA"] = gdp["Log NSA"] - result.seasonal
+
 fig, axes = plt.subplots(3, 1, figsize=(6, 6), sharex=True)
 
-# Panel 1: observed + trend overlaid
 ax = axes[0]
 ax.plot(gdp.index, gdp["Log NSA"],   color=EO_CHARCOAL, lw=0.9, label="Observed")
 ax.plot(result.trend.index, result.trend.values, color=EO_COPPER, lw=1.2, ls="--", label="STL Trend (Loess)")
@@ -716,7 +881,6 @@ ax.set_title("Observed and Trend")
 ax.legend(loc="upper left", fontsize=6)
 eo_style_ax(ax)
 
-# Panel 2: seasonal
 ax = axes[1]
 ax.plot(result.seasonal.index, result.seasonal.values, color=EO_SKYBLUE, lw=0.9)
 ax.axhline(0, color=EO_CHARCOAL, lw=0.5, ls=":")
@@ -724,7 +888,6 @@ shade_recessions(ax, start=PLOT_START)
 ax.set_title("Seasonal")
 eo_style_ax(ax)
 
-# Panel 3: irregular
 ax = axes[2]
 ax.plot(result.resid.index, result.resid.values, color=EO_TERRACOTTA, lw=0.9)
 ax.axhline(0, color=EO_CHARCOAL, lw=0.5, ls=":")
@@ -743,14 +906,11 @@ plt.show()
 
 ```{python}
 #| label: fig-stl-vs-official
-#| fig-cap: "Comparison of STL-adjusted and officially SA real GDP. The STL adjustment (copper dashed) closely tracks the BEA's X-13-based SA series (blue), with the two differing primarily in periods of structural change (post-2008, post-2020) where X-13's ARIMA-based end-extension and calendar adjustment produce marginally smoother estimates. The correspondence is close enough for research and teaching purposes."
+#| fig-cap: "Comparison of STL-adjusted and officially SA real GDP. The STL adjustment (copper dashed) closely tracks the BEA's X-13-based SA series (blue), with the two differing primarily in periods of structural change (post-2008, post-2020) where X-13's ARIMA-based end-extension and calendar adjustment provide marginally smoother estimates. The correspondence is close enough for research and teaching purposes."
 #| fig-width: 6
 #| fig-height: 3
 #| code-fold: true
 #| code-summary: "Show code — STL vs official SA comparison"
-
-# STL seasonal-adjusted = observed - seasonal component (in logs)
-gdp["Log STL-SA"] = gdp["Log NSA"] - result.seasonal
 
 fig, ax = plt.subplots(figsize=(6, 3))
 ax.plot(gdp.index, gdp["Log SA"],
@@ -777,406 +937,118 @@ It is worth being precise about what seasonal adjustment actually does to the da
 One practical implication: seasonal adjustment can interact with structural change in ways that produce artifacts. If the 2020 pandemic caused an unprecedented collapse in Q2 — far outside the range of historical Q2 observations — then seasonal adjustment algorithms estimated on pre-pandemic data will temporarily misestimate the seasonal factor for Q2 in subsequent years. This is why the BLS and BEA issued multiple revisions to seasonal factors in 2020–2022 and why analysts following real-time data always need to be aware of the vintage of seasonal factors being applied.
 
 
-## Exponential Smoothing {#sec-ses}
+## What Is the Business Cycle? {#sec-biz-cycle}
 
-The decomposition methods of the previous sections were retrospective: given the full series, extract components by filtering or regression. Forecasting with those components is straightforward — extrapolate the trend forward, add the seasonal factors, assume the irregular averages out — but the method itself was not designed with forecasting as its primary purpose.
+### Deviations from Trend
 
-Exponential smoothing takes the forecasting problem as its starting point. The question it answers is: given a stream of observations arriving one at a time, how should we update our estimate of the current level of the series as each new observation arrives?
+The [business cycle](https://en.wikipedia.org/wiki/Business_cycle) is one of the most studied and debated concepts in macroeconomics, yet it is surprisingly hard to define precisely. The phrase conjures images of booms and busts, expansions and recessions, the rhythmic up-and-down of economic activity. But this intuitive picture conceals a fundamental ambiguity: up and down relative to what?
 
-The insight is that recent observations should count for more than old ones. An observation from last quarter is more informative about where the economy is right now than an observation from ten years ago. But the observation from ten years ago should not be thrown away entirely — it contains some information, just less. Exponential smoothing formalizes this intuition by assigning geometrically declining weights to past observations.
+If we mean relative to last period, we are looking at growth rates — and growth rates are always fluctuating, even in a healthy economy. If we mean relative to a fixed level, we have the problem that the economy trends upward over time and never returns to its past level. The only economically coherent benchmark is the trend — the economy's long-run potential path — and deviations from that trend are what we mean by the business cycle:
 
-### Simple Exponential Smoothing
+$$\hat{I}_t = y_t - \hat{T}_t - \hat{S}_t$$
 
-**[Simple exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing)** (SES) is designed for series with no trend and no seasonality — a level that fluctuates around a slowly moving mean. The smoothed level at time $t$ is:
+This definition has an important implication: the business cycle is not a natural object sitting in the data waiting to be discovered. It is a residual — what is left after we remove the trend and seasonal components. And because different methods produce different trends, they produce different business cycles. This is not a methodological embarrassment; it is an economically meaningful fact. Whether the 1990s boom appears large or modest, whether the 2001 recession looks shallow or deep, depends directly on how we model the trend that GDP is deviating from.
 
-$$\hat{y}_{t+1|t} = \alpha y_t + (1 - \alpha)\hat{y}_{t|t-1} \tag{2.5}$$
-
-where $\alpha \in (0,1)$ is the **smoothing parameter**. The forecast for the next period is a weighted blend of the current observation $y_t$ and last period's forecast $\hat{y}_{t|t-1}$.
-
-Expanding the recursion reveals why this is called exponential smoothing:
-
-$$\hat{y}_{t+1|t} = \alpha y_t + \alpha(1-\alpha)y_{t-1} + \alpha(1-\alpha)^2 y_{t-2} + \cdots$$
-
-The weight on observation $y_{t-k}$ is $\alpha(1-\alpha)^k$, which declines geometrically in $k$. A small $\alpha$ (close to zero) places heavy weight on old observations: the smoothed level changes slowly and the forecast is nearly a long-run average. A large $\alpha$ (close to one) places almost all weight on the most recent observation: the forecast tracks the data closely and reacts quickly to new information.
-
-::: {.callout-note}
-## Definition 2.3 — Simple Exponential Smoothing
-
-Given observations $y_1, \ldots, y_T$ and a smoothing parameter $\alpha \in (0,1)$, the **SES** forecast is:
-
-$$\hat{y}_{t+1|t} = \alpha y_t + (1-\alpha)\hat{y}_{t|t-1}, \quad t = 1, 2, \ldots, T$$
-
-initialized at $\hat{y}_{1|0} = y_1$ (or estimated as a free parameter). The $h$-step-ahead forecast is flat: $\hat{y}_{T+h|T} = \hat{y}_{T+1|T}$ for all $h \geq 1$. SES is appropriate for series with no trend and no seasonality.
-:::
-
-An equivalent and illuminating way to write equation (2.5) is the **error-correction form**:
-
-$$\hat{y}_{t+1|t} = \hat{y}_{t|t-1} + \alpha e_t, \qquad e_t = y_t - \hat{y}_{t|t-1}$$
-
-Each new forecast adjusts the previous forecast by a fraction $\alpha$ of the most recent forecast error. This makes the adaptive learning interpretation explicit: after each observation, we revise our estimate of the level by a fraction $\alpha$ of how wrong we were. Large $\alpha$ means aggressive updating; small $\alpha$ means conservative updating.
-
-SES produces **flat** multi-step forecasts: since there is no trend in the model, the best forecast at any horizon $h \geq 1$ is the current smoothed level. This is appropriate for stationary series, but for trending series like GDP we need to extend the framework.
-
-### Holt's Method: Adding a Trend
-
-**[Holt's linear exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing#Double_exponential_smoothing_(Holt_linear))** extends SES by maintaining a separate smoothed estimate of the trend alongside the level. The equations are:
-
-$$\hat{\ell}_t = \alpha y_t + (1-\alpha)(\hat{\ell}_{t-1} + \hat{b}_{t-1}) \tag{2.6}$$
-
-$$\hat{b}_t = \beta(\hat{\ell}_t - \hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \tag{2.7}$$
-
-$$\hat{y}_{t+h|t} = \hat{\ell}_t + h\hat{b}_t \tag{2.8}$$
-
-Here $\hat{\ell}_t$ is the smoothed level and $\hat{b}_t$ is the smoothed trend (slope). Equation (2.6) updates the level as a blend of the new observation $y_t$ and a one-step-ahead forecast from the previous level-plus-trend. Equation (2.7) updates the trend as a blend of the current change in level $\hat{\ell}_t - \hat{\ell}_{t-1}$ and the previous trend estimate. The $h$-step-ahead forecast (2.8) projects the current level forward at the current slope.
-
-Two smoothing parameters now need to be chosen: $\alpha$ controls how quickly the level adapts, and $\beta$ controls how quickly the trend adapts. Both lie in $(0,1)$. A small $\beta$ means the estimated trend changes slowly — the model assumes the trend is persistent. A large $\beta$ means the trend adapts quickly to recent changes in slope.
-
-An important variant is **Holt's damped trend method**, which multiplies the trend by a damping factor $\phi \in (0,1)$ at each forecast horizon:
-
-$$\hat{y}_{t+h|t} = \hat{\ell}_t + (\phi + \phi^2 + \cdots + \phi^h)\hat{b}_t$$
-
-For $h = 1$ this is the same as the undamped Holt forecast. For large $h$, the cumulative factor $\sum_{i=1}^h \phi^i \to \phi/(1-\phi)$ as $h \to \infty$, so the long-run forecast approaches a finite level rather than growing without bound. Empirical evidence consistently shows that damped trend forecasts outperform undamped ones at medium and long horizons: in practice, trends rarely persist at their recent estimated slope for many periods ahead, and damping provides insurance against overextrapolation.
+We have now developed four methods for extracting a cycle, and we can compare them directly. The figure below plots each method's cycle on the same time axis. With all four methods in hand, the comparison is fair — the reader knows exactly what each panel is showing and why.
 
 ```{python}
-#| label: fig-ses-holt
-#| fig-cap: "Simple exponential smoothing (top) and Holt's method with and without damping (bottom), applied to the log STL-SA real GDP series. SES with small α produces a smooth level that lags the data considerably; larger α tracks the data closely but produces a jagged level. Holt's method with trend produces forecasts that extrapolate the recent slope linearly (blue) or with damping (terracotta), which flattens out at longer horizons. Parameters are estimated by maximum likelihood."
+#| label: fig-biz-cycle-comparison
+#| fig-cap: "Business cycle components from four methods applied to log SA real GDP, ordered as introduced in this chapter. Top: linear detrend (sage). Second: STL irregular (terracotta) — the least opinionated method, retaining the most high-frequency variation because it imposes no smoothing bandwidth, penalty parameter, or projection horizon. Third: HP filter (λ=1600, copper). Bottom: Hamilton filter (h=8 quarters, blue). NBER recessions are shaded throughout. The Hamilton panel is blank for the first several quarters by construction: the filter requires h=8 quarters of lead time plus four lags, so the first residual is only available once those observations accumulate — an honest acknowledgement of the method's data requirements, and the reason it has no end-point bias."
 #| fig-width: 6
-#| fig-height: 5
+#| fig-height: 8
 #| code-fold: true
-#| code-summary: "Show code — SES and Holt's method"
+#| code-summary: "Show code — Four-method cycle comparison"
 
-series_fit = gdp["Log STL-SA"].dropna()
+log_sa_full = gdp["Log SA"].dropna()
 
-# SES with two alpha values for illustration
-ses_low  = SimpleExpSmoothing(series_fit, initialization_method="estimated").fit(smoothing_level=0.05, optimized=False)
-ses_high = SimpleExpSmoothing(series_fit, initialization_method="estimated").fit(smoothing_level=0.4,  optimized=False)
+# ── HP Filter ─────────────────────────────────────────────────────────────────
+cycle_hp, _ = hpfilter(log_sa_full, lamb=1600)
 
-# Holt (undamped and damped)
-holt_und  = Holt(series_fit, initialization_method="estimated").fit(optimized=True)
-holt_dmp  = Holt(series_fit, damped_trend=True, initialization_method="estimated").fit(optimized=True)
+# ── Hamilton Filter ────────────────────────────────────────────────────────────
+h_ham = 8
+lags  = 4
+y_arr = log_sa_full.values
+n     = len(y_arr)
 
-h_fcast   = 12   # forecast horizon
+t_start = lags - 1
+t_end   = n - 1 - h_ham
 
-fig, axes = plt.subplots(2, 1, figsize=(6, 5), sharex=False)
+dep  = y_arr[(t_start + h_ham):(t_end + h_ham + 1)]
+regs = np.column_stack([
+    np.ones(len(dep)),
+    y_arr[t_start:t_end + 1],
+    y_arr[t_start - 1:t_end],
+    y_arr[t_start - 2:t_end - 1],
+    y_arr[t_start - 3:t_end - 2],
+])
+b_ham   = np.linalg.lstsq(regs, dep, rcond=None)[0]
+resid   = dep - regs @ b_ham
 
-# ── SES panel ─────────────────────────────────────────────────────────────────
-ax = axes[0]
-ses_start = "2000-01-01"
-s = series_fit[series_fit.index >= ses_start]
-ax.plot(s.index, s.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
-ax.plot(s.index, ses_low.fittedvalues[ses_low.fittedvalues.index >= ses_start],
-        color=EO_COPPER, lw=1.0, ls="--", label=f"SES α=0.05")
-ax.plot(s.index, ses_high.fittedvalues[ses_high.fittedvalues.index >= ses_start],
-        color=EO_SKYBLUE, lw=1.0, ls="--", label=f"SES α=0.40")
-shade_recessions(ax, start=ses_start)
-ax.set_title("Simple Exponential Smoothing (2000–present)")
-ax.legend(loc="upper left", fontsize=6)
-eo_style_ax(ax)
+ham_dates = log_sa_full.index[(t_start + h_ham):(t_end + h_ham + 1)]
+cycle_ham = pd.Series(resid, index=ham_dates)
 
-# ── Holt panel ────────────────────────────────────────────────────────────────
-ax = axes[1]
-fcast_und = holt_und.forecast(h_fcast)
-fcast_dmp = holt_dmp.forecast(h_fcast)
+# ── STL Irregular (on SA series for fair comparison) ──────────────────────────
+stl_sa    = STL(log_sa_full, period=4, seasonal=7, robust=True).fit()
+cycle_stl = pd.Series(stl_sa.resid, index=log_sa_full.index)
 
-last_date  = series_fit.index[-1]
-fcast_idx  = pd.date_range(last_date, periods=h_fcast + 1, freq="QS")[1:]
+# ── Linear detrend cycle (computed in Section 2.3) ────────────────────────────
+cycle_lin_s = pd.Series(cycle_lin, index=log_sa_full.index)
 
-ax.plot(s.index, s.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
-ax.plot(s.index,
-        holt_und.fittedvalues[holt_und.fittedvalues.index >= ses_start],
-        color=EO_SKYBLUE, lw=0.9, ls="--", label=f"Holt undamped (α={holt_und.params['smoothing_level']:.2f}, β={holt_und.params['smoothing_trend']:.2f})")
-ax.plot(s.index,
-        holt_dmp.fittedvalues[holt_dmp.fittedvalues.index >= ses_start],
-        color=EO_TERRACOTTA, lw=0.9, ls="--", label=f"Holt damped (φ={holt_dmp.params['damping_trend']:.2f})")
-ax.plot(fcast_idx, fcast_und.values, color=EO_SKYBLUE,    lw=1.1, ls="-")
-ax.plot(fcast_idx, fcast_dmp.values, color=EO_TERRACOTTA, lw=1.1, ls="-")
-ax.axvline(last_date, color=EO_CHARCOAL, lw=0.6, ls=":")
-shade_recessions(ax, start=ses_start)
-ax.set_title("Holt's Method: Undamped and Damped Trend (2000–present)")
-ax.legend(loc="upper left", fontsize=6)
-eo_style_ax(ax)
+# ── Plot ───────────────────────────────────────────────────────────────────────
+labels = [
+    "Linear Detrend",
+    "STL Irregular",
+    "HP Filter (λ = 1600)",
+    "Hamilton Filter (h = 8 quarters)",
+]
+cycles = [cycle_lin_s * 100, cycle_stl * 100, cycle_hp * 100, cycle_ham * 100]
+colors = [EO_SAGE, EO_TERRACOTTA, EO_COPPER, EO_SKYBLUE]
 
-eo_suptitle(fig, "Exponential Smoothing — Log STL-SA Real GDP")
+fig, axes = plt.subplots(4, 1, figsize=(6, 8), sharex=True)
+
+for ax, cyc, label, color in zip(axes, cycles, labels, colors):
+    ax.plot(cyc.index, cyc.values, color=color, lw=0.85)
+    ax.axhline(0, color=EO_CHARCOAL, lw=0.6, ls=":")
+    ax.fill_between(cyc.index, cyc.values, 0,
+                    where=(cyc.values < 0),
+                    color=color, alpha=0.22)
+    shade_recessions(ax, start=PLOT_START)
+    ax.set_title(label)
+    ax.set_ylabel("% dev.")
+    eo_style_ax(ax)
+
+end_yr = gdp.index[-1].year
+eo_suptitle(fig, f"Business Cycle — Four Methods, {gdp.index[0].year}–{end_yr}")
 fig.tight_layout()
 plt.show()
 ```
 
-The figure illustrates the key behavioral difference between the two methods. SES produces a smooth level that works well for series without trend, but it systematically lags a trending series — it is always trying to catch up. Holt's method follows the trend by construction. The undamped forecast extrapolates the recent slope linearly and diverges from the damped version over longer horizons. For a series as persistently trending as GDP, the damped version is almost always more appropriate: it is skeptical that the most recently estimated growth rate will persist indefinitely.
+The four-panel figure rewards careful reading. All four methods identify the same major recessions — the 1974–75, 1981–82, 2008–09, and 2020 downturns are clearly negative in every panel. But they disagree substantially on the level, amplitude, and timing of cycles between recessions.
 
+The **linear detrend** cycle is the most volatile of the smooth methods. By constraining the trend to a single straight line fitted over the entire postwar period, it forces every deviation from that line — including the entire productivity slowdown of the 1970s — into the cyclical component. The result is a large, persistent negative cycle through the 1970s and a correspondingly large positive cycle through the late 1990s that almost certainly overstates the boom.
 
-## The ETS Framework {#sec-ets}
+The **STL irregular** is the least opinionated series in the figure. Because STL's Loess trend is highly flexible and its seasonal factors are estimated rather than imposed, the remainder retains genuine high-frequency variation without having been smoothed by any bandwidth parameter or regression horizon. The other three cycles look smoother because they have imposed additional structure — a penalty parameter $\lambda$, a projection horizon $h$, or a global regression line — before the cycle is even extracted. STL imposes the least, so it shows the most. When it disagrees with HP or Hamilton, the disagreement is informative: it identifies variation that the smoother methods have absorbed into their trend rather than left in the cycle.
 
-### Error, Trend, and Seasonality
+The **HP filter** produces the smoothest cycle. Its trend adapts continuously to the data, which is its strength and its weakness simultaneously. Near the end of the sample the HP cycle tends to be smaller in absolute value than the other methods — end-point bias in action, as we saw in Section 2.3.
 
-The exponential smoothing methods developed so far can be organized into a unified framework known as **ETS** — named for its three components: **E**rror, **T**rend, and **S**easonality. This framework, developed formally by Hyndman et al. ([2002](https://www.sciencedirect.com/science/article/pii/S0169207001001108), [2008](https://link.springer.com/book/10.1007/978-3-540-71918-2)), achieves two things. It provides a systematic taxonomy of all sensible combinations of exponential smoothing components, and it provides a formal statistical model — with likelihood function and prediction intervals — for each combination. This is what allows principled parameter estimation and proper uncertainty quantification.
+The **Hamilton filter** panel is blank for the first several quarters. This is not a programming error — it is an honest feature of the method. The filter requires $h = 8$ quarters of lead time plus four lags, so the first residual is only available once those observations exist. Both ends of the sample lose observations symmetrically, which is exactly why the filter has no end-point bias.
 
-Each of the three components can take different forms:
+### The Lucas Critique Connection
 
-- **Error (E):** additive (A) or multiplicative (M)
-- **Trend (T):** none (N), additive (A), additive damped (Ad), multiplicative (M), multiplicative damped (Md)
-- **Seasonality (S):** none (N), additive (A), multiplicative (M)
+There is a deeper issue here that connects back to Chapter 1. Every detrending method embeds a structural assumption about the economy's long-run path: the HP filter assumes potential output is $I(2)$, Hamilton's filter assumes the cycle is unpredictable at a two-year horizon, linear detrending assumes a constant growth rate. When policymakers use a cycle estimate derived from one of these methods to calibrate a policy rule — raising rates when the output gap exceeds a threshold, for example — they are conditioning policy on a model of the trend. But as [Lucas (1976)](https://www.sciencedirect.com/science/article/pii/S0167223176800023) argued, agents observe and respond to policy, and their responses alter the statistical relationships on which the model was estimated. A trend estimated from pre-policy data may not be the right benchmark once the policy rule is in place.
 
-The notation ETS(E,T,S) identifies a specific model. ETS(A,N,N), for example, is simple exponential smoothing with additive errors — the SES model of Section 2.5. ETS(A,A,N) is Holt's undamped linear method. ETS(A,Ad,N) is Holt's damped method. The Holt-Winters seasonal models are ETS(A,A,A) and ETS(A,A,M).
-
-### Key ETS Models
-
-The four cases that matter most in macroeconomic applications are:
-
-**ETS(A,N,N) — Simple Exponential Smoothing.** No trend, no seasonality, additive error. The level equation is $\hat{\ell}_t = \hat{\ell}_{t-1} + \alpha e_t$ where $e_t = y_t - \hat{\ell}_{t-1}$. Forecasts are flat. Appropriate for stationary or slowly-drifting series with no seasonal pattern.
-
-**ETS(A,A,N) — Holt's Linear Method.** Additive trend, no seasonality, additive error. Level and slope both updated each period. Forecasts follow a linear projection from the current state. Appropriate for trending non-seasonal series. The undamped version extrapolates linearly; caution is warranted at long horizons.
-
-**ETS(A,Ad,N) — Holt's Damped Method.** Additive damped trend, no seasonality. Forecasts converge to a finite level as $h \to \infty$. Empirically, this is often the single best-performing exponential smoothing model across a wide range of real datasets, particularly at medium horizons.
-
-**ETS(A,A,A) — Holt-Winters Additive.** Additive trend, additive seasonal, additive error. Level, trend, and seasonal factor are all updated each period. The additive seasonal component assumes the seasonal swings are constant in absolute size. Appropriate when the series has been log-transformed (so that multiplicative seasonality in levels becomes additive seasonality in logs).
-
-::: {.callout-note}
-## Definition 2.4 — The Holt-Winters Additive Model: ETS(A,A,A)
-
-Given a seasonal period $m$, the state equations are:
-
-$$\hat{\ell}_t = \alpha(y_t - \hat{s}_{t-m}) + (1-\alpha)(\hat{\ell}_{t-1} + \hat{b}_{t-1}) \tag{2.9}$$
-
-$$\hat{b}_t = \beta(\hat{\ell}_t - \hat{\ell}_{t-1}) + (1-\beta)\hat{b}_{t-1} \tag{2.10}$$
-
-$$\hat{s}_t = \gamma(y_t - \hat{\ell}_{t-1} - \hat{b}_{t-1}) + (1-\gamma)\hat{s}_{t-m} \tag{2.11}$$
-
-$$\hat{y}_{t+h|t} = \hat{\ell}_t + h\hat{b}_t + \hat{s}_{t+h-m(k+1)} \tag{2.12}$$
-
-where $k = \lfloor (h-1)/m \rfloor$ ensures the correct seasonal index is used, and $\gamma \in (0, 1-\alpha)$ is the seasonal smoothing parameter. Three smoothing parameters — $\alpha$, $\beta$, $\gamma$ — and the initial states $\{\hat{\ell}_0, \hat{b}_0, \hat{s}_{1-m}, \ldots, \hat{s}_0\}$ are estimated jointly by maximum likelihood.
-:::
-
-The three smoothing equations have a parallel structure. The level (2.9) is updated as a blend of the de-seasonalized observation $y_t - \hat{s}_{t-m}$ and the extrapolated level from the previous state. The trend (2.10) updates the slope. The seasonal factor (2.11) updates the seasonal index for period $t$ as a blend of the de-trended observation and the same-season factor from one full year ago. The forecast (2.12) adds the projected level, the projected trend, and the appropriate seasonal factor.
-
-### The Full ETS Taxonomy
-
-Not all 30 possible combinations of (E, T, S) components are numerically stable or practically useful. The table below shows the complete taxonomy of valid models.
-
-::: {.callout-note collapse="true"}
-## Complete ETS Model Table (all 30 combinations)
-
-| Model        | Error | Trend | Seasonal | Description                              |
-|:-------------|:-----:|:-----:|:--------:|:-----------------------------------------|
-| (A,N,N)      |  A    |   N   |    N     | Simple exponential smoothing              |
-| (A,A,N)      |  A    |   A   |    N     | Holt's linear method                      |
-| (A,Ad,N)     |  A    |  Ad   |    N     | Holt's damped method                      |
-| (A,M,N)      |  A    |   M   |    N     | Holt with multiplicative trend            |
-| (A,Md,N)     |  A    |  Md   |    N     | Holt with damped multiplicative trend     |
-| (A,N,A)      |  A    |   N   |    A     | Additive seasonal, no trend               |
-| (A,A,A)      |  A    |   A   |    A     | Holt-Winters additive                     |
-| (A,Ad,A)     |  A    |  Ad   |    A     | Holt-Winters additive, damped trend       |
-| (A,M,A)      |  A    |   M   |    A     | Additive seasonal, multiplicative trend   |
-| (A,Md,A)     |  A    |  Md   |    A     | Additive seasonal, damped mult. trend     |
-| (A,N,M)      |  A    |   N   |    M     | Multiplicative seasonal, no trend         |
-| (A,A,M)      |  A    |   A   |    M     | Holt-Winters multiplicative seasonal      |
-| (A,Ad,M)     |  A    |  Ad   |    M     | Holt-Winters mult. seasonal, damped trend |
-| (A,M,M)      |  A    |   M   |    M     | Mult. trend, mult. seasonal               |
-| (A,Md,M)     |  A    |  Md   |    M     | Damped mult. trend, mult. seasonal        |
-| (M,N,N)      |  M    |   N   |    N     | Multiplicative error SES                  |
-| (M,A,N)      |  M    |   A   |    N     | Mult. error Holt linear                   |
-| (M,Ad,N)     |  M    |  Ad   |    N     | Mult. error Holt damped                   |
-| (M,M,N)      |  M    |   M   |    N     | Mult. error, mult. trend                  |
-| (M,Md,N)     |  M    |  Md   |    N     | Mult. error, damped mult. trend           |
-| (M,N,A)      |  M    |   N   |    A     | Mult. error, additive seasonal            |
-| (M,A,A)      |  M    |   A   |    A     | Mult. error, Holt-Winters additive        |
-| (M,Ad,A)     |  M    |  Ad   |    A     | Mult. error, damped additive seasonal     |
-| (M,M,A)      |  M    |   M   |    A     | Mult. error and trend, add. seasonal      |
-| (M,Md,A)     |  M    |  Md   |    A     | Mult. error, damped mult. trend, add. sea.|
-| (M,N,M)      |  M    |   N   |    M     | Mult. error, mult. seasonal               |
-| (M,A,M)      |  M    |   A   |    M     | Mult. error, Holt-Winters mult.           |
-| (M,Ad,M)     |  M    |  Ad   |    M     | Mult. error, damped, mult. seasonal       |
-| (M,M,M)      |  M    |   M   |    M     | All multiplicative                        |
-| (M,Md,M)     |  M    |  Md   |    M     | All multiplicative, damped trend          |
-
-Models with multiplicative errors (M,·,·) have explicit likelihood functions only when all observations are positive. Models with (M,A,·) or (M,A,M) components can exhibit numerical instability and are sometimes excluded in automatic selection procedures. In practice, models with additive errors and either additive or no seasonality cover the vast majority of macroeconomic applications.
-:::
-
-For our log GDP series, the relevant candidates are models with additive errors and additive seasonality: (A,N,A), (A,A,A), and (A,Ad,A). Since we are working on log-transformed data (converting multiplicative seasonality in levels to additive seasonality in logs), we do not need the multiplicative seasonal variants.
-
-### Parameter Estimation: Maximum Likelihood
-
-Parameters in ETS models — the smoothing parameters $\alpha$, $\beta$, $\gamma$, $\phi$ and the initial states — are estimated by **[maximum likelihood](https://en.wikipedia.org/wiki/Maximum_likelihood_estimation)**. Given a model specification, the one-step-ahead forecast errors $e_t = y_t - \hat{y}_{t|t-1}$ are computed recursively. Under the assumption of Gaussian errors, the log-likelihood is:
-
-$$\ell(\theta) = -\frac{T}{2}\log(2\pi) - \frac{T}{2}\log\hat{\sigma}^2 - \frac{1}{2\hat{\sigma}^2}\sum_{t=1}^T e_t^2$$
-
-where $\hat{\sigma}^2 = T^{-1}\sum e_t^2$ is the variance of the one-step errors. Maximizing this is equivalent to minimizing the sum of squared one-step errors — which is also what we would get from least squares. The difference with full MLE is that the initial states are estimated as free parameters rather than set by convention, and that the likelihood framework extends naturally to prediction intervals and model comparison via AIC.
-
-
-## Forecasting with ETS {#sec-ets-forecast}
-
-### Point Forecasts
-
-With parameters estimated, generating point forecasts from an ETS model is a matter of running the state equations forward from the end of the sample. For ETS(A,Ad,A), the $h$-step-ahead forecast is:
-
-$$\hat{y}_{T+h|T} = \hat{\ell}_T + \left(\sum_{i=1}^{h}\phi^i\right)\hat{b}_T + \hat{s}_{T+h-m(k+1)}$$
-
-The first term is the current level. The second is the cumulative trend, damped by successive powers of $\phi$. The third adds back the appropriate seasonal factor from the end of the fitted sample.
-
-For a log-transformed series, the forecasts are in log units. Converting back to levels requires care: because $\exp(\hat{y} + \hat{\sigma}^2/2) > \exp(\hat{y})$ for any positive $\hat{\sigma}^2$, the unbiased point forecast in levels is not simply $\exp(\hat{y}_{T+h|T})$ — a bias correction of $\exp(\hat{\sigma}^2_h/2)$ is needed, where $\hat{\sigma}^2_h$ is the $h$-step forecast error variance.
-
-### Prediction Intervals
-
-A key advantage of the ETS framework over ad hoc smoothing is that it provides principled **prediction intervals**. Under the additive error specification, the $h$-step forecast error variance can be computed analytically for each model. For ETS(A,N,N):
-
-$$\sigma^2_h = \sigma^2[1 + \alpha^2(h-1)]$$
-
-which grows with the forecast horizon $h$ — appropriately capturing the fact that uncertainty compounds as we look further ahead. More complex ETS models have correspondingly more complex expressions for $\sigma^2_h$, but all share the property that intervals widen with horizon.
-
-[Prediction intervals](https://en.wikipedia.org/wiki/Prediction_interval) **are not** [confidence intervals](https://en.wikipedia.org/wiki/Confidence_interval). A 95% prediction interval for $y_{T+h}$ says: if the model is correctly specified and parameters are known, 95% of future realizations will fall within this band. It accounts for forecast uncertainty — the randomness of future innovations — but not for parameter uncertainty or model uncertainty. In practice, intervals computed from estimated parameters will be slightly too narrow. Chapter 5 returns to this issue when we discuss the empirical coverage of prediction intervals and methods for calibrating them.
-
-### A Holt-Winters Forecast for NSA GDP
-
-We now fit the full Holt-Winters additive model to the log NSA GDP series and generate forecasts eight quarters ahead — two years beyond the end of the sample.
-
-```{python}
-#| label: fig-hw-forecast
-#| fig-cap: "Holt-Winters ETS(A,Ad,A) forecast for log NSA real GDP, 2000–2026. The model is fit on data through 2024 Q3 and forecasts eight quarters ahead. The seasonal pattern is extrapolated from the estimated seasonal factors; the trend is damped, reflecting appropriate skepticism about the persistence of the recent growth rate. The 80% and 95% prediction intervals (shaded bands) widen with horizon. NBER recessions are shaded; the sharp 2020 outlier is visible in both the data and the residual diagnostics."
-#| fig-width: 6
-#| fig-height: 5
-#| code-fold: true
-#| code-summary: "Show code — Holt-Winters forecast"
-
-series_nsa = gdp["Log NSA"].dropna()
-
-# Fit ETS(A,Ad,A): additive error, additive damped trend, additive seasonal
-hw_model = ExponentialSmoothing(
-    series_nsa,
-    trend="add",
-    damped_trend=True,
-    seasonal="add",
-    seasonal_periods=4,
-    initialization_method="estimated",
-).fit(optimized=True)
-
-h_ahead  = 8
-fcast    = hw_model.forecast(h_ahead)
-
-# Simulation-based prediction intervals
-sim      = hw_model.simulate(h_ahead, repetitions=5000, error="add")
-pi_80_lo = np.percentile(sim, 10, axis=1)
-pi_80_hi = np.percentile(sim, 90, axis=1)
-pi_95_lo = np.percentile(sim, 2.5, axis=1)
-pi_95_hi = np.percentile(sim, 97.5, axis=1)
-
-fcast_idx  = fcast.index
-hw_start   = "2000-01-01"
-
-fig, axes = plt.subplots(2, 1, figsize=(6, 5))
-
-# ── Main forecast panel ───────────────────────────────────────────────────────
-ax = axes[0]
-obs_plot = series_nsa[series_nsa.index >= hw_start]
-ax.plot(obs_plot.index, obs_plot.values, color=EO_CHARCOAL, lw=0.9, label="Observed")
-ax.plot(hw_model.fittedvalues[hw_model.fittedvalues.index >= hw_start].index,
-        hw_model.fittedvalues[hw_model.fittedvalues.index >= hw_start].values,
-        color=EO_COPPER, lw=0.8, ls="--", label="Fitted (in-sample)")
-ax.plot(fcast_idx, fcast.values, color=EO_SKYBLUE, lw=1.2, label="Forecast")
-ax.fill_between(fcast_idx, pi_80_lo, pi_80_hi,
-                color=EO_SKYBLUE, alpha=0.25, label="80% PI")
-ax.fill_between(fcast_idx, pi_95_lo, pi_95_hi,
-                color=EO_SKYBLUE, alpha=0.12, label="95% PI")
-ax.axvline(series_nsa.index[-1], color=EO_CHARCOAL, lw=0.6, ls=":")
-shade_recessions(ax, start=hw_start)
-ax.set_title("ETS(A,Ad,A) Forecast — Log NSA Real GDP")
-ax.legend(loc="upper left", fontsize=5.5, ncol=2)
-eo_style_ax(ax)
-
-# ── Residual panel ─────────────────────────────────────────────────────────────
-ax = axes[1]
-resid_plot = hw_model.resid[hw_model.resid.index >= hw_start]
-ax.plot(resid_plot.index, resid_plot.values, color=EO_TERRACOTTA, lw=0.8)
-ax.axhline(0, color=EO_CHARCOAL, lw=0.6, ls=":")
-shade_recessions(ax, start=hw_start)
-ax.set_title("In-Sample Residuals")
-ax.set_ylabel("Residual (log units)")
-eo_style_ax(ax)
-
-# Print parameter summary
-print(f"Fitted parameters:")
-print(f"  α (level):   {hw_model.params['smoothing_level']:.4f}")
-print(f"  β (trend):   {hw_model.params['smoothing_trend']:.4f}")
-print(f"  γ (seasonal):{hw_model.params['smoothing_seasonal']:.4f}")
-print(f"  φ (damping): {hw_model.params['damping_trend']:.4f}")
-print(f"  AIC:         {hw_model.aic:.2f}")
-print(f"  BIC:         {hw_model.bic:.2f}")
-
-end_yr = fcast_idx[-1].year
-eo_suptitle(fig, f"Holt-Winters Forecast — Log NSA Real GDP, 2000–{end_yr}")
-fig.tight_layout()
-plt.show()
-```
-
-Several features of the fitted model are worth noting. The level smoothing parameter $\alpha$ reflects how quickly the model updates its estimate of the current level in response to new observations. The damping parameter $\phi$ (close to 1 but below it) indicates modest damping — the model retains most of the trend momentum but expects it to fade somewhat over the forecast horizon. The seasonal parameter $\gamma$ controls how much the model learns about seasonal factors from each new year of data; a small value means the estimated seasonal pattern changes slowly, which is appropriate for a series whose seasonal structure has been stable for decades.
-
-The residual panel deserves attention. Well-behaved residuals from an ETS model should look like white noise — random, with no obvious patterns, no remaining seasonal structure, and no persistent runs above or below zero. The 2020 Q2 observation produces a large negative outlier that the model cannot anticipate: this is COVID-19, an exogenous shock outside the information set of any statistical model. Similarly, the sharp V-shaped recovery in 2020 Q3 produces a large positive residual. Both are reflections of the model's appropriate ignorance about regime-changing events, not evidence of misspecification.
-
-### A Simple Train-Test Exercise
-
-A Holt-Winters forecast that perfectly fits in-sample tells us very little about how useful the model is. To evaluate performance honestly, we should hold out some data, fit the model on the training set, and examine how well the forecasts track the held-out test set. We do this here as a first illustration; the full framework for forecast evaluation — including proper scoring rules, the [Diebold-Mariano test](https://www.tandfonline.com/doi/abs/10.1080/07350015.1995.10524599P), and forecast combination — is developed in Chapter 5.
-
-```{python}
-#| label: fig-hw-traintest
-#| fig-cap: "Train-test evaluation of the Holt-Winters ETS(A,Ad,A) model on log NSA real GDP. The model is fit on 1947–2019 Q4 (training set, 292 observations) and forecasts 20 quarters ahead into 2020–2024 (test set). The 2020 COVID shock falls squarely in the test period and produces large errors in 2020 Q1–Q2. Abstracting from the pandemic quarters, the model tracks the subsequent recovery and the 2023–2024 level reasonably well, with point forecasts staying within the 80% prediction interval for most of the test period."
-#| fig-width: 6
-#| fig-height: 4
-#| code-fold: true
-#| code-summary: "Show code — Train-test split"
-
-train = series_nsa[series_nsa.index < "2020-01-01"]
-test  = series_nsa[series_nsa.index >= "2020-01-01"]
-
-hw_train = ExponentialSmoothing(
-    train,
-    trend="add",
-    damped_trend=True,
-    seasonal="add",
-    seasonal_periods=4,
-    initialization_method="estimated",
-).fit(optimized=True)
-
-h_test    = len(test)
-fcast_tt  = hw_train.forecast(h_test)
-sim_tt    = hw_train.simulate(h_test, repetitions=5000, error="add")
-pi80_lo   = np.percentile(sim_tt, 10, axis=1)
-pi80_hi   = np.percentile(sim_tt, 90, axis=1)
-pi95_lo   = np.percentile(sim_tt, 2.5, axis=1)
-pi95_hi   = np.percentile(sim_tt, 97.5, axis=1)
-
-rmse = np.sqrt(np.mean((fcast_tt.values - test.values)**2))
-
-# Show last 10 years of training data for context
-train_window = train[train.index >= (train.index[-1] - pd.DateOffset(years=10))]
-train_yr     = train.index[0].year
-test_end_yr  = test.index[-1].year
-
-fig, ax = plt.subplots(figsize=(6, 4))
-ax.plot(train_window.index, train_window.values,
-        color=EO_CHARCOAL, lw=0.9, label="Training data (last 10 yrs shown)")
-ax.plot(test.index, test.values, color=EO_CHARCOAL, lw=0.9, ls="--", label="Test data (actual)")
-ax.plot(fcast_tt.index, fcast_tt.values, color=EO_COPPER, lw=1.2, label="Forecast")
-ax.fill_between(fcast_tt.index, pi80_lo, pi80_hi,
-                color=EO_COPPER, alpha=0.25, label="80% PI")
-ax.fill_between(fcast_tt.index, pi95_lo, pi95_hi,
-                color=EO_COPPER, alpha=0.12, label="95% PI")
-ax.axvline(train.index[-1], color=EO_CHARCOAL, lw=0.6, ls=":")
-ax.text(test.index[1], ax.get_ylim()[0] + 0.01,
-        f"RMSE = {rmse:.4f}", fontsize=6, color=EO_CHARCOAL)
-ax.set_title(f"Train-Test: Fit on {train_yr}–{train.index[-1].year}, Forecast {test.index[0].year}–{test_end_yr}")
-ax.legend(loc="upper left", fontsize=5.5, ncol=2)
-eo_style_ax(ax)
-eo_suptitle(fig, "Holt-Winters Out-of-Sample Forecast — Log NSA Real GDP")
-fig.tight_layout()
-plt.show()
-```
-
-The train-test exercise illustrates a lesson that comes up repeatedly in forecasting: a model's out-of-sample performance during a period containing an extreme event tells us more about the event than about the model. The 2020 collapse and recovery are simply outside the support of anything a time series model estimated on postwar data could anticipate. The more informative question — how well does the model forecast in normal times, across many short windows — is what rolling-window and pseudo-real-time evaluation procedures address. We return to those methods in Chapter 5.
+The business cycle, in other words, is real — the economy genuinely expands and contracts — but its precise shape and magnitude are decomposition-dependent. When you read that the output gap is currently $+1.5\%$ or $-2\%$, you are reading a number that depends heavily on choices that rarely appear in the headline, and that is itself subject to the Lucas critique once it enters the policymaker's reaction function.
 
 
 ## Looking Ahead
 
 The decomposition and smoothing methods in this chapter are intuitive and practically useful, but they rest on assumptions that Chapter 3 will justify — and in some cases tighten.
 
-Chapter 3 develops the ARMA family of models, which provide the theoretical foundation for the methods introduced here. Simple exponential smoothing turns out to be the optimal forecast for an ARIMA(0,1,1) process; Holt's linear method corresponds to ARIMA(0,2,2); the Holt-Winters seasonal model corresponds to a seasonal ARIMA. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. Understanding that connection unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also connects the trend-cycle question from this chapter to a model-based answer: the Beveridge-Nelson decomposition, developed in Chapter 3, uses the estimated ARIMA structure of a series to separate its permanent and transitory components — no smoothing parameter required, and a cycle uniquely pinned down by the data.
+Chapter 3 develops the ARMA family of models, which provide the theoretical foundation for the methods introduced here. Simple exponential smoothing turns out to be the optimal forecast for an ARIMA(0,1,1) process; Holt's linear method corresponds to ARIMA(0,2,2); the Holt-Winters seasonal model corresponds to a seasonal ARIMA. These are not coincidences — the entire ETS family sits inside the ARIMA family as a set of restricted special cases. Understanding that connection unlocks better tools for model selection, residual diagnostics, and the construction of prediction intervals. It also connects the trend-cycle question from this chapter to a model-based answer: the Beveridge-Nelson decomposition, developed in Chapter 3, uses the estimated ARIMA structure of a series to separate its permanent and transitory components — a model-based answer to the same trend-cycle separation problem we approached statistically here, with no free smoothing parameter and a cycle uniquely pinned down by the estimated ARIMA model.
+
+Chapter 6 addresses a limitation implicit throughout this chapter: all our methods assume the data-generating process is stable over the sample. If the trend growth rate of GDP changed structurally — as it did in the early 1970s productivity slowdown, and arguably again after 2008 — then a single HP filter or Holt-Winters model estimated over the full sample will fit neither regime well. Structural break tests, and the methods for handling them, belong to Chapter 6.
+
+Chapter 5 provides the formal framework for evaluating the forecasts produced in this chapter. The Diebold-Mariano test asks whether two competing forecasts have statistically different accuracy. Forecast combination — averaging ETS with ARIMA with HP-based projections — often outperforms any individual method. And proper calibration of prediction intervals requires checking their empirical coverage over rolling windows.
 
 
 ## Key Terms
@@ -1194,13 +1066,17 @@ Chapter 3 develops the ARMA family of models, which provide the theoretical foun
 
 **Classical decomposition** — Trend estimation via a centered $2 \times m$ moving average, followed by averaging de-trended observations by season to estimate fixed seasonal factors.
 
-**Business cycle** — The deviation of real output from its trend (potential) path. Not a natural object in the data, but a residual whose shape depends on the decomposition chosen.
+**Linear filter** — A transformation of a time series that expresses each output value as a linear combination of input values. Moving averages, the HP filter, and OLS detrending are all linear filters; they differ in how they weight observations across the sample.
 
 **HP filter** — The Hodrick-Prescott filter; extracts a smooth trend by minimizing a penalized sum of squares balancing fit against smoothness, governed by $\lambda$. Conventional choices: $\lambda = 1600$ (quarterly), $\lambda = 14400$ (monthly).
 
 **Hamilton filter** — A regression-based cycle filter: project $y_{t+h}$ on four lags of $y_t$; the residual is the cycle. Avoids the spurious cycle generation and end-point bias problems of the HP filter.
 
-**Output gap** — The percentage deviation of actual GDP from potential (trend) GDP; the cyclical component of a GDP decomposition. The target variable for monetary and fiscal stabilization policy.
+**End-point bias** — The tendency of two-sided filters (including HP) to produce unreliable trend estimates near the ends of the sample, where the filter has less data on one side to anchor the trend. Worst in real-time applications.
+
+**Business cycle** — The deviation of real output from its trend (potential) path. Not a natural object in the data, but a residual whose shape depends on the decomposition chosen.
+
+**Output gap** — The percentage deviation of actual GDP from potential (trend) GDP; the cyclical component of a GDP decomposition. The output gap is unobservable — it depends entirely on the trend specification chosen — which is the central lesson of Section 2.6. Despite this, it is the primary target variable for monetary and fiscal stabilization policy: central banks tighten when the gap is positive (economy running hot) and ease when it is negative (slack remaining). Different decomposition methods can produce gaps of opposite sign for the same quarter, with direct consequences for the policy prescription.
 
 **Seasonal adjustment** — The removal of the seasonal component from a time series, leaving trend and irregular variation. Official US seasonal adjustment uses X-13-ARIMA-SEATS.
 
@@ -1228,5 +1104,5 @@ Chapter 3 develops the ARMA family of models, which provide the theoretical foun
 
 **AIC** — Akaike Information Criterion; $-2\ell + 2k$ where $\ell$ is the log-likelihood and $k$ is the number of parameters; lower is better; used for model selection within the ETS family.
 
-**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, using the ARIMA representation of the series. Covered in Chapter 3.
+**Beveridge-Nelson decomposition** — A decomposition of an $I(1)$ process into a random walk (permanent) component and a stationary (transitory) component, derived directly from the ARIMA representation of the series. Unlike the HP filter or Hamilton filter, the BN decomposition has no free smoothing parameter — the cycle is uniquely determined by the ARIMA model. The permanent component is defined as the long-run forecast of the series (as $h \to \infty$), and the transitory component is everything else. Covered in Chapter 3 once the ARIMA framework is established.
 :::
