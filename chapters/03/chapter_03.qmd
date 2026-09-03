@@ -333,7 +333,23 @@ yesterday's. If $\phi_1 = 0$, the past is irrelevant and $y_t$ is pure white noi
 around the constant $c$. As $\phi_1$ approaches 1, the dependence on the past
 strengthens and the series becomes increasingly persistent.
 
-We already know from Chapter 1 that the stability condition for this model is
+The value of $\phi_1$ relative to the unit circle determines the entire qualitative
+behaviour of the process. There are exactly three cases:
+
+::: {.callout-note}
+## The Three Regimes of the AR(1)
+
+| Condition | Regime | Behaviour |
+|:----------|:-------|:----------|
+| $|\phi_1| < 1$ | **Stationary** | Shocks decay; ACF geometrically declines; process mean-reverts |
+| $|\phi_1| = 1$ | **Unit root** | Shocks permanent; variance grows without bound; no long-run mean |
+| $|\phi_1| > 1$ | **Explosive** | Shocks amplify; series diverges; economically rare but possible |
+
+Everything developed in this chapter assumes the stationary case. Chapter 4 takes
+up the unit root case; explosive processes are noted there as well.
+:::
+
+We already know from Chapter 1 that the stability condition is
 $|\phi_1| < 1$ — the characteristic root must lie inside the unit circle. When this
 holds, we can derive the mean, variance, and autocorrelation function directly from
 the model's structure.
@@ -910,6 +926,18 @@ heavily in estimation and in computing forecasts. A non-invertible MA cannot. In
 practice, statistical software enforces invertibility by default; it is worth
 knowing why.
 
+::: {.callout-note}
+## Why Invertibility Matters — The Short Version
+
+- **Identification:** without invertibility, two different parameter values
+  produce identical ACFs — the model is not uniquely recoverable from data.
+- **Estimation:** innovations $\varepsilon_t$ are unobservable; invertibility
+  allows us to recover them from past $y_t$ values. A non-invertible MA process
+  *cannot* be estimated consistently from data.
+- **Forecasting:** computing optimal forecasts requires the innovation sequence;
+  invertibility guarantees it is recoverable.
+:::
+
 ### The MA(q) Model
 
 The generalisation to $q$ lags is straightforward:
@@ -996,28 +1024,34 @@ coefficients. This works because the AR coefficients $\pi_1, \pi_2, \ldots$ are
 deterministic functions of $\theta_1, \ldots, \theta_q$, so matching one set
 identifies the other.
 
-A more direct approach, and the one used in practice, is **iterative substitution**.
-The idea is to replace the unobservable innovations with estimated residuals and
-update iteratively:
+A more direct approach, and the one used in practice, is **iterative substitution**:
+replace the unobservable innovations with estimated residuals, update the parameter
+estimates, and repeat until convergence.
 
-1. Start with an initial estimate of the MA parameters — for example, from the AR
-   approximation above, or simply $\hat{\theta} = 0$.
-2. Use the current parameter estimates to construct fitted innovations
-   $\hat{\varepsilon}_t = y_t - \hat{\mu} - \hat{\theta}_1\hat{\varepsilon}_{t-1}
-   - \cdots$ recursively, initialising with $\hat{\varepsilon}_0 = 0$.
-3. These estimated residuals stand in for the true unobserved innovations. Update
-   the parameter estimates by minimising the sum of squared estimated residuals.
-4. Repeat steps 2 and 3 until convergence.
+::: {.callout-note}
+## How Do We Get $\hat\varepsilon_t$? Iterative Substitution
 
-Maximum likelihood estimation (Section 3.7) performs this iteration rigorously under
-a distributional assumption on $\varepsilon_t$, handling the initialisation and
-convergence conditions properly. But the intuition is exactly the one above:
-*estimated residuals stand in for true innovations*, and the quality of the
-approximation improves with each iteration as the parameter estimates improve.
-Invertibility is what guarantees the iteration converges — if the MA polynomial is
+**Step 1.** Start with a large AR($K$) as a first guess. Extract the residuals
+$e_t \approx \varepsilon_t$.
+
+**Step 2.** Use $e_t$ as proxies for $\varepsilon_t$ in the MA equation. With the
+current parameter estimates, construct fitted innovations recursively:
+$$\hat\varepsilon_t = y_t - \hat\mu - \hat\theta_1\hat\varepsilon_{t-1} - \cdots
+- \hat\theta_q\hat\varepsilon_{t-q}, \qquad \hat\varepsilon_0 = 0$$
+
+**Step 3.** Update $\hat\theta_1, \ldots, \hat\theta_q$ by minimising the sum of
+squared estimated residuals $\sum_t \hat\varepsilon_t^2$.
+
+**Step 4.** Repeat Steps 2–3 until the parameters stop changing.
+
+**Result.** *Estimated residuals stand in for true innovations*, improving with each
+iteration. MLE (Section 3.7) performs this rigorously with a distributional
+assumption, handling initialisation properly — but the intuition is identical.
+:::
+
+Invertibility is what guarantees this iteration converges. If the MA polynomial is
 not invertible, the estimated innovations do not stabilise and the procedure breaks
-down. This is the deepest reason invertibility matters for estimation, not just for
-identification.
+down — the deepest reason invertibility matters for estimation, not just identification.
 
 ### Python: The MA Signature in Simulated Data
 
@@ -1406,16 +1440,6 @@ seasonal model (SARIMA, Chapter 4), not a higher-order ARMA.
 **Start small.** Begin with the simplest model consistent with the pattern. An AR(1)
 or ARMA(1,1) often fits as well as higher-order alternatives once information
 criteria penalise for complexity. Overfitting is a real risk.
-
-::: {.callout-note icon=false}
-## Explore this interactively
-
-The table above is easiest to internalize by watching it happen. The
-[ARMA(2,2) Explorer](https://ncachanosky.github.io/ECON-5371-widgets/widgets/arma/)
-lets you drag the AR and MA coefficients and watch the simulated series, ACF, and
-PACF update live — including what happens to both functions once a coefficient
-crosses outside the stationarity or invertibility region.
-:::
 
 ### Step 3: The Box-Jenkins Workflow
 
