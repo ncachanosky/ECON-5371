@@ -75,7 +75,7 @@ pairing with a neighbor in the meantime.
 
 ## Git basics — just enough to get going {.section-divider background-color="#87A96B" footer=false}
 
-## What is Git, really?
+## What is Git?
 
 ::: {style="font-size: 1.15em;"}
 Git tracks changes to a folder of files over time. Think of it as a
@@ -126,7 +126,7 @@ one-time step.
 
 ## Create your repository {.section-divider background-color="#87A96B" footer=false}
 
-## The one naming rule that matters today
+## The one naming rule
 
 ::: {style="font-size: 1.3em; text-align: center; margin-top: 1em;"}
 GitHub Pages will publish a personal site automatically **if, and
@@ -277,7 +277,7 @@ formatting mistakes immediately instead of after deploying.
 
 ## Build your pages {.section-divider background-color="#87A96B" footer=false}
 
-## Two pages, not five
+## Two pages is all you need
 
 ::: {style="font-size: 1.2em;"}
 Today we're keeping this simple: **one landing page** that holds
@@ -288,8 +288,7 @@ your ECON-5371 research project over the semester.
 ::: {.callout-note icon=false}
 ## Why one page for everything?
 A short academic site reads better as a single, well-organized page
-than as five thin ones. You can always split sections out later —
-Quarto makes that a five-minute change, not a rebuild.
+than as several thin ones.
 :::
 
 ## Add pages to the navigation first
@@ -333,7 +332,7 @@ I am a graduate student in Economics at UTEP, studying
 
 **Education**
 
-- M.S. Economics, University of Texas at El Paso (expected 20XX)
+- M.S. Economics, The University of Texas at El Paso (expected 20XX)
 - B.A. Economics, [Institution] (20XX)
 
 **Experience**
@@ -351,9 +350,8 @@ My research interests center on [topic area], particularly
 ```markdown
 ## Skills
 
-- Python (pandas, statsmodels, arch)
+- Python (pandas, statsmodels)
 - R / Stata
-- Git & GitHub
 - Time series forecasting
 
 ## Contact
@@ -613,14 +611,11 @@ a first website.
 You're welcome to look at my own site's repository for ideas:
 
 **[github.com/ncachanosky/website-quarto](https://github.com/ncachanosky/website-quarto)**
-
-Mine is more customized than what you built today — that's expected
-after years of iterating on it, not the standard for this week.
 :::
 
 ## Styling — color
 
-Two directions worth trying:
+Two doptions:
 
 - **UTEP colors** — orange `#FF8200` and blue `#041E42`, if you want
   an institutional look
