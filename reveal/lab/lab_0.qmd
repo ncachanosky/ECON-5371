@@ -21,7 +21,7 @@ LAB SESSION — Week 4
 
 ## What we're building
 
-Five pages, one deployed site:
+Landing page with 5 "sections":
 
 - **Home** — a short landing page introducing you
 - **CV** — an on-page summary, plus a downloadable PDF
@@ -31,9 +31,7 @@ Five pages, one deployed site:
 
 ::: {.callout-note icon=false}
 ## Why this matters beyond today
-The same repo → build → push → deploy workflow you practice today is
-exactly what you'll use for your course project dashboard in Week 12.
-Get comfortable with it now, while the stakes are low.
+The same workslow: repo → build → push → deploy workflow you practice today is what you'll use for your course project dashboard in Week 12. Get comfortable with it now, while the stakes are low.
 :::
 
 ## Before we start: quick verify
@@ -149,8 +147,7 @@ here is the single most common reason a site fails to deploy.
 1. Go to **github.com** and click **New repository**
 2. Repository name: `yourusername.github.io`
 3. Visibility: **Public** — required for free GitHub Pages
-4. Do **not** initialize with a README yet — we'll add our own later
-5. Click **Create repository**
+4. Click **Create repository**
 
 ::: {.callout-note icon=false}
 ## Why public?
@@ -160,89 +157,27 @@ fine — a professional website is *meant* to be public.
 
 ## Choose your working folder
 
+**First**, create a repo on GitHub's website
+
+**Second**, use the GitHub Desktop App to clone the repo on your HD.
+
 First, decide **where on your computer** this will live. Pick one
 folder for all your course work if you don't already have one.
 
-::: {.panel-tabset}
-
-### Windows (PowerShell)
-
-```powershell
-cd ~\Documents\ECON5371
-```
-
-If the folder doesn't exist yet, create it first:
-
-```powershell
-mkdir ~\Documents\ECON5371
-cd ~\Documents\ECON5371
-```
-
-### Mac / Linux
-
-```bash
-cd ~/Documents/ECON5371
-```
-
-If the folder doesn't exist yet, create it first:
-
-```bash
-mkdir -p ~/Documents/ECON5371
-cd ~/Documents/ECON5371
-```
-
-:::
-
-::: {.callout-note icon=false}
-## Why this matters
-`git clone` creates a new folder wherever your terminal is currently
-"standing." If you don't `cd` somewhere deliberate first, you may end
-up with your website folder buried inside Downloads or some other
-random location — annoying to find later.
-:::
-
-## Clone it to your laptop
-
-GitHub shows you a URL after creating the repo. Copy it, then run:
-
-```bash
-git clone https://github.com/yourusername/yourusername.github.io.git
-cd yourusername.github.io
-```
-
-::: {style="font-size: 1.1em; margin-top: 1em;"}
-This creates a new folder named `yourusername.github.io` **inside**
-whatever folder you were in — so `Documents/ECON5371/yourusername.github.io`,
-following the example above. `clone` downloads an empty repo and
-automatically connects it to GitHub — no separate `git init` needed.
-:::
-
-::: {.callout-warning icon=false}
-## Keep track of this path
-Positron will need to open this exact folder for the rest of the lab.
-If you're not sure where you are, run `pwd` (Mac/Linux) or `cd` with
-no arguments (Windows PowerShell) to print your current location.
-:::
 
 ## Scaffold the site with Quarto {.section-divider background-color="#87A96B" footer=false}
 
-## One command, a working site
+## Building the Quarto skeleton
 
-From inside your cloned repo folder:
+First, open positron.
 
-```bash
-quarto create project website
-```
+Second, open your repo folder.
 
-Quarto will ask a few questions (directory — say **current
-directory** since you're already inside your repo folder) and then
-generate a starter website for you.
+Third, create the quarto-website skeleton: `> Quarto: Create Project` $->$ `Website Project`
 
 ::: {.callout-note icon=false}
 ## What just happened?
-Quarto created a small set of files that together define a website:
-a config file, a homepage, and an "about" page — plus a render
-pipeline that turns your `.qmd` files into `.html` pages.
+Quarto created a small set of files that together define a website: a config file, a homepage, and an "about" page — plus a render pipeline that turns your `.qmd` files into `.html` pages.
 :::
 
 ## Tour of the generated files
@@ -280,15 +215,12 @@ formatting mistakes immediately instead of after deploying.
 ## Two pages is all you need
 
 ::: {style="font-size: 1.2em;"}
-Today we're keeping this simple: **one landing page** that holds
-everything about you, and **one project page** that will grow into
-your ECON-5371 research project over the semester.
+Today we're keeping this simple: **one landing page** that holds everything about you, and **one project page** that will grow into your ECON-5371 research project over the semester.
 :::
 
 ::: {.callout-note icon=false}
 ## Why one page for everything?
-A short academic site reads better as a single, well-organized page
-than as several thin ones.
+A short academic site reads better as a single, well-organized page than as several thin ones.
 :::
 
 ## Add pages to the navigation first
@@ -564,29 +496,6 @@ run `quarto render`, and pushing stale HTML. Make "render → add →
 commit → push" a fixed sequence.
 :::
 
-## Key Terms {.callout-note icon=false}
-
-**Repository (repo)**
-: A folder tracked by Git, containing files and their full change history.
-
-**Commit**
-: A saved snapshot of your project at a point in time, with a message describing the change.
-
-**Push**
-: Sending local commits to a remote server (GitHub).
-
-**Clone**
-: Downloading a copy of a remote repository to your local machine, pre-connected to that remote.
-
-**GitHub Pages**
-: A free hosting service that publishes static HTML directly from a GitHub repository.
-
-**`.nojekyll`**
-: An empty marker file that disables GitHub's default Jekyll processing, required for Quarto sites.
-
-**README.md**
-: A Markdown file at a repository's root, automatically rendered on the repo's GitHub page, describing what the project is and how to use it.
-
 ## Make it yours {.section-divider background-color="#87A96B" footer=false}
 
 ## Today's site is the minimum — not the ceiling
@@ -596,7 +505,7 @@ A live, deployed site with your CV, research interests, skills, and
 contact info **already satisfies today's requirement.** Everything
 on the next few slides is optional exploration — worth doing, but
 not another deadline. Don't spend three hours picking a font instead
-of finishing a problem set.
+of learning your ARMA models.
 :::
 
 ## Get inspiration
