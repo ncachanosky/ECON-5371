@@ -1,5 +1,5 @@
 ---
-title: "Non-Stationary Models, Seasonality, and Trend-Cycle Decomposition"
+title: "Non-Stationary and Seasonality Models"
 author: ""
 abstract: |
   Chapter 3 built the complete ARMA framework under a single assumption:
@@ -243,6 +243,24 @@ force pulling the series back toward any fixed mean. And the ACF, $\rho(h) =
 \phi_1^h$, no longer decays: at $\phi_1 = 1$, $\rho(h) = 1$ for all $h$.
 These are not just mathematical curiosities — they describe the actual behaviour
 of economic time series like GDP levels, price indices, and interest rates.
+
+::: {.callout-note}
+## What Breaks Under a Unit Root
+
+| Tool | Stationary ARMA | Unit Root ($d=1$) |
+|:-----|:---------------|:-----------------|
+| ACF | Decays geometrically to zero | Stays near 1.0 at all lags |
+| Unconditional mean | Finite and constant | Does not exist |
+| Forecast | Mean-reverts to $\hat\mu$ | Anchored to current level $y_T$ |
+| Prediction interval | Plateaus at $\sigma_y$ | Widens as $\sqrt{h}$, unbounded |
+| OLS inference | Standard $t$, $F$ distributions | Non-standard; spurious regression risk |
+| MLE likelihood | Standard Gaussian form | Requires modified treatment |
+
+Every one of these properties is a consequence of a single feature: shocks are
+permanent. There is no restoring force pulling the series back. The ARIMA
+framework handles this by working with the differences — where shocks are
+transitory — rather than the levels.
+:::
 
 What about $\phi_1 > 1$? This produces an **explosive process** — the
 characteristic root lies outside the unit circle, and the consequences are
@@ -903,7 +921,7 @@ as the data require, no more.
 
 ## ARIMA Models {#sec-arima}
 
-The **[ARIMA($p$,$d$,$q$)](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average** model builds the differencing operator $\Delta^d =
+The **[ARIMA($p$,$d$,$q$)](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average)** model builds the differencing operator $\Delta^d =
 (1-L)^d$ inside the specification. For the most common case $d = 1$, the
 model in expanded form is:
 
@@ -1433,6 +1451,20 @@ $$\hat{y}_{T+h|T} = y_T + h\hat\mu \tag{4.8}$$
 The forecast is anchored to where the series is *today*, not to any historical
 mean. A permanent shock shifts the entire forecast path permanently upward or
 downward.
+
+The presence or absence of drift makes a fundamental difference to the forecast
+profile:
+
+| | No drift ($\hat\mu = 0$) | With drift ($\hat\mu \neq 0$) |
+|:--|:------------------------|:-----------------------------|
+| Point forecast | Flat at $y_T$ forever | Linear trend at rate $\hat\mu$ per period |
+| Economic example | Pure random walk; no long-run growth | GDP, prices — series trends over time |
+| Interval | Widens around flat line | Widens around the trend line |
+
+For log GDP, the drift is the estimated average quarterly growth rate —
+approximately 0.7% per quarter over the postwar sample. The ARIMA forecast
+says: start from today's level, grow at the historical average rate, with
+uncertainty that fans out at rate $\sqrt{h}$ around that trend.
 
 **Prediction intervals widen without bound.** Each accumulated step adds
 independent forecast uncertainty. The standard deviation of the $h$-step

@@ -298,26 +298,25 @@ parsimony, consistent for the true model order when the true order is finite.
 
 Why, then, is this only a partial solution? Three reasons.
 
-First, AIC and BIC measure expected predictive accuracy in terms of
+**Gap 1:** AIC and BIC measure expected predictive accuracy in terms of
 log-likelihood — which corresponds to the logarithmic loss function. If we
 care about a different loss function, such as mean squared error or mean
 absolute error, minimising AIC does not guarantee that we minimise expected
 out-of-sample loss under that criterion. A model selected by AIC may not be
 the one with the lowest RMSE on the evaluation period.
 
-Second, both criteria are calculated on the full in-sample period. They account
+**Gap 2:** Both criteria are calculated on the full in-sample period. They account
 for the cost of estimation, but they cannot account for **structural change** —
 the possibility that the process generating the data in the evaluation period
 differs from the process in the estimation period. A model that is best for
 the history may not be best for the future if the economy has shifted.
 
-Third, and most practically, AIC and BIC are tools for specification within a
-model family. They can tell us whether an ARIMA(2,1,1) is preferred to an
-ARIMA(1,1,1) given the data. They cannot tell us whether either model beats
-an entirely different approach — a simple random walk, a judgment-based
-forecast, a machine learning model — on the horizon and loss function that
-matter for the actual decision at hand. For that comparison, we need
-out-of-sample evaluation.
+**Gap 3:** AIC and BIC are tools for specification within a model family. They
+can tell us whether an ARIMA(2,1,1) is preferred to an ARIMA(1,1,1) given
+the data. They cannot tell us whether either model beats an entirely different
+approach — a simple random walk, a judgment-based forecast, a machine learning
+model — on the horizon and loss function that matter for the actual decision
+at hand. For that comparison, we need out-of-sample evaluation.
 
 ::: {.callout-note icon=false}
 ## What AIC Is Really Minimising
@@ -715,10 +714,7 @@ ones.
 **Direct form:** Estimating the model on the full sample and evaluating on a
 subsample. The evaluation period is inside the estimation sample.
 
-**Indirect form:** Using the full sample to select the model — choosing the
-ARIMA order, deciding whether to include a trend, setting the window length —
-and then evaluating on a hold-out period. Model selection has already
-consumed information from the test set.
+**Indirect form:** The test data influences the model selection decision, but not the parameter estimates. Here's a concrete example: you run auto-ARIMA on the full 1960–2019 sample, it picks ARIMA(2,1,1). You then split the data — estimate ARIMA(2,1,1) coefficients only on 1960–1989, and evaluate on 1990–2019. The coefficients are genuinely out-of-sample. But the order (2,1,1) was chosen because it fits the full sample well, including 1990–2019. If the hold-out period had unusual dynamics that favored two AR lags over one, your model selection step already exploited that. You didn't choose the model blindly and then test it — the test period had a vote in which model you chose.
 
 **Data-processing form:** Applying transformations (seasonal adjustment,
 outlier correction, normalisation based on the full sample) before splitting.
@@ -1128,6 +1124,38 @@ series, apply the Newey-West long-run variance formula from equations
 (5.11)–(5.12), and compare to standard normal critical values. Implementing
 it from scratch rather than calling a black-box function keeps the code in
 direct correspondence with the theory above.
+
+::: {.callout-note icon=false}
+## DM Test: Step-by-Step
+
+**Step 1 — Compute the loss differential.**
+For each evaluation origin $t$, form the loss differential
+$d_t = L(e_{1,t+h|t}) - L(e_{2,t+h|t})$,
+where $L(\cdot)$ is the chosen loss function (squared error here). Positive
+$d_t$ means model 1 incurred more loss at that origin; the average $\bar{d}$
+is the summary.
+
+**Step 2 — State the null hypothesis.**
+$H_0{:}\ E[d_t] = 0$ — both models have equal expected loss. The alternative
+is $E[d_t] \neq 0$ (two-sided) or $E[d_t] < 0$ (one-sided: model 1
+is better). The DM statistic is built to distinguish a non-zero mean from
+sampling noise.
+
+**Step 3 — Correct for serial correlation.**
+A forecast at horizon $h > 1$ produces overlapping errors, so $d_t$ is
+serially correlated up to lag $h-1$. The standard error of $\bar{d}$ must
+account for this persistence using the long-run variance:
+$$\widehat{V}(\bar{d}) = \frac{1}{n}\left(\hat{\gamma}_0 + 2\sum_{k=1}^{K}
+w_k\,\hat{\gamma}_k\right)$$
+with Bartlett weights $w_k = 1 - k/(K+1)$ and bandwidth $K = h$.
+
+**Step 4 — Form the statistic and compare.**
+$$\text{DM} = \frac{\bar{d}}{\sqrt{\widehat{V}(\bar{d})}}
+\xrightarrow{d} N(0,1)$$
+Compare to $\pm 1.96$ for a 5% two-sided test. A significant negative DM
+means model 1 is significantly more accurate; a significant positive DM means
+model 2 is.
+:::
 
 ```{python}
 #| label: dm-test
