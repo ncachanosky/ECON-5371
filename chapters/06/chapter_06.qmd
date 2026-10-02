@@ -22,7 +22,7 @@ abstract: |
   shock. Together these tools form a diagnostic layer that sits between model
   identification and model use — a layer that the forecast evaluation results
   of Chapter 5 showed we could not afford to skip.
-jupyter: econ5371
+jupyter: python3
 format:
   html:
     toc: true
@@ -252,6 +252,18 @@ assumption: that the coefficients we estimate on the first half of the data are
 the same coefficients that govern the second half. This is the assumption of
 **parameter stability** — and it is the assumption this chapter teaches us to
 test.
+
+Recall what stationarity requires: a stable *probabilistic structure* — a
+constant mean, constant variance, and autocovariances that depend only on the
+lag, not on where in the sample we stand. Stationarity does not mean the
+observations themselves are constant; individual realisations fluctuate freely.
+What cannot change is the distribution they are drawn from. Parameter stability
+is precisely the condition that keeps that distribution constant across time: if
+the intercept shifts, the unconditional mean shifts; if a variance parameter
+changes, the innovation distribution changes; if an AR coefficient drifts, the
+persistence and the implied autocorrelation function change. Each type of
+instability violates stationarity in a different way, and detecting it is the
+task of this chapter.
 
 Why might it fail? Not because of measurement error or sampling noise, but
 because economic relationships are not physical laws. They emerge from the
@@ -845,16 +857,6 @@ standard $F(3, \infty)$ 5 percent critical value of around 2.60. The gap
 reflects the cost of the search: we have performed many tests and must adjust
 for the best-case selection.
 
-::: {.callout-note icon=false}
-## Explore this interactively
-
-The [Structural Break Explorer](https://ncachanosky.github.io/ECON-5371-widgets/widgets/breaks/)
-lets you set a true break location and magnitude, add noise, and watch the
-Chow $F(\tau)$ trace and the resulting QLR statistic against the Andrews (1993)
-critical value. Set the magnitude to zero to see how often the test still
-rejects by chance — the size distortion the Davies problem exists to correct.
-:::
-
 ### Python: QLR Test on GDP Growth
 
 ```{python}
@@ -1062,14 +1064,15 @@ to the current $m$-break model significantly reduces the RSS. We stop when
 the test fails to reject, and the current $m$ is our estimate of the number
 of breaks.
 
-### Python: Bai-Perron with `ruptures`
+### Python: Bai-Perron via Dynamic Programming
 
-The `ruptures` library implements Bai-Perron-style multiple break detection
-via dynamic programming. We use the `Pelt` (pruned exact linear time) search
-method with an $\ell_2$ cost function, which is equivalent to minimising the
-sum of squared residuals across segments — the objective in equation (6.7).
-The penalty parameter controls the number of detected breaks; we use a
-data-driven penalty based on the Bayesian information criterion.
+The Bai-Perron search is implemented directly with dynamic programming on the
+AR(2) residuals — no external package required. For each candidate number of
+breaks $m = 0, 1, \ldots, 5$, the algorithm finds the partition of the sample
+that minimises the total $\ell_2$ cost (sum of within-segment squared
+deviations from the segment mean), which is the objective in equation (6.7).
+A BIC penalty — $m \ln T$ added to the minimised RSS — then selects $m$
+without refitting a separate model for each candidate number of segments.
 
 ```{python}
 #| label: fig-baiperron
@@ -1081,29 +1084,82 @@ data-driven penalty based on the Bayesian information criterion.
 #| fig-width: 6
 #| fig-height: 3
 #| code-fold: true
-#| code-summary: "Show code — Bai-Perron via ruptures"
+#| code-summary: "Show code — Bai-Perron via dynamic programming"
 
-import ruptures as rpt
+# ── Pure-NumPy Bai-Perron DP ──────────────────────────────────────────────────
+# Signal: AR(2) residuals (tests for breaks in the mean of the innovations).
+# No external package required.
 
-# Use the full-sample AR(2) residuals as the signal
-# (testing for breaks in the mean and variance of the residuals)
-resid_full   = res_R.resid          # numpy array from OLS fit
-resid_index  = df.index             # date index aligned with residuals
+resid_full  = res_R.resid          # numpy array from OLS fit
+resid_index = df.index             # aligned date index
 
-signal = resid_full.reshape(-1, 1)
+def _bp_dp(y, max_breaks=5, min_size=8):
+    """
+    Bai-Perron breakpoint detection via dynamic programming (L2 cost).
 
-# Pelt search with l2 cost and BIC-based penalty
-# pen = log(T) * k is the BIC penalty for one additional break
-T_bp  = len(signal)
-pen   = np.log(T_bp) * 1    # BIC-style penalty; 1 dimension
+    For each m = 0 … max_breaks, finds the partition of y into (m+1)
+    contiguous segments that minimises the total within-segment RSS.
+    Selects m by BIC: penalised cost = RSS(m) + m * ln(T).
 
-model_bp = rpt.Pelt(model="rbf", min_size=8, jump=1).fit(signal)
-breakpoints = model_bp.predict(pen=pen)
+    Returns a sorted list of break end-indices (exclusive, 0-indexed),
+    e.g. [40, 80] means segments y[0:40], y[40:80], y[80:].
+    """
+    n   = len(y)
+    pen = np.log(n)              # BIC penalty per additional break
 
-# breakpoints is a list of end-indices; the last element is always T_bp
-bp_dates = [resid_index[b - 1] for b in breakpoints[:-1]]
+    # Cumulative sums for O(1) segment RSS lookup
+    cy  = np.concatenate([[0.0], np.cumsum(y)])
+    cy2 = np.concatenate([[0.0], np.cumsum(y ** 2)])
 
-print(f"Bai-Perron (ruptures/Pelt) estimated break dates:")
+    def seg_rss(i, j):           # RSS of y[i:j]
+        k = j - i
+        if k <= 1:
+            return 0.0
+        return cy2[j] - cy2[i] - (cy[j] - cy[i]) ** 2 / k
+
+    INF = np.inf
+    # dp[m][t]  = min total RSS fitting y[0:t] with exactly m breaks
+    # bkp[m][t] = last break position achieving dp[m][t]
+    dp  = [np.full(n + 1, INF)]
+    bkp = [np.full(n + 1, -1, dtype=int)]
+    for t in range(min_size, n + 1):
+        dp[0][t] = seg_rss(0, t)
+
+    for m in range(1, max_breaks + 1):
+        dp_m  = np.full(n + 1, INF)
+        bkp_m = np.full(n + 1, -1, dtype=int)
+        for t in range((m + 1) * min_size, n + 1):
+            best_c, best_tau = INF, -1
+            for tau in range(m * min_size, t - min_size + 1):
+                if dp[m - 1][tau] < INF:
+                    c = dp[m - 1][tau] + seg_rss(tau, t)
+                    if c < best_c:
+                        best_c, best_tau = c, tau
+            dp_m[t]  = best_c
+            bkp_m[t] = best_tau
+        dp.append(dp_m)
+        bkp.append(bkp_m)
+
+    # BIC-penalised selection
+    best_m, best_bic = 0, dp[0][n]
+    for m in range(1, max_breaks + 1):
+        if dp[m][n] < INF:
+            bic = dp[m][n] + m * pen
+            if bic < best_bic:
+                best_bic, best_m = bic, m
+
+    # Backtrack to recover break positions
+    breaks, t, m = [], n, best_m
+    while m > 0:
+        tau = bkp[m][t]
+        breaks.append(tau)
+        t, m = tau, m - 1
+    return sorted(breaks)        # ascending end-indices (exclusive)
+
+bp_idx   = _bp_dp(resid_full, max_breaks=5, min_size=8)
+bp_dates = [resid_index[i - 1] for i in bp_idx]    # last date of each segment
+
+print(f"Bai-Perron (DP, L2 cost) estimated break dates:")
 for d in bp_dates:
     print(f"  {d.strftime('%Y-%m')} (~{d.year} Q{(d.month-1)//3+1})")
 print(f"Number of breaks detected: {len(bp_dates)}")
@@ -1300,8 +1356,14 @@ all candidates:
 
 $$\text{ZA} = \inf_{\tau \in \mathcal{T}} t_{\hat{\alpha}}(\tau) \tag{6.9}$$
 
-The infimum (most negative $t$-statistic) identifies the break date that gives
-the strongest evidence against the unit root null. As with the QLR test, this
+The infimum ($\inf$) is the greatest lower bound — in finite samples it is
+simply the most negative value of $t_{\hat{\alpha}}(\tau)$ across all candidate
+dates. We write $\inf$ rather than $\min$ for the same reason we use $\sup$ in
+equation (6.5): the asymptotic theory is developed in continuous time. In
+practice, with a finite discrete sample, the two are interchangeable.
+
+The most negative $t$-statistic identifies the break date that gives the
+strongest evidence against the unit root null. As with the QLR test, this
 search over $\tau$ means the test statistic does not follow a standard
 $t$-distribution under the null. Zivot and Andrews (1992) derived asymptotic
 critical values via simulation; the 5 percent critical value for Model C is
@@ -1552,6 +1614,19 @@ This is exactly the deterministic structure of the Zivot-Andrews Model C in
 Section 6.4. Estimating equation (6.12) on a series with a known break date
 $\hat{\tau}$ is the regression implementation of what ZA does over all
 candidate dates.
+
+The dummy framework also extends naturally to **coefficient breaks** — changes
+not in the deterministic components but in the AR dynamics themselves. Adding
+an interaction term $\nu D_t y_{t-1}$ to equation (6.10), for example, allows
+the AR(1) coefficient to take a different value before and after the break:
+the full post-break dynamics become $(\phi_1 + \nu)y_{t-1}$ instead of
+$\phi_1 y_{t-1}$. This is exactly the interaction structure of the full Chow
+specification in equation (6.2), where $D_t$ multiplies every regressor in
+$\mathbf{x}_t$, including the lagged dependent variables. The mean-shift and
+slope-shift dummies of equations (6.10)–(6.12) are therefore the special case
+where only the deterministic components interact with $D_t$; the Chow test's
+joint null $\boldsymbol{\delta} = \mathbf{0}$ covers both deterministic and
+dynamic coefficient shifts simultaneously.
 
 The AR coefficients $\phi_j$ are assumed stable in all three equations; only the
 deterministic components shift. This is the most parsimonious response to a
