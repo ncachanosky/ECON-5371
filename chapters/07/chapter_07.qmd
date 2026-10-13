@@ -57,7 +57,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.ticker as mticker
 from statsmodels.tsa.api import VAR
-from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
+from statsmodels.tsa.stattools import adfuller, kpss
 import pandas_datareader.data as web
 from datetime import datetime
 import warnings
@@ -237,9 +237,10 @@ structural analysis: lag selection and Granger causality. Section 7.5 addresses
 structural identification — the Cholesky decomposition — which is needed before
 we can interpret shocks. Sections 7.6 and 7.7 then develop impulse response
 functions and forecast error variance decomposition, the two main outputs of
-a structural VAR analysis. The chapter closes in Section 7.8 by flagging what
-goes wrong when variables are integrated, motivating the cointegration framework
-of Chapter 8.
+a structural VAR analysis. Section 7.8 then adds exogenous variables to the
+system (the VARX), and the chapter closes in Section 7.9 by flagging what goes
+wrong when variables are integrated, motivating the cointegration framework of
+Chapter 8.
 
 
 ## Why Univariate Models Are Not Enough {#sec-motivation}
@@ -269,10 +270,10 @@ central banks use something close to this trade-off in their own forecasting
 models. A minimal structural representation is:
 
 $$\begin{aligned}
-g_t   &= \alpha_{10} - \alpha_{12}\,\pi_t + \gamma_{11}\,g_{t-1} +
-          \gamma_{12}\,\pi_{t-1} + \varepsilon^g_t \\
-\pi_t &= \alpha_{20} - \alpha_{21}\,g_t  + \gamma_{21}\,g_{t-1} +
-          \gamma_{22}\,\pi_{t-1} + \varepsilon^\pi_t
+g_t   &= \alpha_{10} - \alpha_{12}\,\pi_t + \beta_{11}\,g_{t-1} +
+          \beta_{12}\,\pi_{t-1} + \varepsilon^g_t \\
+\pi_t &= \alpha_{20} - \alpha_{21}\,g_t  + \beta_{21}\,g_{t-1} +
+          \beta_{22}\,\pi_{t-1} + \varepsilon^\pi_t
 \end{aligned}$$
 
 Each equation has a contemporaneous term on the right-hand side: output growth
@@ -293,7 +294,7 @@ $$\begin{bmatrix} 1 & \alpha_{12} \\ \alpha_{21} & 1 \end{bmatrix}
 =
 \begin{bmatrix} \alpha_{10} \\ \alpha_{20} \end{bmatrix}
 +
-\begin{bmatrix} \gamma_{11} & \gamma_{12} \\ \gamma_{21} & \gamma_{22} \end{bmatrix}
+\begin{bmatrix} \beta_{11} & \beta_{12} \\ \beta_{21} & \beta_{22} \end{bmatrix}
 \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \end{bmatrix}
 +
 \begin{bmatrix} \varepsilon^g_t \\ \varepsilon^\pi_t \end{bmatrix}$$
@@ -310,21 +311,48 @@ $$\begin{bmatrix} g_t \\ \pi_t \end{bmatrix}
 \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \end{bmatrix}
 + \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$$
 
-This is the **[reduced form](https://en.wikipedia.org/wiki/Reduced_form)**. Each variable is expressed as a function of
-its own lags, the lags of all other variables, and a composite error term
-$\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$. There are no
-contemporaneous terms on the right-hand side — the system is self-contained.
-The reduced form can be estimated consistently by OLS, equation by equation.
+This is the **[reduced form](https://en.wikipedia.org/wiki/Reduced_form)**. Define
+$\boldsymbol{\Gamma}_0 = \mathbf{A}_0^{-1}[\alpha_{10},\,\alpha_{20}]'$,
+$\boldsymbol{\Gamma}_1 = \mathbf{A}_0^{-1}\mathbf{A}_1$, and
+$\tilde{\boldsymbol{\varepsilon}}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$.
+This requires $\mathbf{A}_0$ to be invertible, that is
+$\alpha_{12}\alpha_{21} \neq 1$. The system then reads
 
-The price we pay is that the composite errors $\mathbf{u}_t$ are no longer
-structurally interpretable. They are linear combinations of the original
-structural shocks $\varepsilon^g_t$ and $\varepsilon^\pi_t$, mixed together
-by the elements of $\mathbf{A}_0^{-1}$. A shock to the first reduced-form
+$$\mathbf{y}_t = \boldsymbol{\Gamma}_0 + \boldsymbol{\Gamma}_1\,\mathbf{y}_{t-1} +
+  \tilde{\boldsymbol{\varepsilon}}_t, \qquad
+  \mathbf{y}_t = \begin{bmatrix} g_t \\ \pi_t \end{bmatrix}$$
+
+Each variable is expressed as a function of its own lags, the lags of all
+other variables, and a composite error term $\tilde{\boldsymbol{\varepsilon}}_t$.
+There are no contemporaneous terms on the right-hand side — the system is
+self-contained. The reduced form can be estimated consistently by OLS,
+equation by equation.
+
+The price we pay is that the composite errors $\tilde{\boldsymbol{\varepsilon}}_t$
+are no longer structurally interpretable. Writing out $\mathbf{A}_0^{-1}$ for
+the two-variable case gives
+
+$$\tilde\varepsilon^g_t = \frac{\varepsilon^g_t - \alpha_{12}\,\varepsilon^\pi_t}
+  {1 - \alpha_{12}\alpha_{21}}, \qquad
+  \tilde\varepsilon^\pi_t = \frac{\varepsilon^\pi_t - \alpha_{21}\,\varepsilon^g_t}
+  {1 - \alpha_{12}\alpha_{21}}$$
+
+Each reduced-form residual is a mixture of both structural shocks, blended by
+the unknown entries of $\mathbf{A}_0$. A shock to the first reduced-form
 equation is not a pure output shock — it contains contamination from the
-inflation shock, in proportions determined by the unknown entries of
-$\mathbf{A}_0$. Recovering the structural shocks from the reduced-form
-residuals is the **identification problem**, which Section 7.5 addresses
-directly.
+inflation shock — and because both residuals contain both shocks, they are
+correlated with each other. Recovering the structural shocks from the
+reduced-form residuals is the **identification problem**, which Section 7.5
+addresses directly.
+
+The problem has a simple count behind it. The structural system has 10
+parameters: 8 coefficients ($\alpha_{10}$, $\alpha_{20}$, $\alpha_{12}$,
+$\alpha_{21}$, and the four lag coefficients $\beta_{ij}$) and 2 shock
+variances. The reduced form can reveal only 9 numbers: 6 mean parameters (two
+intercepts and four lag coefficients) and 3 elements of the residual
+covariance matrix (two variances and one covariance). Nine equations cannot
+pin down ten unknowns, so one restriction on the structural system is missing.
+Section 7.5 generalises this count.
 
 ::: {.callout-warning icon=false}
 ## Reduced-Form Coefficients Are Not Structural Parameters
@@ -345,7 +373,7 @@ The two-variable sketch above extends directly to three or more variables. For
 our running example we use three series that jointly capture the macroeconomic
 environment in which monetary policy operates: **annualised real GDP growth**
 ($g_t$, percent), **annualised CPI inflation** ($\pi_t$, percent), and the
-**federal funds rate** ($r_t$, percent). The structural motivation extends
+**federal funds rate** ($i_t$, percent). The structural motivation extends
 naturally: a third equation describes how the central bank sets the funds rate
 in response to output and inflation — a Taylor-rule-like reaction function —
 while output and inflation both respond to the interest rate with a lag. As
@@ -357,8 +385,8 @@ contemporaneous terms: only lags and composite errors.
 #| label: fig-three-series
 #| fig-cap: "GDP growth, CPI inflation, and the federal funds rate, 1954Q3–2019Q4.
 #|   GDP growth and CPI inflation reject the unit root null comfortably; the FFR
-#|   does not, but the lag polynomial roots confirm the estimated VAR is stable
-#|   (Section 7.2). The co-movement during recessions and the joint Volcker-era
+#|   does not, although the estimated VAR turns out to be stable but close to
+#|   the boundary (Section 7.3). The co-movement during recessions and the joint Volcker-era
 #|   spike in inflation and rates illustrate why a univariate model for any one
 #|   series gives an incomplete picture of the system."
 
@@ -409,59 +437,67 @@ time series. A **VAR of order $p$** — written VAR($p$) — models the current
 vector as a linear function of the previous $p$ vectors plus a vector of
 white noise innovations:
 
-$$\mathbf{y}_t = \mathbf{c} + \mathbf{A}_1 \mathbf{y}_{t-1} +
-  \mathbf{A}_2 \mathbf{y}_{t-2} + \cdots +
-  \mathbf{A}_p \mathbf{y}_{t-p} + \mathbf{u}_t \tag{7.1}$$
+$$\mathbf{y}_t = \boldsymbol{\Gamma}_0 + \boldsymbol{\Gamma}_1 \mathbf{y}_{t-1} +
+  \boldsymbol{\Gamma}_2 \mathbf{y}_{t-2} + \cdots +
+  \boldsymbol{\Gamma}_p \mathbf{y}_{t-p} + \tilde{\boldsymbol{\varepsilon}}_t \tag{7.1}$$
 
-where $\mathbf{c}$ is an $n \times 1$ vector of intercepts, each $\mathbf{A}_i$
-is an $n \times n$ matrix of coefficients, and $\mathbf{u}_t$ is an $n \times 1$
-vector of reduced-form innovations satisfying:
+where $\boldsymbol{\Gamma}_0$ is an $n \times 1$ vector of intercepts, each
+$\boldsymbol{\Gamma}_\ell$ is an $n \times n$ matrix of coefficients, and
+$\tilde{\boldsymbol{\varepsilon}}_t$ is an $n \times 1$ vector of reduced-form
+innovations satisfying:
 
-$$\mathbb{E}[\mathbf{u}_t] = \mathbf{0}, \qquad
-  \mathbb{E}[\mathbf{u}_t \mathbf{u}_t'] = \boldsymbol{\Sigma}_u, \qquad
-  \mathbb{E}[\mathbf{u}_t \mathbf{u}_s'] = \mathbf{0} \text{ for } t \neq s$$
+$$\mathbb{E}[\tilde{\boldsymbol{\varepsilon}}_t] = \mathbf{0}, \qquad
+  \mathbb{E}[\tilde{\boldsymbol{\varepsilon}}_t \tilde{\boldsymbol{\varepsilon}}_t'] = \boldsymbol{\Sigma}_{\tilde\varepsilon}, \qquad
+  \mathbb{E}[\tilde{\boldsymbol{\varepsilon}}_t \tilde{\boldsymbol{\varepsilon}}_s'] = \mathbf{0} \text{ for } t \neq s$$
 
-The covariance matrix $\boldsymbol{\Sigma}_u$ is symmetric and positive
+The covariance matrix $\boldsymbol{\Sigma}_{\tilde\varepsilon}$ is symmetric and positive
 definite but not generally diagonal — the reduced-form innovations in different
 equations are correlated, precisely because they are mixtures of the structural
 shocks as shown in Section 7.1.
 
 For our three-variable system ($n = 3$, with
-$\mathbf{y}_t = [g_t,\, \pi_t,\, r_t]'$), equation (7.1) at lag $p = 1$
+$\mathbf{y}_t = [g_t,\, \pi_t,\, i_t]'$), equation (7.1) at lag $p = 1$
 written out explicitly gives:
 
-$$\begin{bmatrix} g_t \\ \pi_t \\ r_t \end{bmatrix}
+$$\begin{bmatrix} g_t \\ \pi_t \\ i_t \end{bmatrix}
 = \begin{bmatrix} c_1 \\ c_2 \\ c_3 \end{bmatrix}
 + \begin{bmatrix}
-    a_{11} & a_{12} & a_{13} \\
-    a_{21} & a_{22} & a_{23} \\
-    a_{31} & a_{32} & a_{33}
+    \gamma_{11} & \gamma_{12} & \gamma_{13} \\
+    \gamma_{21} & \gamma_{22} & \gamma_{23} \\
+    \gamma_{31} & \gamma_{32} & \gamma_{33}
   \end{bmatrix}
-  \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \\ r_{t-1} \end{bmatrix}
-+ \begin{bmatrix} u^g_t \\ u^\pi_t \\ u^r_t \end{bmatrix}$$
+  \begin{bmatrix} g_{t-1} \\ \pi_{t-1} \\ i_{t-1} \end{bmatrix}
++ \begin{bmatrix} \tilde\varepsilon^g_t \\ \tilde\varepsilon^\pi_t \\ \tilde\varepsilon^i_t \end{bmatrix}$$
 
 Each row is a regression equation. The first row says that GDP growth today
-depends on last quarter's GDP growth ($a_{11}$), last quarter's inflation
-($a_{12}$), and last quarter's funds rate ($a_{13}$), plus a composite
-innovation $u^g_t$. The same structure applies to each equation. With $p$
-lags, each equation has $np$ slope coefficients plus one intercept, so
-$np + 1$ parameters per equation and $n(np + 1)$ in the full VAR. For
-$n = 3$ and $p = 2$ that is $3(3 \times 2 + 1) = 21$ parameters total —
-the count grows quickly, which is why lag selection (Section 7.3) matters.
-`statsmodels` reports this count inclusive of intercepts, so it matches
-the formula directly.
+depends on last quarter's GDP growth ($\gamma_{11}$), last quarter's inflation
+($\gamma_{12}$), and last quarter's funds rate ($\gamma_{13}$), plus a composite
+innovation $\tilde\varepsilon^g_t$. The same structure applies to each equation.
+With $p$ lags, each equation has $np$ slope coefficients plus one intercept, so
+$np + 1$ parameters per equation and $n(np + 1) = n^2p + n$ in the full VAR. For
+$n = 3$ and $p = 2$ that is $3(3 \times 2 + 1) = 21$ parameters total. The
+count is quadratic in the number of variables and linear in the lag order,
+which is why lag selection (Section 7.3) matters. The covariance matrix
+$\boldsymbol{\Sigma}_{\tilde\varepsilon}$ adds a further $n(n+1)/2 = 6$ distinct
+parameters. `statsmodels` reports the mean-parameter count inclusive of
+intercepts, so it matches the formula directly. In our working model, $p = 6$,
+the three-variable VAR has $3(3 \times 6 + 1) = 57$ mean parameters, estimated
+from roughly 260 quarterly observations.
 
 ::: {.callout-note}
 ## Why OLS Works Equation by Equation
 
 Because the right-hand side of each VAR equation contains only lagged
 values — no contemporaneous terms — every regressor is predetermined and
-uncorrelated with the current-period innovation $\mathbf{u}_t$. OLS applied
+uncorrelated with the current-period innovation $\tilde{\boldsymbol{\varepsilon}}_t$. OLS applied
 to each equation separately is therefore consistent and, under Gaussian
 innovations, equivalent to maximum likelihood. In practice `statsmodels`
 estimates all equations simultaneously using the system representation, but
 the equation-by-equation OLS intuition is exact and useful for understanding
-what the estimator is doing.
+what the estimator is doing. Because every equation has the same regressors,
+estimating the equations jointly (as a seemingly unrelated regression system)
+gives no efficiency gain over equation-by-equation OLS, even though the
+residuals are correlated across equations.
 :::
 
 ### The Stationarity Condition
@@ -473,22 +509,23 @@ this in a precise way: a system of $n$ variables each modelled with $p$ lags
 has exactly $np$ characteristic roots. For our three-variable VAR($p$), that
 is $3p$ roots in total — three times as many as a univariate AR($p$) of the
 same order. The stationarity requirement is the same: every one of those $np$
-roots must lie strictly inside the unit circle.
+roots of the lag polynomial must lie strictly outside the unit circle, or
+equivalently every companion eigenvalue must lie strictly inside it.
 
 A concrete example makes the count clear. Consider our three-variable system
 ($n = 3$, variables: GDP growth, CPI inflation, FFR):
 
-- **VAR(1):** one lag matrix $\mathbf{A}_1$ is $3 \times 3$. The companion
-  matrix $\mathbf{F} = \mathbf{A}_1$ is also $3 \times 3$, giving $np = 3$
+- **VAR(1):** one lag matrix $\boldsymbol{\Gamma}_1$ is $3 \times 3$. The companion
+  matrix $\mathbf{F} = \boldsymbol{\Gamma}_1$ is also $3 \times 3$, giving $np = 3$
   roots — one per variable. This is what `statsmodels` reports when $p = 1$.
-- **VAR(2):** two lag matrices $\mathbf{A}_1$ and $\mathbf{A}_2$, each $3 \times 3$.
+- **VAR(2):** two lag matrices $\boldsymbol{\Gamma}_1$ and $\boldsymbol{\Gamma}_2$, each $3 \times 3$.
   The companion matrix is $6 \times 6$, giving $np = 6$ roots — two per variable.
 - **VAR(6):** the companion matrix is $18 \times 18$, giving $np = 18$ roots —
   six per variable.
 
 The key point is that adding lags does not merely add one root: it adds $n$
 roots simultaneously, one for each variable in the system. At $p = 6$ with
-$n = 3$ we must verify 18 roots, all of which need to lie strictly inside the
+$n = 3$ we must verify 18 eigenvalues, all of which need to lie strictly inside the
 unit circle for the VAR to be stable.
 
 Why $np$? Intuitively, each of the $n$ equations contributes $p$ dynamic
@@ -499,21 +536,23 @@ companion form is simply a bookkeeping device that reduces the higher-order
 vector system to a first-order one, the same trick used for AR($p$) models in
 Chapter 3.
 
-::: {.callout-note}
-## The Companion Matrix
+::: {.callout-note collapse="true"}
+## Technical Box: The Companion Matrix
 
 Any VAR($p$) can be written as a first-order system by stacking the current
 and $p-1$ lagged vectors into $\boldsymbol{\xi}_t = [\mathbf{y}_t',\,
 \mathbf{y}_{t-1}',\, \ldots,\, \mathbf{y}_{t-p+1}']'$:
 
-$$\boldsymbol{\xi}_t = \mathbf{F}\,\boldsymbol{\xi}_{t-1} + \tilde{\mathbf{u}}_t \tag{7.2}$$
+$$\boldsymbol{\xi}_t = \mathbf{F}\,\boldsymbol{\xi}_{t-1} + \boldsymbol{\eta}_t \tag{7.2}$$
+
+where $\boldsymbol{\xi}_t$ is measured as a deviation from the mean and $\boldsymbol{\eta}_t$ stacks the reduced-form innovation $\tilde{\boldsymbol{\varepsilon}}_t$ on top of $n(p-1)$ zeros.
 
 The **companion matrix** $\mathbf{F}$ is $np \times np$ and collects all the
 VAR coefficient matrices along its first block row, with identity matrices
 below forming a block-shift structure:
 
 $$\mathbf{F} = \begin{bmatrix}
-  \mathbf{A}_1 & \mathbf{A}_2 & \cdots & \mathbf{A}_{p-1} & \mathbf{A}_p \\
+  \boldsymbol{\Gamma}_1 & \boldsymbol{\Gamma}_2 & \cdots & \boldsymbol{\Gamma}_{p-1} & \boldsymbol{\Gamma}_p \\
   \mathbf{I}_n & \mathbf{0}   & \cdots & \mathbf{0}        & \mathbf{0}   \\
   \mathbf{0}   & \mathbf{I}_n & \cdots & \mathbf{0}        & \mathbf{0}   \\
   \vdots       & \vdots       & \ddots & \vdots             & \vdots       \\
@@ -536,7 +575,7 @@ $$|\lambda_i(\mathbf{F})| < 1 \quad \text{for all } i = 1, \ldots, np$$
 
 For our three-variable system estimated at lag order $p$, this means checking
 $3p$ eigenvalues. At $p = 1$ there are 3 roots; at $p = 6$ — the lag order
-selected after diagnostics in Section 7.3.6 — there are 18. `statsmodels`
+selected after diagnostics in Section 7.3.9 — there are 18. `statsmodels`
 computes and reports all of them automatically after estimation.
 :::
 
@@ -563,7 +602,7 @@ before inclusion removes the unit root but discards information about long-run
 relationships between the series. The vector error correction model (VECM)
 retains that long-run information by explicitly modelling cointegrating
 relationships among the $I(1)$ variables. We defer the VECM to Chapter 8.
-For now: if your series are not stationary, do not estimate a VAR in levels.
+For now: if your series are not stationary, do not rely on a VAR in levels.
 :::
 
 
@@ -601,8 +640,8 @@ and CPI inflation reject the null comfortably. The FFR does not reject
 (ADF = −1.954, p = 0.307), consistent with its well-known persistence over
 long samples. A non-rejection by the ADF does not necessarily mean the
 series is integrated — the test has low power against highly persistent but
-stationary processes. The definitive check is whether the estimated VAR is
-stable, assessed via the roots of the lag polynomial in Table 7.2.*
+stationary processes. Stability of the estimated VAR is supportive evidence here, not a definitive check, and we
+return to this point when we examine the estimated roots.*
 
 
 ## VAR Estimation and Model Selection {#sec-lagselection}
@@ -622,7 +661,7 @@ structural analysis in the remainder of the chapter.
 
 In a univariate AR($p$) model, adding one lag costs one parameter. In a
 VAR($p$) with $n$ variables, adding one lag costs $n^2$ parameters — one for
-each cell in the new coefficient matrix $\mathbf{A}_p$. For our three-variable
+each cell in the new coefficient matrix $\boldsymbol{\Gamma}_p$. For our three-variable
 system, moving from $p = 1$ to $p = 2$ adds nine parameters simultaneously.
 At $p = 4$, the VAR has $3 \times (3 \times 4) + 3 = 39$ free parameters,
 and the number of observations consumed by presample initialisation grows
@@ -631,7 +670,7 @@ precision is sharper in the multivariate case, which is why lag selection
 deserves explicit attention before any structural analysis is attempted.
 
 The conceptual problem is the same as in the univariate case. Too few lags
-leaves residual serial correlation in $\mathbf{u}_t$, violating the white
+leaves residual serial correlation in $\tilde{\boldsymbol{\varepsilon}}_t$, violating the white
 noise assumption and biasing everything downstream — including Granger
 causality tests, IRFs, and FEVDs. Too many lags wastes degrees of freedom,
 inflates standard errors, and can destabilise the coefficient estimates,
@@ -643,11 +682,11 @@ white noise residuals.
 The AIC, BIC, and HQC from Chapters 3 and 4 extend directly to VARs with
 two modifications. First, the goodness-of-fit term becomes the
 log-determinant of the residual covariance matrix,
-$\ln|\hat{\boldsymbol{\Sigma}}_u(p)|$, rather than a scalar residual
+$\ln|\hat{\boldsymbol{\Sigma}}_{\tilde\varepsilon}(p)|$, rather than a scalar residual
 variance — it plays the same role but summarises the joint fit of all $n$
 equations in a single number. Second, each additional lag costs $n^2$
 parameters rather than one, because a new $n \times n$ coefficient matrix
-$\mathbf{A}_p$ enters every equation simultaneously. For our three-variable
+$\boldsymbol{\Gamma}_p$ enters every equation simultaneously. For our three-variable
 system the penalty per lag is nine, compared to one in the corresponding
 univariate AR. In a five-variable VAR it would be 25, and in a ten-variable
 VAR it would be 100 — one reason practitioners favour small tightly
@@ -669,19 +708,25 @@ a starting point but not a final answer.
 As a complement to information criteria, the **[likelihood ratio (LR) test](https://en.wikipedia.org/wiki/Likelihood-ratio_test)**
 compares two nested lag orders directly. The null hypothesis is $p = p_0$
 (the restricted model); the alternative is $p = p_1 > p_0$ (the unrestricted
-model). The test statistic is:
+model). Intuitively, it asks whether the extra lag matrices reduce the residual
+covariance by more than chance would. The test statistic is in the box below.
 
-$$\text{LR} = (T - p_1 n)\left[\ln|\hat{\boldsymbol{\Sigma}}_u(p_0)| -
-  \ln|\hat{\boldsymbol{\Sigma}}_u(p_1)|\right] \tag{7.3}$$
+::: {.callout-note collapse="true"}
+## Technical Box: The LR Statistic
+
+$$\text{LR} = (T - p_1 n)\left[\ln|\hat{\boldsymbol{\Sigma}}_{\tilde\varepsilon}(p_0)| -
+  \ln|\hat{\boldsymbol{\Sigma}}_{\tilde\varepsilon}(p_1)|\right] \tag{7.3}$$
 
 Under the null, $\text{LR} \sim \chi^2(n^2(p_1 - p_0))$. The degrees of
 freedom equal the number of restrictions imposed: each lag that is dropped
 removes $n^2$ coefficients from the system. The finite-sample correction
 $(T - p_1 n)$ in place of $T$ improves size in small samples.
+:::
+
 
 The LR test is applied sequentially in practice: start at $p_{\max}$, test
-down against $p_{\max} - 1$, and continue until the null is first rejected,
-taking that lag order as the selected value (equation 7.3). When the LR test
+down against $p_{\max} - 1$, and continue until the null is first rejected;
+the unrestricted (higher) order in that step is the selected value (equation 7.3). When the LR test
 and information criteria agree, confidence in the selection is higher; when
 they disagree, the range of recommendations defines a set of candidates worth
 examining with residual diagnostics.
@@ -695,12 +740,15 @@ examining with residual diagnostics.
 p_max    = 6
 var_data = data[["GDP Growth", "CPI Inflation", "FFR"]]
 
-model  = VAR(var_data)
+
 
 # Collect AIC / BIC / HQC for p = 1 ... p_max
 rows = []
 for p in range(1, p_max + 1):
-    r = model.fit(p)
+        # Common estimation sample: drop the first p_max - p observations so that
+    # every order is evaluated on the same T = N - p_max observations
+    r = VAR(var_data.iloc[p_max - p:]).fit(p)
+
     rows.append({"p": p, "AIC": r.aic, "BIC": r.bic, "HQC": r.hqic,
                  "logdet": float(np.log(np.linalg.det(r.sigma_u))),
                  "T": len(r.resid)})
@@ -724,7 +772,8 @@ for p, row in ic_df.iterrows():
           f"{row['BIC']:>9.3f}{b_star}  "
           f"{row['HQC']:>9.3f}{h_star}")
 print(sep)
-print("* denotes minimum. Sample: 1954Q3–2019Q4. n = 3 variables.")
+print(f"* denotes minimum. Common sample: {var_data.index[p_max].to_period('Q')}–"
+      f"{var_data.index[-1].to_period('Q')}. n = 3 variables.")
 
 # ── Sequential LR test (top-down: p_max down to p=1) ──────────────────────
 print()
@@ -750,7 +799,8 @@ print("df = n² = 9 per step. Reject H₀ → retain the unrestricted model.")
 ```
 
 *Lag-order selection criteria and sequential LR test for the three-variable
-VAR, 1954Q3–2019Q4. The top panel shows information criteria: BIC selects
+VAR, estimated on a common sample so that all orders are comparable. The top
+panel shows information criteria: BIC selects
 $p = 1$, HQC selects $p = 3$, and AIC selects $p = 5$. The bottom panel
 shows the sequential LR test working top-down from $p = 6$: each step tests
 whether the additional $n^2 = 9$ parameters of the higher-order model are
@@ -758,11 +808,12 @@ jointly significant. Where the LR test and information criteria agree,
 confidence in the selection is higher; where they disagree, residual
 diagnostics determine the working model.*
 
-The selected lag order governs everything downstream in this chapter. We use
-it for all subsequent estimation — Granger causality tests, IRFs, and FEVDs —
-and report it explicitly so that every result can be traced back to this choice.
-If AIC and BIC disagree, we carry both candidates forward as a robustness
-check when the results are sensitive to lag length.
+<!-- RERENDER: confirm the IC argmins (BIC 1, HQC 3, AIC 5) on the common sample -->
+
+The criteria disagree, so none of them settles the lag order on its own. The
+working model is chosen below from the residual diagnostics, and we report it
+explicitly so that every later result (Granger tests, IRFs, FEVDs) can be
+traced back to this choice.
 
 ### Estimated VAR(1)
 
@@ -770,7 +821,7 @@ Like the ARMA identification workflow in Chapter 3, VAR model selection is
 iterative. We begin with the BIC-preferred lag order, estimate the model,
 verify stability, inspect the residuals, and revise upward if the diagnostics
 indicate that systematic dynamics remain. The output below is for the
-BIC-selected VAR(1); Section 7.3.7 presents the working model after the
+BIC-selected VAR(1); Section 7.3.9 presents the working model after the
 iterative revision.
 
 The `statsmodels` summary produces one block per equation — each variable's
@@ -804,7 +855,7 @@ Section 7.5.*
 
 We verify the system is stable by examining the roots of the lag polynomial —
 the values of $z$ for which
-$\det(\mathbf{I} - \mathbf{A}_1 z - \cdots - \mathbf{A}_p z^p) = 0$.
+$\det(\mathbf{I} - \boldsymbol{\Gamma}_1 z - \cdots - \boldsymbol{\Gamma}_p z^p) = 0$.
 
 ::: {.callout-warning icon=false}
 ## Roots vs Eigenvalues: A Convention to Watch
@@ -853,13 +904,14 @@ print("Stability: |root| > 1  ↔  |companion eigenvalue| < 1.")
 
 *Lag polynomial roots and companion eigenvalue moduli for the VAR(1). All
 three roots exceed one and all companion eigenvalues fall strictly inside the
-unit circle — the VAR(1) is stable despite the FFR's ambiguous ADF result.*
+unit circle — the VAR(1) is stable, although one eigenvalue (0.96) is close to
+the boundary, which reflects the persistence of the FFR.*
 
 ```{python}
 #| label: fig-unit-circle
 #| fig-cap: "Companion matrix eigenvalues for the VAR(1) plotted against the
-#|   unit circle. All three eigenvalues are real (no complex pairs at p=1)
-#|   and lie strictly inside the circle, confirming stability."
+#|   unit circle. The three eigenvalues (about 0.13, 0.34, and 0.96) are all
+#|   real and lie strictly inside the circle; the largest is close to the boundary."
 
 theta   = np.linspace(0, 2 * np.pi, 300)
 fig, ax = plt.subplots(figsize=(4, 4))
@@ -893,7 +945,8 @@ plt.show()
 ```
 
 *All three VAR(1) companion eigenvalues are real and lie on the horizontal
-axis, well inside the unit circle. The VAR(1) is stable — but stability
+axis, inside the unit circle (about 0.13, 0.34, and 0.96; the last is near the
+boundary). The VAR(1) is stable — but stability
 is a necessary, not sufficient, condition for a well-specified model.
 The residual diagnostics below reveal a more serious problem.*
 
@@ -901,17 +954,19 @@ The residual diagnostics below reveal a more serious problem.*
 
 Does the estimated VAR(1) actually remove all systematic dynamics from the
 data? A VAR with too few lags will leave autocorrelation in the residuals —
-$\mathbf{u}_t$ will not be white noise, and every downstream result (Granger
+$\tilde{\boldsymbol{\varepsilon}}_t$ will not be white noise, and every downstream result (Granger
 tests, IRFs, FEVDs) will be unreliable. The standard diagnostic is the
 **multivariate portmanteau test**, which tests the null hypothesis that all
 residual autocovariance matrices up to lag $h$ are jointly zero:
 
-$$H_0:\; \boldsymbol{\Gamma}(1) = \boldsymbol{\Gamma}(2) = \cdots =
-  \boldsymbol{\Gamma}(h) = \mathbf{0}$$
+$$H_0:\; \mathbf{C}(1) = \mathbf{C}(2) = \cdots = \mathbf{C}(h) = \mathbf{0}$$
 
-Under the null the test statistic is asymptotically $\chi^2$; rejection
-means residual autocorrelation is present and the lag order should be
-increased.
+where $\mathbf{C}(k)$ is the matrix of residual autocovariances at lag $k$.
+Intuitively, the statistic adds up the squared residual autocorrelations (and
+cross-correlations) at lags $1, \ldots, h$. Under the null it is asymptotically
+$\chi^2$ with $n^2(h - p)$ degrees of freedom — $3^2 \times (12 - 1) = 99$ for
+a VAR(1) with $h = 12$. Rejection means residual autocorrelation is present and
+the lag order should be increased.
 
 ```{python}
 #| label: var1-diagnostics
@@ -960,9 +1015,9 @@ print("DW ≈ 2: no first-order autocorrelation. JB H\u2080: residuals normal.")
 ```
 
 *Residual diagnostics for the VAR(1). The portmanteau test rejects
-decisively (test statistic 232.1, df 99, p = 0.000) — strong evidence
+decisively (test statistic 232.1, df 99, p < 0.001) — strong evidence
 of residual autocorrelation. All three equations also fail Jarque-Bera,
-indicating heavy-tailed residuals. The VAR(1) is stable but misspecified.*
+so the residuals are non-normal. The VAR(1) is stable but misspecified.*
 
 ```{python}
 #| label: fig-resid-acf-var1
@@ -1003,7 +1058,7 @@ borderline at lags 1 and 5. These are exactly the patterns that motivate
 increasing the lag order.*
 
 The VAR(1) diagnostics deliver a clear verdict: the model is stable but
-misspecified. The portmanteau test (p = 0.000) and the ACF plots tell the
+misspecified. The portmanteau test (p < 0.001) and the ACF plots tell the
 same story — one lag is not enough to capture the dynamic interdependencies
 in this three-variable system. The right response is the same as in
 Chapter 3 when an AR(1) failed to whiten a persistent series: add lags
@@ -1013,7 +1068,7 @@ This is the natural teaching moment for iterative model building. In the
 ARMA context, a significant ACF spike at lag $q$ prompted us to add an MA
 term. Here, significant ACF spikes across multiple lags and multiple
 equations prompt us to increase $p$ — the unit of revision in the
-multivariate case is the entire lag matrix $\mathbf{A}_p$, adding $n^2$
+multivariate case is the entire lag matrix $\boldsymbol{\Gamma}_p$, adding $n^2$
 parameters at once. We increase $p$ one step at a time, re-estimate, and
 re-run the portmanteau test, until the residuals are as clean as the data
 allow.
@@ -1070,7 +1125,7 @@ stop — they increase the lag order and repeat the diagnostic cycle.
 The workflow is the same as ARMA model selection in Chapter 3, just applied
 to the system as a whole. There, a significant ACF spike at lag $q$ prompted
 adding an MA term; here, systematic residual autocorrelation across multiple
-equations prompts adding an entire lag matrix $\mathbf{A}_p$ — nine new
+equations prompts adding an entire lag matrix $\boldsymbol{\Gamma}_p$ — nine new
 parameters at once in our three-variable system. The logic is the same:
 the model is expanded until the residuals are consistent with white noise.
 
@@ -1096,26 +1151,33 @@ document the limitation honestly.
 ## Why VAR(6)? No Information Criterion Selected It
 
 This is a good question. BIC selected $p = 1$, HQC selected $p = 3$, and
-AIC selected $p = 5$. None pointed to $p = 6$.
+AIC selected $p = 5$. None pointed to $p = 6$. <!-- RERENDER: re-check on the common sample -->
 
-The answer is that VAR(6) is selected by a different criterion: the
-**residual diagnostic criterion**. Information criteria balance fit against
-parsimony and give you a candidate model. But a candidate model that violates
-its own assumptions — white noise residuals — is not an acceptable working
-model regardless of how well it scores on AIC or BIC. When the residuals
-fail the portmanteau test, the diagnostic overrides the information criterion.
+VAR(6) is where the diagnostic search ends. Information criteria balance fit
+against parsimony and give you a candidate model. But a candidate model that
+violates its own assumptions — white noise residuals — is not an acceptable
+working model regardless of how well it scores on AIC or BIC. When the
+residuals fail the portmanteau test, the diagnostic overrides the information
+criterion.
 
 We increase $p$ until the residuals pass, or until we exhaust the candidate
-range. In this application we exhaust the range at $p = 6$. VAR(6) is
-selected not because it minimises any criterion but because it is the most
-dynamically rich model we examined and the one whose residuals are closest
-to white noise within the candidate set.
+range. In this application we exhaust the range at $p = 6$: VAR(6) is the
+largest model we examined, and it is a working compromise, not a model with
+clean residuals. The search record in Section 7.3.10 shows how the portmanteau
+statistic evolves with $p$.
 
 The broader lesson: information criteria are a starting point. They tell
 you the most efficient use of parameters given the model class. Residual
 diagnostics tell you whether the model class — at that parameter count — is
 adequate. Both inputs are needed to select a working model.
 :::
+
+Because no order passes, the working model should be used with care. The
+remaining rejection may reflect leftover autocorrelation at some lags, but also
+heteroskedasticity or heavy tails, to which the portmanteau test is sensitive.
+A sensible check, which we do not carry out here, is that the main results
+(Granger tests, IRFs, FEVDs) do not change materially when $p$ is moved a few
+lags either way.
 
 The VAR(6) estimation, stability checks, and residual diagnostics follow.
 
@@ -1134,8 +1196,9 @@ mixtures; structural interpretation requires the Cholesky identification
 of Section 7.5.*
 
 With $n = 3$ and $p = 6$, the companion matrix is $18 \times 18$ with 18
-eigenvalues to check. All are real and all fall inside the unit circle —
-the VAR(6) is stable.
+eigenvalues to check. Four are real and the other fourteen form seven
+complex-conjugate pairs. All fall inside the unit circle, with a largest
+modulus of about 0.94, so the VAR(6) is stable but close to the boundary.
 
 ```{python}
 #| label: tbl-eigenvalues-var6
@@ -1166,16 +1229,16 @@ print(f"VAR(6), n=3: {len(roots6)} roots. Stable: {'Yes' if stable6 else 'No'}."
 ```
 
 *Lag polynomial roots and companion eigenvalue moduli for the VAR(6).
-All 18 roots are real and all companion eigenvalues lie strictly inside
-the unit circle — the VAR(6) is stable.*
+Four roots are real and fourteen form seven complex-conjugate pairs. All
+companion eigenvalues lie strictly inside the unit circle (largest modulus
+about 0.94), so the VAR(6) is stable.*
 
 ```{python}
 #| label: fig-unit-circle-var6
 #| fig-cap: "Companion matrix eigenvalues for the VAR(6) plotted against
-#|   the unit circle. All 18 eigenvalues are real and lie strictly inside
-#|   the circle. Compare with the VAR(1) unit circle figure: the eigenvalues
-#|   are more numerous and spread differently, but all remain well inside
-#|   the stability boundary."
+#|   the unit circle. The 18 eigenvalues (four real, seven complex-conjugate
+#|   pairs) all lie strictly inside the circle; the largest modulus is about
+#|   0.94."
 
 theta   = np.linspace(0, 2 * np.pi, 300)
 fig, ax = plt.subplots(figsize=(4, 4))
@@ -1207,8 +1270,9 @@ fig.tight_layout()
 plt.show()
 ```
 
-*All 18 VAR(6) companion eigenvalues are real and lie on the horizontal
-axis, well inside the unit circle. The VAR(6) is stable.*
+*The 18 VAR(6) companion eigenvalues include four real values and seven
+complex-conjugate pairs. All lie inside the unit circle, with a largest
+modulus of about 0.94. The VAR(6) is stable.*
 
 ### Residual Diagnostics: VAR(6)
 
@@ -1246,19 +1310,18 @@ print("DW ≈ 2: no first-order autocorrelation. JB H\u2080: residuals normal.")
 ```
 
 *Residual diagnostics for the VAR(6). The portmanteau statistic has fallen
-from 232 to 97 but still rejects at conventional levels — likely due to
-non-Gaussianity rather than genuine remaining autocorrelation, as the
-Durbin-Watson statistics (all near 2) confirm. All three equations fail
-Jarque-Bera, consistent with the heavy-tailed macro data in this sample.*
+from 232 to about 97 (df 54, p = 0.0003) but still rejects at conventional
+levels, so some residual autocorrelation remains. The Durbin-Watson statistics
+(all near 2) only speak to first-order autocorrelation and do not rule out
+dependence at longer lags. All three equations fail Jarque-Bera, so the
+residuals are non-normal.* <!-- RERENDER: confirm Q, df, p -->
 
 ```{python}
 #| label: fig-resid-acf
 #| fig-cap: "Residual ACF — VAR(6). Bars inside the dashed 95 percent
 #|   confidence bands indicate no significant autocorrelation. Compare
-#|   with the VAR(1) ACF: the systematic clusters and spikes have been
-#|   largely eliminated. Isolated bars outside the bands remain but are
-#|   consistent with the non-Gaussian residuals rather than dynamic
-#|   misspecification."
+#|   with the VAR(1) ACF: the systematic clusters have largely disappeared,
+#|   but a few isolated bars (lags 7–9 and 16) touch or cross the bands."
 
 n_lags_acf = 16
 fig, axes  = plt.subplots(1, 3, figsize=(6, 2.5), sharey=True)
@@ -1286,9 +1349,9 @@ plt.show()
 *Residual ACF for the VAR(6). The systematic patterns visible in the VAR(1)
 ACF — the inflation cluster at lags 3–6, the FFR spike at lag 7, the GDP
 borderline bars — have been substantially reduced. Most bars now fall within
-the confidence bands. The Durbin-Watson statistics close to 2 confirm that
-first-order autocorrelation has been removed from all three equations. We
-proceed with VAR(6) as the working model.*
+the confidence bands, but a few isolated bars at lags 7–9 and 16 touch or cross
+them, in line with the portmanteau rejection. We proceed with VAR(6) as the
+working model and keep this limitation in mind.*
 
 
 ## Granger Causality {#sec-granger}
@@ -1342,17 +1405,18 @@ informative.
 ::: {.callout-note}
 ## Definition 7.2 — Granger Causality
 
-Variable $x$ **Granger-causes** variable $y$ if past values of $x$ contain
-information that helps predict $y$, beyond the information already contained
-in past values of $y$ alone (and, in a multivariate system, the past values
-of all other variables in the system). Formally, in the VAR framework:
+Variable $y_j$ **Granger-causes** variable $y_i$ if past values of $y_j$ contain
+information that helps predict $y_i$, beyond the information already contained
+in past values of $y_i$ itself and of all other variables in the system.
+Formally, in the VAR framework:
 
-$$x \not\to_G y \iff \alpha_{ij,\ell} = 0 \quad
+$$y_j \not\to_G y_i \iff \gamma_{ij,\ell} = 0 \quad
   \text{for all lags } \ell = 1, \ldots, p$$
 
-where $\alpha_{ij,\ell}$ are the coefficients on lags of $x_j$ in the
-equation for $y_i$. Granger non-causality is the joint hypothesis that the
-entire block of those coefficients is zero.
+where $\gamma_{ij,\ell}$ is the $(i,j)$ element of $\boldsymbol{\Gamma}_\ell$: the
+coefficient on the $\ell$-th lag of $y_j$ in the equation for $y_i$. Granger
+non-causality is the joint hypothesis that the entire block of those
+coefficients is zero.
 :::
 
 ### The Block Exclusion F-Test
@@ -1362,16 +1426,20 @@ zero restrictions on the coefficient matrices. In the equation for variable
 $i$, the hypothesis that variable $j$ does not Granger-cause variable $i$
 (equation 7.4) is:
 
-$$H_0:\; A_{ij,1} = A_{ij,2} = \cdots = A_{ij,p} = 0 \tag{7.4}$$
+$$H_0:\; \gamma_{ij,1} = \gamma_{ij,2} = \cdots = \gamma_{ij,p} = 0 \tag{7.4}$$
 
 This is a system of $p$ linear restrictions on one equation of the VAR.
-The standard test is the **block exclusion F-test**: estimate the unrestricted
-equation (with all $p$ lags of variable $j$ included) and the restricted
-equation (with those $p$ lags excluded), and compare their residual sums of
-squares. Under the null, the test statistic follows an $F(p,\, T - np - 1)$
-distribution in finite samples, or asymptotically $\chi^2(p)/p$.
+The standard test is the **block exclusion test**: compare the equation that
+includes all $p$ lags of variable $j$ with the equation that excludes them.
+Under the null, the F statistic follows an $F$ distribution in finite samples,
+or asymptotically $\chi^2(p)/p$. The lags of every other variable stay in the
+equation, so the test asks whether $y_j$ adds anything beyond the whole rest of
+the system. That is why we test inside the full VAR rather than on pairs of
+variables: dropping a variable can create or mask apparent causality. We use
+`VARResults.test_causality` in `statsmodels`, which performs the test within the
+estimated three-variable VAR.
 
-In a three-variable VAR, there are $3 \times 2 = 6$ directional Granger
+In a three-variable VAR, there are $n(n-1) = 6$ directional Granger
 causality hypotheses: each variable may or may not Granger-cause each of the
 other two. We test all six and report them in a single table, which makes
 the full predictive structure of the system legible at a glance.
@@ -1401,20 +1469,17 @@ var_fit = var_fit_d
 p_sel   = p_final
 
 cols    = ["GDP Growth", "CPI Inflation", "FFR"]
-labels  = {"GDP Growth": "GDP Growth", "CPI Inflation": "CPI Inflation", "FFR": "FFR"}
 
-# Run all pairwise Granger tests: does col_j Granger-cause col_i?
-# grangercausalitytests expects [y, x] column order
+# Full-system block exclusion test: does `cause` Granger-cause `caused`,
+# conditional on the lags of every variable in the VAR?
+# H0: all p lag coefficients of `cause` in the `caused` equation are zero.
 granger_pvals = {}
 for caused in cols:
     for cause in cols:
         if cause == caused:
             continue
-        pair = var_data[[caused, cause]]
-        res = grangercausalitytests(pair, maxlag=p_sel)
-        # F-test p-value at lag p_sel
-        pval = res[p_sel][0]["ssr_ftest"][1]
-        granger_pvals[(cause, caused)] = pval
+        res = var_fit.test_causality(caused, cause, kind="f")
+        granger_pvals[(cause, caused)] = res.pvalue
 ```
 
 ```{python}
@@ -1461,37 +1526,36 @@ inflation, FFR), 1954Q3–2019Q4. Each cell reports the p-value for the block
 exclusion F-test; the null hypothesis is that the row variable does not
 Granger-cause the column variable.*
 
-The results at VAR(6) sharpen the picture relative to the VAR(1) results
-and reveal a cleaner monetary transmission story. Three relationships are
-significant at conventional levels.
+<!-- RERENDER: the p-values and the significant / not-significant pattern in the
+paragraphs below come from the earlier pairwise tests. After rendering the
+full-system tests above, update every number and every "significant" or
+"not significant" claim so that it matches the table. -->
 
-GDP growth strongly Granger-causes the FFR (p = 0.000): past output
-growth is a powerful predictor of future rate changes, consistent with the
-Fed responding to real activity — stronger growth predicts tightening.
-CPI inflation also Granger-causes the FFR (p = 0.049), confirming the
-price-stability mandate in the data, though the relationship is weaker than
-for output. Notably, at VAR(6) inflation's predictive content for the funds
-rate is now statistically significant, whereas at VAR(1) it was not (p = 0.739
-at the parsimonious model) — the additional lags reveal a delayed
-inflation-response channel that the parsimonious model missed.
+We read the table in two groups. The first describes the Fed's **reaction
+function**, how policy responds to the economy. GDP growth Granger-causes the
+FFR (p < 0.001): past output growth is a strong predictor of future rate
+changes, consistent with a Fed that responds to real activity. CPI inflation
+also Granger-causes the FFR (p = 0.049), consistent with the price-stability
+mandate, though the evidence is weaker than for output. Together these are what
+a Taylor rule would predict.
 
-The FFR Granger-causes both GDP growth (p = 0.000) and CPI inflation
-(p = 0.001). The first confirms the monetary transmission channel: past
-rate changes contain information about future output that output's own
-history cannot supply. The second confirms that policy rate movements
-predict future inflation — consistent with monetary policy affecting prices
-with a lag, though the Cholesky IRF will tell us whether this is a
-disinflationary effect or a price puzzle.
+The second group is about the **effects of policy**. The FFR Granger-causes both
+GDP growth (p < 0.001) and CPI inflation (p = 0.001): past rate changes contain
+information about future output and prices that their own histories cannot
+supply. We should not read this as a policy effect. The Fed is forward-looking
+and moves in anticipation of output and inflation, so predictive content is not
+the same as a causal effect. The Cholesky IRFs of Section 7.6 will tell us
+whether the response of inflation looks like disinflation or like a price
+puzzle.
 
-Two relationships are absent. GDP growth does not Granger-cause CPI
-inflation (p = 0.396), and CPI inflation does not Granger-cause GDP
-growth (p = 0.459). The first result is the reduced-form Phillips curve
-non-finding: past output growth has no marginal predictive content for
-inflation once inflation's own lags and the other variables are controlled
-for. This does not contradict the Phillips curve — the contemporaneous and
-structural relationship between output and prices is better seen in the
-IRFs — but it does mean the reduced-form feedback runs primarily through
-the policy rate rather than directly.
+Two relationships are not rejected: GDP growth does not Granger-cause CPI
+inflation (p = 0.396), and CPI inflation does not Granger-cause GDP growth
+(p = 0.459). A non-rejection does not mean there is no effect. The test has
+limited power in a sample of this size and it is blind to indirect channels:
+output can still influence inflation through the funds rate
+($g \to i \to \pi$), a channel the test does not credit to output because it
+conditions on the lags of $i$. In reduced form, the feedback between output and
+prices runs primarily through the policy rate.
 
 What these tests cannot tell us is whether the FFR *structurally* drives
 output and inflation — that is the identification question addressed in
@@ -1504,34 +1568,46 @@ policy shocks.
 ### The Identification Problem
 
 The reduced-form VAR we have estimated so far is useful for forecasting and
-for Granger causality tests. But its residuals — the vectors $\mathbf{u}_t$
-— are not structurally interpretable. Recall from Section 7.1 that these
-residuals are linear combinations of the underlying structural shocks:
-$\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$, where
-$\boldsymbol{\varepsilon}_t = [\varepsilon^g_t,\, \varepsilon^\pi_t,\,
-\varepsilon^r_t]'$ are the genuine independent disturbances to output,
-inflation, and monetary policy. The reduced-form residual $u^r_t$ in the
-funds rate equation is not a pure monetary policy shock. It contains a mixture
-of all three structural shocks, in proportions determined by the unknown
+for Granger causality tests. But its residuals — the vectors
+$\tilde{\boldsymbol{\varepsilon}}_t$ — are not structurally interpretable.
+Recall from Section 7.1 that these residuals are linear combinations of the
+underlying structural shocks:
+$\tilde{\boldsymbol{\varepsilon}}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$,
+where $\boldsymbol{\varepsilon}_t = [\varepsilon^g_t,\, \varepsilon^\pi_t,\,
+\varepsilon^i_t]'$ are the genuine independent disturbances to output,
+inflation, and monetary policy. The reduced-form residual $\tilde\varepsilon^i_t$
+in the funds rate equation is not a pure monetary policy shock. It can contain a
+mixture of all three structural shocks, in proportions determined by the unknown
 elements of $\mathbf{A}_0^{-1}$.
 
 To ask how a *monetary policy shock* affects GDP growth — the central question
 of applied monetary economics — we need to disentangle the three structural
-shocks from the three composite residuals. This requires exactly as many
-restrictions on $\mathbf{A}_0$ as there are free parameters to recover. With
-$n = 3$ variables, $\mathbf{A}_0$ has $n^2 = 9$ elements. Normalising the
-diagonal to ones (so each structural shock has unit contemporaneous effect on
-its own variable) leaves $n^2 - n = 6$ off-diagonal elements to identify. The
-covariance matrix of the reduced-form residuals $\boldsymbol{\Sigma}_u =
-\mathbf{A}_0^{-1}\boldsymbol{\Omega}(\mathbf{A}_0^{-1})'$ — where
-$\boldsymbol{\Omega}$ is diagonal with structural shock variances — supplies
-$n(n+1)/2 = 6$ unique equations (the distinct elements of the symmetric
-matrix). So we have exactly 6 equations and 6 unknowns: the system is
-**just-identified**. These equations are nonlinear in the elements of
-$\mathbf{A}_0$, but the Cholesky restriction — imposing a lower-triangular
-structure — makes the system triangular, so it can be solved sequentially
-from the top row down, one element at a time. This is what makes Cholesky
-identification not just just-identified but analytically tractable.
+shocks from the three composite residuals. The data cannot do this on their own.
+Counting makes the point: the structural model has more unknowns than the data
+have moments to pin them down, so the gap has to be closed with restrictions
+that come from economic reasoning. With three variables the gap is three
+restrictions. They can take the form of zero restrictions (Cholesky), sign
+restrictions, long-run restrictions, or external instruments. Cholesky
+identification imposes a lower-triangular structure on $\mathbf{A}_0$, which
+sets exactly three elements to zero: the system is **exactly identified**.
+
+::: {.callout-note collapse="true"}
+## Technical Box: Counting Unknowns and Moments
+
+Normalise the diagonal of $\mathbf{A}_0$ to ones, so that each equation
+has a unit coefficient on its own variable. The structural side then has
+$n^2 = 9$ unknowns: the $n^2 - n = 6$ off-diagonal elements of $\mathbf{A}_0$
+and the $n = 3$ structural shock variances, collected in the diagonal matrix
+$\mathbf{D}$. The data, however, reveal only the covariance matrix of the
+reduced-form residuals,
+
+$$\boldsymbol{\Sigma}_{\tilde\varepsilon} = \mathbf{A}_0^{-1}\,\mathbf{D}\,(\mathbf{A}_0^{-1})'$$
+
+which is symmetric and therefore has $n(n+1)/2 = 6$ distinct elements. Nine
+unknowns and six equations leave a shortfall of $n(n-1)/2 = 3$ restrictions.
+Because the Cholesky zeros make the system triangular, the equations can be
+solved sequentially, one element at a time.
+:::
 
 ### Cholesky Identification
 
@@ -1547,7 +1623,7 @@ within a quarter. Real output and prices are determined by slow-moving
 production and pricing decisions; the Fed observes these and sets the funds
 rate in response. Within a single quarter, the assumption is:
 
-- A monetary policy shock ($\varepsilon^r_t$) can affect GDP growth and
+- A monetary policy shock ($\varepsilon^i_t$) can affect GDP growth and
   inflation only with a lag — the funds rate is the *last* to move
   contemporaneously.
 - An inflation shock ($\varepsilon^\pi_t$) can affect the funds rate
@@ -1560,28 +1636,33 @@ This gives $\mathbf{A}_0$ a lower-triangular structure:
 
 $$\mathbf{A}_0 = \begin{bmatrix}
   1       & 0       & 0 \\
-  a_{21}  & 1       & 0 \\
-  a_{31}  & a_{32}  & 1
+    \alpha_{21}  & 1       & 0 \\
+  \alpha_{31}  & \alpha_{32}  & 1
 \end{bmatrix}$$
 
-The zeros in the upper triangle are the identifying restrictions: inflation
-does not respond contemporaneously to a monetary policy shock ($a_{12} = 0$),
-and output responds to neither inflation nor policy within the period
-($a_{13} = a_{23} = 0$, or equivalently the first row has no off-diagonal
-terms in $\mathbf{A}_0^{-1}$).
+The three zeros above the diagonal are the identifying restrictions: output
+growth does not respond contemporaneously to inflation or to the funds rate
+($\alpha_{12} = \alpha_{13} = 0$), and inflation does not respond
+contemporaneously to the funds rate ($\alpha_{23} = 0$). Each variable responds
+within the quarter only to the variables ordered before it.
 
-::: {.callout-note}
-## The Cholesky Decomposition
+::: {.callout-note collapse="true"}
+## Technical Box: The Cholesky Decomposition
 
-The Cholesky decomposition of $\boldsymbol{\Sigma}_u$ factors it as
-$\boldsymbol{\Sigma}_u = \mathbf{P}\mathbf{P}'$ where $\mathbf{P}$ is lower
-triangular with positive diagonal entries. This is exactly the matrix
-$\mathbf{A}_0^{-1}\boldsymbol{\Omega}^{1/2}$ implied by the recursive
-identification. In practice, identification is implemented by applying the
-Cholesky factor $\mathbf{P}$ to the reduced-form residuals: the orthogonalised
-shocks $\hat{\boldsymbol{\varepsilon}}_t = \mathbf{P}^{-1}\mathbf{u}_t$ are
-uncorrelated by construction and have unit variance. These orthogonalised
-shocks are then used to compute impulse responses and FEVDs.
+The Cholesky decomposition of $\boldsymbol{\Sigma}_{\tilde\varepsilon}$ factors it as
+$\boldsymbol{\Sigma}_{\tilde\varepsilon} = \mathbf{P}\mathbf{P}'$ where $\mathbf{P}$
+is lower triangular with positive diagonal entries. It exists, and is unique,
+whenever $\boldsymbol{\Sigma}_{\tilde\varepsilon}$ is positive definite. With
+$\mathbf{A}_0$ lower triangular, $\mathbf{P} = \mathbf{A}_0^{-1}\mathbf{D}^{1/2}$:
+the same recursive system, with each structural shock rescaled to unit variance.
+From here on, $\boldsymbol{\varepsilon}_t$ denotes these rescaled shocks,
+$\mathbb{E}[\boldsymbol{\varepsilon}_t\boldsymbol{\varepsilon}_t'] = \mathbf{I}$, and the
+reduced-form residuals are $\tilde{\boldsymbol{\varepsilon}}_t = \mathbf{P}\boldsymbol{\varepsilon}_t$.
+In practice, identification is implemented by applying $\mathbf{P}^{-1}$ to the
+reduced-form residuals: the orthogonalised shocks
+$\hat{\boldsymbol{\varepsilon}}_t = \mathbf{P}^{-1}\tilde{\boldsymbol{\varepsilon}}_t$ are
+uncorrelated by construction and have unit variance. These are the shocks used
+to compute impulse responses and FEVDs.
 :::
 
 ### A Numerical Example
@@ -1590,16 +1671,16 @@ To see where the off-diagonal elements of $\mathbf{P}$ come from, work through
 the $2 \times 2$ case with variables $g_t$ (GDP growth) and $\pi_t$
 (inflation). Suppose the reduced-form residual covariance matrix is:
 
-$$\boldsymbol{\Sigma}_u = \begin{bmatrix} 4.0 & 1.2 \\ 1.2 & 9.0 \end{bmatrix}$$
+$$\boldsymbol{\Sigma}_{\tilde\varepsilon} = \begin{bmatrix} 4.0 & 1.2 \\ 1.2 & 9.0 \end{bmatrix}$$
 
-The diagonal entries are the residual variances ($\sigma^2_{u^g} = 4$,
-$\sigma^2_{u^\pi} = 9$); the off-diagonal entry is the covariance
-($\sigma_{u^g u^\pi} = 1.2$), which is non-zero because the reduced-form
+The diagonal entries are the residual variances ($\sigma^2_{\tilde\varepsilon^g} = 4$,
+$\sigma^2_{\tilde\varepsilon^\pi} = 9$); the off-diagonal entry is the covariance
+($\sigma_{\tilde\varepsilon^g \tilde\varepsilon^\pi} = 1.2$), which is non-zero because the reduced-form
 residuals mix structural shocks together.
 
 The Cholesky factor $\mathbf{P}$ is lower triangular:
 $\mathbf{P} = \begin{bmatrix} p_{11} & 0 \\ p_{21} & p_{22} \end{bmatrix}$.
-The condition $\mathbf{P}\mathbf{P}' = \boldsymbol{\Sigma}_u$ expands to:
+The condition $\mathbf{P}\mathbf{P}' = \boldsymbol{\Sigma}_{\tilde\varepsilon}$ expands to:
 
 $$\begin{bmatrix} p_{11} & 0 \\ p_{21} & p_{22} \end{bmatrix}
 \begin{bmatrix} p_{11} & p_{21} \\ 0 & p_{22} \end{bmatrix}
@@ -1629,13 +1710,26 @@ The result is:
 
 $$\mathbf{P} = \begin{bmatrix} 2.0 & 0 \\ 0.6 & 2.94 \end{bmatrix}$$
 
-The orthogonalised shocks are $\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\mathbf{u}_t$.
+The orthogonalised shocks are $\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\tilde{\boldsymbol{\varepsilon}}_t$.
 One can verify that $\mathbb{E}[\boldsymbol{\varepsilon}_t\boldsymbol{\varepsilon}_t'] =
-\mathbf{P}^{-1}\boldsymbol{\Sigma}_u(\mathbf{P}^{-1})' = \mathbf{I}_2$ — the
+\mathbf{P}^{-1}\boldsymbol{\Sigma}_{\tilde\varepsilon}(\mathbf{P}^{-1})' = \mathbf{I}_2$ — the
 shocks are uncorrelated with unit variance. The three-variable case follows
 the same sequential logic, adding a third row: solve the diagonal, then the
 two off-diagonals in order, each depending only on entries already determined
 above it.
+
+The numbers have two intuitive readings. First, $p_{21}/p_{11} = 0.6/2.0 = 0.3$
+is the slope of a regression of the inflation residual on the output residual:
+ordering output first attributes to output all of the co-movement between the
+two residuals. Second, the output shock accounts for
+$p_{21}^2/9.0 = 0.36/9.0 = 4$ percent of the variance of the inflation residual;
+the remaining 96 percent is the inflation shock. The link back to Section 7.1 is
+$\mathbf{A}_0^{-1} = \mathbf{P}\mathbf{D}^{-1/2}$, with
+$\mathbf{D}^{1/2} = \text{diag}(2.0,\, 2.94)$ the standard deviations of the
+structural shocks. Here
+$\mathbf{A}_0^{-1} = \begin{bmatrix} 1 & 0 \\ 0.3 & 1 \end{bmatrix}$, so a unit
+output shock raises inflation by 0.3 on impact ($\alpha_{21} = -0.3$ in the sign
+convention of Section 7.1).
 
 ::: {.callout-warning icon=false}
 ## The Ordering Assumption Is Substantive
@@ -1662,25 +1756,46 @@ respond to specific shocks within the period. An alternative approach,
 increasingly used in modern empirical work, identifies shocks through
 **sign restrictions** instead.
 
-Rather than imposing exact zeros, sign restrictions specify only the
-*direction* of a shock's contemporaneous impact. A contractionary monetary
-policy shock, for example, is defined as one that raises the funds rate,
-reduces output, and reduces inflation — or at minimum raises the rate
-and reduces inflation, with output agnostic. Any draw of $\mathbf{A}_0$
-consistent with those sign patterns is treated as a valid identification.
-The set of admissible identifications is typically large, and impulse
-responses are reported as ranges across that set rather than as point
-estimates.
+The idea is that the data admit many different ways of splitting the
+reduced-form residuals into structural shocks. Cholesky picks one of them by
+assumption. Sign restrictions instead keep every candidate whose impulse
+responses have the signs that economic theory requires. A contractionary
+monetary policy shock, for example, raises the funds rate and does not raise
+output or inflation over the first few quarters. Sign restrictions also address
+the price puzzle we meet in Section 7.6: if we require inflation not to rise
+after a contractionary shock, identifications that produce a rising price
+response are discarded by construction.
 
-Sign restrictions are attractive because they require fewer strong assumptions
-— exact zeros in $\mathbf{A}_0$ are strong claims — and because they can
-encode economic theory more directly. A researcher who is confident that a
+::: {.callout-note collapse="true"}
+## Technical Box: The Sign-Restriction Procedure
+
+If $\mathbf{P}$ is one valid factor of $\boldsymbol{\Sigma}_{\tilde\varepsilon}$,
+then so is $\tilde{\mathbf{P}} = \mathbf{P}\mathbf{Q}$ for any orthogonal matrix
+$\mathbf{Q}$ ($\mathbf{Q}\mathbf{Q}' = \mathbf{I}$), because
+$\tilde{\mathbf{P}}\tilde{\mathbf{P}}' = \mathbf{P}\mathbf{Q}\mathbf{Q}'\mathbf{P}' =
+\boldsymbol{\Sigma}_{\tilde\varepsilon}$. Each $\mathbf{Q}$ is a different candidate
+identification, and Cholesky is the single point $\mathbf{Q} = \mathbf{I}$.
+
+The procedure is: (1) estimate the VAR and compute $\mathbf{P}$; (2) draw a
+random orthogonal $\mathbf{Q}$ (the $\mathbf{Q}$ factor in the QR decomposition
+of a matrix of standard normal draws); (3) compute the candidate responses
+$\tilde{\boldsymbol{\Theta}}_h = \boldsymbol{\Theta}_h\mathbf{Q}$ for
+$h = 0, \ldots, H$; (4) keep the draw if the signs hold and discard it
+otherwise; (5) repeat until there are many accepted draws, and report the median
+and percentile bands across them.
+:::
+
+Sign restrictions are attractive because they require fewer strong
+assumptions — exact zeros in $\mathbf{A}_0$ are strong claims — and because they
+can encode economic theory more directly. A researcher who is confident that a
 monetary tightening reduces prices but agnostic about timing can say exactly
 that, without committing to a specific lag structure. The cost is that results
 are reported as identified sets rather than point estimates, which can be wide
-when the restrictions are weak. We use Cholesky identification throughout
-this chapter; sign restrictions are left as a conceptual alternative for
-projects and further reading.
+when the restrictions are weak, and the median across draws summarises many
+different models rather than describing any one of them. Sign restrictions are
+not available in `statsmodels`. We use Cholesky identification throughout this
+chapter; sign restrictions are left as a conceptual alternative for projects and
+further reading.
 
 
 ## Impulse Response Functions {#sec-irf}
@@ -1696,34 +1811,32 @@ question that **[impulse response functions (IRFs)](https://en.wikipedia.org/wik
 
 Before writing down the general formula, it helps to see the recursion
 produce actual numbers. Start with the simplest possible case: a univariate
-AR(1), $y_t = \phi y_{t-1} + u_t$. Suppose $\phi = 0.7$ and a unit shock
-$u_0 = 1$ hits at time $0$. The effect on $y_h$ is:
+AR(1), $y_t = \phi y_{t-1} + \varepsilon_t$. Suppose $\phi = 0.7$ and a unit
+shock $\varepsilon_0 = 1$ hits at time $0$. The effect on $y_h$ is:
 
 $$y_0 = 1, \quad y_1 = 0.7, \quad y_2 = 0.49, \quad y_3 = 0.343, \quad \ldots$$
 
 The IRF at horizon $h$ is simply $\phi^h = 0.7^h$. The shock decays
 geometrically, reaching half its initial size by around $h = 2$ and
 essentially zero by $h = 10$. This is exactly what the MA($\infty$)
-representation of an AR(1) says: $y_t = \sum_{h=0}^\infty \phi^h u_{t-h}$,
-so the coefficient on $u_{t-h}$ is $\phi^h$.
+representation of an AR(1) says: $y_t = \sum_{h=0}^\infty \phi^h \varepsilon_{t-h}$,
+so the coefficient on $\varepsilon_{t-h}$ is $\phi^h$.
 
 Now extend to a bivariate VAR(1) with variables $g_t$ (GDP growth) and
-$\pi_t$ (inflation). The values below are illustrative — chosen to keep the
-arithmetic readable, not estimated from any data — but they are
-economically plausible: moderate own-persistence, small cross-variable
-effects, and a Cholesky factor that allows output shocks to have a
-contemporaneous effect on inflation. Suppose:
+$\pi_t$ (inflation). We use the Cholesky factor $\mathbf{P}$ computed in
+Section 7.5. The lag matrix is illustrative — chosen to keep the arithmetic
+readable, not estimated from any data — but economically plausible, with
+moderate own-persistence and small cross-variable effects:
 
-$$\mathbf{A}_1 = \begin{bmatrix} 0.6 & 0.2 \\ 0.1 & 0.5 \end{bmatrix}, \qquad
-  \mathbf{P} = \begin{bmatrix} 1.0 & 0 \\ 0.3 & 0.8 \end{bmatrix}$$
+$$\boldsymbol{\Gamma}_1 = \begin{bmatrix} 0.6 & 0.2 \\ 0.1 & 0.5 \end{bmatrix}, \qquad
+  \mathbf{P} = \begin{bmatrix} 2.0 & 0 \\ 0.6 & 2.94 \end{bmatrix}$$
 
-where $\mathbf{A}_1$ is the lag-one coefficient matrix and $\mathbf{P}$ is
-the Cholesky factor. At $h = 0$, the response to a unit output shock
-($\varepsilon^g = 1$, $\varepsilon^\pi = 0$) is read directly from the first
-column of $\mathbf{P}$:
+where $\boldsymbol{\Gamma}_1$ is the lag-one coefficient matrix. At $h = 0$, the
+response to a one-standard-deviation output shock ($\varepsilon^g = 1$,
+$\varepsilon^\pi = 0$) is read directly from the first column of $\mathbf{P}$:
 
 $$\boldsymbol{\Theta}_0 \mathbf{e}_1 = \mathbf{P}\,\mathbf{e}_1
-  = \begin{bmatrix} 1.0 \\ 0.3 \end{bmatrix}$$
+  = \begin{bmatrix} 2.0 \\ 0.6 \end{bmatrix}$$
 
 Why the first column? The full matrix $\boldsymbol{\Theta}_0 = \mathbf{P}$
 gives the contemporaneous responses to *all* structural shocks simultaneously
@@ -1738,70 +1851,99 @@ diagonal of the IRF grid — but not the cross-variable contemporaneous
 impacts. The full column is needed to trace the complete contemporaneous
 effect of a single shock across all variables.
 
-GDP growth jumps by 1 on impact (the unit normalisation, from $p_{11} = 1$);
-inflation jumps by 0.3 contemporaneously because $p_{21} = 0.3$ — this is
-the cross-variable contemporaneous impact permitted by the Cholesky ordering,
-which allows output shocks to affect inflation within the period. At $h = 1$, the system propagates the
-impact through $\mathbf{A}_1$:
+GDP growth jumps by 2.0 on impact — one standard deviation of the output shock
+($p_{11} = 2.0$); inflation jumps by 0.6 contemporaneously because
+$p_{21} = 0.6$. This is the cross-variable contemporaneous impact permitted by
+the Cholesky ordering, which allows output shocks to affect inflation within the
+period. At $h = 1$, the system propagates the impact through
+$\boldsymbol{\Gamma}_1$:
 
-$$\boldsymbol{\Theta}_1 \mathbf{e}_1 = \mathbf{A}_1 \mathbf{P}\,\mathbf{e}_1
+$$\boldsymbol{\Theta}_1 \mathbf{e}_1 = \boldsymbol{\Gamma}_1 \mathbf{P}\,\mathbf{e}_1
   = \begin{bmatrix} 0.6 & 0.2 \\ 0.1 & 0.5 \end{bmatrix}
-    \begin{bmatrix} 1.0 \\ 0.3 \end{bmatrix}
-  = \begin{bmatrix} 0.66 \\ 0.25 \end{bmatrix}$$
+    \begin{bmatrix} 2.0 \\ 0.6 \end{bmatrix}
+  = \begin{bmatrix} 1.32 \\ 0.50 \end{bmatrix}$$
 
-At $h = 2$, the response propagates through $\mathbf{A}_1$ again:
+At $h = 2$, the response propagates through $\boldsymbol{\Gamma}_1$ again:
 
-$$\boldsymbol{\Theta}_2 \mathbf{e}_1 = \mathbf{A}_1^2 \mathbf{P}\,\mathbf{e}_1
+$$\boldsymbol{\Theta}_2 \mathbf{e}_1 = \boldsymbol{\Gamma}_1^2 \mathbf{P}\,\mathbf{e}_1
   = \begin{bmatrix} 0.6 & 0.2 \\ 0.1 & 0.5 \end{bmatrix}
-    \begin{bmatrix} 0.66 \\ 0.25 \end{bmatrix}
-  = \begin{bmatrix} 0.446 \\ 0.191 \end{bmatrix}$$
+    \begin{bmatrix} 1.32 \\ 0.50 \end{bmatrix}
+  = \begin{bmatrix} 0.892 \\ 0.382 \end{bmatrix}$$
 
-The pattern is clear: at each horizon, multiply by $\mathbf{A}_1$ again.
-In the VAR(1) case, $\boldsymbol{\Theta}_h = \mathbf{A}_1^h \mathbf{P}$, so
+The pattern is clear: at each horizon, multiply by $\boldsymbol{\Gamma}_1$ again.
+In the VAR(1) case, $\boldsymbol{\Theta}_h = \boldsymbol{\Gamma}_1^h \mathbf{P}$, so
 the IRF is computed by repeatedly powering the coefficient matrix — exactly
 the multivariate analogue of $\phi^h$ in the scalar case. With $p > 1$ lags,
-the companion matrix $\mathbf{F}$ plays the role of $\mathbf{A}_1$, as the
+the companion matrix $\mathbf{F}$ plays the role of $\boldsymbol{\Gamma}_1$, as the
 callout below shows.
+
+These are responses to a *one-standard-deviation* shock. The impulse response
+figures later in this section use a different unit: each column is divided by
+its own impact, here 2.0 for the output shock. On that scale the output response
+starts at 1 and continues $0.66,\ 0.446,\ \ldots$, and the inflation response
+starts at $0.6/2.0 = 0.3$ and continues $0.25,\ 0.191,\ \ldots$. The shapes are
+identical; only the unit of the shock changes.
 
 ### From VAR to VMA: The General Formula
 
-::: {.callout-note}
-## The VMA Representation and IRF Formula
+The numerical example shows the logic: a shock enters through the impact matrix
+$\mathbf{P}$ and is then passed forward period after period by the VAR's
+coefficients. The general formula does exactly this bookkeeping for any VAR($p$).
+If the system is stable, repeated multiplication by the coefficients shrinks the
+effect toward zero, so the responses die out. One practical point matters for
+reading the figures: we plot each response after rescaling the shock so that it
+raises its own variable by one unit on impact. That changes the units, not the
+shape. The formulas are in the box below for reference.
 
-For a VAR($p$) written in companion form (equation 7.2)
-$\boldsymbol{\xi}_t = \mathbf{F}\boldsymbol{\xi}_{t-1} + \tilde{\mathbf{u}}_t$,
-recursive backward substitution gives the VMA($\infty$) representation:
+::: {.callout-note collapse="true"}
+## Technical Box: The VMA Representation and IRF Formula
+
+For a VAR($p$) written in companion form (equation 7.2), recursive backward
+substitution gives the VMA($\infty$) representation in terms of the
+reduced-form residuals:
 
 $$\mathbf{y}_t = \boldsymbol{\mu} + \sum_{h=0}^{\infty}
-  \boldsymbol{\Theta}_h\,\boldsymbol{\varepsilon}_{t-h}$$
-
-where $\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\mathbf{u}_t$ are the
-Cholesky-orthogonalised structural shocks ($\mathbb{E}[\boldsymbol{\varepsilon}_t
-\boldsymbol{\varepsilon}_t'] = \mathbf{I}_n$) and the **orthogonalised IRF
-matrix** at horizon $h$ is:
-
-$$\boldsymbol{\Theta}_h = \mathbf{J}\,\mathbf{F}^h\,\mathbf{J}'\,\mathbf{P}$$
+  \boldsymbol{\Phi}_h\,\tilde{\boldsymbol{\varepsilon}}_{t-h}, \qquad
+  \boldsymbol{\Phi}_h = \mathbf{J}\,\mathbf{F}^h\,\mathbf{J}'$$
 
 with $\mathbf{J} = [\mathbf{I}_n\;\mathbf{0}\;\cdots\;\mathbf{0}]$ the
 selection matrix extracting the first $n$ rows of the $np$-dimensional
-companion system. The $(i,j)$ element $\theta_{ij,h}$ is the **impulse
-response function**: the response of variable $i$ to a unit structural shock
-$j$, $h$ periods after the shock, all other shocks held at zero.
+companion system. Writing $\tilde{\boldsymbol{\varepsilon}}_t = \mathbf{P}\boldsymbol{\varepsilon}_t$,
+with $\boldsymbol{\varepsilon}_t$ the unit-variance Cholesky shocks
+($\mathbb{E}[\boldsymbol{\varepsilon}_t\boldsymbol{\varepsilon}_t'] = \mathbf{I}_n$), gives
+
+$$\mathbf{y}_t = \boldsymbol{\mu} + \sum_{h=0}^{\infty}
+  \boldsymbol{\Theta}_h\,\boldsymbol{\varepsilon}_{t-h}, \qquad
+  \boldsymbol{\Theta}_h = \boldsymbol{\Phi}_h\mathbf{P} = \mathbf{J}\,\mathbf{F}^h\,\mathbf{J}'\,\mathbf{P}$$
+
+where $\boldsymbol{\Theta}_h$ is the **orthogonalised IRF matrix** at horizon $h$.
+Its $(i,j)$ element $\theta_{ij,h}$ is the **impulse response function**: the
+response of variable $i$ to a one-standard-deviation structural shock $j$, $h$
+periods after the shock, all other shocks held at zero. At $h = 0$,
+$\boldsymbol{\Theta}_0 = \mathbf{P}$. In the VAR(1) case $\mathbf{F} = \boldsymbol{\Gamma}_1$ and
+$\boldsymbol{\Theta}_h = \boldsymbol{\Gamma}_1^h\mathbf{P}$.
 
 In a stable VAR all eigenvalues of $\mathbf{F}$ lie inside the unit circle,
 so $\mathbf{F}^h \to \mathbf{0}$ and all IRFs decay to zero — shocks are
-transitory. The diagonal panels of the IRF grid start at 1.0 by the
-unit-variance normalisation of $\boldsymbol{\varepsilon}_t$.
+transitory.
+
+**Scaling.** IRFs are usually plotted after dividing column $j$ of
+$\boldsymbol{\Theta}_h$ by its own impact $p_{jj}$, so that every shock raises its own
+variable by one unit on impact. We call this *unit own-impact scaling*. It
+changes the units of the shock, not the shape of the response, and it is not
+the same as the one-standard-deviation shock above. The FEVD of Section 7.7 uses
+the unscaled $\boldsymbol{\Theta}_h$.
 :::
 
 ### Orthogonalisation
 
-The reduced-form shocks $\mathbf{u}_t$ are correlated —
-$\boldsymbol{\Sigma}_u$ is not diagonal — so a "unit shock to $u^r_t$" is
-not a well-defined experiment: because $u^g_t$, $u^\pi_t$, and $u^r_t$ move
+The reduced-form shocks $\tilde{\boldsymbol{\varepsilon}}_t$ are correlated —
+$\boldsymbol{\Sigma}_{\tilde\varepsilon}$ is not diagonal — so a "unit shock to
+$\tilde\varepsilon^i_t$" is not a well-defined experiment: because
+$\tilde\varepsilon^g_t$, $\tilde\varepsilon^\pi_t$, and $\tilde\varepsilon^i_t$ move
 together, hitting one in isolation is not possible. The Cholesky factor
 $\mathbf{P}$ (Section 7.5) converts them to orthogonal structural shocks
-$\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\mathbf{u}_t$ with
+$\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\tilde{\boldsymbol{\varepsilon}}_t$ with
 $\mathbb{E}[\boldsymbol{\varepsilon}_t\boldsymbol{\varepsilon}_t'] = \mathbf{I}_n$.
 Substituting into the VMA gives the orthogonalised representation with
 $\boldsymbol{\Theta}_h = \boldsymbol{\Phi}_h\mathbf{P}$ replacing
@@ -1809,23 +1951,31 @@ $\boldsymbol{\Phi}_h$, and it is these orthogonalised matrices that produce
 structurally interpretable IRFs.
 
 Confidence bands are computed by bootstrapping the VAR residuals: repeatedly
-redrawing residuals with replacement, re-estimating the VAR and Cholesky
-factor, recomputing $\boldsymbol{\Theta}_h$ at each draw, and taking the
-16th and 84th percentiles of the resulting distribution.
+redrawing residuals with replacement, rebuilding the data recursively from the
+estimated coefficients, re-estimating the VAR and the Cholesky factor,
+recomputing $\boldsymbol{\Theta}_h$ at each draw, and taking the 16th and 84th
+percentiles of the resulting distribution. Two cautions apply. These percentiles
+correspond to roughly plus or minus one standard deviation, not to a 95 percent
+interval, so the bands are narrower than conventional confidence intervals. And
+resampling residuals treats them as roughly independent and identically
+distributed, which is a caveat given the residual diagnostics of Section 7.3.
 
 ### Empirical IRFs
 
 The 3×3 grid of panels is the standard presentation format for a
 Cholesky-identified VAR with $n$ variables: $n$ columns for the $n$ shocks,
-$n$ rows for the $n$ response variables, giving $n^2$ panels in total. The
-layout has a useful built-in diagnostic: the diagonal panels show the
-response of each variable to its *own* shock. Because the structural shocks
-are normalised to unit variance, the contemporaneous own response — the value
-at horizon $h = 0$ on the diagonal — is always exactly 1 by construction.
-If you ever see a different value on the diagonal at $h = 0$, the shocks have
-been scaled differently (for instance, to one standard deviation of the
-reduced-form residual) or the axes have been re-ordered. The unit diagonal
-at $h = 0$ is the quickest way to verify that the plot is reading as intended.
+$n$ rows for the $n$ response variables, giving $n^2$ panels in total. Two
+features help in reading it. First, the diagonal panels show the response of
+each variable to its *own* shock. Because each column has been divided by its
+own impact (unit own-impact scaling, Section 7.6.2), these panels start at
+exactly 1 at horizon $h = 0$. That is a plotting convention, not a property of
+the shocks: in the numerical example above, a one-standard-deviation output
+shock moves output by 2.0. Off-diagonal responses are read per unit of impact,
+so the policy-shock column shows the effect of a shock that raises the funds
+rate by one percentage point on impact. Second, the Cholesky ordering shows up
+as zeros at $h = 0$ above the diagonal: output does not respond on impact to the
+inflation or policy shocks, and inflation does not respond on impact to the
+policy shock.
 
 ```{python}
 #| label: irf-estimation
@@ -1896,8 +2046,8 @@ irf_upper = np.percentile(boot_irfs, 84, axis=0)
 #|   (Cholesky-identified, ordering: GDP growth → CPI inflation → FFR);
 #|   each row shows the response of one variable. Shaded bands are
 #|   16th–84th percentile bootstrap confidence intervals (500 draws).
-#|   By construction, diagonal panels equal 1 at horizon 0 — each variable's
-#|   response to its own unit structural shock. Horizons are in quarters."
+#|      Each column is scaled so that the own response on impact equals 1
+#|   (diagonal panels start at 1), rather than to a one-standard-deviation shock. Horizons are in quarters."
 
 labels       = ["GDP Growth", "CPI Inflation", "FFR"]
 colors       = [EO_COPPER, EO_SKYBLUE, EO_TERRACOTTA]
@@ -1937,47 +2087,49 @@ plt.show()
 growth, CPI inflation, federal funds rate), 1954Q3–2019Q4. Cholesky ordering:
 output → inflation → policy rate. Shaded bands are 16th–84th percentile
 bootstrap confidence intervals from 500 residual resamples. Diagonal panels
-start at 1.0 by construction — the unit own-shock normalisation.*
+start at 1.0 because each column is scaled to unit own-impact, not to a one-standard-deviation shock.*
 
 The 3×3 layout gives a complete picture of the joint dynamics of the system.
 Reading across any row traces how a given variable responds to each of the
 three shocks; reading down any column shows how a given shock propagates
 across the entire system. The diagonal — own-shock responses — starts at 1.0
-in every panel by construction of the unit-variance normalisation, and decays
+in every panel by construction of the unit own-impact scaling, and decays
 toward zero as the shock dissipates in a stable VAR.
 
 The response of GDP growth to a contractionary policy shock (top-right panel)
-is the central test of the monetary transmission mechanism. GDP growth falls
-sharply on impact, reaching a trough of around −1.5 percentage points within
-the first two quarters before recovering gradually toward zero. The response
-is clearly negative and precisely estimated — the confidence band stays well
-below zero for approximately four to five quarters. This is the textbook
-monetary transmission channel: a surprise tightening depresses real activity
-with a short but discernible lag, consistent with policy operating through
-credit conditions, investment, and aggregate demand.
+is the central test of the monetary transmission mechanism. GDP growth does not
+move on impact, which is zero by the ordering, and then falls, reaching
+a trough of roughly −1.3 percentage points around the second quarter for a shock
+that raises the funds rate by one percentage point on impact, before recovering
+gradually toward zero. The response is clearly negative and precisely
+estimated — the confidence band stays well below zero for approximately four to
+five quarters. This is the textbook monetary transmission channel: a surprise
+tightening depresses real activity with a short but discernible lag, consistent
+with policy operating through credit conditions, investment, and aggregate
+demand.
 
 The response of CPI inflation to a policy shock (middle-right panel) shows
-the **price puzzle**: inflation rises on impact, peaking around 0.3 percentage
-points at $h = 1$ before declining slowly toward zero. This is the opposite
-of the theoretical prediction — a contractionary shock should reduce prices —
-and is a well-known finding in monetary VARs estimated without commodity
-prices or other forward-looking inflation indicators. The puzzle arises because
-our three-variable system cannot fully distinguish a genuine policy shock from
-an endogenous rate increase in response to anticipated inflation. The VARX
-result showing that oil prices improve fit (Section 7.8) is directly relevant:
-adding oil price growth as an exogenous control would likely reduce or
-eliminate the price puzzle by absorbing the inflationary information the Fed
-is responding to.
+the **price puzzle**. Inflation does not move on impact (again zero by the
+ordering), but it then rises, peaking around 0.3 percentage points at $h = 1$,
+before declining slowly toward zero. This is the opposite of the theoretical
+prediction — a contractionary shock should reduce prices — and is a well-known
+finding in monetary VARs estimated without commodity prices or other
+forward-looking inflation indicators. A common interpretation is that our
+three-variable system cannot fully distinguish a genuine policy shock from an
+endogenous rate increase in response to anticipated inflation. The VARX result
+showing that oil prices improve fit (Section 7.8) suggests one candidate fix:
+adding oil price growth as an exogenous control may absorb some of the
+inflationary information the Fed is responding to, although we do not
+re-estimate the IRFs here to check. <!-- RERENDER: check price-puzzle peak and trough numbers against the figure --> Sign restrictions (Section 7.5) offer another.
 
 The response of the FFR to an output shock (bottom-left panel) is hump-shaped
-— the funds rate rises gradually, peaks around $h = 5$ at approximately 0.25
-percentage points, then decays back toward zero over the subsequent fifteen
-quarters. This is the systematic component of monetary policy: the Fed raises
-rates in response to stronger growth, consistent with the Taylor rule intuition
-from Section 7.1. The precise timing and magnitude of this response is
-informative: the peak at $h = 5$ means the Fed tightens roughly five quarters
-after an output expansion, suggesting a delayed systematic reaction rather than
-immediate within-quarter adjustment.
+— the funds rate rises gradually, peaks around $h = 5$ to $6$ at approximately
+0.26 percentage points per percentage point of output shock, and then decays
+only slowly, still around 0.1 at the twenty-quarter horizon. This is the
+systematic component of monetary policy: the Fed raises rates in response to
+stronger growth, consistent with the Taylor rule intuition from Section 7.1. The
+timing is informative: a peak five to six quarters out suggests a delayed
+systematic reaction rather than an immediate within-quarter adjustment.
 
 
 ## Forecast Error Variance Decomposition {#sec-fevd}
@@ -2011,7 +2163,16 @@ short-lived will claim a small share. The FEVD translates the IRF paths into
 a single percentage at each horizon: the fraction of forecast uncertainty
 attributable to each structural disturbance.
 
-### Deriving the Decomposition
+### Building the Decomposition
+
+The logic is simple. The $h$-step forecast error is the accumulated effect of all
+the shocks that hit between today and the target date. Because the structural
+shocks are uncorrelated, their contributions to the variance simply add up, so
+each shock's share is its accumulated squared response divided by the total.
+The derivation is in the box below.
+
+::: {.callout-note collapse="true"}
+## Technical Box: Deriving the FEVD Shares
 
 The $h$-step-ahead forecast error for variable $i$ is the cumulative effect
 of all structural shocks that occur between the forecast origin and the target
@@ -2033,13 +2194,19 @@ variable $i$ at horizon $h$ is:
 
 $$\omega_{ij}(h) = \frac{\displaystyle\sum_{s=0}^{h-1} \theta_{ij,s}^2}
   {\displaystyle\sum_{k=1}^{n}\sum_{s=0}^{h-1} \theta_{ik,s}^2} \tag{7.7}$$
+:::
 
 By construction $\sum_{j=1}^{n} \omega_{ij}(h) = 1$ at every horizon: the
 shares sum to 100 percent (equations 7.5–7.7). At $h = 1$, the FEVD equals
 the contemporaneous impact of each shock — only the $h=0$ IRF coefficient
-matters, so the decomposition reflects the Cholesky ordering directly. At longer horizons,
-the cumulative squared IRF paths determine the shares, and the ordering
-assumption becomes less influential as later-horizon dynamics dominate.
+matters, so the decomposition reflects the Cholesky ordering directly: the first-ordered
+variable (GDP growth) is entirely its own shock, and later-ordered variables pick
+up part of the impact response of earlier shocks. At longer horizons the
+cumulative squared IRF paths determine the shares, so the ordering matters less,
+but it never stops mattering: a different ordering gives a different
+decomposition. The shares are computed from the unscaled responses
+$\boldsymbol{\Theta}_h$ (one-standard-deviation shocks), not from the
+unit own-impact scaling used in the IRF figure.
 
 ::: {.callout-note}
 ## Definition 7.3 — Forecast Error Variance Decomposition
@@ -2143,33 +2310,31 @@ plt.show()
 
 *Stacked area FEVD for the three-variable VAR(6). GDP growth variance (left)
 is dominated by the output shock throughout, but the policy shock (terracotta)
-claims a visible 7–9 percent share from $h = 4$ onward — larger than at
-VAR(1). CPI inflation variance (centre) is dominated by the own-shock (sky
+claims a visible 7–9 percent share from $h = 4$ onward . CPI inflation variance (centre) is dominated by the own-shock (sky
 blue) at all horizons, with output and policy shocks making only modest
 inroads by $h = 20$. FFR variance (right) shows the most dramatic
 redistribution: the policy own-shock (terracotta) falls from 91 percent at
 $h = 1$ to 24 percent at $h = 20$ as the output shock (copper) rises to
 51 percent — quantifying the Fed's systematic response to real conditions.*
 
-The results tell a consistent story across all three variables, and differ
-meaningfully from the VAR(1) estimates — illustrating why model selection
-and diagnostic checking matter before structural analysis.
+The results tell a consistent story across all three variables.
 
 **GDP growth** remains predominantly self-driven but the policy shock now
 claims a meaningful share at medium horizons. The output shock accounts for
 100 percent at $h = 1$ by Cholesky construction, falls to 92 percent by
 $h = 4$, and stabilises around 87 percent at $h = 20$. Policy shocks account
 for 7–9 percent of GDP growth variance from $h = 4$ onward — small in absolute
-terms but larger than the 1–2 percent seen in the VAR(1) estimates. The
+terms. The
 message is nuanced: autonomous output shocks dominate business cycle
 fluctuations, but the unexpected component of monetary policy accounts for
 a non-trivial share of medium-run output variance. This is consistent with
 the IRF finding that policy shocks produce a sharp GDP growth contraction
-of around 1.5 percentage points.
+of around 1.3 percentage points.
 
 **CPI inflation** is dominated by its own shocks throughout, but the pattern
-differs strikingly from GDP growth. At $h = 1$ inflation is entirely
-self-driven by Cholesky construction (100 percent own-shock). By $h = 4$
+differs strikingly from GDP growth. At $h = 1$ inflation is almost entirely
+self-driven: the output shock enters only through its small impact effect on
+inflation. By $h = 4$
 the own-shock share is still 92 percent, but by $h = 20$ it has declined to
 84 percent, with output shocks accounting for 9 percent and policy shocks
 for 7 percent. The relatively modest policy share — despite the Granger
@@ -2230,15 +2395,14 @@ regressors to the reduced-form VAR.
 Let $\mathbf{x}_t$ be a $k \times 1$ vector of exogenous variables. The
 VARX($p$, $s$) model is:
 
-$$\mathbf{y}_t = \mathbf{c} + \sum_{\ell=1}^{p}\mathbf{A}_\ell\,\mathbf{y}_{t-\ell}
-  + \sum_{j=0}^{s}\mathbf{B}_j\,\mathbf{x}_{t-j} + \mathbf{u}_t \tag{7.8}$$
+$$\mathbf{y}_t = \boldsymbol{\Gamma}_0 + \sum_{\ell=1}^{p}\boldsymbol{\Gamma}_\ell\,\mathbf{y}_{t-\ell}
+  + \sum_{j=0}^{s}\mathbf{B}_j\,\mathbf{x}_{t-j} + \tilde{\boldsymbol{\varepsilon}}_t \tag{7.8}$$
 
 where $\mathbf{B}_j$ is an $n \times k$ matrix of coefficients on the $j$-th
 lag of the exogenous block. The lag order $s$ governs how many lags of
 $\mathbf{x}_t$ enter each equation; $s = 0$ means only contemporaneous values,
 $s = 1$ adds one lag, and so on. Each equation receives the same exogenous
-regressors — this is what distinguishes the VARX from a set of unrelated
-ARMAX equations. The endogenous block $\mathbf{u}_t$ retains its
+regressors. The endogenous block $\tilde{\boldsymbol{\varepsilon}}_t$ retains its
 interpretation as before: correlated reduced-form innovations that mix
 the structural shocks together.
 
@@ -2257,51 +2421,39 @@ endogenous block are computed exactly as in the pure VAR, but the baseline
 forecasts are shifted by the exogenous variables' paths. Scenario analysis —
 asking how the endogenous variables would respond under a specific path for
 $\mathbf{x}_t$ — is straightforward: feed the assumed $\mathbf{x}_t$ path
-into the forecast equations.
+into the forecast equations. With exogenous lags, the effect of a one-time
+change in $\mathbf{x}_t$ on $\mathbf{y}_{t+h}$ (the dynamic multiplier) is
+$\sum_{j=0}^{\min(h,s)}\boldsymbol{\Phi}_{h-j}\mathbf{B}_j$, which combines
+the direct effect of $\mathbf{x}$ with the propagation through the VAR dynamics.
 
 **Does not change:** The exogenous variables do not receive structural shocks
 in the SVAR sense. They do not appear in the FEVD of the endogenous variables
 (unless the FEVD is explicitly extended to include exogenous contributions,
 which requires additional modelling assumptions). The identification problem
 for the endogenous block is unchanged: the Cholesky ordering applies only
-to $\boldsymbol{\Sigma}_u$, not to $\mathbf{x}_t$.
+to $\boldsymbol{\Sigma}_{\tilde\varepsilon}$, not to $\mathbf{x}_t$.
 :::
 
-### Why Lagged Exogenous Variables Matter in a VARX but Not in an ARMAX
+### Why Include Lags of the Exogenous Variables?
 
-It is worth asking why the
-VARX includes $s$ lags of $\mathbf{x}_t$ rather than just the contemporaneous
-value. In a single-equation ARMAX, the argument for omitting lagged $x_t$ is
-compelling: if $x_t$ is serially correlated, its past values are correlated
-with past values of $y_t$, which are already captured by the AR lags. Adding
-$x_{t-1}$ explicitly provides little marginal information beyond what the AR
-component already absorbs.
+The VARX includes $s$ lags of $\mathbf{x}_t$ rather than just the contemporaneous
+value, for two reasons.
 
-The VARX case is different for two reasons.
+First, the effects of $\mathbf{x}_t$ on $\mathbf{y}_t$ are typically
+**delayed**. An oil price shock in quarter $t$ may affect GDP growth in quarter
+$t+1$ or $t+2$ through investment and spending decisions that take time to
+adjust. The only way to capture such a delayed effect is to include
+$\mathbf{x}_{t-1}$, $\mathbf{x}_{t-2}$ explicitly.
 
-First, $\mathbf{x}_t$ is by assumption **outside the endogenous system** —
-that is the entire motivation for treating it as exogenous. If oil prices have
-dynamics that are partly orthogonal to domestic output, inflation, and the
-funds rate, then past values of $\mathbf{y}_t$ do not fully reconstruct past
-values of $\mathbf{x}_t$. The information in $\mathbf{x}_{t-1}$ is genuinely
-not redundant given $\mathbf{y}_{t-1}, \mathbf{y}_{t-2}, \ldots$
+Second, $\mathbf{x}_t$ is by assumption **outside the endogenous system**. If
+oil prices have dynamics that are partly orthogonal to domestic output,
+inflation, and the funds rate, then past values of $\mathbf{y}_t$ do not fully
+reconstruct past values of $\mathbf{x}_t$, so the information in
+$\mathbf{x}_{t-1}$ is not redundant given $\mathbf{y}_{t-1}, \mathbf{y}_{t-2},
+\ldots$
 
-Second, the transmission from $\mathbf{x}_t$ to $\mathbf{y}_t$ may be
-**delayed**. An oil price shock in quarter $t$ may affect GDP growth in
-quarter $t+1$ through investment and spending decisions that take time to
-adjust. In the ARMAX, the AR lags pick up this delayed effect indirectly —
-the contemporaneous impact of $x_t$ on $y_t$ creates a correlation between
-$y_{t+1}$ and $x_t$ that the AR component absorbs. In the VARX, where
-$\mathbf{x}_t$ is orthogonal to $\mathbf{u}_t$ by assumption, the only way
-to capture a delayed effect of $\mathbf{x}_{t-1}$ on $\mathbf{y}_t$ is to
-include $\mathbf{x}_{t-1}$ explicitly.
-
-The clean summary: in an ARMAX the AR component and $x_t$ share the same
-dependent variable, so lagged $x_t$ is indeed largely redundant given enough
-AR lags. In a VARX, $\mathbf{x}_t$ lives outside the endogenous system and
-its lags carry information that the endogenous lags cannot reconstruct. The
-practical implication is that $s$ should be chosen by information criteria
-alongside $p$, rather than set to zero by default.
+The practical implication is that $s$ should be chosen by information criteria
+alongside $p$, on a common sample, rather than set to zero by default.
 
 ### Stationarity of Exogenous Variables
 
@@ -2421,15 +2573,12 @@ $\Delta = -0.180$), indicating that adding contemporaneous oil price growth
 improves fit enough to more than compensate for the additional three parameters
 (one per equation). The VARX is preferred.*
 
-The BIC result is economically interpretable. The VARX's lower BIC confirms
-that domestic output, inflation, and the funds rate have a systematic
-contemporaneous relationship with oil price movements that six lags of the
-endogenous variables alone cannot capture — consistent with the supply-shock
-narrative. Oil price surprises shift the inflation equation directly within
-the quarter, compress output, and trigger a policy response, all in ways that
-are orthogonal to the VAR's own dynamics. Conditioning on oil price growth
-therefore tightens the VAR residuals and improves the identification of the
-domestic monetary policy shock.
+The BIC result suggests that oil price growth carries information about
+output, inflation, and the funds rate that six lags of the endogenous variables
+alone do not capture, which is consistent with a supply-shock narrative. A
+lower BIC is a statement about fit, not about identification: it does not by
+itself show that the monetary policy shock is better identified. That is a
+separate question, and answering it would require re-estimating the IRFs.
 
 For applications involving series plausibly affected by external
 drivers — commodity prices, trade volumes, foreign interest rates — the VARX
@@ -2438,19 +2587,22 @@ The workflow is: test the exogenous variable for stationarity, transform if
 necessary, pass it as the `exog` argument to `statsmodels` `VAR`, and compare
 information criteria against the pure VAR to assess whether inclusion is
 warranted. When the VARX is preferred, re-running the Granger causality
-tests and IRF analysis on the VARX is recommended: the structural shocks will
-be better identified once the exogenous information is absorbed into the
-residuals, and results that appeared significant — or insignificant — in the
-pure VAR may change once the external driver is properly controlled for.
+tests and IRF analysis on the VARX is worthwhile: results that appeared
+significant, or insignificant, in the pure VAR may change once the external
+driver is controlled for. The same $I(0)$/$I(1)$ rules apply to $\mathbf{x}_t$
+as to $\mathbf{y}_t$, and an $I(1)$ exogenous variable should be differenced
+or handled in a cointegration framework (Chapter 8).
 
 
 ## When Variables Are I(1) {#sec-integrated}
 
 Everything in this chapter has assumed that all three variables in the VAR
 are stationary. The ADF tests in Section 7.2 confirmed this cleanly for
-GDP growth and CPI inflation; for the FFR the ADF did not reject, but the
-lag polynomial roots in Table 7.2 confirmed that the estimated VAR is stable
-— the definitive check. Many applications are less fortunate: price levels,
+GDP growth and CPI inflation; for the FFR the ADF did not reject, and the
+estimated VAR(6) is stable but close to the boundary (largest eigenvalue modulus
+about 0.94). Because the ADF has low power against highly persistent stationary
+processes, a careful application would also check robustness, for example by
+re-estimating the system with the change in the FFR. <!-- RERENDER: confirm --> Many applications are less fortunate: price levels,
 nominal GDP, exchange rates, and interest rates over very long samples can
 exhibit behaviour consistent with genuine unit roots that survive both tests.
 
@@ -2473,7 +2625,10 @@ has a cost: it removes all information about long-run levels. If GDP and
 consumption share a common stochastic trend — if they are cointegrated — a
 VAR in differences cannot capture that relationship. The error correction
 mechanism, which describes how deviations from the long-run relationship are
-corrected over time, is invisible to a differenced VAR.
+corrected over time, is invisible to a differenced VAR. Differencing is also
+not free of risk in the other direction: if a series is in fact stationary,
+differencing it adds a non-invertible moving-average component, so we difference
+only series that we have good reason to treat as integrated.
 
 ### Cointegration and the Path to Chapter 8
 
@@ -2557,50 +2712,54 @@ eventually restore a positive spread.
 **Vector autoregression VAR($p$)** — A system of $n$ equations in which each
 variable is modelled as a linear function of $p$ lags of all variables in
 the system plus a composite innovation:
-$\mathbf{y}_t = \mathbf{c} + \sum_{\ell=1}^{p}\mathbf{A}_\ell\mathbf{y}_{t-\ell} + \mathbf{u}_t$.
+$\mathbf{y}_t = \boldsymbol{\Gamma}_0 + \sum_{\ell=1}^{p}\boldsymbol{\Gamma}_\ell\mathbf{y}_{t-\ell} + \tilde{\boldsymbol{\varepsilon}}_t$.
 The reduced form is estimable by OLS equation by equation; its coefficients
 are not structurally interpretable without additional identifying restrictions.
 
 **Companion matrix** $\mathbf{F}$ — The $np \times np$ matrix that writes
 any VAR($p$) as a first-order system
-$\boldsymbol{\xi}_t = \mathbf{F}\boldsymbol{\xi}_{t-1} + \tilde{\mathbf{u}}_t$.
-Its eigenvalues are the $np$ characteristic roots of the VAR. Stability
-requires all eigenvalues inside the unit circle. Also used to compute IRFs
+$\boldsymbol{\xi}_t = \mathbf{F}\boldsymbol{\xi}_{t-1} + \boldsymbol{\eta}_t$.
+Its eigenvalues are the reciprocals of the $np$ roots of the lag polynomial.
+Stability requires all eigenvalues inside the unit circle (equivalently, all
+lag-polynomial roots outside). Also used to compute IRFs
 via $\boldsymbol{\Theta}_h = \mathbf{J}\mathbf{F}^h\mathbf{J}'\mathbf{P}$.
 
-**Granger causality** — Variable $x$ Granger-causes variable $y$ if past
-values of $x$ have marginal predictive content for $y$ beyond the information
-in past values of $y$ (and all other variables in the system). Tested by the
-block exclusion F-test: $H_0$ is that all $p$ coefficients on lags of $x$ in
-the $y$ equation are jointly zero. A statement about predictive precedence,
-not structural causality.
+**Granger causality** — Variable $y_j$ Granger-causes variable $y_i$ if past
+values of $y_j$ have marginal predictive content for $y_i$ beyond the information
+in past values of $y_i$ and of all other variables in the system. Tested by the
+block exclusion test: $H_0$ is that all $p$ coefficients on lags of $y_j$ in the
+$y_i$ equation are jointly zero. A statement about predictive precedence, not
+structural causality; a non-rejection does not mean there is no effect.
 
 **Structural VAR (SVAR)** — A VAR augmented with identifying restrictions on
 the contemporaneous impact matrix $\mathbf{A}_0$ that allow the reduced-form
-composite residuals $\mathbf{u}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$
+composite residuals $\tilde{\boldsymbol{\varepsilon}}_t = \mathbf{A}_0^{-1}\boldsymbol{\varepsilon}_t$
 to be decomposed into interpretable structural shocks
-$\boldsymbol{\varepsilon}_t$. With $n$ variables, just-identification requires
-$n(n-1)/2$ restrictions beyond the $n$ diagonal normalisations.
+$\boldsymbol{\varepsilon}_t$. With $n$ variables, identification requires
+$n(n-1)/2$ restrictions beyond the normalisation of the diagonal of $\mathbf{A}_0$.
 
 **Cholesky identification** — A recursive identifying scheme that imposes a
 lower-triangular structure on $\mathbf{A}_0$, equivalent to factoring
-$\boldsymbol{\Sigma}_u = \mathbf{P}\mathbf{P}'$ and defining orthogonalised
-shocks as $\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\mathbf{u}_t$. The
+$\boldsymbol{\Sigma}_{\tilde\varepsilon} = \mathbf{P}\mathbf{P}'$, with
+$\mathbf{P} = \mathbf{A}_0^{-1}\mathbf{D}^{1/2}$, and defining orthogonalised
+shocks as $\boldsymbol{\varepsilon}_t = \mathbf{P}^{-1}\tilde{\boldsymbol{\varepsilon}}_t$. The
 ordering of variables determines which contemporaneous effects are set to
 zero; the ordering is an economic assumption, not a statistical one.
 
 **Impulse response function (IRF)** — $\text{IRF}_{ij}(h) = \theta_{ij,h}$,
-the response of variable $i$ to a unit structural shock $j$ at horizon $h$,
-computed as the $(i,j)$ element of $\boldsymbol{\Theta}_h =
+the response of variable $i$ to a one-standard-deviation structural shock $j$ at
+horizon $h$, computed as the $(i,j)$ element of $\boldsymbol{\Theta}_h =
 \mathbf{J}\mathbf{F}^h\mathbf{J}'\mathbf{P}$. In a stable VAR all IRFs
-converge to zero. Presented as the $n \times n$ grid of panels, with diagonal
-own-shock responses starting at 1 by the unit-variance normalisation.
+converge to zero. Presented as an $n \times n$ grid of panels, usually with each
+column divided by its own impact (unit own-impact scaling), so that diagonal
+own-shock responses start at 1.
 
 **Forecast error variance decomposition (FEVD)** — The share
 $\omega_{ij}(h)$ of the $h$-step forecast error variance of variable $i$
 attributable to structural shock $j$:
-$\omega_{ij}(h) = \sum_{s=0}^{h-1}\theta_{ij,s}^2 \,/\, \sum_{k}\sum_{s=0}^{h-1}\theta_{ik,s}^2$.
-Shares sum to 100 percent at every horizon. Horizon-dependent: short-run
+$\omega_{ij}(h) = \sum_{s=0}^{h-1}\theta_{ij,s}^2 \,/\, \sum_{k}\sum_{s=0}^{h-1}\theta_{ik,s}^2$,
+computed from the unscaled $\boldsymbol{\Theta}_h$. Shares sum to 100 percent at
+every horizon and depend on the ordering. Horizon-dependent: short-run
 and long-run attributions can differ substantially.
 
 **Price puzzle** — The empirical finding in some estimated monetary VARs
@@ -2610,23 +2769,29 @@ funds rate increase is partly an endogenous response to anticipated inflation
 not yet visible in the CPI, so the estimated IRF conflates the policy action
 with the inflationary pressure it was responding to.
 
-**Sign restrictions** — An identification scheme that recovers structural
-shocks by restricting the *sign* of their contemporaneous or short-run
-impacts rather than setting specific elements to zero. A contractionary
-policy shock is defined as one that raises the funds rate and reduces
-inflation; any $\mathbf{A}_0$ consistent with those sign patterns is
-admissible. Results are reported as identified sets (ranges of IRFs) rather
+**Sign restrictions** — An identification scheme that keeps every rotation
+$\tilde{\mathbf{P}} = \mathbf{P}\mathbf{Q}$ ($\mathbf{Q}$ orthogonal) whose impulse
+responses have specified signs, rather than setting specific elements to zero.
+A contractionary policy shock is defined as one that raises the funds rate and
+does not raise output or inflation over some horizon. Results are reported as
+identified sets (median and percentile bands across accepted draws) rather
 than point estimates.
 
 **VARX($p$, $s$)** — A VAR($p$) augmented with $s + 1$ lags of a $k \times 1$
 vector of exogenous variables $\mathbf{x}_t$:
-$\mathbf{y}_t = \mathbf{c} + \sum_\ell \mathbf{A}_\ell \mathbf{y}_{t-\ell} +
-\sum_j \mathbf{B}_j \mathbf{x}_{t-j} + \mathbf{u}_t$.
+$\mathbf{y}_t = \boldsymbol{\Gamma}_0 + \sum_\ell \boldsymbol{\Gamma}_\ell \mathbf{y}_{t-\ell} +
+\sum_j \mathbf{B}_j \mathbf{x}_{t-j} + \tilde{\boldsymbol{\varepsilon}}_t$.
 Exogenous variables are conditioned on but not modelled; they do not receive
 structural shocks and do not enter the FEVD of the endogenous block. Exogenous
 variables must be $I(0)$; $I(1)$ exogenous variables should be first-differenced
 before inclusion unless cointegration with the endogenous block is modelled
 explicitly via a VECMX.
+
+**Dynamic multiplier** — The response of the endogenous variables $h$ periods
+ahead to a one-unit change in an exogenous variable in a VARX:
+$\sum_{j=0}^{\min(h,s)}\boldsymbol{\Phi}_{h-j}\mathbf{B}_j$, with
+$\boldsymbol{\Phi}_m = \mathbf{J}\mathbf{F}^m\mathbf{J}'$. The VARX analogue of an IRF,
+since exogenous variables have no shocks of their own.
 
 **Cointegration** — Two or more $I(1)$ series are cointegrated if a linear
 combination of them is $I(0)$. Cointegrated series share a common stochastic
@@ -2640,8 +2805,6 @@ cointegrating rank.
 for cointegrated $I(1)$ variables that separates short-run dynamics (in
 first differences) from the long-run equilibrium relationship (the
 cointegrating vector, which acts as an error correction term pulling the
-system back toward equilibrium after shocks). The VECM is a special case
-of a state space model: the cointegrating residual is an unobserved state
-estimated optimally by the Kalman filter. Full treatment in Chapter 11.
+system back toward equilibrium after shocks). Developed in Chapter 8.
 :::
 
